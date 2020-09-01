@@ -14,7 +14,7 @@ all: $(APIS:%=pkg/%)
 
 pkg/%: oas/%.json
 	openapi-generator generate -g go-experimental --api-package $@ -i $< -o $@ --package-name $(@:pkg/%=%)
-	rm -f pkg/$@/go.{mod,sum}
+	rm -f $@/go.{mod,sum}
 
 clean:
 	rm -rf pkg/*
