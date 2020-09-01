@@ -1,0 +1,821 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: StackPath Support
+    url: https://support.stackpath.com/
+  title: Stacks
+  version: 1.0.0
+externalDocs:
+  description: The StackPath API Reference
+  url: https://stackpath.dev/reference
+servers:
+- url: https://gateway.stackpath.com
+security:
+- oauth2: []
+paths:
+  /stack/v1/stacks:
+    get:
+      operationId: GetStacks
+      parameters:
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: An account ID
+        explode: true
+        in: query
+        name: account_id
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackGetStacksResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all stacks
+      tags:
+      - Stacks
+    post:
+      operationId: CreateStack
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/stackCreateStackRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackCreateStackResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Create a stack
+      tags:
+      - Stacks
+  /stack/v1/stacks/{stack_id}:
+    get:
+      operationId: GetStack
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackStack'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a stack
+      tags:
+      - Stacks
+    patch:
+      operationId: UpdateStack2
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/stackUpdateStackRequest2'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackUpdateStackResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update a stack
+      tags:
+      - Stacks
+  /stack/v1/stacks/{stack_id}/iam/policy:
+    delete:
+      operationId: DeleteIAMPolicy
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Delete a stack's IAM policy
+      tags:
+      - Stack Policies
+    get:
+      operationId: GetIAMPolicy
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackGetIAMPolicyResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a stack's IAM policy
+      tags:
+      - Stack Policies
+    put:
+      operationId: SetIAMPolicy
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/stackSetIAMPolicyRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackSetIAMPolicyResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Set a stack's IAM policy
+      tags:
+      - Stack Policies
+  /stack/v1/stacks/{stack_id}/iam/test:
+    post:
+      operationId: TestIAMPermissions
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/stackTestIAMPermissionsRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackTestIAMPermissionsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Test stack policies
+      tags:
+      - Stack Policies
+components:
+  schemas:
+    stackUpdateStackRequest2:
+      properties:
+        name:
+          description: The stack's new name
+          type: string
+      type: object
+    PolicyBinding:
+      description: An assignment of members to roles
+      example:
+        role: role
+        members:
+        - members
+        - members
+      properties:
+        role:
+          description: |-
+            The name of the role for this binding.
+
+            This is either roles/<name> or accounts/<id>/roles/<name>.
+          type: string
+        members:
+          description: |-
+            The members assigned to the roles in this binding.
+
+            This is user:<name>.
+          items:
+            type: string
+          type: array
+      type: object
+    apiStatusDetail:
+      discriminator:
+        propertyName: '@type'
+      properties:
+        '@type':
+          type: string
+      required:
+      - '@type'
+      type: object
+    iamPolicy:
+      description: A policy on a StackPath resource
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        bindings:
+        - role: role
+          members:
+          - members
+          - members
+        - role: role
+          members:
+          - members
+          - members
+        version: 0
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        bindings:
+          description: Bindings to assign members to roles
+          items:
+            $ref: '#/components/schemas/PolicyBinding'
+          type: array
+        version:
+          description: |-
+            The current update number used to ensure updates happen to the expected version.
+
+            On first update this must be 0 and on each successive update this must be the last known version. When getting or as the result of a set, this will be the current version.
+          format: int64
+          type: integer
+        createdAt:
+          description: |-
+            When this policy was created.
+
+            Always present on get, ignored on set.
+          format: date-time
+          readOnly: true
+          type: string
+        updatedAt:
+          description: |-
+            When this policy was last updated.
+
+            Could be absent on get if not updated since initial creation. Ignored on set.
+          format: date-time
+          readOnly: true
+          type: string
+      type: object
+    paginationPageInfo:
+      description: |-
+        Information about a paginated response
+
+        This is modeled after the GraphQL Relay spec to support both cursor based pagination and traditional offset based pagination.
+      example:
+        hasNextPage: true
+        hasPreviousPage: true
+        endCursor: endCursor
+        totalCount: totalCount
+        startCursor: startCursor
+      properties:
+        totalCount:
+          description: The total number of items in the dataset
+          type: string
+        hasPreviousPage:
+          description: Whether or not a previous page of data exists
+          format: boolean
+          type: boolean
+        hasNextPage:
+          description: Whether or not another page of data is available
+          format: boolean
+          type: boolean
+        startCursor:
+          description: The cursor for the first item in the set of data returned
+          type: string
+        endCursor:
+          description: The cursor for the last item in the set of data returned
+          type: string
+      type: object
+    stackCreateStackRequest:
+      properties:
+        accountId:
+          description: The ID of the account to create the stack for
+          type: string
+        slug:
+          description: |-
+            The StackPath stack's friendly, text-based unique identifier
+
+            This can be used in place of a stack's ID in most situations to identify a stack. It can be no larger than 30 characters, each being a lowercase letter, number, or dash. It also cannot start with a dash, end with a dash, or have consecutive dashes.If this value is not present, it is derived from the name. This value cannot be updated.
+          type: string
+        name:
+          description: The stack's name
+          type: string
+      type: object
+    stackCreateStackResponse:
+      example:
+        stack:
+          accountId: accountId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          id: id
+          slug: slug
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        stack:
+          $ref: '#/components/schemas/stackStack'
+      type: object
+    stackGetIAMPolicyResponse:
+      description: A response from a request to retrieve a StackPath stack's policy
+      example:
+        stackId: stackId
+        policy:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          bindings:
+          - role: role
+            members:
+            - members
+            - members
+          - role: role
+            members:
+            - members
+            - members
+          version: 0
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        stackId:
+          description: The ID of the StackPath stack the policy is on
+          type: string
+        policy:
+          $ref: '#/components/schemas/iamPolicy'
+      type: object
+    stackGetStacksResponse:
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - accountId: accountId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          id: id
+          slug: slug
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - accountId: accountId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          id: id
+          slug: slug
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          items:
+            $ref: '#/components/schemas/stackStack'
+          type: array
+      type: object
+    stackSetIAMPolicyRequest:
+      properties:
+        policy:
+          $ref: '#/components/schemas/iamPolicy'
+      type: object
+    stackSetIAMPolicyResponse:
+      description: A response from a request to set a StackPath stack's policy
+      example:
+        stackId: stackId
+        policy:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          bindings:
+          - role: role
+            members:
+            - members
+            - members
+          - role: role
+            members:
+            - members
+            - members
+          version: 0
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        stackId:
+          description: The ID of the StackPath stack the policy is on
+          type: string
+        policy:
+          $ref: '#/components/schemas/iamPolicy'
+      type: object
+    stackStack:
+      description: A stack
+      example:
+        accountId: accountId
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        name: name
+        id: id
+        slug: slug
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          description: A stack's unique identifier
+          type: string
+        accountId:
+          description: The ID of the account that a stack belongs to
+          type: string
+        slug:
+          description: |-
+            A stack's human-friendly identifier
+
+            This can be used in place of a stack's ID in most situations to identify a stack. It can be no longer than 30 characters, each being a lowercase letter, number, or dash. It also cannot start with a dash, end with a dash, or have consecutive dashes. This value can be provided on creation or is derived from the stack's name if a slug isn't provided. This value cannot be updated once it's created.
+          type: string
+        name:
+          description: A stack's name
+          type: string
+        createdAt:
+          description: The date a stack was created
+          format: date-time
+          readOnly: true
+          type: string
+        updatedAt:
+          description: The date a stack was last updated
+          format: date-time
+          readOnly: true
+          type: string
+        status:
+          $ref: '#/components/schemas/stackStackStatus'
+      type: object
+    stackStackStatus:
+      default: PENDING
+      description: A stack's status
+      enum:
+      - PENDING
+      - ACTIVE
+      - DISABLED
+      - SUSPENDED
+      - BILLING_SUSPENDED
+      - CANCELLED
+      - DELETED
+      type: string
+    stackTestIAMPermissionsRequest:
+      properties:
+        permissions:
+          description: The set of permissions to test
+          items:
+            type: string
+          type: array
+      type: object
+    stackTestIAMPermissionsResponse:
+      description: A response from a request to test permissions on a StackPath account
+      example:
+        permissions:
+        - permissions
+        - permissions
+        stackId: stackId
+      properties:
+        stackId:
+          description: The ID of the StackPath stack the permissions were tested on
+          type: string
+        permissions:
+          description: The set of permissions that the calling user does have on the
+            stack
+          items:
+            type: string
+          type: array
+      type: object
+    stackUpdateStackResponse:
+      example:
+        stack:
+          accountId: accountId
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          id: id
+          slug: slug
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        stack:
+          $ref: '#/components/schemas/stackStack'
+      type: object
+    stackpath.rpc.BadRequest:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_BadRequest_allOf'
+    stackpath.rpc.BadRequest.FieldViolation:
+      properties:
+        field:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.Help:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_Help_allOf'
+    stackpath.rpc.Help.Link:
+      properties:
+        description:
+          type: string
+        url:
+          type: string
+      type: object
+    stackpath.rpc.LocalizedMessage:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_LocalizedMessage_allOf'
+    stackpath.rpc.PreconditionFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_PreconditionFailure_allOf'
+    stackpath.rpc.PreconditionFailure.Violation:
+      properties:
+        type:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.QuotaFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_QuotaFailure_allOf'
+    stackpath.rpc.QuotaFailure.Violation:
+      properties:
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.RequestInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RequestInfo_allOf'
+    stackpath.rpc.ResourceInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_ResourceInfo_allOf'
+    stackpath.rpc.RetryInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RetryInfo_allOf'
+    stackpathapiStatus:
+      properties:
+        code:
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/apiStatusDetail'
+          type: array
+        message:
+          type: string
+      type: object
+    stackpath_rpc_BadRequest_allOf:
+      properties:
+        fieldViolations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.BadRequest.FieldViolation'
+          type: array
+    stackpath_rpc_Help_allOf:
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.Help.Link'
+          type: array
+    stackpath_rpc_LocalizedMessage_allOf:
+      properties:
+        locale:
+          type: string
+        message:
+          type: string
+    stackpath_rpc_PreconditionFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.PreconditionFailure.Violation'
+          type: array
+    stackpath_rpc_QuotaFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.QuotaFailure.Violation'
+          type: array
+    stackpath_rpc_RequestInfo_allOf:
+      properties:
+        requestId:
+          type: string
+        servingData:
+          type: string
+    stackpath_rpc_ResourceInfo_allOf:
+      properties:
+        resourceType:
+          type: string
+        resourceName:
+          type: string
+        owner:
+          type: string
+        description:
+          type: string
+    stackpath_rpc_RetryInfo_allOf:
+      properties:
+        retryDelay:
+          type: string
+  securitySchemes:
+    oauth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://gateway.stackpath.com/identity/v1/oauth2/token
+      type: oauth2
+x-explorer-enabled: true
+x-proxy-enabled: true
+x-samples-enabled: true
+x-samples-languages:
+- curl
+- node
+- ruby
+- javascript
+- python

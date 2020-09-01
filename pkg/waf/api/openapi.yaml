@@ -1,0 +1,6358 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: StackPath Support
+    url: https://support.stackpath.com/
+  title: Web Application Firewall
+  version: 1.0.0
+externalDocs:
+  description: The StackPath API Reference
+  url: https://stackpath.dev/reference
+servers:
+- url: https://gateway.stackpath.com
+security:
+- oauth2: []
+paths:
+  /waf/v1/organizations:
+    get:
+      description: StackPath regularly searches IP address space for organizations
+        to allow or block in custom rules.
+      operationId: GetWAFOrganizations
+      parameters:
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetWAFOrganizationsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get WHOIS organizations
+      tags:
+      - Infrastructure
+  /waf/v1/stacks/{stack_id}/delivery/certificates:
+    get:
+      operationId: GetCertificates
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetCertificatesResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all certificates
+      tags:
+      - SSL
+    post:
+      operationId: CreateCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wafCreateCertificateRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafCreateCertificateResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Add a certificate
+      tags:
+      - SSL
+  /waf/v1/stacks/{stack_id}/delivery/certificates/{certificate_id}:
+    delete:
+      operationId: DeleteCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Delete a certificate
+      tags:
+      - SSL
+    get:
+      operationId: GetCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetCertificateResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a certificate
+      tags:
+      - SSL
+    put:
+      operationId: UpdateCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wafUpdateCertificateRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafUpdateCertificateResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update a certificate
+      tags:
+      - SSL
+  /waf/v1/stacks/{stack_id}/delivery/certificates/{certificate_id}/renew:
+    post:
+      description: StackPath automatically renews certificates that are 30 days from
+        expiration. Call this to retry a renewal that previously failed.
+      operationId: RenewCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Renew a certificate
+      tags:
+      - SSL
+  /waf/v1/stacks/{stack_id}/delivery/certificates/{certificate_id}/verification_details:
+    get:
+      operationId: GetCertificateVerificationDetails
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetCertificateVerificationDetailsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get sites associated with a certificate
+      tags:
+      - SSL
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/api_urls:
+    put:
+      operationId: UpdateSiteApiUrls
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wafUpdateSiteApiUrlsRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafUpdateSiteApiUrlsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update API URLs
+      tags:
+      - WAF Features
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/ddos:
+    get:
+      operationId: GetDdosSettings
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetDdosSettingsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get DDOS settings
+      tags:
+      - WAF Features
+    patch:
+      operationId: UpdateDdosSettings
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wafUpdateDdosSettingsRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafUpdateDdosSettingsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update DDOS settings
+      tags:
+      - WAF Features
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/delivery/certificates:
+    get:
+      operationId: GetSiteCertificates
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetSiteCertificatesResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all site certificates
+      tags:
+      - SSL
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/delivery/certificates/request:
+    post:
+      operationId: RequestCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wafRequestCertificateRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafRequestCertificateResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Request a free certificate
+      tags:
+      - SSL
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/delivery/certificates/{certificate_id}:
+    put:
+      description: |-
+        Association is performed without validating if the site has a hostname covered by the certificate. This is useful for preparation work required for getting a site ready for traffic.
+
+        If a certificate is uploaded which contains hostnames for sites, it will automatically be connected to those sites. If a hostname is added to a site which is covered by an SSL certificate, it will automatically be connected to the certificate.
+      operationId: ConnectSiteToCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafConnectSiteToCertificateResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update SAN hosts
+      tags:
+      - SSL
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/delivery/dns/targets:
+    get:
+      description: A site's hostname should point to these CNAME targets in order
+        for traffic to be sent through StackPath's edge nodes.
+      operationId: GetSiteDnsTargets
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetSiteDnsTargetsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get CNAME targets
+      tags:
+      - Configuration
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/event_stats:
+    get:
+      description: |-
+        Event statistics collect the total number of and number of blocked events for a site over a given time frame. Statistics are collected per country of origin, the rules that triggered events, the requesting organization as determined by WHOIS lookup against the client IP address, and by actions taken by the WAF as a result of the event.
+
+        **Note:** This endpoint is deprecated and will be removed in the future. WAF events will be replaced with requests, which provide more functionality. A replacement for this call is in development.
+      operationId: GetEventStatistics
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A lower bound date to search events for.
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: An upper bound date to search events for.
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: filter.action_value
+        required: false
+        schema:
+          default: ANY_ACTION
+          enum:
+          - ANY_ACTION
+          - BLOCK_ACTION
+          - ALLOW_ACTION
+          - CAPTCHA_ACTION
+          - HANDSHAKE_ACTION
+          - MONITOR_ACTION
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: filter.result_value
+        required: false
+        schema:
+          default: ANY_RESULT
+          enum:
+          - ANY_RESULT
+          - BLOCKED_RESULT
+          - ALLOWED_RESULT
+          - MONITORED_RESULT
+          type: string
+        style: form
+      - description: Filter events by client IP address.
+        explode: true
+        in: query
+        name: filter.client_ip
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter events by reference ID. Reference IDs are displayed to
+          the end user when the WAF blocks a request to a site. Please note that an
+          event's ID and reference ID are different.
+        explode: true
+        in: query
+        name: filter.reference_id
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetEventStatisticsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: 'LEGACY: Get event statistics'
+      tags:
+      - Events
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/events:
+    get:
+      description: '**Note:** This endpoint is deprecated and will be removed in the
+        future. WAF events will be replaced with requests, which provide more functionality.
+        Please use the [get all requests](ref:getrequests) call to search for WAF
+        requests.'
+      operationId: SearchEvents
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: A lower bound date to search events for.
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: An upper bound date to search events for.
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: filter.action_value
+        required: false
+        schema:
+          default: ANY_ACTION
+          enum:
+          - ANY_ACTION
+          - BLOCK_ACTION
+          - ALLOW_ACTION
+          - CAPTCHA_ACTION
+          - HANDSHAKE_ACTION
+          - MONITOR_ACTION
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: filter.result_value
+        required: false
+        schema:
+          default: ANY_RESULT
+          enum:
+          - ANY_RESULT
+          - BLOCKED_RESULT
+          - ALLOWED_RESULT
+          - MONITORED_RESULT
+          type: string
+        style: form
+      - description: Filter events by client IP address.
+        explode: true
+        in: query
+        name: filter.client_ip
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Filter events by reference ID. Reference IDs are displayed to
+          the end user when the WAF blocks a request to a site. Please note that an
+          event's ID and reference ID are different.
+        explode: true
+        in: query
+        name: filter.reference_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sort_by
+        required: false
+        schema:
+          default: TIMESTAMP
+          enum:
+          - TIMESTAMP
+          - COUNTRY
+          - RULE_NAME
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: sort_order
+        required: false
+        schema:
+          default: ASCENDING
+          enum:
+          - ASCENDING
+          - DESCENDING
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafSearchEventsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: 'LEGACY: Get all events'
+      tags:
+      - Events
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/events/{event_id}:
+    get:
+      description: '**Note:** This endpoint is deprecated and will be removed in the
+        future. WAF events will be replaced with requests, which provide more functionality.
+        Please use the [get request](ref:getrequest) and [get request details](ref:getrequestdetails)
+        calls to retrieve WAF requests.'
+      operationId: GetEvent
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF event ID
+        explode: false
+        in: path
+        name: event_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetEventResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: 'LEGACY: Get an event'
+      tags:
+      - Events
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/monitoring:
+    delete:
+      description: Restore the WAF feature's original enabled or disabled state.
+      operationId: UnMonitorSite
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Disable monitoring mode
+      tags:
+      - WAF Features
+    post:
+      description: Sites in monitoring mode accept incoming requests and log but take
+        no action on policy and rule violations. A sitge's WAF feature must be enabled
+        for monitoring mode to apply. Otherwise, monitoring mode will take effect
+        the next time the WAF feature is enabled.
+      operationId: MonitorSite
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Enable monitoring mode
+      tags:
+      - WAF Features
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups:
+    get:
+      operationId: GetPolicyGroups
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetPolicyGroupsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all policy groups
+      tags:
+      - Policies
+    patch:
+      description: Provide the IDs and enabled states of the policies in their policy
+        groups that should change
+      operationId: UpdatePolicyGroups
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wafUpdatePolicyGroupsRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetPolicyGroupsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update policy groups
+      tags:
+      - Policies
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}:
+    get:
+      operationId: GetPolicyGroup
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy group ID
+        explode: false
+        in: path
+        name: policy_group_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetPolicyGroupResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a policy group
+      tags:
+      - Policies
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/disable:
+    post:
+      operationId: DisablePolicyGroup
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy group ID
+        explode: false
+        in: path
+        name: policy_group_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Disable all policies in a group
+      tags:
+      - Policies
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/enable:
+    post:
+      operationId: EnablePolicyGroup
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy group ID
+        explode: false
+        in: path
+        name: policy_group_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Enable all policies in a group
+      tags:
+      - Policies
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies:
+    get:
+      operationId: GetPolicies
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy group ID
+        explode: false
+        in: path
+        name: policy_group_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetPoliciesResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all policies in a group
+      tags:
+      - Policies
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies/{policy_id}:
+    get:
+      operationId: GetPolicy
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy group ID
+        explode: false
+        in: path
+        name: policy_group_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy ID
+        explode: false
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetPolicyResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a policy
+      tags:
+      - Policies
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies/{policy_id}/disable:
+    post:
+      operationId: DisablePolicy
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy group ID
+        explode: false
+        in: path
+        name: policy_group_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy ID
+        explode: false
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Disable a policy
+      tags:
+      - Policies
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies/{policy_id}/enable:
+    post:
+      operationId: EnablePolicy
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy group ID
+        explode: false
+        in: path
+        name: policy_group_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF policy ID
+        explode: false
+        in: path
+        name: policy_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Enable a policy
+      tags:
+      - Policies
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/requests:
+    get:
+      operationId: GetRequests
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: A lower bound date to search requests for.
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: An upper bound date to search requests for.
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetRequestsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all requests
+      tags:
+      - Requests
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/requests/{request_id}:
+    get:
+      operationId: GetRequest
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF request ID
+        explode: false
+        in: path
+        name: request_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetRequestResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a request
+      tags:
+      - Requests
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/requests/{request_id}/details:
+    get:
+      description: Retrieve more detailed information about a WAF request
+      operationId: GetRequestDetails
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF request ID
+        explode: false
+        in: path
+        name: request_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetRequestDetailsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a request's details
+      tags:
+      - Requests
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/rules:
+    get:
+      operationId: GetRules
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetRulesResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all rules
+      tags:
+      - Rules
+    post:
+      operationId: CreateRule
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wafCreateRuleRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafCreateRuleResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Create a rule
+      tags:
+      - Rules
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/rules/bulk_delete:
+    post:
+      operationId: BulkDeleteRules
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wafBulkDeleteRulesRequest'
+        required: true
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Delete multiple rules
+      tags:
+      - Rules
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}:
+    delete:
+      operationId: DeleteRule
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF rule ID
+        explode: false
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Delete a rule
+      tags:
+      - Rules
+    get:
+      operationId: GetRule
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF rule ID
+        explode: false
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetRuleResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a rule
+      tags:
+      - Rules
+    patch:
+      description: Only properties present in the request will be updated.
+      operationId: UpdateRule
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF rule ID
+        explode: false
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/wafUpdateRuleRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafUpdateRuleResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update a rule
+      tags:
+      - Rules
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}/disable:
+    post:
+      operationId: DisableRule
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF rule ID
+        explode: false
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Disable a rule
+      tags:
+      - Rules
+  /waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}/enable:
+    post:
+      operationId: EnableRule
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: false
+        in: path
+        name: site_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A WAF rule ID
+        explode: false
+        in: path
+        name: rule_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Enable a rule
+      tags:
+      - Rules
+  /waf/v1/stacks/{stack_id}/traffic:
+    get:
+      description: |-
+        Retrieve a report of a stack or site's WAF traffic.
+
+        **Note:** This endpoint is deprecated and will be removed in the future. Please use the [v2 get traffic call](ref:gettrafficv2) to retrieve WAF site traffic.
+      operationId: GetTraffic
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: true
+        in: query
+        name: site_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: A lower bound date to search traffic for.
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: An upper bound date to search traffic for.
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: |2-
+           - HOURLY: All data points represent one hour of traffic
+           - MINUTELY: All data points represent one minute of traffic
+        explode: true
+        in: query
+        name: resolution
+        required: false
+        schema:
+          default: HOURLY
+          enum:
+          - HOURLY
+          - MINUTELY
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetTrafficResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: 'LEGACY: Get traffic'
+      tags:
+      - Traffic
+  /waf/v1/tags:
+    get:
+      description: Get tags available for use in WAF rule conditons. Tags describe
+        aspects of an incoming web request and acn be used to create complex application-level
+        custom rules.
+      operationId: GetTags
+      parameters:
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetTagsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all tags
+      tags:
+      - WAF Features
+  /waf/v2/stacks/{stack_id}/traffic:
+    get:
+      description: Retreive a report of a stack or site's WAF traffic
+      operationId: GetTrafficV2
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A site ID
+        explode: true
+        in: query
+        name: site_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: A lower bound date to search traffic for.
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: An upper bound date to search traffic for.
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: |2-
+           - DAILY: All data points represent one day of traffic
+           - HOURLY: All data points represent one hour of traffic
+           - MINUTELY: All data points represent one minute of traffic
+        explode: true
+        in: query
+        name: resolution
+        required: false
+        schema:
+          default: DAILY
+          enum:
+          - DAILY
+          - HOURLY
+          - MINUTELY
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/wafGetTrafficV2Response'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get traffic
+      tags:
+      - Traffic
+components:
+  schemas:
+    ConditionContentTypeCondition:
+      description: Match the requested Content-Type
+      example:
+        contentType: contentType
+      properties:
+        contentType:
+          description: The Content-Type to match against
+          type: string
+      type: object
+    ConditionCountryCondition:
+      description: Match the country that the requested originated from
+      example:
+        countryCode: countryCode
+      properties:
+        countryCode:
+          description: An ISO 3166-1 alpha-2 formatted string
+          type: string
+      type: object
+    ConditionFileExtensionCondition:
+      description: Match the incoming file extension
+      example:
+        fileExtension: fileExtension
+      properties:
+        fileExtension:
+          description: The file extension, with or without a period character, to
+            match against
+          type: string
+      type: object
+    ConditionHeaderCondition:
+      description: Match an incoming request header
+      example:
+        exactMatch: true
+        header: header
+        value: value
+      properties:
+        header:
+          description: The request header name
+          type: string
+        value:
+          description: The request header value
+          type: string
+        exactMatch:
+          description: Whether or not to perform an exact match of the request header
+            and value
+          format: boolean
+          type: boolean
+      type: object
+    ConditionHeaderExistsCondition:
+      description: Match when an incoming request header is present
+      example:
+        header: header
+      properties:
+        header:
+          description: The request header name
+          type: string
+      type: object
+    ConditionHttpMethodCondition:
+      description: Match the incoming HTTP method
+      example: {}
+      properties:
+        httpMethod:
+          $ref: '#/components/schemas/wafHttpMethod'
+      type: object
+    ConditionIpCondition:
+      description: Match the incoming request against a single IP address
+      example:
+        ipAddress: ipAddress
+      properties:
+        ipAddress:
+          description: A single IPv4 address
+          type: string
+      type: object
+    ConditionIpRangeCondition:
+      description: Match the incoming request against a range of IPv4 addresses
+      example:
+        upperBound: upperBound
+        lowerBound: lowerBound
+      properties:
+        lowerBound:
+          description: The lower bound IPv4 address to match against
+          type: string
+        upperBound:
+          description: The upper bound IPv4 address to match against
+          type: string
+      type: object
+    ConditionOrganizationCondition:
+      description: Match the organization the request originated from, as determined
+        by a WHOIS lookup of the requesting IP
+      example:
+        organization: organization
+      properties:
+        organization:
+          description: The organization to match against
+          type: string
+      type: object
+    ConditionOwnerTypeCondition:
+      description: Match the type of organization that owns the IP address making
+        an incoming request
+      example:
+        ownerTypes:
+        - null
+        - null
+      properties:
+        ownerTypes:
+          description: The owner value to match against
+          items:
+            $ref: '#/components/schemas/OwnerTypeConditionOwnerType'
+          type: array
+      type: object
+    ConditionRequestRateCondition:
+      description: Match the rate at which requests come in that match certain conditions
+      example:
+        httpMethods:
+        - null
+        - null
+        pathPattern: pathPattern
+        requests: requests
+        time: time
+        ips:
+        - ips
+        - ips
+      properties:
+        ips:
+          description: A list of source IPs that can trigger a request rate condition
+          items:
+            type: string
+          type: array
+        httpMethods:
+          description: Possible HTTP request methods that can trigger a request rate
+            condition
+          items:
+            $ref: '#/components/schemas/wafHttpMethod'
+          type: array
+        pathPattern:
+          description: A regular expression matching the URL path of the incoming
+            request
+          type: string
+        requests:
+          description: The number of incoming requests over the given time that can
+            trigger a request rate condition
+          type: string
+        time:
+          description: The number of seconds that the WAF measures incoming requests
+            over before triggering a request rate condition
+          type: string
+      type: object
+    ConditionResponseHeaderCondition:
+      description: Match a response header
+      example:
+        exactMatch: true
+        header: header
+        value: value
+      properties:
+        header:
+          description: The response header name
+          type: string
+        value:
+          description: The response header value
+          type: string
+        exactMatch:
+          description: Whether to perform an exact match of the response header and
+            value
+          format: boolean
+          type: boolean
+      type: object
+    ConditionResponseHeaderExistsCondition:
+      description: Match when a response header is present
+      example:
+        header: header
+      properties:
+        header:
+          description: The response header name
+          type: string
+      type: object
+    ConditionSessionRequestCountCondition:
+      description: |-
+        Match the number of dynamic page requests made in a WAF session
+
+        The WAF injects a session cookie into protected pages to track multi-request security issues. This condition matches against the number of dynamic page requests made during that session's lifetime.
+      example:
+        requestCount: requestCount
+      properties:
+        requestCount:
+          description: The number of dynamic requests in the session
+          type: string
+      type: object
+    ConditionTagCondition:
+      description: Match aspects of an incoming request
+      example:
+        tags:
+        - tags
+        - tags
+      properties:
+        tags:
+          description: A facet of the incoming request to match against
+          items:
+            type: string
+          type: array
+      type: object
+    ConditionUrlCondition:
+      description: Match the incoming request URL
+      example:
+        exactMatch: true
+        url: url
+      properties:
+        url:
+          description: The URL to match
+          type: string
+        exactMatch:
+          description: Whether to perform an exact match or a string contains match
+            of the URL
+          format: boolean
+          type: boolean
+      type: object
+    ConditionUserAgentCondition:
+      description: Match the user agent making the request
+      example:
+        exactMatch: true
+        userAgent: userAgent
+      properties:
+        userAgent:
+          description: The user agent value to match
+          type: string
+        exactMatch:
+          description: Whether to perform an exact match or a string contains match
+            of the user agent
+          format: boolean
+          type: boolean
+      type: object
+    EventRequestUserAgent:
+      description: |-
+        Parsed user agent information
+
+        Incoming user agents are parsed by StackPath into categories to help describe the type of device and HTTP client or browser that made a request that triggered a WAF event. Parsed user agent properties have the value "NA" if StackPath is unable to parse the incoming user agent.
+      example:
+        clientType: clientType
+        os: os
+        clientName: clientName
+        raw: raw
+        device: device
+      properties:
+        clientName:
+          description: The name of the requesting client, typically the name of the
+            requesting web browser
+          type: string
+        clientType:
+          description: The requesting client's type, such as "major browser" or "mobile
+            app"
+          type: string
+        device:
+          description: The brand name of the device making the request, such as "iphone"
+            or "playstation"
+          type: string
+        os:
+          description: The operating system of the device making the request
+          type: string
+        raw:
+          description: The full user agent string
+          type: string
+      type: object
+    EventRuleAction:
+      description: Aspects of the rule that triggered a WAF event
+      example:
+        blocked: true
+        engine: engine
+        ruleName: ruleName
+        ruleId: ruleId
+      properties:
+        ruleName:
+          description: The name of the rule that triggered the event action
+          type: string
+        ruleId:
+          description: The unique ID of the rule that triggered the event action
+          type: string
+        actionTaken:
+          $ref: '#/components/schemas/wafRuleAction'
+        blocked:
+          description: Whether the requesting client was blocked or not
+          format: boolean
+          type: boolean
+        engine:
+          description: The name of the internal WAF engine powering the rule
+          type: string
+        requestType:
+          $ref: '#/components/schemas/EventWafRequestType'
+        result:
+          $ref: '#/components/schemas/RuleActionResultType'
+      type: object
+    EventStatistics:
+      description: A collection of common event metrics
+      example:
+        blocked:
+          organizations:
+          - organization: organization
+            count: count
+          - organization: organization
+            count: count
+          rules:
+          - count: count
+            ruleName: ruleName
+          - count: count
+            ruleName: ruleName
+          countries:
+          - country: country
+            countryCode: countryCode
+            count: count
+          - country: country
+            countryCode: countryCode
+            count: count
+          actions:
+          - count: count
+          - count: count
+        count:
+          organizations:
+          - organization: organization
+            count: count
+          - organization: organization
+            count: count
+          rules:
+          - count: count
+            ruleName: ruleName
+          - count: count
+            ruleName: ruleName
+          countries:
+          - country: country
+            countryCode: countryCode
+            count: count
+          - country: country
+            countryCode: countryCode
+            count: count
+          actions:
+          - count: count
+          - count: count
+      properties:
+        count:
+          $ref: '#/components/schemas/StatisticsMetrics'
+        blocked:
+          $ref: '#/components/schemas/StatisticsMetrics'
+      type: object
+    EventWafRequestType:
+      default: CHALLENGE
+      enum:
+      - CHALLENGE
+      - BLOCK
+      type: string
+    MetricsActions:
+      description: The number of events per action taken by the WAF
+      example:
+        count: count
+      properties:
+        action:
+          $ref: '#/components/schemas/wafRuleAction'
+        count:
+          description: The number of requests that resulted in that action
+          type: string
+      type: object
+    MetricsCountries:
+      description: The number of events per country of origin
+      example:
+        country: country
+        countryCode: countryCode
+        count: count
+      properties:
+        country:
+          description: A country's long name
+          type: string
+        countryCode:
+          description: A country's ISO 3166-1 alpha-2 code
+          type: string
+        count:
+          description: The number of requests from the country
+          type: string
+      type: object
+    MetricsOrganizations:
+      description: The number of events per requesting organization, as determined
+        by WHOIS lookup on the requesting IP
+      example:
+        organization: organization
+        count: count
+      properties:
+        organization:
+          description: An organization's name
+          type: string
+        count:
+          description: The number of requests from the organization
+          type: string
+      type: object
+    MetricsRules:
+      description: The "top threats" metric, the number of events encountered per
+        rule
+      example:
+        count: count
+        ruleName: ruleName
+      properties:
+        ruleName:
+          description: The name of the rule
+          type: string
+        count:
+          description: The number of requests the rule analyzed
+          type: string
+      type: object
+    NetworkOrganization:
+      description: The organization that owns the WAF request's originating IP address
+        according to a WHOIS lookup
+      example:
+        subnet: subnet
+        name: name
+      properties:
+        name:
+          description: The name of organization
+          type: string
+        subnet:
+          description: The IP bock of the organization
+          type: string
+      type: object
+    OwnerTypeConditionOwnerType:
+      default: COMMERCIAL
+      description: Potential owner type values to match against
+      enum:
+      - COMMERCIAL
+      - EDUCATIONAL
+      - GOVERNMENT
+      - HOSTING_SERVICES
+      - ISP
+      - MOBILE_NETWORK
+      - NETWORK
+      - RESERVED
+      type: string
+    RequestDetailsRequestType:
+      default: API
+      description: |-
+        The types of a WAF request
+
+        - API: A WAF request to a URL designated by WAF as an API URL
+         - AJAX: An AJAX WAF request
+         - STATIC: A WAF request to a static resource
+      enum:
+      - API
+      - AJAX
+      - STATIC
+      type: string
+    RequestDetailsTags:
+      description: |-
+        Aspects of a WAF request
+
+        Tags describe aspects of an incoming web request and can be used to create complex application-level custom rules
+      example:
+        cached: true
+        hash: hash
+        tags:
+        - tags
+        - tags
+      properties:
+        tags:
+          description: The tags associated with the request
+          items:
+            type: string
+          type: array
+        hash:
+          description: The tag's hash
+          type: string
+        cached:
+          description: Whether or not the tag was cached
+          format: boolean
+          type: boolean
+      type: object
+    RuleActionResultType:
+      default: RESULT_TYPE_UNSPECIFIED
+      description: |-
+        Results from a WAF event
+
+        - RESULT_TYPE_UNSPECIFIED: The event resulted in an unknown action
+         - BLOCKED: The event was blocked by the WAF
+         - ALLOWED: The event was allowed by the WAF
+         - MONITORED: The event was monitored by the WAF but no action was taken
+      enum:
+      - RESULT_TYPE_UNSPECIFIED
+      - BLOCKED
+      - ALLOWED
+      - MONITORED
+      type: string
+    RuleCondition:
+      description: The criteria of an incoming web request and the models of the various
+        values those criteria can take
+      example:
+        country:
+          countryCode: countryCode
+        negation: true
+        requestRate:
+          httpMethods:
+          - null
+          - null
+          pathPattern: pathPattern
+          requests: requests
+          time: time
+          ips:
+          - ips
+          - ips
+        sessionRequestCount:
+          requestCount: requestCount
+        ip:
+          ipAddress: ipAddress
+        ipRange:
+          upperBound: upperBound
+          lowerBound: lowerBound
+        responseHeader:
+          exactMatch: true
+          header: header
+          value: value
+        userAgent:
+          exactMatch: true
+          userAgent: userAgent
+        httpMethod: {}
+        url:
+          exactMatch: true
+          url: url
+        responseHeaderExists:
+          header: header
+        tags:
+          tags:
+          - tags
+          - tags
+        headerExists:
+          header: header
+        fileExtension:
+          fileExtension: fileExtension
+        organization:
+          organization: organization
+        header:
+          exactMatch: true
+          header: header
+          value: value
+        ownerTypes:
+          ownerTypes:
+          - null
+          - null
+        contentType:
+          contentType: contentType
+      properties:
+        ip:
+          $ref: '#/components/schemas/ConditionIpCondition'
+        ipRange:
+          $ref: '#/components/schemas/ConditionIpRangeCondition'
+        url:
+          $ref: '#/components/schemas/ConditionUrlCondition'
+        userAgent:
+          $ref: '#/components/schemas/ConditionUserAgentCondition'
+        header:
+          $ref: '#/components/schemas/ConditionHeaderCondition'
+        headerExists:
+          $ref: '#/components/schemas/ConditionHeaderExistsCondition'
+        responseHeader:
+          $ref: '#/components/schemas/ConditionResponseHeaderCondition'
+        responseHeaderExists:
+          $ref: '#/components/schemas/ConditionResponseHeaderExistsCondition'
+        httpMethod:
+          $ref: '#/components/schemas/ConditionHttpMethodCondition'
+        fileExtension:
+          $ref: '#/components/schemas/ConditionFileExtensionCondition'
+        contentType:
+          $ref: '#/components/schemas/ConditionContentTypeCondition'
+        country:
+          $ref: '#/components/schemas/ConditionCountryCondition'
+        organization:
+          $ref: '#/components/schemas/ConditionOrganizationCondition'
+        requestRate:
+          $ref: '#/components/schemas/ConditionRequestRateCondition'
+        ownerTypes:
+          $ref: '#/components/schemas/ConditionOwnerTypeCondition'
+        tags:
+          $ref: '#/components/schemas/ConditionTagCondition'
+        sessionRequestCount:
+          $ref: '#/components/schemas/ConditionSessionRequestCountCondition'
+        negation:
+          description: Whether or not to apply a boolean NOT operation to the rule's
+            condition
+          format: boolean
+          type: boolean
+      type: object
+    RuleStatusCode:
+      default: FORBIDDEN_403
+      description: A custom HTTP status code that the WAF returns if a rule blocks
+        a request
+      enum:
+      - FORBIDDEN_403
+      - TOO_MANY_REQUESTS_429
+      type: string
+    SearchFilterActionFilter:
+      default: ANY_ACTION
+      description: Potential actions the WAF took on an event
+      enum:
+      - ANY_ACTION
+      - BLOCK_ACTION
+      - ALLOW_ACTION
+      - CAPTCHA_ACTION
+      - HANDSHAKE_ACTION
+      - MONITOR_ACTION
+      type: string
+    SearchFilterResultFilter:
+      default: ANY_RESULT
+      description: |-
+        Potential final results the WAF took on the event
+
+        A result reflects the end result of an event. For instance, if a user was first challenged with a captcha and then passed or failed the captcha.
+      enum:
+      - ANY_RESULT
+      - BLOCKED_RESULT
+      - ALLOWED_RESULT
+      - MONITORED_RESULT
+      type: string
+    SiteAttachMode:
+      default: STANDALONE
+      description: |-
+        How a WAF site relates to other StackPath site features
+
+        - STANDALONE: This WAF site does not have a corresponding caching CDN site
+         - ATTACHED: This WAF site represents the protection capabilities of a CDN site
+      enum:
+      - STANDALONE
+      - ATTACHED
+      type: string
+    StatisticsMetrics:
+      description: A collection of common event metrics for a single WAF action
+      example:
+        organizations:
+        - organization: organization
+          count: count
+        - organization: organization
+          count: count
+        rules:
+        - count: count
+          ruleName: ruleName
+        - count: count
+          ruleName: ruleName
+        countries:
+        - country: country
+          countryCode: countryCode
+          count: count
+        - country: country
+          countryCode: countryCode
+          count: count
+        actions:
+        - count: count
+        - count: count
+      properties:
+        rules:
+          description: The "top threats" metric, the number of events encountered
+            per rule
+          items:
+            $ref: '#/components/schemas/MetricsRules'
+          type: array
+        countries:
+          description: The number of events per country of origin
+          items:
+            $ref: '#/components/schemas/MetricsCountries'
+          type: array
+        organizations:
+          description: The number of events per requesting organization, as determined
+            by WHOIS lookup on the requesting IP
+          items:
+            $ref: '#/components/schemas/MetricsOrganizations'
+          type: array
+        actions:
+          description: The number of events per action taken by the WAF
+          items:
+            $ref: '#/components/schemas/MetricsActions'
+          type: array
+      type: object
+    TrafficPassedToOrigin:
+      description: Aspects of legitimate WAF traffic
+      example:
+        staticContent: staticContent
+        allowedSearchEngine: allowedSearchEngine
+        uncategorized: uncategorized
+        whitelisted: whitelisted
+        legitimateRequest: legitimateRequest
+      properties:
+        legitimateRequest:
+          description: The number of requests that passed all policies and rules and
+            were sent to the origin
+          type: string
+        whitelisted:
+          description: The number of requests allowed by whitelist
+          type: string
+        allowedSearchEngine:
+          description: The number of requests allowed by allow search bot policies
+          type: string
+        staticContent:
+          description: The number of requests for static content that was not analyzed
+            by the WAF
+          type: string
+        uncategorized:
+          description: All uncategorized requests that the WAF passed to the origin
+          type: string
+      type: object
+    apiStatusDetail:
+      discriminator:
+        propertyName: '@type'
+      properties:
+        '@type':
+          type: string
+      required:
+      - '@type'
+      type: object
+    paginationPageInfo:
+      description: |-
+        Information about a paginated response
+
+        This is modeled after the GraphQL Relay spec to support both cursor based pagination and traditional offset based pagination.
+      example:
+        hasNextPage: true
+        hasPreviousPage: true
+        endCursor: endCursor
+        totalCount: totalCount
+        startCursor: startCursor
+      properties:
+        totalCount:
+          description: The total number of items in the dataset
+          type: string
+        hasPreviousPage:
+          description: Whether or not a previous page of data exists
+          format: boolean
+          type: boolean
+        hasNextPage:
+          description: Whether or not another page of data is available
+          format: boolean
+          type: boolean
+        startCursor:
+          description: The cursor for the first item in the set of data returned
+          type: string
+        endCursor:
+          description: The cursor for the last item in the set of data returned
+          type: string
+      type: object
+    schemawafOrigin:
+      description: A WAF site's origin
+      properties:
+        path:
+          description: An origin's path
+          type: string
+        hostname:
+          description: An origin's fully-qualified domain name
+          type: string
+        port:
+          description: The http port to connect to the origin
+          format: int32
+          type: integer
+        securePort:
+          description: The https port to connect to the origin
+          format: int32
+          type: integer
+      type: object
+    schemawafPolicy:
+      description: |-
+        An individually toggleable WAF policy
+
+        Policies are pre-defined WAF rules created by StackPath for common firewall functionality.
+      example:
+        name: name
+        description: description
+        id: id
+        enabled: true
+      properties:
+        id:
+          description: A WAF policy's unique identifier
+          type: string
+        name:
+          description: A WAF policy's name
+          readOnly: true
+          type: string
+        description:
+          description: A WAF policy's description
+          readOnly: true
+          type: string
+        action:
+          $ref: '#/components/schemas/wafPolicyAction'
+        enabled:
+          description: Whether or not a WAF policy is enabled
+          format: boolean
+          type: boolean
+      type: object
+    schemawafRequest:
+      example:
+        country: country
+        userAgentClient: userAgentClient
+        userAgent: userAgent
+        referenceId: referenceId
+        requestTime: 2000-01-23T04:56:07.000+00:00
+        path: path
+        clientIp: clientIp
+        organization: organization
+        ruleName: ruleName
+        id: id
+        ruleId: ruleId
+      properties:
+        id:
+          description: A request's unique identifier
+          type: string
+        path:
+          description: The path of the requested URL
+          type: string
+        clientIp:
+          description: The originating IP address
+          type: string
+        method:
+          $ref: '#/components/schemas/wafHttpMethod'
+        ruleName:
+          description: The name of the WAF rule triggered by the request
+          type: string
+        country:
+          description: The ISO 3166-1 alpha-2 code of the country where the request
+            originated from
+          type: string
+        action:
+          $ref: '#/components/schemas/wafRequestAction'
+        ruleId:
+          description: The unique ID of the WAF rule that triggered the action against
+            the request
+          type: string
+        userAgent:
+          description: The full user agent string for the request
+          type: string
+        userAgentClient:
+          description: The name of the requesting client, typically the name of the
+            requesting web browser
+          type: string
+        organization:
+          description: The organization that owns the request's originating IP address
+            according to a WHOIS lookup
+          type: string
+        requestTime:
+          description: When the request occurred
+          format: date-time
+          type: string
+        referenceId:
+          description: |-
+            The request's user-facing identifier
+
+            Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that a request's ID and reference ID are different.
+          type: string
+      type: object
+    stackpath.rpc.BadRequest:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_BadRequest_allOf'
+    stackpath.rpc.BadRequest.FieldViolation:
+      properties:
+        field:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.Help:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_Help_allOf'
+    stackpath.rpc.Help.Link:
+      properties:
+        description:
+          type: string
+        url:
+          type: string
+      type: object
+    stackpath.rpc.LocalizedMessage:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_LocalizedMessage_allOf'
+    stackpath.rpc.PreconditionFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_PreconditionFailure_allOf'
+    stackpath.rpc.PreconditionFailure.Violation:
+      properties:
+        type:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.QuotaFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_QuotaFailure_allOf'
+    stackpath.rpc.QuotaFailure.Violation:
+      properties:
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.RequestInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RequestInfo_allOf'
+    stackpath.rpc.ResourceInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_ResourceInfo_allOf'
+    stackpath.rpc.RetryInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RetryInfo_allOf'
+    stackpathapiStatus:
+      properties:
+        code:
+          format: int32
+          type: integer
+        message:
+          type: string
+        details:
+          items:
+            $ref: '#/components/schemas/apiStatusDetail'
+          type: array
+      type: object
+    wafBulkDeleteRulesRequest:
+      properties:
+        ruleIds:
+          description: The IDs of the rules to delete
+          items:
+            type: string
+          type: array
+      type: object
+    wafCertificate:
+      description: An SSL certificate
+      example:
+        commonName: commonName
+        updateDate: 2000-01-23T04:56:07.000+00:00
+        caBundle: caBundle
+        trusted: true
+        subjectAlternativeNames:
+        - subjectAlternativeNames
+        - subjectAlternativeNames
+        providerManaged: true
+        fingerprint: fingerprint
+        id: id
+        issuer: issuer
+        expirationDate: 2000-01-23T04:56:07.000+00:00
+        createDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          description: A certificate's unique ID
+          type: string
+        fingerprint:
+          description: A unique hash of a certificate's contents
+          type: string
+        commonName:
+          description: A certificate's common name, or the primary domain name the
+            certificate is used for
+          type: string
+        issuer:
+          description: The name of the certificate's issuing certificate authority
+          type: string
+        caBundle:
+          description: 'A PEM PKCS #7 formatted certificate authority bundle'
+          type: string
+        trusted:
+          description: Whether or not the certificate's authority is trusted by a
+            web browser
+          format: boolean
+          type: boolean
+        expirationDate:
+          description: The date an SSL certificate will expire
+          format: date-time
+          type: string
+        createDate:
+          description: The date an SSL certificate was created
+          format: date-time
+          type: string
+        updateDate:
+          description: The date an SSL certificate was last updated
+          format: date-time
+          type: string
+        subjectAlternativeNames:
+          description: |-
+            A list of Subject Alternative Names in the certificate
+
+            Certificates for multiple domains define their domains in certificate's SAN list.
+          items:
+            type: string
+          type: array
+        status:
+          $ref: '#/components/schemas/wafCertificateStatus'
+        providerManaged:
+          description: Whether a certificate is managed by StackPath or the end user
+          format: boolean
+          type: boolean
+      type: object
+    wafCertificateStatus:
+      default: UNKNOWN
+      description: |-
+        A StackPath-provided certificate's status
+
+        - UNKNOWN: StackPath is unable to determine the certificate's status. This is the default status for end-user provided certificates.
+         - PENDING: The certificate is provisioning
+         - EXPIRED: The certificate has expired
+         - FAILED: The certificate failed to provision
+         - PENDING_VERIFICATION: The certificate is pending domain verification by the end user
+         - ACTIVE: The certificate is valid and is in use by one or more hosts
+         - INACTIVE: The certificate is valid but is not in use by any hosts
+      enum:
+      - UNKNOWN
+      - PENDING
+      - EXPIRED
+      - FAILED
+      - PENDING_VERIFICATION
+      - ACTIVE
+      - INACTIVE
+      type: string
+    wafCertificateVerificationMethod:
+      default: DNS
+      description: |-
+        The Certificate Verification Method
+
+        Verification method used to validate a requested certificate on a site
+
+         - DNS: Verify a certificate using DNS records
+         - HTTP: Verify a certificate by using HTTP validation. This will require that all hosts on the certificate point to the site hash or IP
+      enum:
+      - DNS
+      - HTTP
+      type: string
+    wafConnectSiteToCertificateResponse:
+      description: A response to a request to associate an SSL certificate with a
+        WAF site
+      example:
+        siteCertificate:
+          valid: true
+          certificate:
+            commonName: commonName
+            updateDate: 2000-01-23T04:56:07.000+00:00
+            caBundle: caBundle
+            trusted: true
+            subjectAlternativeNames:
+            - subjectAlternativeNames
+            - subjectAlternativeNames
+            providerManaged: true
+            fingerprint: fingerprint
+            id: id
+            issuer: issuer
+            expirationDate: 2000-01-23T04:56:07.000+00:00
+            createDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        siteCertificate:
+          $ref: '#/components/schemas/wafSiteCertificate'
+      type: object
+    wafCreateCertificateRequest:
+      properties:
+        certificate:
+          description: 'A PEM PKCS #7 formatted SSL certificate'
+          type: string
+        key:
+          description: |-
+            A PEM PKCS #7 formatted private key
+
+            Private keys are sent directly to the edge nodes and are not stored elsewhere on StackPath's systems.
+          type: string
+        caBundle:
+          description: 'A PEM PKCS #7 formatted certificate authority bundle'
+          type: string
+      type: object
+    wafCreateCertificateResponse:
+      description: A response from a request to add an SSL certificate to a stack
+      example:
+        certificate:
+          commonName: commonName
+          updateDate: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          trusted: true
+          subjectAlternativeNames:
+          - subjectAlternativeNames
+          - subjectAlternativeNames
+          providerManaged: true
+          fingerprint: fingerprint
+          id: id
+          issuer: issuer
+          expirationDate: 2000-01-23T04:56:07.000+00:00
+          createDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        certificate:
+          $ref: '#/components/schemas/wafCertificate'
+      type: object
+    wafCreateRuleRequest:
+      properties:
+        name:
+          description: The WAF rule's name
+          type: string
+        description:
+          description: A rule's description
+          type: string
+        conditions:
+          description: The conditions required for a WAF rule to trigger
+          items:
+            $ref: '#/components/schemas/RuleCondition'
+          type: array
+        action:
+          $ref: '#/components/schemas/wafRuleAction'
+        enabled:
+          description: Whether or not the rule should be enabled on creation
+          format: boolean
+          type: boolean
+        statusCode:
+          $ref: '#/components/schemas/RuleStatusCode'
+        actionDuration:
+          description: |-
+            How long a rule's block action will apply to subsequent requests
+
+            Durations only apply to rules with block actions.
+          type: string
+      type: object
+    wafCreateRuleResponse:
+      description: The results from a request to create a WAF rule
+      example:
+        rule:
+          actionDuration: actionDuration
+          name: name
+          description: description
+          id: id
+          conditions:
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          enabled: true
+      properties:
+        rule:
+          $ref: '#/components/schemas/wafRule'
+      type: object
+    wafCreateSiteRequestOrigin:
+      description: A WAF site's origin
+      properties:
+        path:
+          description: The path the WAF should request from the origin
+          type: string
+        hostname:
+          description: The origin's fully-qualified domain name
+          type: string
+        port:
+          description: The TCP port the WAF should connect to for http requests
+          format: int32
+          type: integer
+        securePort:
+          description: The TCP port the WAF should connect to for https requests
+          format: int32
+          type: integer
+        hostHeader:
+          description: The value of the Host header that the WAF should set when requesting
+            from the origin. This field is deprecated and should not be used.
+          type: string
+      type: object
+    wafCreateSiteRequestType:
+      default: WAF
+      description: |-
+        A WAF site's type
+
+        A site's type determines how StackPath delivers content to incoming HTTP requests.
+
+         - WAF: The site is either a standalone WAF site or a WAF site with attached CDN service
+         - API: The site is an API delivery site. API delivery sites are powered by both the WAF and CDN and have custom rulesets for each.
+      enum:
+      - WAF
+      - API
+      type: string
+    wafDdosSettings:
+      description: |-
+        A WAF site's DDOS protection settings
+
+        DDOS protection is activated if at least one of these conditions is met.
+      example:
+        subSecondBurstThreshold: subSecondBurstThreshold
+        burstThreshold: burstThreshold
+        globalThreshold: globalThreshold
+      properties:
+        globalThreshold:
+          description: The number of overall requests per ten seconds that can trigger
+            DDOS protection
+          type: string
+        burstThreshold:
+          description: The number of requests per two seconds that can trigger DDOS
+            protection
+          type: string
+        subSecondBurstThreshold:
+          description: The number of requests per 0.1 seconds that can trigger DDOS
+            protection
+          type: string
+      type: object
+    wafDnsRecord:
+      description: |-
+        A DNS record
+
+        A dns record describes an individual piece of DNS functionality in a DNS zone.
+      example:
+        data: data
+        name: name
+        type: type
+        class: class
+        ttl: 0
+      properties:
+        name:
+          description: |-
+            The name of the network node to which a zone resource record pertains
+
+            Use the value "@" to denote current root domain name.
+          type: string
+        type:
+          description: |-
+            A zone record's type
+
+            Zone record types describe the zone record's behavior. For instance, a zone record's type can say that the record is a name to IP address value, a name alias, or which mail exchanger is responsible for the domain. See https://support.stackpath.com/hc/en-us/articles/360001085563-What-DNS-record-types-does-StackPath-support for more information.
+          type: string
+        class:
+          description: |-
+            A zone record's class code
+
+            This is typically "IN" for Internet related resource records.
+          type: string
+        ttl:
+          description: |-
+            A zone record's time to live
+
+            A record's TTL is the number of seconds that the record should be cached by DNS resolvers. Use lower TTL values if you expect zone records to change often. Use higher TTL values for records that won't change to prevent extra DNS lookups by clients.
+          format: int32
+          type: integer
+        data:
+          description: |-
+            A zone record's value
+
+            Expected data formats can vary depending on the zone record's type.
+          type: string
+      type: object
+    wafDnsVerificationDetails:
+      description: DNS-based domain ownership verification details
+      example:
+        records:
+        - data: data
+          name: name
+          type: type
+          class: class
+          ttl: 0
+        - data: data
+          name: name
+          type: type
+          class: class
+          ttl: 0
+        dnsRecords:
+        - dnsRecords
+        - dnsRecords
+      properties:
+        dnsRecords:
+          description: A list of DNS records that will validate domain ownership
+          items:
+            type: string
+          type: array
+        records:
+          description: A list of parsed dns records required for SSL verification
+          items:
+            $ref: '#/components/schemas/wafDnsRecord'
+          type: array
+      type: object
+    wafEvent:
+      description: |-
+        A record of an action taken by the WAF
+
+        Events are generated by the WAF when an incoming request to a WAF-enabled site triggers a policy or custom rule. Events contain information about the request, the rule that was triggered, and the action taken by the WAF as a result (block the request, allow the request, present the user a captcha, etc).
+      example:
+        request:
+          headers:
+            key: headers
+          method: method
+          scheme: scheme
+          domain: domain
+          userAgent:
+            clientType: clientType
+            os: os
+            clientName: clientName
+            raw: raw
+            device: device
+          queryString: queryString
+          uri: uri
+        count: count
+        action:
+          blocked: true
+          engine: engine
+          ruleName: ruleName
+          ruleId: ruleId
+        client:
+          country: country
+          countryCode: countryCode
+          ip: ip
+          organization: organization
+        id: id
+        referenceId: referenceId
+        eventDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          description: A WAF event's unique identifier
+          type: string
+        referenceId:
+          description: |-
+            An event's user-facing identifier
+
+            Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that an event's ID and reference ID are different.
+          type: string
+        eventDate:
+          description: When a WAF event occurred
+          format: date-time
+          type: string
+        request:
+          $ref: '#/components/schemas/wafEventRequest'
+        action:
+          $ref: '#/components/schemas/EventRuleAction'
+        client:
+          $ref: '#/components/schemas/wafEventNetwork'
+        count:
+          description: Number of events which matched this
+          type: string
+      type: object
+    wafEventNetwork:
+      description: A WAF event's network related aspects
+      example:
+        country: country
+        countryCode: countryCode
+        ip: ip
+        organization: organization
+      properties:
+        ip:
+          description: The originating IP address
+          type: string
+        country:
+          description: The long name of the country where the request originated from
+          type: string
+        countryCode:
+          description: The ISO 3166-1 alpha-2 code of the country where the request
+            originated from
+          type: string
+        organization:
+          description: The organization that owns the originating IP address according
+            to a WHOIS lookup
+          type: string
+      type: object
+    wafEventRequest:
+      example:
+        headers:
+          key: headers
+        method: method
+        scheme: scheme
+        domain: domain
+        userAgent:
+          clientType: clientType
+          os: os
+          clientName: clientName
+          raw: raw
+          device: device
+        queryString: queryString
+        uri: uri
+      properties:
+        domain:
+          description: The requested domain name
+          type: string
+        method:
+          description: The HTTP method that triggered a WAF event
+          type: string
+        scheme:
+          description: The URL scheme that triggered a WAF event
+          type: string
+        uri:
+          description: The full URL that triggered a WAF event
+          type: string
+        queryString:
+          description: The query string portion of a URL that triggered a WAF event
+          type: string
+        headers:
+          additionalProperties:
+            type: string
+          description: A key/value pair of the event's request headers
+          type: object
+        userAgent:
+          $ref: '#/components/schemas/EventRequestUserAgent'
+      type: object
+    wafGetCertificateResponse:
+      description: A response from a request to retrieve an individual SSL certificate
+        on a stack
+      example:
+        certificate:
+          commonName: commonName
+          updateDate: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          trusted: true
+          subjectAlternativeNames:
+          - subjectAlternativeNames
+          - subjectAlternativeNames
+          providerManaged: true
+          fingerprint: fingerprint
+          id: id
+          issuer: issuer
+          expirationDate: 2000-01-23T04:56:07.000+00:00
+          createDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        certificate:
+          $ref: '#/components/schemas/wafCertificate'
+      type: object
+    wafGetCertificateVerificationDetailsResponse:
+      description: A response from a request to retrieve an SSL certificate's manual
+        verification details
+      example:
+        manualVerificationRequired: true
+        verificationRequirements:
+        - httpVerificationDetails:
+            path: path
+            body: body
+            contentType: contentType
+          dnsVerificationDetails:
+            records:
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            dnsRecords:
+            - dnsRecords
+            - dnsRecords
+        - httpVerificationDetails:
+            path: path
+            body: body
+            contentType: contentType
+          dnsVerificationDetails:
+            records:
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            dnsRecords:
+            - dnsRecords
+            - dnsRecords
+      properties:
+        manualVerificationRequired:
+          description: Whether or not the end user must provide their own certificate
+            verification
+          format: boolean
+          type: boolean
+        verificationRequirements:
+          description: An SSL certificate's verification requirements
+          items:
+            $ref: '#/components/schemas/wafVerificationRequirements'
+          type: array
+      type: object
+    wafGetCertificatesResponse:
+      description: A response from a request to retrieve a stack's SSL certificates
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - commonName: commonName
+          updateDate: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          trusted: true
+          subjectAlternativeNames:
+          - subjectAlternativeNames
+          - subjectAlternativeNames
+          providerManaged: true
+          fingerprint: fingerprint
+          id: id
+          issuer: issuer
+          expirationDate: 2000-01-23T04:56:07.000+00:00
+          createDate: 2000-01-23T04:56:07.000+00:00
+        - commonName: commonName
+          updateDate: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          trusted: true
+          subjectAlternativeNames:
+          - subjectAlternativeNames
+          - subjectAlternativeNames
+          providerManaged: true
+          fingerprint: fingerprint
+          id: id
+          issuer: issuer
+          expirationDate: 2000-01-23T04:56:07.000+00:00
+          createDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested SSL certificates
+          items:
+            $ref: '#/components/schemas/wafCertificate'
+          type: array
+      type: object
+    wafGetDdosSettingsResponse:
+      description: A response from a request to retrieve a WAF site's DDOS protection
+        settings
+      example:
+        ddosSettings:
+          subSecondBurstThreshold: subSecondBurstThreshold
+          burstThreshold: burstThreshold
+          globalThreshold: globalThreshold
+      properties:
+        ddosSettings:
+          $ref: '#/components/schemas/wafDdosSettings'
+      type: object
+    wafGetEventResponse:
+      description: A response from a request to retrieve a single WAF event
+      example:
+        event:
+          request:
+            headers:
+              key: headers
+            method: method
+            scheme: scheme
+            domain: domain
+            userAgent:
+              clientType: clientType
+              os: os
+              clientName: clientName
+              raw: raw
+              device: device
+            queryString: queryString
+            uri: uri
+          count: count
+          action:
+            blocked: true
+            engine: engine
+            ruleName: ruleName
+            ruleId: ruleId
+          client:
+            country: country
+            countryCode: countryCode
+            ip: ip
+            organization: organization
+          id: id
+          referenceId: referenceId
+          eventDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        event:
+          $ref: '#/components/schemas/wafEvent'
+      type: object
+    wafGetEventStatisticsResponse:
+      description: A response from a request to retrieve a WAF site's event statistics
+      example:
+        statistics:
+          blocked:
+            organizations:
+            - organization: organization
+              count: count
+            - organization: organization
+              count: count
+            rules:
+            - count: count
+              ruleName: ruleName
+            - count: count
+              ruleName: ruleName
+            countries:
+            - country: country
+              countryCode: countryCode
+              count: count
+            - country: country
+              countryCode: countryCode
+              count: count
+            actions:
+            - count: count
+            - count: count
+          count:
+            organizations:
+            - organization: organization
+              count: count
+            - organization: organization
+              count: count
+            rules:
+            - count: count
+              ruleName: ruleName
+            - count: count
+              ruleName: ruleName
+            countries:
+            - country: country
+              countryCode: countryCode
+              count: count
+            - country: country
+              countryCode: countryCode
+              count: count
+            actions:
+            - count: count
+            - count: count
+      properties:
+        statistics:
+          $ref: '#/components/schemas/EventStatistics'
+      type: object
+    wafGetPoliciesResponse:
+      description: A response from a request to retrieve a WAF policy group
+      example:
+        policies:
+        - name: name
+          description: description
+          id: id
+          enabled: true
+        - name: name
+          description: description
+          id: id
+          enabled: true
+      properties:
+        policies:
+          description: The requested WAF policies
+          items:
+            $ref: '#/components/schemas/schemawafPolicy'
+          type: array
+      type: object
+    wafGetPolicyGroupResponse:
+      description: A response from a request to retrieve a WAF policy group
+      example:
+        policyGroup:
+          name: name
+          policies:
+          - name: name
+            description: description
+            id: id
+            enabled: true
+          - name: name
+            description: description
+            id: id
+            enabled: true
+          id: id
+      properties:
+        policyGroup:
+          $ref: '#/components/schemas/wafPolicyGroup'
+      type: object
+    wafGetPolicyGroupsResponse:
+      description: A response from a request to retrieve a WAF site's policy groups
+      example:
+        policyGroups:
+        - name: name
+          policies:
+          - name: name
+            description: description
+            id: id
+            enabled: true
+          - name: name
+            description: description
+            id: id
+            enabled: true
+          id: id
+        - name: name
+          policies:
+          - name: name
+            description: description
+            id: id
+            enabled: true
+          - name: name
+            description: description
+            id: id
+            enabled: true
+          id: id
+      properties:
+        policyGroups:
+          description: The requested WAF policy groups
+          items:
+            $ref: '#/components/schemas/wafPolicyGroup'
+          type: array
+      type: object
+    wafGetPolicyResponse:
+      description: A response from a request to retrieve an individual WAF policy
+      example:
+        policy:
+          name: name
+          description: description
+          id: id
+          enabled: true
+      properties:
+        policy:
+          $ref: '#/components/schemas/schemawafPolicy'
+      type: object
+    wafGetRequestDetailsResponse:
+      description: A response from a request to retrieve all available information
+        about a request to a WAF site
+      example:
+        requestDetails:
+          scheme: scheme
+          responseTime: responseTime
+          sessionRequestCount: sessionRequestCount
+          userAgent:
+            deviceType: deviceType
+            fullString: fullString
+            os: os
+            client: client
+            cpu: cpu
+            renderingEngine: renderingEngine
+            baseBrowserVersion: baseBrowserVersion
+            baseBrowser: baseBrowser
+            clientVersion: clientVersion
+            device: device
+          referenceId: referenceId
+          network:
+            country: country
+            clientIp: clientIp
+            organization:
+              subnet: subnet
+              name: name
+          tags:
+            key:
+              cached: true
+              hash: hash
+              tags:
+              - tags
+              - tags
+          requestTime: 2000-01-23T04:56:07.000+00:00
+          path: path
+          httpVersion: httpVersion
+          requestHeaders:
+            key: requestHeaders
+          ruleName: ruleName
+          id: id
+          ruleId: ruleId
+          incidentId: incidentId
+          contentType: contentType
+          httpStatusCode: httpStatusCode
+      properties:
+        requestDetails:
+          $ref: '#/components/schemas/wafRequestDetails'
+      type: object
+    wafGetRequestResponse:
+      description: A response from a request to retrieve information about a request
+        to a WAF site
+      example:
+        request:
+          country: country
+          userAgentClient: userAgentClient
+          userAgent: userAgent
+          referenceId: referenceId
+          requestTime: 2000-01-23T04:56:07.000+00:00
+          path: path
+          clientIp: clientIp
+          organization: organization
+          ruleName: ruleName
+          id: id
+          ruleId: ruleId
+      properties:
+        request:
+          $ref: '#/components/schemas/schemawafRequest'
+      type: object
+    wafGetRequestsResponse:
+      description: The requested WAF requests
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - country: country
+          userAgentClient: userAgentClient
+          userAgent: userAgent
+          referenceId: referenceId
+          requestTime: 2000-01-23T04:56:07.000+00:00
+          path: path
+          clientIp: clientIp
+          organization: organization
+          ruleName: ruleName
+          id: id
+          ruleId: ruleId
+        - country: country
+          userAgentClient: userAgentClient
+          userAgent: userAgent
+          referenceId: referenceId
+          requestTime: 2000-01-23T04:56:07.000+00:00
+          path: path
+          clientIp: clientIp
+          organization: organization
+          ruleName: ruleName
+          id: id
+          ruleId: ruleId
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested information about a WAF site's requests
+          items:
+            $ref: '#/components/schemas/schemawafRequest'
+          type: array
+      type: object
+    wafGetRuleResponse:
+      description: The results from a request to retrieve a WAF rule
+      example:
+        rule:
+          actionDuration: actionDuration
+          name: name
+          description: description
+          id: id
+          conditions:
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          enabled: true
+      properties:
+        rule:
+          $ref: '#/components/schemas/wafRule'
+      type: object
+    wafGetRulesResponse:
+      description: The results from a request to retrieve a site's WAF rules
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        rules:
+        - actionDuration: actionDuration
+          name: name
+          description: description
+          id: id
+          conditions:
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          enabled: true
+        - actionDuration: actionDuration
+          name: name
+          description: description
+          id: id
+          conditions:
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          enabled: true
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        rules:
+          description: The requested WAF rules
+          items:
+            $ref: '#/components/schemas/wafRule'
+          type: array
+      type: object
+    wafGetSiteCertificatesResponse:
+      description: A response from a request to retrieve a WAF site's SSL certificates
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - valid: true
+          certificate:
+            commonName: commonName
+            updateDate: 2000-01-23T04:56:07.000+00:00
+            caBundle: caBundle
+            trusted: true
+            subjectAlternativeNames:
+            - subjectAlternativeNames
+            - subjectAlternativeNames
+            providerManaged: true
+            fingerprint: fingerprint
+            id: id
+            issuer: issuer
+            expirationDate: 2000-01-23T04:56:07.000+00:00
+            createDate: 2000-01-23T04:56:07.000+00:00
+        - valid: true
+          certificate:
+            commonName: commonName
+            updateDate: 2000-01-23T04:56:07.000+00:00
+            caBundle: caBundle
+            trusted: true
+            subjectAlternativeNames:
+            - subjectAlternativeNames
+            - subjectAlternativeNames
+            providerManaged: true
+            fingerprint: fingerprint
+            id: id
+            issuer: issuer
+            expirationDate: 2000-01-23T04:56:07.000+00:00
+            createDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested SSL certificates
+          items:
+            $ref: '#/components/schemas/wafSiteCertificate'
+          type: array
+      type: object
+    wafGetSiteDnsTargetsResponse:
+      description: A response from a request to retrieve a WAF site's DNS CNAME targets
+      example:
+        addresses:
+        - addresses
+        - addresses
+      properties:
+        addresses:
+          description: A list of DNS CNAME targets
+          items:
+            type: string
+          type: array
+      type: object
+    wafGetTagsResponse:
+      description: A response from a request to retrieve WAF tags
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - name: name
+          description: description
+        - name: name
+          description: description
+      properties:
+        results:
+          description: The requested WAF tags
+          items:
+            $ref: '#/components/schemas/wafTag'
+          type: array
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+      type: object
+    wafGetTrafficResponse:
+      description: A response from a request to retrieve a stack's WAF traffic
+      example:
+        traffic:
+        - policyBlocked:
+            antiautomationAndBehavioral: antiautomationAndBehavioral
+            csrf: csrf
+            spamAndAbuse: spamAndAbuse
+            ipReputation: ipReputation
+            waf: waf
+          ruleCount: ruleCount
+          originTimeout: originTimeout
+          policyCount:
+            antiautomationAndBehavioral: antiautomationAndBehavioral
+            csrf: csrf
+            spamAndAbuse: spamAndAbuse
+            ipReputation: ipReputation
+            waf: waf
+          responseTime: responseTime
+          passedToOrigin:
+            staticContent: staticContent
+            allowedSearchEngine: allowedSearchEngine
+            uncategorized: uncategorized
+            whitelisted: whitelisted
+            legitimateRequest: legitimateRequest
+          originError5xx: originError5xx
+          originError4xx: originError4xx
+          ddos: ddos
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          ruleBlocked: ruleBlocked
+        - policyBlocked:
+            antiautomationAndBehavioral: antiautomationAndBehavioral
+            csrf: csrf
+            spamAndAbuse: spamAndAbuse
+            ipReputation: ipReputation
+            waf: waf
+          ruleCount: ruleCount
+          originTimeout: originTimeout
+          policyCount:
+            antiautomationAndBehavioral: antiautomationAndBehavioral
+            csrf: csrf
+            spamAndAbuse: spamAndAbuse
+            ipReputation: ipReputation
+            waf: waf
+          responseTime: responseTime
+          passedToOrigin:
+            staticContent: staticContent
+            allowedSearchEngine: allowedSearchEngine
+            uncategorized: uncategorized
+            whitelisted: whitelisted
+            legitimateRequest: legitimateRequest
+          originError5xx: originError5xx
+          originError4xx: originError4xx
+          ddos: ddos
+          timestamp: 2000-01-23T04:56:07.000+00:00
+          ruleBlocked: ruleBlocked
+      properties:
+        traffic:
+          description: The requested WAF traffic
+          items:
+            $ref: '#/components/schemas/wafTraffic'
+          type: array
+      type: object
+    wafGetTrafficV2Response:
+      description: A response from a request to retrieve a stack's WAF traffic
+      example:
+        traffic:
+        - ddosBlocked: ddosBlocked
+          static: static
+          originTimeout: originTimeout
+          customBlocked: customBlocked
+          responseTime: responseTime
+          originError5xx: originError5xx
+          originError4xx: originError4xx
+          uncategorized: uncategorized
+          ajax: ajax
+          monitored: monitored
+          policyBlocked: policyBlocked
+          customWhitelisted: customWhitelisted
+          total: total
+          policyWhitelisted: policyWhitelisted
+          passedToOrigin: passedToOrigin
+          api: api
+          timestamp: 2000-01-23T04:56:07.000+00:00
+        - ddosBlocked: ddosBlocked
+          static: static
+          originTimeout: originTimeout
+          customBlocked: customBlocked
+          responseTime: responseTime
+          originError5xx: originError5xx
+          originError4xx: originError4xx
+          uncategorized: uncategorized
+          ajax: ajax
+          monitored: monitored
+          policyBlocked: policyBlocked
+          customWhitelisted: customWhitelisted
+          total: total
+          policyWhitelisted: policyWhitelisted
+          passedToOrigin: passedToOrigin
+          api: api
+          timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        traffic:
+          description: The requested WAF traffic
+          items:
+            $ref: '#/components/schemas/wafTrafficV2'
+          type: array
+      type: object
+    wafGetWAFOrganizationsResponse:
+      description: A response for a request to get a WHOIS organization
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - name: name
+        - name: name
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested WHOIS organizations
+          items:
+            $ref: '#/components/schemas/wafWAFOrganization'
+          type: array
+      type: object
+    wafHttpMethod:
+      default: METHOD_UNSPECIFIED
+      description: |-
+        HTTP methods of a request
+
+        - METHOD_UNSPECIFIED: Unspecified HTTP method
+         - GET: HTTP GET method
+         - POST: HTTP POST method
+         - PUT: HTTP PUT method
+         - DELETE: HTTP DELETE method
+         - HEAD: HTTP HEAD method
+         - PATCH: HTTP PATCH method
+         - OPTIONS: HTTP OPTIONS method
+         - CONNECT: HTTP CONNECT method
+         - TRACE: HTTP TRACE method
+      enum:
+      - METHOD_UNSPECIFIED
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - HEAD
+      - PATCH
+      - OPTIONS
+      - CONNECT
+      - TRACE
+      type: string
+    wafHttpVerificationDetails:
+      description: HTTP-based domain ownership verification details
+      example:
+        path: path
+        body: body
+        contentType: contentType
+      properties:
+        path:
+          description: Path to the verification file
+          type: string
+        contentType:
+          description: Response content type
+          type: string
+        body:
+          description: Body content of response
+          type: string
+      type: object
+    wafPolicyAction:
+      default: BLOCK
+      description: The potential actions that the WAF will take when a policy is triggered
+      enum:
+      - BLOCK
+      - ALLOW
+      - CAPTCHA
+      - HANDSHAKE
+      - MONITOR
+      readOnly: true
+      type: string
+    wafPolicyGroup:
+      description: A group of WAF policies with similar effect
+      example:
+        name: name
+        policies:
+        - name: name
+          description: description
+          id: id
+          enabled: true
+        - name: name
+          description: description
+          id: id
+          enabled: true
+        id: id
+      properties:
+        id:
+          description: A policy group's ID
+          type: string
+        name:
+          description: A policy group's name
+          readOnly: true
+          type: string
+        policies:
+          description: A list of the policies in a policy group
+          items:
+            $ref: '#/components/schemas/schemawafPolicy'
+          type: array
+      type: object
+    wafRequestAction:
+      default: ACTION_UNSPECIFIED
+      description: |-
+        The actions that the WAF takes when a request triggers a WAF rule
+
+        - ACTION_UNSPECIFIED: The WAF performed an unspecified action with the request
+         - BLOCK: The WAF blocked the request
+         - ALLOW: The WAF allowed the request
+         - CAPTCHA: The WAF presented the user with a captcha
+         - HANDSHAKE: The WAF performed automatic browser validation
+         - MONITOR: The WAF monitored the request but took no action
+      enum:
+      - ACTION_UNSPECIFIED
+      - BLOCK
+      - ALLOW
+      - CAPTCHA
+      - HANDSHAKE
+      - MONITOR
+      type: string
+    wafRequestCertificateRequest:
+      properties:
+        hosts:
+          description: |-
+            An optional list of delivery domains that will be included as subject alternative names on the certificate
+
+            If no hosts are provided, all delivery domains on the site will be included with the first one in the list being used as the common name.  If hosts are provided the first entry will be used as the common name.
+
+            All entries in the list are validated against the existing delivery domains for the provided site.
+          items:
+            type: string
+          type: array
+        verificationMethod:
+          $ref: '#/components/schemas/wafCertificateVerificationMethod'
+      type: object
+    wafRequestCertificateResponse:
+      description: A response from a request to provision an SSL certificate for a
+        WAF site
+      example:
+        certificate:
+          commonName: commonName
+          updateDate: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          trusted: true
+          subjectAlternativeNames:
+          - subjectAlternativeNames
+          - subjectAlternativeNames
+          providerManaged: true
+          fingerprint: fingerprint
+          id: id
+          issuer: issuer
+          expirationDate: 2000-01-23T04:56:07.000+00:00
+          createDate: 2000-01-23T04:56:07.000+00:00
+        verificationRequirements:
+        - httpVerificationDetails:
+            path: path
+            body: body
+            contentType: contentType
+          dnsVerificationDetails:
+            records:
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            dnsRecords:
+            - dnsRecords
+            - dnsRecords
+        - httpVerificationDetails:
+            path: path
+            body: body
+            contentType: contentType
+          dnsVerificationDetails:
+            records:
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            dnsRecords:
+            - dnsRecords
+            - dnsRecords
+      properties:
+        certificate:
+          $ref: '#/components/schemas/wafCertificate'
+        verificationRequirements:
+          description: The certificate's verification requirements
+          items:
+            $ref: '#/components/schemas/wafVerificationRequirements'
+          type: array
+      type: object
+    wafRequestDetails:
+      description: A request that was inspected by the WAF
+      example:
+        scheme: scheme
+        responseTime: responseTime
+        sessionRequestCount: sessionRequestCount
+        userAgent:
+          deviceType: deviceType
+          fullString: fullString
+          os: os
+          client: client
+          cpu: cpu
+          renderingEngine: renderingEngine
+          baseBrowserVersion: baseBrowserVersion
+          baseBrowser: baseBrowser
+          clientVersion: clientVersion
+          device: device
+        referenceId: referenceId
+        network:
+          country: country
+          clientIp: clientIp
+          organization:
+            subnet: subnet
+            name: name
+        tags:
+          key:
+            cached: true
+            hash: hash
+            tags:
+            - tags
+            - tags
+        requestTime: 2000-01-23T04:56:07.000+00:00
+        path: path
+        httpVersion: httpVersion
+        requestHeaders:
+          key: requestHeaders
+        ruleName: ruleName
+        id: id
+        ruleId: ruleId
+        incidentId: incidentId
+        contentType: contentType
+        httpStatusCode: httpStatusCode
+      properties:
+        id:
+          description: The WAF request's unique identifier
+          type: string
+        path:
+          description: The path of the requested URL
+          type: string
+        method:
+          $ref: '#/components/schemas/wafHttpMethod'
+        action:
+          $ref: '#/components/schemas/wafRequestAction'
+        ruleId:
+          description: The unique ID of the WAF rule that triggered the action against
+            the WAF request
+          type: string
+        ruleName:
+          description: The name of the WAF rule triggered by the request
+          type: string
+        userAgent:
+          $ref: '#/components/schemas/wafRequestDetailsUserAgent'
+        network:
+          $ref: '#/components/schemas/wafRequestDetailsNetwork'
+        requestTime:
+          description: When the WAF request occurred
+          format: date-time
+          type: string
+        referenceId:
+          description: |-
+            The WAF request's user-facing identifier
+
+            Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that a request's ID and reference ID are different.
+          type: string
+        contentType:
+          description: The content type of the WAF request
+          type: string
+        scheme:
+          description: The HTTP scheme of the WAF request
+          type: string
+        httpStatusCode:
+          description: The HTTP status code of the WAF request
+          type: string
+        httpVersion:
+          description: The HTTP version of the WAF request
+          type: string
+        tags:
+          additionalProperties:
+            $ref: '#/components/schemas/RequestDetailsTags'
+          description: Aspects of a WAF request
+          type: object
+        responseTime:
+          description: The time it took the WAF to process the WAF request
+          type: string
+        requestHeaders:
+          additionalProperties:
+            type: string
+          description: The HTTP request headers of the WAF request
+          type: object
+        incidentId:
+          description: The ID of the of challenge that was generated for the WAF request
+          type: string
+        requestType:
+          $ref: '#/components/schemas/RequestDetailsRequestType'
+        sessionRequestCount:
+          description: The number of WAF requests in the session
+          type: string
+      type: object
+    wafRequestDetailsNetwork:
+      description: A WAF request's network related aspects
+      example:
+        country: country
+        clientIp: clientIp
+        organization:
+          subnet: subnet
+          name: name
+      properties:
+        clientIp:
+          description: The originating IP address
+          type: string
+        country:
+          description: The ISO 3166-1 alpha-2 code of the country where the request
+            originated from
+          type: string
+        organization:
+          $ref: '#/components/schemas/NetworkOrganization'
+      type: object
+    wafRequestDetailsUserAgent:
+      description: A WAF event's network related aspects
+      example:
+        deviceType: deviceType
+        fullString: fullString
+        os: os
+        client: client
+        cpu: cpu
+        renderingEngine: renderingEngine
+        baseBrowserVersion: baseBrowserVersion
+        baseBrowser: baseBrowser
+        clientVersion: clientVersion
+        device: device
+      properties:
+        fullString:
+          description: The full user agent string for the WAF request
+          type: string
+        client:
+          description: The name of the requesting client, typically the name of the
+            requesting web browser
+          type: string
+        clientVersion:
+          description: The version of the requesting user agent's client, typically
+            also the version of the requesting web browser
+          type: string
+        baseBrowser:
+          description: The name of the requesting user agent's browser
+          type: string
+        baseBrowserVersion:
+          description: The version of the requesting user agent's browser
+          type: string
+        os:
+          description: The name of the requesting user agent's operating system
+          type: string
+        device:
+          description: The name of the requesting user agent's device
+          type: string
+        deviceType:
+          description: The type of the requesting user agent's device
+          type: string
+        cpu:
+          description: The name of the requesting user agent's CPU
+          type: string
+        renderingEngine:
+          description: The name of the requesting user agent's engine
+          type: string
+      type: object
+    wafRule:
+      description: |-
+        A custom WAF rule applied to a site
+
+        Unlike pre-defined policies, rules are provided by the user for custom WAF functionality.
+      example:
+        actionDuration: actionDuration
+        name: name
+        description: description
+        id: id
+        conditions:
+        - country:
+            countryCode: countryCode
+          negation: true
+          requestRate:
+            httpMethods:
+            - null
+            - null
+            pathPattern: pathPattern
+            requests: requests
+            time: time
+            ips:
+            - ips
+            - ips
+          sessionRequestCount:
+            requestCount: requestCount
+          ip:
+            ipAddress: ipAddress
+          ipRange:
+            upperBound: upperBound
+            lowerBound: lowerBound
+          responseHeader:
+            exactMatch: true
+            header: header
+            value: value
+          userAgent:
+            exactMatch: true
+            userAgent: userAgent
+          httpMethod: {}
+          url:
+            exactMatch: true
+            url: url
+          responseHeaderExists:
+            header: header
+          tags:
+            tags:
+            - tags
+            - tags
+          headerExists:
+            header: header
+          fileExtension:
+            fileExtension: fileExtension
+          organization:
+            organization: organization
+          header:
+            exactMatch: true
+            header: header
+            value: value
+          ownerTypes:
+            ownerTypes:
+            - null
+            - null
+          contentType:
+            contentType: contentType
+        - country:
+            countryCode: countryCode
+          negation: true
+          requestRate:
+            httpMethods:
+            - null
+            - null
+            pathPattern: pathPattern
+            requests: requests
+            time: time
+            ips:
+            - ips
+            - ips
+          sessionRequestCount:
+            requestCount: requestCount
+          ip:
+            ipAddress: ipAddress
+          ipRange:
+            upperBound: upperBound
+            lowerBound: lowerBound
+          responseHeader:
+            exactMatch: true
+            header: header
+            value: value
+          userAgent:
+            exactMatch: true
+            userAgent: userAgent
+          httpMethod: {}
+          url:
+            exactMatch: true
+            url: url
+          responseHeaderExists:
+            header: header
+          tags:
+            tags:
+            - tags
+            - tags
+          headerExists:
+            header: header
+          fileExtension:
+            fileExtension: fileExtension
+          organization:
+            organization: organization
+          header:
+            exactMatch: true
+            header: header
+            value: value
+          ownerTypes:
+            ownerTypes:
+            - null
+            - null
+          contentType:
+            contentType: contentType
+        enabled: true
+      properties:
+        id:
+          description: A rule's ID
+          type: string
+        name:
+          description: A rule's name
+          type: string
+        description:
+          description: A rule's description
+          type: string
+        conditions:
+          description: |-
+            The conditions required for the WAF engine to trigger the rule
+
+            Rules may have between 1 and 5 conditions. All conditions must pass for the rule to trigger.
+          items:
+            $ref: '#/components/schemas/RuleCondition'
+          type: array
+        action:
+          $ref: '#/components/schemas/wafRuleAction'
+        enabled:
+          description: Whether or not a WAF rule is enabled
+          format: boolean
+          type: boolean
+        actionDuration:
+          description: |-
+            How long a rule's block action will apply to subsequent requests
+
+            Durations only apply to rules with block actions.
+          type: string
+        statusCode:
+          $ref: '#/components/schemas/RuleStatusCode'
+      type: object
+    wafRuleAction:
+      default: BLOCK
+      description: |-
+        The actions that the WAF takes when a rule is triggered
+
+        - BLOCK: The WAF blocked the request
+         - ALLOW: The WAF allowed the request
+         - CAPTCHA: The WAF presented the user with a captcha
+         - HANDSHAKE: The WAF performed automatic browser validation
+         - MONITOR: The WAF monitored the request but took no action
+         - GATEWAY: The WAF performed extended automatic browser validation
+      enum:
+      - BLOCK
+      - ALLOW
+      - CAPTCHA
+      - HANDSHAKE
+      - MONITOR
+      - GATEWAY
+      type: string
+    wafSearchEventsResponse:
+      description: A response from a request to retrieve a WAF site's events
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - request:
+            headers:
+              key: headers
+            method: method
+            scheme: scheme
+            domain: domain
+            userAgent:
+              clientType: clientType
+              os: os
+              clientName: clientName
+              raw: raw
+              device: device
+            queryString: queryString
+            uri: uri
+          count: count
+          action:
+            blocked: true
+            engine: engine
+            ruleName: ruleName
+            ruleId: ruleId
+          client:
+            country: country
+            countryCode: countryCode
+            ip: ip
+            organization: organization
+          id: id
+          referenceId: referenceId
+          eventDate: 2000-01-23T04:56:07.000+00:00
+        - request:
+            headers:
+              key: headers
+            method: method
+            scheme: scheme
+            domain: domain
+            userAgent:
+              clientType: clientType
+              os: os
+              clientName: clientName
+              raw: raw
+              device: device
+            queryString: queryString
+            uri: uri
+          count: count
+          action:
+            blocked: true
+            engine: engine
+            ruleName: ruleName
+            ruleId: ruleId
+          client:
+            country: country
+            countryCode: countryCode
+            ip: ip
+            organization: organization
+          id: id
+          referenceId: referenceId
+          eventDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested WAF events
+          items:
+            $ref: '#/components/schemas/wafEvent'
+          type: array
+      type: object
+    wafSite:
+      description: A site's WAF service's general settings
+      properties:
+        id:
+          description: A WAF site's unique identifier
+          type: string
+        name:
+          description: The WAF site's name, used on stand-alone WAF sites
+          type: string
+        enabled:
+          description: Whether or not a site's WAF service is enabled
+          format: boolean
+          type: boolean
+        apiUrls:
+          description: A list of API URLs which receive different processing through
+            the WAF than website requests
+          items:
+            type: string
+          type: array
+        createdAt:
+          description: The date a WAF site was created
+          format: date-time
+          type: string
+        updatedAt:
+          description: The date a WAF site was last updated
+          format: date-time
+          type: string
+        status:
+          $ref: '#/components/schemas/wafSiteStatus'
+        mode:
+          $ref: '#/components/schemas/SiteAttachMode'
+        deliveryId:
+          description: For an ATTACHED site, the CDN site ID where caching can be
+            enabled
+          type: string
+        type:
+          $ref: '#/components/schemas/wafSiteType'
+        monitoring:
+          description: |-
+            Whether or not a site's WAF service is in a monitor state
+
+            WAF sites in monitoring mode accept incoming requests and log but take no action on policy and rule violations.
+          format: boolean
+          type: boolean
+      type: object
+    wafSiteCertificate:
+      description: An SSL certificate and its relationship with its associated site
+      example:
+        valid: true
+        certificate:
+          commonName: commonName
+          updateDate: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          trusted: true
+          subjectAlternativeNames:
+          - subjectAlternativeNames
+          - subjectAlternativeNames
+          providerManaged: true
+          fingerprint: fingerprint
+          id: id
+          issuer: issuer
+          expirationDate: 2000-01-23T04:56:07.000+00:00
+          createDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        valid:
+          description: |-
+            Whether or not a site's SSL certificate is valid
+
+            An SSL certificate is valid when a hostname associated with the site is covered by the certificate.
+          format: boolean
+          type: boolean
+        certificate:
+          $ref: '#/components/schemas/wafCertificate'
+      type: object
+    wafSiteStatus:
+      default: ACTIVE
+      description: |-
+        A WAF site's available statuses
+
+        - ACTIVE: A WAF site is in active service
+         - INACTIVE: A WAF site has been disabled by the user
+         - SUSPENDED:  A WAF site has been disabled by StackPath for non-billing reasons (DMCA, abuse, etc)
+         - BILLING_SUSPENDED: A WAF site has been disabled by StackPath for billing reasons
+         - PROVISIONING: A WAF site is provisioning
+      enum:
+      - ACTIVE
+      - INACTIVE
+      - SUSPENDED
+      - BILLING_SUSPENDED
+      - PROVISIONING
+      type: string
+    wafSiteType:
+      default: UNKNOWN_TYPE
+      description: |-
+        A WAF site's type
+
+        A site's type determines how StackPath delivers content to incoming HTTP(S) requests.
+
+         - UNKNOWN_TYPE: StackPath is unable to determine a site's type
+         - WAF: A site is either a standalone WAF site or a WAF site with attached CDN service
+         - API: A site is an API delivery site. API delivery sites are powered by both the WAF and CDN and have custom rulesets for each.
+      enum:
+      - UNKNOWN_TYPE
+      - WAF
+      - API
+      type: string
+    wafTag:
+      description: |-
+        Aspects of an incoming HTTP request
+
+        StackPath provides shortcuts for the rules used in WAF policies for the creation of more complex WAF rules.
+      example:
+        name: name
+        description: description
+      properties:
+        name:
+          description: A tag's name
+          type: string
+        description:
+          description: A tag's human readable description
+          type: string
+      type: object
+    wafTraffic:
+      description: A set of individual time-series WAF traffic metrics
+      example:
+        policyBlocked:
+          antiautomationAndBehavioral: antiautomationAndBehavioral
+          csrf: csrf
+          spamAndAbuse: spamAndAbuse
+          ipReputation: ipReputation
+          waf: waf
+        ruleCount: ruleCount
+        originTimeout: originTimeout
+        policyCount:
+          antiautomationAndBehavioral: antiautomationAndBehavioral
+          csrf: csrf
+          spamAndAbuse: spamAndAbuse
+          ipReputation: ipReputation
+          waf: waf
+        responseTime: responseTime
+        passedToOrigin:
+          staticContent: staticContent
+          allowedSearchEngine: allowedSearchEngine
+          uncategorized: uncategorized
+          whitelisted: whitelisted
+          legitimateRequest: legitimateRequest
+        originError5xx: originError5xx
+        originError4xx: originError4xx
+        ddos: ddos
+        timestamp: 2000-01-23T04:56:07.000+00:00
+        ruleBlocked: ruleBlocked
+      properties:
+        timestamp:
+          description: The date and time traffic metrics were recorded for
+          format: date-time
+          type: string
+        policyCount:
+          $ref: '#/components/schemas/wafTrafficPolicy'
+        policyBlocked:
+          $ref: '#/components/schemas/wafTrafficPolicy'
+        ruleCount:
+          description: The number of requests analyzed by rules
+          type: string
+        ruleBlocked:
+          description: The number of requests blocked by rules
+          type: string
+        passedToOrigin:
+          $ref: '#/components/schemas/TrafficPassedToOrigin'
+        ddos:
+          description: The number of requests handled by the layer 7 DDOS engine
+          type: string
+        originError4xx:
+          description: The number of HTTP 4xx errors received from the origin
+          type: string
+        originError5xx:
+          description: The number of HTTP 5xx errors received from the origin
+          type: string
+        originTimeout:
+          description: The number of request timeouts from the WAF to the origin
+          type: string
+        responseTime:
+          description: Average response time to the origin in milliseconds
+          type: string
+      type: object
+    wafTrafficPolicy:
+      description: Aspects of WAF traffic related to policies
+      example:
+        antiautomationAndBehavioral: antiautomationAndBehavioral
+        csrf: csrf
+        spamAndAbuse: spamAndAbuse
+        ipReputation: ipReputation
+        waf: waf
+      properties:
+        antiautomationAndBehavioral:
+          description: The number of requests either handled or blocked by anti_automation
+            and behavioral templates
+          type: string
+        csrf:
+          description: The number of requests either handled or blocked by the CSRF
+            template
+          type: string
+        ipReputation:
+          description: The number of requests either handled or blocked by the IP
+            reputation template
+          type: string
+        spamAndAbuse:
+          description: The number of requests either handled or blocked by the spam
+            and abuse template
+          type: string
+        waf:
+          description: The number of requests either handled or blocked by REM templates
+          type: string
+      type: object
+    wafTrafficV2:
+      description: A set of individual time-series WAF traffic metrics
+      example:
+        ddosBlocked: ddosBlocked
+        static: static
+        originTimeout: originTimeout
+        customBlocked: customBlocked
+        responseTime: responseTime
+        originError5xx: originError5xx
+        originError4xx: originError4xx
+        uncategorized: uncategorized
+        ajax: ajax
+        monitored: monitored
+        policyBlocked: policyBlocked
+        customWhitelisted: customWhitelisted
+        total: total
+        policyWhitelisted: policyWhitelisted
+        passedToOrigin: passedToOrigin
+        api: api
+        timestamp: 2000-01-23T04:56:07.000+00:00
+      properties:
+        timestamp:
+          description: The date and time traffic metrics were recorded for
+          format: date-time
+          type: string
+        api:
+          description: The number of requests to URLs designated as API URLs
+          type: string
+        ajax:
+          description: The number of Ajax requests
+          type: string
+        static:
+          description: The number of requests to static assets
+          type: string
+        customBlocked:
+          description: The number of requests blocked by custom rules
+          type: string
+        policyBlocked:
+          description: The number of requests blocked by policies
+          type: string
+        ddosBlocked:
+          description: The number of requests blocked by layer 7 DDOS protection
+          type: string
+        monitored:
+          description: The number of monitored requests
+          type: string
+        customWhitelisted:
+          description: The number of requests allowed by custom rules
+          type: string
+        policyWhitelisted:
+          description: The number of requests from allowed search engines and other
+            allowed bots
+          type: string
+        originError4xx:
+          description: The number of HTTP 4xx errors received from the origin
+          type: string
+        originError5xx:
+          description: The number of HTTP 5xx errors received from the origin
+          type: string
+        originTimeout:
+          description: The number of request timeouts from the WAF to the origin
+          type: string
+        uncategorized:
+          description: The number of uncategorized requests
+          type: string
+        passedToOrigin:
+          description: The number of requests that were passed to the origin
+          type: string
+        responseTime:
+          description: The average response time to the origin in milliseconds
+          type: string
+        total:
+          description: The total number of requests for the given time period
+          type: string
+      type: object
+    wafUpdateCertificateRequest:
+      properties:
+        certificate:
+          description: 'A PEM PKCS #7 formatted SSL certificate'
+          type: string
+        key:
+          description: |-
+            A PEM PKCS #7 formatted private key
+
+            Private keys are sent directly to the edge nodes and are not stored elsewhere on StackPath's systems.
+          type: string
+        caBundle:
+          description: 'A PEM PKCS #7 formatted certificate authority bundle'
+          type: string
+      type: object
+    wafUpdateCertificateResponse:
+      description: A response from a request to update an SSL certificate
+      example:
+        certificate:
+          commonName: commonName
+          updateDate: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          trusted: true
+          subjectAlternativeNames:
+          - subjectAlternativeNames
+          - subjectAlternativeNames
+          providerManaged: true
+          fingerprint: fingerprint
+          id: id
+          issuer: issuer
+          expirationDate: 2000-01-23T04:56:07.000+00:00
+          createDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        certificate:
+          $ref: '#/components/schemas/wafCertificate'
+      type: object
+    wafUpdateDdosSettingsRequest:
+      properties:
+        globalThreshold:
+          description: The number of requests per ten seconds that can trigger DDOS
+            protection
+          type: string
+        burstThreshold:
+          description: The number of requests per two seconds that can trigger DDOS
+            protection
+          type: string
+        subSecondBurstThreshold:
+          description: The number of requests per 0.1 seconds that can trigger DDOS
+            protection
+          type: string
+      type: object
+    wafUpdateDdosSettingsResponse:
+      description: A response from a request to update a WAF site's DDOS protection
+        settings
+      example:
+        ddosSettings:
+          subSecondBurstThreshold: subSecondBurstThreshold
+          burstThreshold: burstThreshold
+          globalThreshold: globalThreshold
+      properties:
+        ddosSettings:
+          $ref: '#/components/schemas/wafDdosSettings'
+      type: object
+    wafUpdatePolicyGroupsRequest:
+      properties:
+        policyGroups:
+          description: A site's WAF policy groups
+          items:
+            $ref: '#/components/schemas/wafPolicyGroup'
+          type: array
+      type: object
+    wafUpdateRuleRequest:
+      properties:
+        name:
+          description: The WAF rule's name
+          type: string
+        description:
+          description: A rule's description
+          type: string
+        conditions:
+          description: The conditions required for a WAF rule to trigger
+          items:
+            $ref: '#/components/schemas/RuleCondition'
+          type: array
+        actionValue:
+          $ref: '#/components/schemas/wafRuleAction'
+        enabled:
+          description: Whether or not the rule should be enabled
+          format: boolean
+          type: boolean
+        statusCode:
+          $ref: '#/components/schemas/RuleStatusCode'
+        actionDuration:
+          description: |-
+            How long a rule's block action will apply to subsequent requests
+
+            Durations only apply to rules with block actions.
+          type: string
+      type: object
+    wafUpdateRuleResponse:
+      description: The results from a request to update a WAF rule
+      example:
+        rule:
+          actionDuration: actionDuration
+          name: name
+          description: description
+          id: id
+          conditions:
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          - country:
+              countryCode: countryCode
+            negation: true
+            requestRate:
+              httpMethods:
+              - null
+              - null
+              pathPattern: pathPattern
+              requests: requests
+              time: time
+              ips:
+              - ips
+              - ips
+            sessionRequestCount:
+              requestCount: requestCount
+            ip:
+              ipAddress: ipAddress
+            ipRange:
+              upperBound: upperBound
+              lowerBound: lowerBound
+            responseHeader:
+              exactMatch: true
+              header: header
+              value: value
+            userAgent:
+              exactMatch: true
+              userAgent: userAgent
+            httpMethod: {}
+            url:
+              exactMatch: true
+              url: url
+            responseHeaderExists:
+              header: header
+            tags:
+              tags:
+              - tags
+              - tags
+            headerExists:
+              header: header
+            fileExtension:
+              fileExtension: fileExtension
+            organization:
+              organization: organization
+            header:
+              exactMatch: true
+              header: header
+              value: value
+            ownerTypes:
+              ownerTypes:
+              - null
+              - null
+            contentType:
+              contentType: contentType
+          enabled: true
+      properties:
+        rule:
+          $ref: '#/components/schemas/wafRule'
+      type: object
+    wafUpdateSiteApiUrlsRequest:
+      properties:
+        apiUrls:
+          description: A list of API URLs that will be processed differently by the
+            WAF
+          items:
+            type: string
+          type: array
+      type: object
+    wafUpdateSiteApiUrlsResponse:
+      description: A response from a request to update an WAF site's API URLs
+      example:
+        apiUrls:
+        - apiUrls
+        - apiUrls
+      properties:
+        apiUrls:
+          description: A list of API URLs that will be processed differently by the
+            WAF
+          items:
+            type: string
+          type: array
+      type: object
+    wafVerificationRequirements:
+      description: Conditions that must be met to verify ownership of a domain for
+        SSL certificate provisioning
+      example:
+        httpVerificationDetails:
+          path: path
+          body: body
+          contentType: contentType
+        dnsVerificationDetails:
+          records:
+          - data: data
+            name: name
+            type: type
+            class: class
+            ttl: 0
+          - data: data
+            name: name
+            type: type
+            class: class
+            ttl: 0
+          dnsRecords:
+          - dnsRecords
+          - dnsRecords
+      properties:
+        dnsVerificationDetails:
+          $ref: '#/components/schemas/wafDnsVerificationDetails'
+        httpVerificationDetails:
+          $ref: '#/components/schemas/wafHttpVerificationDetails'
+        verificationMethod:
+          $ref: '#/components/schemas/wafCertificateVerificationMethod'
+      type: object
+    wafWAFOrganization:
+      description: A WHOIS organization
+      example:
+        name: name
+      properties:
+        name:
+          description: An organization's name
+          type: string
+      type: object
+    stackpath_rpc_BadRequest_allOf:
+      properties:
+        fieldViolations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.BadRequest.FieldViolation'
+          type: array
+    stackpath_rpc_Help_allOf:
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.Help.Link'
+          type: array
+    stackpath_rpc_LocalizedMessage_allOf:
+      properties:
+        locale:
+          type: string
+        message:
+          type: string
+    stackpath_rpc_PreconditionFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.PreconditionFailure.Violation'
+          type: array
+    stackpath_rpc_QuotaFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.QuotaFailure.Violation'
+          type: array
+    stackpath_rpc_RequestInfo_allOf:
+      properties:
+        requestId:
+          type: string
+        servingData:
+          type: string
+    stackpath_rpc_ResourceInfo_allOf:
+      properties:
+        resourceType:
+          type: string
+        resourceName:
+          type: string
+        owner:
+          type: string
+        description:
+          type: string
+    stackpath_rpc_RetryInfo_allOf:
+      properties:
+        retryDelay:
+          type: string
+  securitySchemes:
+    oauth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://gateway.stackpath.com/identity/v1/oauth2/token
+      type: oauth2
+x-explorer-enabled: true
+x-proxy-enabled: true
+x-samples-enabled: true
+x-samples-languages:
+- curl
+- node
+- ruby
+- javascript
+- python

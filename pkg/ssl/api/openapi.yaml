@@ -1,0 +1,924 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: StackPath Support
+    url: https://support.stackpath.com/
+  title: SSL
+  version: 1.0.0
+externalDocs:
+  description: The StackPath API Reference
+  url: https://stackpath.dev/reference
+servers:
+- url: https://gateway.stackpath.com
+security:
+- oauth2: []
+paths:
+  /ssl/v1/stacks/{stack_id}/certificates:
+    get:
+      operationId: GetCertificates
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/certificateGetCertificatesResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Default error structure.
+      summary: Get all certificates
+      tags:
+      - Certificates
+  /ssl/v1/stacks/{stack_id}/certificates/{certificate_id}:
+    delete:
+      operationId: DeleteCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: reason
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Default error structure.
+      summary: Delete a certificate
+      tags:
+      - Certificates
+    get:
+      operationId: GetCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/certificateGetCertificateResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Default error structure.
+      summary: Get a certificate
+      tags:
+      - Certificates
+    patch:
+      description: Updating a certificate creates a new CSR and issues a new certificate.
+      operationId: UpdateCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/certificateUpdateCertificateRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/certificateUpdateCertificateResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Default error structure.
+      summary: Update a certificate
+      tags:
+      - Certificates
+  /ssl/v1/stacks/{stack_id}/certificates/{certificate_id}/latest:
+    get:
+      operationId: GetLatestCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/certificateGetLatestCertificateResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Default error structure.
+      summary: Get a certificate's latest version
+      tags:
+      - Certificates
+  /ssl/v1/stacks/{stack_id}/certificates/{certificate_id}/renew:
+    post:
+      operationId: RenewCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/certificateRenewCertificateResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Default error structure.
+      summary: Renew a certificate
+      tags:
+      - Certificates
+  /ssl/v1/stacks/{stack_id}/certificates/{certificate_id}/revoke:
+    post:
+      operationId: RevokeCertificate
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: A certificate ID
+        explode: false
+        in: path
+        name: certificate_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apiStatus'
+          description: Default error structure.
+      summary: Revoke a certificate
+      tags:
+      - Certificates
+components:
+  schemas:
+    apiStatus:
+      properties:
+        code:
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/apiStatusDetail'
+          type: array
+        message:
+          type: string
+      type: object
+    apiStatusDetail:
+      discriminator:
+        propertyName: '@type'
+      properties:
+        '@type':
+          type: string
+      required:
+      - '@type'
+      type: object
+    certificateCertificate:
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        caBundle: caBundle
+        hosts:
+        - hosts
+        - hosts
+        stackId: stackId
+        certificate: certificate
+        id: id
+        issuer: issuer
+        expiresAt: 2000-01-23T04:56:07.000+00:00
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        stackId:
+          type: string
+        id:
+          type: string
+        hosts:
+          items:
+            type: string
+          type: array
+        issuer:
+          type: string
+        certificate:
+          type: string
+        caBundle:
+          type: string
+        status:
+          $ref: '#/components/schemas/certificateCertificateStatus'
+        expiresAt:
+          format: date-time
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      type: object
+    certificateCertificateStatus:
+      default: UNKNOWN
+      enum:
+      - UNKNOWN
+      - PENDING
+      - COMPLETE
+      - EXPIRED
+      - FAILED
+      - PENDING_VERIFICATION
+      - REVOKED
+      type: string
+    certificateCertificateVerificationMethod:
+      default: DNS
+      enum:
+      - DNS
+      - HTTP
+      type: string
+    certificateDnsRecord:
+      description: |-
+        A DNS record
+
+        A dns record describes an individual piece of DNS functionality in a DNS zone.
+      example:
+        data: data
+        name: name
+        type: type
+        class: class
+        ttl: 0
+      properties:
+        name:
+          description: |-
+            The name of the network node to which a zone resource record pertains
+
+            Use the value "@" to denote current root domain name.
+          type: string
+        type:
+          description: |-
+            A zone record's type
+
+            Zone record types describe the zone record's behavior. For instance, a zone record's type can say that the record is a name to IP address value, a name alias, or which mail exchanger is responsible for the domain. See https://support.stackpath.com/hc/en-us/articles/360001085563-What-DNS-record-types-does-StackPath-support for more information.
+          type: string
+        class:
+          description: |-
+            A zone record's class code
+
+            This is typically "IN" for Internet related resource records.
+          type: string
+        ttl:
+          description: |-
+            A zone record's time to live
+
+            A record's TTL is the number of seconds that the record should be cached by DNS resolvers. Use lower TTL values if you expect zone records to change often. Use higher TTL values for records that won't change to prevent extra DNS lookups by clients.
+          format: int32
+          type: integer
+        data:
+          description: |-
+            A zone record's value
+
+            Expected data formats can vary depending on the zone record's type.
+          type: string
+      type: object
+    certificateDnsVerificationDetails:
+      example:
+        records:
+        - data: data
+          name: name
+          type: type
+          class: class
+          ttl: 0
+        - data: data
+          name: name
+          type: type
+          class: class
+          ttl: 0
+        dnsRecords:
+        - dnsRecords
+        - dnsRecords
+      properties:
+        dnsRecords:
+          description: A list of bind formatted dns records required for SSL verification
+          items:
+            type: string
+          type: array
+        records:
+          description: A list of parsed dns records required for SSL verification
+          items:
+            $ref: '#/components/schemas/certificateDnsRecord'
+          type: array
+      type: object
+    certificateGetCertificateResponse:
+      example:
+        certificate:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          hosts:
+          - hosts
+          - hosts
+          stackId: stackId
+          certificate: certificate
+          id: id
+          issuer: issuer
+          expiresAt: 2000-01-23T04:56:07.000+00:00
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        certificate:
+          $ref: '#/components/schemas/certificateCertificate'
+      type: object
+    certificateGetCertificatesResponse:
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          hosts:
+          - hosts
+          - hosts
+          stackId: stackId
+          certificate: certificate
+          id: id
+          issuer: issuer
+          expiresAt: 2000-01-23T04:56:07.000+00:00
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          hosts:
+          - hosts
+          - hosts
+          stackId: stackId
+          certificate: certificate
+          id: id
+          issuer: issuer
+          expiresAt: 2000-01-23T04:56:07.000+00:00
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          items:
+            $ref: '#/components/schemas/certificateCertificate'
+          type: array
+      type: object
+    certificateGetLatestCertificateResponse:
+      example:
+        certificate:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          caBundle: caBundle
+          hosts:
+          - hosts
+          - hosts
+          stackId: stackId
+          certificate: certificate
+          id: id
+          issuer: issuer
+          expiresAt: 2000-01-23T04:56:07.000+00:00
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        certificate:
+          $ref: '#/components/schemas/certificateCertificate'
+      type: object
+    certificateHttpVerificationDetails:
+      example:
+        path: path
+        body: body
+        contentType: contentType
+      properties:
+        path:
+          type: string
+        contentType:
+          type: string
+        body:
+          type: string
+      type: object
+    certificateRenewCertificateResponse:
+      example:
+        certificateId: certificateId
+        verificationRequirements:
+        - httpVerificationDetails:
+            path: path
+            body: body
+            contentType: contentType
+          dnsVerificationDetails:
+            records:
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            dnsRecords:
+            - dnsRecords
+            - dnsRecords
+        - httpVerificationDetails:
+            path: path
+            body: body
+            contentType: contentType
+          dnsVerificationDetails:
+            records:
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            dnsRecords:
+            - dnsRecords
+            - dnsRecords
+      properties:
+        certificateId:
+          type: string
+        status:
+          $ref: '#/components/schemas/certificateCertificateStatus'
+        verificationRequirements:
+          items:
+            $ref: '#/components/schemas/certificateVerificationRequirements'
+          type: array
+      type: object
+    certificateUpdateCertificateRequest:
+      properties:
+        commonName:
+          type: string
+        hosts:
+          items:
+            type: string
+          type: array
+        organization:
+          type: string
+        organizationalUnit:
+          type: string
+        locality:
+          type: string
+        province:
+          type: string
+        country:
+          type: string
+      type: object
+    certificateUpdateCertificateResponse:
+      example:
+        certificateId: certificateId
+        verificationRequirements:
+        - httpVerificationDetails:
+            path: path
+            body: body
+            contentType: contentType
+          dnsVerificationDetails:
+            records:
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            dnsRecords:
+            - dnsRecords
+            - dnsRecords
+        - httpVerificationDetails:
+            path: path
+            body: body
+            contentType: contentType
+          dnsVerificationDetails:
+            records:
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            - data: data
+              name: name
+              type: type
+              class: class
+              ttl: 0
+            dnsRecords:
+            - dnsRecords
+            - dnsRecords
+      properties:
+        certificateId:
+          type: string
+        status:
+          $ref: '#/components/schemas/certificateCertificateStatus'
+        verificationRequirements:
+          items:
+            $ref: '#/components/schemas/certificateVerificationRequirements'
+          type: array
+      type: object
+    certificateVerificationRequirements:
+      example:
+        httpVerificationDetails:
+          path: path
+          body: body
+          contentType: contentType
+        dnsVerificationDetails:
+          records:
+          - data: data
+            name: name
+            type: type
+            class: class
+            ttl: 0
+          - data: data
+            name: name
+            type: type
+            class: class
+            ttl: 0
+          dnsRecords:
+          - dnsRecords
+          - dnsRecords
+      properties:
+        dnsVerificationDetails:
+          $ref: '#/components/schemas/certificateDnsVerificationDetails'
+        httpVerificationDetails:
+          $ref: '#/components/schemas/certificateHttpVerificationDetails'
+        verificationMethod:
+          $ref: '#/components/schemas/certificateCertificateVerificationMethod'
+      type: object
+    paginationPageInfo:
+      description: |-
+        Information about a paginated response
+
+        This is modeled after the GraphQL Relay spec to support both cursor based pagination and traditional offset based pagination.
+      example:
+        hasNextPage: true
+        hasPreviousPage: true
+        endCursor: endCursor
+        totalCount: totalCount
+        startCursor: startCursor
+      properties:
+        totalCount:
+          description: The total number of items in the dataset
+          type: string
+        hasPreviousPage:
+          description: Whether or not a previous page of data exists
+          format: boolean
+          type: boolean
+        hasNextPage:
+          description: Whether or not another page of data is available
+          format: boolean
+          type: boolean
+        startCursor:
+          description: The cursor for the first item in the set of data returned
+          type: string
+        endCursor:
+          description: The cursor for the last item in the set of data returned
+          type: string
+      type: object
+    stackpath.rpc.BadRequest:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_BadRequest_allOf'
+    stackpath.rpc.BadRequest.FieldViolation:
+      properties:
+        field:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.Help:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_Help_allOf'
+    stackpath.rpc.Help.Link:
+      properties:
+        description:
+          type: string
+        url:
+          type: string
+      type: object
+    stackpath.rpc.LocalizedMessage:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_LocalizedMessage_allOf'
+    stackpath.rpc.PreconditionFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_PreconditionFailure_allOf'
+    stackpath.rpc.PreconditionFailure.Violation:
+      properties:
+        type:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.QuotaFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_QuotaFailure_allOf'
+    stackpath.rpc.QuotaFailure.Violation:
+      properties:
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.RequestInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RequestInfo_allOf'
+    stackpath.rpc.ResourceInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_ResourceInfo_allOf'
+    stackpath.rpc.RetryInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RetryInfo_allOf'
+    stackpath_rpc_BadRequest_allOf:
+      properties:
+        fieldViolations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.BadRequest.FieldViolation'
+          type: array
+    stackpath_rpc_Help_allOf:
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.Help.Link'
+          type: array
+    stackpath_rpc_LocalizedMessage_allOf:
+      properties:
+        locale:
+          type: string
+        message:
+          type: string
+    stackpath_rpc_PreconditionFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.PreconditionFailure.Violation'
+          type: array
+    stackpath_rpc_QuotaFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.QuotaFailure.Violation'
+          type: array
+    stackpath_rpc_RequestInfo_allOf:
+      properties:
+        requestId:
+          type: string
+        servingData:
+          type: string
+    stackpath_rpc_ResourceInfo_allOf:
+      properties:
+        resourceType:
+          type: string
+        resourceName:
+          type: string
+        owner:
+          type: string
+        description:
+          type: string
+    stackpath_rpc_RetryInfo_allOf:
+      properties:
+        retryDelay:
+          type: string
+  securitySchemes:
+    oauth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://gateway.stackpath.com/identity/v1/oauth2/token
+      type: oauth2
+x-explorer-enabled: true
+x-proxy-enabled: true
+x-samples-enabled: true
+x-samples-languages:
+- curl
+- node
+- ruby
+- javascript
+- python

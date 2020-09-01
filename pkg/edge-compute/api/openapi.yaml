@@ -1,0 +1,5596 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: StackPath Support
+    url: https://support.stackpath.com/
+  title: Edge Compute
+  version: 1.0.0
+externalDocs:
+  description: The StackPath API Reference
+  url: https://stackpath.dev/reference
+servers:
+- url: https://gateway.stackpath.com
+security:
+- oauth2: []
+paths:
+  /workload/v1/locations:
+    get:
+      description: Retrieve information about the StackPath edge network that can
+        host a compute workload
+      operationId: GetLocations
+      parameters:
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetLocationsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get compute locations
+      tags:
+      - Infrastructure
+  /workload/v1/stacks/{stack_id}/images:
+    get:
+      description: Only non-deprecated images are returned by default
+      operationId: GetImages
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: If present and true, include deprecated images in the result.
+        explode: true
+        in: query
+        name: deprecated
+        required: false
+        schema:
+          format: boolean
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetImagesResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all images
+      tags:
+      - Virtual Machine Images
+  /workload/v1/stacks/{stack_id}/images/{image_family}:
+    delete:
+      operationId: DeleteImagesForFamily
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image family
+        explode: false
+        in: path
+        name: image_family
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Delete a family's images
+      tags:
+      - Virtual Machine Images
+    get:
+      description: Only non-deprecated images are returned by default. This will not
+        error but instead return an empty list if the family is not found.
+      operationId: GetImagesForFamily
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image family
+        explode: false
+        in: path
+        name: image_family
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: If present and true, include deprecated images in the result.
+        explode: true
+        in: query
+        name: deprecated
+        required: false
+        schema:
+          format: boolean
+          type: boolean
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetImagesForFamilyResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a family's images
+      tags:
+      - Virtual Machine Images
+  /workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}:
+    delete:
+      operationId: DeleteImage
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image's family
+        explode: false
+        in: path
+        name: image_family
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image's tag
+        explode: false
+        in: path
+        name: image_tag
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Delete an image
+      tags:
+      - Virtual Machine Images
+    get:
+      operationId: GetImage
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image family
+        explode: false
+        in: path
+        name: image_family
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image tag
+        explode: false
+        in: path
+        name: image_tag
+        required: true
+        schema:
+          default: default
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetImageResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get an image
+      tags:
+      - Virtual Machine Images
+    patch:
+      description: Only metadata and description can be updated. The metadata, if
+        set, replaces the entire existing metadata set. The tag cannot be "default".
+      operationId: UpdateImage
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image's family!
+        explode: false
+        in: path
+        name: image_family
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image's tag!
+        explode: false
+        in: path
+        name: image_tag
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1UpdateImageRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1UpdateImageResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update an image
+      tags:
+      - Virtual Machine Images
+    post:
+      operationId: CreateImage
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The image's family
+        explode: false
+        in: path
+        name: image_family
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The image's tag
+        explode: false
+        in: path
+        name: image_tag
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1CreateImageRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1CreateImageResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Create an image
+      tags:
+      - Virtual Machine Images
+  /workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}/deprecation:
+    put:
+      description: This replaces an image's deprecation settings, so it can also undeprecate
+        an image.
+      operationId: UpdateImageDeprecation
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image family
+        explode: false
+        in: path
+        name: image_family
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An image tag
+        explode: false
+        in: path
+        name: image_tag
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1ImageDeprecation'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1UpdateImageDeprecationResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update deprecation settings
+      tags:
+      - Virtual Machine Images
+  /workload/v1/stacks/{stack_id}/metrics:
+    get:
+      description: Retrieve usage metrics for all workloads in a stack, a specific
+        workload, or a specific instance in a workload
+      operationId: GetMetrics
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload ID
+        explode: true
+        in: query
+        name: workload_id
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: A lower bound date to search metrics for.
+        explode: true
+        in: query
+        name: start_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: An upper bound date to search metrics for.
+        explode: true
+        in: query
+        name: end_date
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          default: BANDWIDTH
+          enum:
+          - BANDWIDTH
+          - INSTANCE
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: granularity
+        required: false
+        schema:
+          default: DEFAULT
+          enum:
+          - DEFAULT
+          - PT5M
+          - PT1H
+          - P1D
+          - PT1M
+          type: string
+        style: form
+      - description: An instance name within a workload to filter metrics for
+        explode: true
+        in: query
+        name: instance_name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: A StackPath POP to filter traffic metrics for. This field does
+          not apply when retrieving INSTANCE type metrics
+        explode: true
+        in: query
+        name: pop
+        required: false
+        schema:
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: region
+        required: false
+        schema:
+          default: ALL
+          enum:
+          - ALL
+          - LOCAL_NODE
+          - LOCAL_POP
+          - NORTH_AMERICA
+          - EUROPE
+          - ASIA
+          - OCEANIA
+          - SOUTH_AMERICA
+          - MARKETPLACE
+          - INTERNAL
+          - INTERNET
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: group_by
+        required: false
+        schema:
+          default: NONE
+          enum:
+          - NONE
+          - INSTANCE_NAME
+          type: string
+        style: form
+      - description: List of fields to group by.
+        explode: true
+        in: query
+        name: grouping
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/prometheusMetrics'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get metrics
+      tags:
+      - Metrics
+  /workload/v1/stacks/{stack_id}/workloads:
+    get:
+      operationId: GetWorkloads
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetWorkloadsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all workloads
+      tags:
+      - Workloads
+    post:
+      operationId: CreateWorkload
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1CreateWorkloadRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1CreateWorkloadResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Create a workload
+      tags:
+      - Workloads
+  /workload/v1/stacks/{stack_id}/workloads/{workload_id}:
+    delete:
+      operationId: DeleteWorkload
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload ID
+        explode: false
+        in: path
+        name: workload_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Delete a workload
+      tags:
+      - Workloads
+    get:
+      operationId: GetWorkload
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload ID
+        explode: false
+        in: path
+        name: workload_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetWorkloadResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a workload
+      tags:
+      - Workloads
+    patch:
+      operationId: UpdateWorkload
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload ID
+        explode: false
+        in: path
+        name: workload_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1UpdateWorkloadRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1UpdateWorkloadResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update a workload
+      tags:
+      - Workloads
+  /workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances:
+    get:
+      operationId: GetWorkloadInstances
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload ID
+        explode: false
+        in: path
+        name: workload_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetWorkloadInstancesResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all workload instances
+      tags:
+      - Instances
+  /workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances/{instance_name}:
+    get:
+      operationId: GetWorkloadInstance
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload ID
+        explode: false
+        in: path
+        name: workload_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload instance name
+        explode: false
+        in: path
+        name: instance_name
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1GetWorkloadInstanceResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a workload instance
+      tags:
+      - Instances
+  /workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances/{instance_name}/logs:
+    get:
+      description: Retrieve a stream of logs generated by a workload instance's containers.
+        Logs are generated by the containers and are not modified by StackPath. Log
+        contents vary by the application running in the container, though many containerized
+        applications are configured to log to STDOUT and STDERR.
+      operationId: GetLogs
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload ID
+        explode: false
+        in: path
+        name: workload_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload instance name
+        explode: false
+        in: path
+        name: instance_name
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The name of the container to obtain logs for. This defaults to
+          first container in the instance.
+        explode: true
+        in: query
+        name: container_name
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Whether or not to follow the instance's log stream. This defaults
+          to false.
+        explode: true
+        in: query
+        name: follow
+        required: false
+        schema:
+          format: boolean
+          type: boolean
+        style: form
+      - description: Whether or not to return log entries made by previously terminated
+          containers. This defaults to false.
+        explode: true
+        in: query
+        name: previous
+        required: false
+        schema:
+          format: boolean
+          type: boolean
+        style: form
+      - description: |-
+          A relative time in seconds before the current time from which to show logs. If this value precedes the time an instance was started, only logs since the instance's start time will be returned. If this value is in the future, no logs will be returned.
+
+          Only one of since_seconds or since_time may be specified
+        explode: true
+        in: query
+        name: since_seconds
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: |-
+          An RFC3339 timestamp from which to show logs. If this value precedes the time an instance was started, only logs since the instance's start time will be returned. If this value is in the future, no logs will be returned.
+
+          Only one of since_seconds or since_time may be specified
+        explode: true
+        in: query
+        name: since_time
+        required: false
+        schema:
+          format: date-time
+          type: string
+        style: form
+      - description: Whether or not to add an RFC3339 or RFC3339Nano timestamp at
+          the beginning of every line of log output. This defaults to false.
+        explode: true
+        in: query
+        name: timestamps
+        required: false
+        schema:
+          format: boolean
+          type: boolean
+        style: form
+      - description: The number of lines from the end of the logs to show. If not
+          specified, logs are shown from the creation of the container or since_seconds
+          or since_time.
+        explode: true
+        in: query
+        name: tail_lines
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The number of bytes to read from the server before terminating
+          log output. This may not display a complete final line of logging, and may
+          return slightly more or slightly less than the specified limit.
+        explode: true
+        in: query
+        name: limit_bytes
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1LogChunk'
+          description: (streaming responses)
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get log stream
+      tags:
+      - Instance Logs
+  /workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances/{instance_name}/power/restart:
+    post:
+      description: The action is performed asynchronously and a successful response
+        does not mean the instance has restarted yet.
+      operationId: RestartInstance
+      parameters:
+      - description: A stack ID or slug
+        explode: false
+        in: path
+        name: stack_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload ID
+        explode: false
+        in: path
+        name: workload_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: An EdgeCompute workload instance name
+        explode: false
+        in: path
+        name: instance_name
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Restart a workload instance
+      tags:
+      - Instances
+components:
+  schemas:
+    ContainerStatusRunning:
+      description: Properties related to running containers
+      example:
+        startedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        startedAt:
+          description: The date a container started
+          format: date-time
+          type: string
+      type: object
+    ContainerStatusTerminated:
+      description: Properties related to terminated containers
+      example:
+        reason: reason
+        exitCode: 0
+        startedAt: 2000-01-23T04:56:07.000+00:00
+        message: message
+        finishedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        exitCode:
+          description: The exit code of the command that started the container
+          format: int32
+          type: integer
+        reason:
+          description: The reason a container terminated
+          type: string
+        message:
+          description: A more detailed explanation of a container's termination
+          type: string
+        startedAt:
+          description: The date a container started
+          format: date-time
+          type: string
+        finishedAt:
+          description: The date a container terminated
+          format: date-time
+          type: string
+      type: object
+    ContainerStatusWaiting:
+      description: Properties related to containers that are starting up
+      example:
+        reason: reason
+        message: message
+      properties:
+        reason:
+          description: The reason that a container is waiting to start
+          type: string
+        message:
+          description: A more detailed explanation of a container's waiting state
+          type: string
+      type: object
+    DataMatrix:
+      description: A set of time series containing a range of data points over time
+        for each time series
+      example:
+        results:
+        - metric:
+            key: metric
+          values:
+          - unixTime: unixTime
+            value: value
+          - unixTime: unixTime
+            value: value
+        - metric:
+            key: metric
+          values:
+          - unixTime: unixTime
+            value: value
+          - unixTime: unixTime
+            value: value
+      properties:
+        results:
+          description: A data point's value
+          items:
+            $ref: '#/components/schemas/DataMatrixResult'
+          type: array
+      type: object
+    DataMatrixResult:
+      description: Time series containing a range of data points over time for each
+        time series
+      example:
+        metric:
+          key: metric
+        values:
+        - unixTime: unixTime
+          value: value
+        - unixTime: unixTime
+          value: value
+      properties:
+        metric:
+          additionalProperties:
+            type: string
+          description: The data points' labels
+          type: object
+        values:
+          description: Time series data point values
+          items:
+            $ref: '#/components/schemas/DataValue'
+          type: array
+      type: object
+    DataValue:
+      description: An individual metric data point
+      example:
+        unixTime: unixTime
+        value: value
+      properties:
+        unixTime:
+          description: The time that a data point was recorded
+          type: string
+        value:
+          description: A data point's value
+          type: string
+      type: object
+    DataVector:
+      description: A set of time series containing a single sample for each time series,
+        all sharing the same timestamp
+      example:
+        results:
+        - metric:
+            key: metric
+          value:
+            unixTime: unixTime
+            value: value
+        - metric:
+            key: metric
+          value:
+            unixTime: unixTime
+            value: value
+      properties:
+        results:
+          description: A data point's value
+          items:
+            $ref: '#/components/schemas/DataVectorResult'
+          type: array
+      type: object
+    DataVectorResult:
+      description: Time series containing a single sample for each time series, all
+        sharing the same timestamp
+      example:
+        metric:
+          key: metric
+        value:
+          unixTime: unixTime
+          value: value
+      properties:
+        metric:
+          additionalProperties:
+            type: string
+          description: The data points' labels
+          type: object
+        value:
+          $ref: '#/components/schemas/DataValue'
+      type: object
+    MetricsData:
+      description: The data points in a metrics collection
+      example:
+        vector:
+          results:
+          - metric:
+              key: metric
+            value:
+              unixTime: unixTime
+              value: value
+          - metric:
+              key: metric
+            value:
+              unixTime: unixTime
+              value: value
+        matrix:
+          results:
+          - metric:
+              key: metric
+            values:
+            - unixTime: unixTime
+              value: value
+            - unixTime: unixTime
+              value: value
+          - metric:
+              key: metric
+            values:
+            - unixTime: unixTime
+              value: value
+            - unixTime: unixTime
+              value: value
+      properties:
+        matrix:
+          $ref: '#/components/schemas/DataMatrix'
+        vector:
+          $ref: '#/components/schemas/DataVector'
+      type: object
+    VirtualMachineStatusPhase:
+      default: UNKNOWN
+      enum:
+      - UNKNOWN
+      - PENDING
+      - SCHEDULING
+      - STARTING
+      - RUNNING
+      - STOPPED
+      - FAILED
+      type: string
+    VolumeClaimVolumeClaimPhase:
+      default: VOLUME_CLAIM_PHASE_UNSPECIFIED
+      description: |-
+        Which phase a volume claim is currently in
+
+        - VOLUME_CLAIM_PHASE_UNSPECIFIED: StackPath is unable to determine the volume claim's state
+         - PENDING: The volume claim is pending
+         - UNBOUND: The volume claim is unbound
+         - BOUND: The volume claim is bound to an instance
+      enum:
+      - VOLUME_CLAIM_PHASE_UNSPECIFIED
+      - PENDING
+      - UNBOUND
+      - BOUND
+      type: string
+    apiStatusDetail:
+      discriminator:
+        propertyName: '@type'
+      properties:
+        '@type':
+          type: string
+      required:
+      - '@type'
+      type: object
+    paginationPageInfo:
+      description: |-
+        Information about a paginated response
+
+        This is modeled after the GraphQL Relay spec to support both cursor based pagination and traditional offset based pagination.
+      example:
+        hasNextPage: true
+        hasPreviousPage: true
+        endCursor: endCursor
+        totalCount: totalCount
+        startCursor: startCursor
+      properties:
+        totalCount:
+          description: The total number of items in the dataset
+          type: string
+        hasPreviousPage:
+          description: Whether or not a previous page of data exists
+          format: boolean
+          type: boolean
+        hasNextPage:
+          description: Whether or not another page of data is available
+          format: boolean
+          type: boolean
+        startCursor:
+          description: The cursor for the first item in the set of data returned
+          type: string
+        endCursor:
+          description: The cursor for the last item in the set of data returned
+          type: string
+      type: object
+    prometheusMetrics:
+      description: A collection of metrics
+      example:
+        data:
+          vector:
+            results:
+            - metric:
+                key: metric
+              value:
+                unixTime: unixTime
+                value: value
+            - metric:
+                key: metric
+              value:
+                unixTime: unixTime
+                value: value
+          matrix:
+            results:
+            - metric:
+                key: metric
+              values:
+              - unixTime: unixTime
+                value: value
+              - unixTime: unixTime
+                value: value
+            - metric:
+                key: metric
+              values:
+              - unixTime: unixTime
+                value: value
+              - unixTime: unixTime
+                value: value
+        errorType: errorType
+        warnings:
+        - warnings
+        - warnings
+        error: error
+      properties:
+        status:
+          $ref: '#/components/schemas/prometheusMetricsStatus'
+        data:
+          $ref: '#/components/schemas/MetricsData'
+        errorType:
+          description: The type of error encountered when querying for metrics
+          type: string
+        error:
+          description: The error encountered when querying for metrics
+          type: string
+        warnings:
+          description: Warnings encountered when querying for metrics
+          items:
+            type: string
+          type: array
+      type: object
+    prometheusMetricsStatus:
+      default: SUCCESS
+      description: A metrics query's resulting status
+      enum:
+      - SUCCESS
+      - ERROR
+      type: string
+    stackpath.rpc.BadRequest:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_BadRequest_allOf'
+    stackpath.rpc.BadRequest.FieldViolation:
+      properties:
+        field:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.Help:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_Help_allOf'
+    stackpath.rpc.Help.Link:
+      properties:
+        description:
+          type: string
+        url:
+          type: string
+      type: object
+    stackpath.rpc.LocalizedMessage:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_LocalizedMessage_allOf'
+    stackpath.rpc.PreconditionFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_PreconditionFailure_allOf'
+    stackpath.rpc.PreconditionFailure.Violation:
+      properties:
+        type:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.QuotaFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_QuotaFailure_allOf'
+    stackpath.rpc.QuotaFailure.Violation:
+      properties:
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.RequestInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RequestInfo_allOf'
+    stackpath.rpc.ResourceInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_ResourceInfo_allOf'
+    stackpath.rpc.RetryInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RetryInfo_allOf'
+    stackpathapiStatus:
+      properties:
+        code:
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/apiStatusDetail'
+          type: array
+        message:
+          type: string
+      type: object
+    v1ContainerSpec:
+      description: The specification for the desired state of a container in a workload
+      example:
+        image: image
+        livenessProbe:
+          failureThreshold: 9
+          tcpSocket:
+            port: 1
+          timeoutSeconds: 5
+          periodSeconds: 2
+          successThreshold: 7
+          initialDelaySeconds: 5
+          httpGet:
+            path: path
+            scheme: scheme
+            port: 6
+            httpHeaders:
+              key: httpHeaders
+        readinessProbe:
+          failureThreshold: 9
+          tcpSocket:
+            port: 1
+          timeoutSeconds: 5
+          periodSeconds: 2
+          successThreshold: 7
+          initialDelaySeconds: 5
+          httpGet:
+            path: path
+            scheme: scheme
+            port: 6
+            httpHeaders:
+              key: httpHeaders
+        resources:
+          requests:
+            key: requests
+          limits:
+            key: limits
+        env:
+          key:
+            secretValue: secretValue
+            value: value
+        ports:
+          key:
+            protocol: protocol
+            port: 0
+            enableImplicitNetworkPolicy: true
+        command:
+        - command
+        - command
+        volumeMounts:
+        - mountPath: mountPath
+          slug: slug
+        - mountPath: mountPath
+          slug: slug
+      properties:
+        image:
+          description: The location of a Docker image to run as a container
+          type: string
+        command:
+          description: The commands that start a container
+          items:
+            type: string
+          type: array
+        env:
+          additionalProperties:
+            $ref: '#/components/schemas/v1EnvironmentVariable'
+          description: A string to environment variable key/value pair
+          type: object
+        ports:
+          additionalProperties:
+            $ref: '#/components/schemas/v1InstancePort'
+          description: A string to network port key/value pair
+          type: object
+        livenessProbe:
+          $ref: '#/components/schemas/v1Probe'
+        readinessProbe:
+          $ref: '#/components/schemas/v1Probe'
+        resources:
+          $ref: '#/components/schemas/v1ResourceRequirements'
+        volumeMounts:
+          description: Volumes to mount in the container
+          items:
+            $ref: '#/components/schemas/v1InstanceVolumeMount'
+          type: array
+      type: object
+    v1ContainerSpecMapEntry:
+      additionalProperties:
+        $ref: '#/components/schemas/v1ContainerSpec'
+      description: A string to container configuration key/value pair
+      type: object
+    v1ContainerStatus:
+      description: The status of a container in a workload
+      example:
+        running:
+          startedAt: 2000-01-23T04:56:07.000+00:00
+        waiting:
+          reason: reason
+          message: message
+        restartCount: 6
+        ready: true
+        name: name
+        startedAt: 2000-01-23T04:56:07.000+00:00
+        containerId: containerId
+        terminated:
+          reason: reason
+          exitCode: 0
+          startedAt: 2000-01-23T04:56:07.000+00:00
+          message: message
+          finishedAt: 2000-01-23T04:56:07.000+00:00
+        finishedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        name:
+          description: A container status' name
+          type: string
+        phase:
+          $ref: '#/components/schemas/v1ContainerStatusContainerPhase'
+        startedAt:
+          description: The date a container started
+          format: date-time
+          type: string
+        finishedAt:
+          description: The date a container terminated
+          format: date-time
+          type: string
+        waiting:
+          $ref: '#/components/schemas/ContainerStatusWaiting'
+        running:
+          $ref: '#/components/schemas/ContainerStatusRunning'
+        terminated:
+          $ref: '#/components/schemas/ContainerStatusTerminated'
+        ready:
+          description: Whether or not a container is running and ready for service
+          format: boolean
+          type: boolean
+        restartCount:
+          description: How many times a container has restarted since it was first
+            started
+          format: int32
+          type: integer
+        containerId:
+          description: A unique value that identifies a container
+          type: string
+      type: object
+    v1ContainerStatusContainerPhase:
+      default: CONTAINER_PHASE_UNSPECIFIED
+      description: |-
+        Which phase of runtime a container is currently in
+
+        - CONTAINER_PHASE_UNSPECIFIED: The container has not reported a state back or StackPath is unable to determine the container's state
+         - STARTING: The container is starting up
+         - RUNNING: The container is running
+         - FAILED: The container has terminated due to a failure
+         - STOPPED: The container was terminated by the user
+      enum:
+      - CONTAINER_PHASE_UNSPECIFIED
+      - STARTING
+      - RUNNING
+      - FAILED
+      - STOPPED
+      type: string
+    v1CreateImageRequest:
+      properties:
+        image:
+          $ref: '#/components/schemas/v1Image'
+        instanceVolumeSource:
+          $ref: '#/components/schemas/v1ImageSourceInstanceVolume'
+      type: object
+    v1CreateImageResponse:
+      description: A response from a request to create an image
+      example:
+        image:
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          description: description
+          id: id
+          tag: tag
+          imageSize: imageSize
+          family: family
+          deprecation:
+            deprecationDate: 2000-01-23T04:56:07.000+00:00
+            deletionDate: 2000-01-23T04:56:07.000+00:00
+            obsoletionDate: 2000-01-23T04:56:07.000+00:00
+          conditions:
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          volumeSize: volumeSize
+      properties:
+        image:
+          $ref: '#/components/schemas/v1Image'
+      type: object
+    v1CreateWorkloadRequest:
+      properties:
+        workload:
+          $ref: '#/components/schemas/v1Workload'
+      type: object
+    v1CreateWorkloadResponse:
+      description: A response from a request to add a workload to a stack
+      example:
+        workload:
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          name: name
+          id: id
+          targets:
+            key:
+              spec:
+                deployments:
+                  maxReplicas: 2
+                  scaleSettings:
+                    metrics:
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                  minReplicas: 3
+                  selectors:
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                deploymentScope: deploymentScope
+          slug: slug
+          spec:
+            networkInterfaces:
+            - network: network
+            - network: network
+            containers:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                env:
+                  key:
+                    secretValue: secretValue
+                    value: value
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                command:
+                - command
+                - command
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            virtualMachines:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                userData: userData
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            imagePullCredentials:
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            volumeClaimTemplates:
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+      properties:
+        workload:
+          $ref: '#/components/schemas/v1Workload'
+      type: object
+    v1DeploymentSpec:
+      description: A deployment's specification
+      example:
+        maxReplicas: 2
+        scaleSettings:
+          metrics:
+          - averageValue: averageValue
+            metric: metric
+            averageUtilization: 4
+          - averageValue: averageValue
+            metric: metric
+            averageUtilization: 4
+        minReplicas: 3
+        selectors:
+        - values:
+          - values
+          - values
+          key: key
+          operator: operator
+        - values:
+          - values
+          - values
+          key: key
+          operator: operator
+      properties:
+        minReplicas:
+          description: The minimum number of instances in a deployment
+          format: int32
+          type: integer
+        maxReplicas:
+          description: The maximum number of instances in a deployment
+          format: int32
+          type: integer
+        scaleSettings:
+          $ref: '#/components/schemas/v1ScaleSettings'
+        selectors:
+          description: A collection of filters that match the deployment's scope
+          items:
+            $ref: '#/components/schemas/v1MatchExpression'
+          type: array
+      type: object
+    v1DockerRegistryCredentials:
+      description: The authentication configuration that should be used to pull images
+        from a docker registry
+      example:
+        server: server
+        password: password
+        email: email
+        username: username
+      properties:
+        server:
+          description: |-
+            The server that the credentials should be used with
+
+            The server that the credentials should be used with. This value will default to the docker hub registry when not set.
+          type: string
+        username:
+          description: The username that should be used for authenticate the image
+            pull
+          type: string
+        password:
+          description: The password that should be used to authenticate the image
+            pull
+          type: string
+        email:
+          description: The email address to use for the docker registry account
+          type: string
+      type: object
+    v1EnvironmentVariable:
+      description: The location to obtain a value for an environment variable
+      example:
+        secretValue: secretValue
+        value: value
+      properties:
+        value:
+          description: An environment variable's value
+          type: string
+        secretValue:
+          description: A sensitive environment variable that should not be exposed
+          type: string
+      type: object
+    v1EnvironmentVariableMapEntry:
+      additionalProperties:
+        $ref: '#/components/schemas/v1EnvironmentVariable'
+      description: A string to environment variable key/value pair
+      type: object
+    v1GetImageResponse:
+      description: A response from a request to retrieve an individual image
+      example:
+        image:
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          description: description
+          id: id
+          tag: tag
+          imageSize: imageSize
+          family: family
+          deprecation:
+            deprecationDate: 2000-01-23T04:56:07.000+00:00
+            deletionDate: 2000-01-23T04:56:07.000+00:00
+            obsoletionDate: 2000-01-23T04:56:07.000+00:00
+          conditions:
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          volumeSize: volumeSize
+      properties:
+        image:
+          $ref: '#/components/schemas/v1Image'
+      type: object
+    v1GetImagesForFamilyResponse:
+      description: A response from a request to retrieve images by a family
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          description: description
+          id: id
+          tag: tag
+          imageSize: imageSize
+          family: family
+          deprecation:
+            deprecationDate: 2000-01-23T04:56:07.000+00:00
+            deletionDate: 2000-01-23T04:56:07.000+00:00
+            obsoletionDate: 2000-01-23T04:56:07.000+00:00
+          conditions:
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          volumeSize: volumeSize
+        - metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          description: description
+          id: id
+          tag: tag
+          imageSize: imageSize
+          family: family
+          deprecation:
+            deprecationDate: 2000-01-23T04:56:07.000+00:00
+            deletionDate: 2000-01-23T04:56:07.000+00:00
+            obsoletionDate: 2000-01-23T04:56:07.000+00:00
+          conditions:
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          volumeSize: volumeSize
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested images
+          items:
+            $ref: '#/components/schemas/v1Image'
+          type: array
+      type: object
+    v1GetImagesResponse:
+      description: A response from a request to retrieve images for a stack
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          description: description
+          id: id
+          tag: tag
+          imageSize: imageSize
+          family: family
+          deprecation:
+            deprecationDate: 2000-01-23T04:56:07.000+00:00
+            deletionDate: 2000-01-23T04:56:07.000+00:00
+            obsoletionDate: 2000-01-23T04:56:07.000+00:00
+          conditions:
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          volumeSize: volumeSize
+        - metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          description: description
+          id: id
+          tag: tag
+          imageSize: imageSize
+          family: family
+          deprecation:
+            deprecationDate: 2000-01-23T04:56:07.000+00:00
+            deletionDate: 2000-01-23T04:56:07.000+00:00
+            obsoletionDate: 2000-01-23T04:56:07.000+00:00
+          conditions:
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          volumeSize: volumeSize
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested images
+          items:
+            $ref: '#/components/schemas/v1Image'
+          type: array
+      type: object
+    v1GetLocationsResponse:
+      description: A response from a request to retrieve the locations a workload
+        may be created at
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - continent: continent
+          country: country
+          city: city
+          cityCode: cityCode
+          latitude: 0.8008281904610115
+          subdivision: subdivision
+          regionCode: regionCode
+          countryCode: countryCode
+          name: name
+          subdivisionCode: subdivisionCode
+          region: region
+          continentCode: continentCode
+          longitude: 6.027456183070403
+        - continent: continent
+          country: country
+          city: city
+          cityCode: cityCode
+          latitude: 0.8008281904610115
+          subdivision: subdivision
+          regionCode: regionCode
+          countryCode: countryCode
+          name: name
+          subdivisionCode: subdivisionCode
+          region: region
+          continentCode: continentCode
+          longitude: 6.027456183070403
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested locations
+          items:
+            $ref: '#/components/schemas/workloadv1Location'
+          type: array
+      type: object
+    v1GetWorkloadInstanceResponse:
+      description: A response from a request to retrieve a workload's instances
+      example:
+        instance:
+          reason: reason
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          containerStatuses:
+          - running:
+              startedAt: 2000-01-23T04:56:07.000+00:00
+            waiting:
+              reason: reason
+              message: message
+            restartCount: 6
+            ready: true
+            name: name
+            startedAt: 2000-01-23T04:56:07.000+00:00
+            containerId: containerId
+            terminated:
+              reason: reason
+              exitCode: 0
+              startedAt: 2000-01-23T04:56:07.000+00:00
+              message: message
+              finishedAt: 2000-01-23T04:56:07.000+00:00
+            finishedAt: 2000-01-23T04:56:07.000+00:00
+          - running:
+              startedAt: 2000-01-23T04:56:07.000+00:00
+            waiting:
+              reason: reason
+              message: message
+            restartCount: 6
+            ready: true
+            name: name
+            startedAt: 2000-01-23T04:56:07.000+00:00
+            containerId: containerId
+            terminated:
+              reason: reason
+              exitCode: 0
+              startedAt: 2000-01-23T04:56:07.000+00:00
+              message: message
+              finishedAt: 2000-01-23T04:56:07.000+00:00
+            finishedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          ipAddress: ipAddress
+          startedAt: 2000-01-23T04:56:07.000+00:00
+          resources:
+            requests:
+              key: requests
+            limits:
+              key: limits
+          virtualMachines:
+            key:
+              image: image
+              livenessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              userData: userData
+              readinessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+              ports:
+                key:
+                  protocol: protocol
+                  port: 0
+                  enableImplicitNetworkPolicy: true
+              volumeMounts:
+              - mountPath: mountPath
+                slug: slug
+              - mountPath: mountPath
+                slug: slug
+          message: message
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          deletedAt: 2000-01-23T04:56:07.000+00:00
+          networkInterfaces:
+          - ipAddressAliases:
+            - ipAddressAliases
+            - ipAddressAliases
+            ipAddress: ipAddress
+            gateway: gateway
+            network: network
+          - ipAddressAliases:
+            - ipAddressAliases
+            - ipAddressAliases
+            ipAddress: ipAddress
+            gateway: gateway
+            network: network
+          virtualMachineStatuses:
+          - reason: reason
+            name: name
+            message: message
+          - reason: reason
+            name: name
+            message: message
+          workloadId: workloadId
+          name: name
+          externalIpAddress: externalIpAddress
+          location:
+            continent: continent
+            country: country
+            city: city
+            cityCode: cityCode
+            latitude: 0.8008281904610115
+            subdivision: subdivision
+            regionCode: regionCode
+            countryCode: countryCode
+            name: name
+            subdivisionCode: subdivisionCode
+            region: region
+            continentCode: continentCode
+            longitude: 6.027456183070403
+          containers:
+            key:
+              image: image
+              livenessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              readinessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+              env:
+                key:
+                  secretValue: secretValue
+                  value: value
+              ports:
+                key:
+                  protocol: protocol
+                  port: 0
+                  enableImplicitNetworkPolicy: true
+              command:
+              - command
+              - command
+              volumeMounts:
+              - mountPath: mountPath
+                slug: slug
+              - mountPath: mountPath
+                slug: slug
+          id: id
+          scheduledAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        instance:
+          $ref: '#/components/schemas/workloadv1Instance'
+      type: object
+    v1GetWorkloadInstancesResponse:
+      description: A response from a request to retrieve a workload's instances
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - reason: reason
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          containerStatuses:
+          - running:
+              startedAt: 2000-01-23T04:56:07.000+00:00
+            waiting:
+              reason: reason
+              message: message
+            restartCount: 6
+            ready: true
+            name: name
+            startedAt: 2000-01-23T04:56:07.000+00:00
+            containerId: containerId
+            terminated:
+              reason: reason
+              exitCode: 0
+              startedAt: 2000-01-23T04:56:07.000+00:00
+              message: message
+              finishedAt: 2000-01-23T04:56:07.000+00:00
+            finishedAt: 2000-01-23T04:56:07.000+00:00
+          - running:
+              startedAt: 2000-01-23T04:56:07.000+00:00
+            waiting:
+              reason: reason
+              message: message
+            restartCount: 6
+            ready: true
+            name: name
+            startedAt: 2000-01-23T04:56:07.000+00:00
+            containerId: containerId
+            terminated:
+              reason: reason
+              exitCode: 0
+              startedAt: 2000-01-23T04:56:07.000+00:00
+              message: message
+              finishedAt: 2000-01-23T04:56:07.000+00:00
+            finishedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          ipAddress: ipAddress
+          startedAt: 2000-01-23T04:56:07.000+00:00
+          resources:
+            requests:
+              key: requests
+            limits:
+              key: limits
+          virtualMachines:
+            key:
+              image: image
+              livenessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              userData: userData
+              readinessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+              ports:
+                key:
+                  protocol: protocol
+                  port: 0
+                  enableImplicitNetworkPolicy: true
+              volumeMounts:
+              - mountPath: mountPath
+                slug: slug
+              - mountPath: mountPath
+                slug: slug
+          message: message
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          deletedAt: 2000-01-23T04:56:07.000+00:00
+          networkInterfaces:
+          - ipAddressAliases:
+            - ipAddressAliases
+            - ipAddressAliases
+            ipAddress: ipAddress
+            gateway: gateway
+            network: network
+          - ipAddressAliases:
+            - ipAddressAliases
+            - ipAddressAliases
+            ipAddress: ipAddress
+            gateway: gateway
+            network: network
+          virtualMachineStatuses:
+          - reason: reason
+            name: name
+            message: message
+          - reason: reason
+            name: name
+            message: message
+          workloadId: workloadId
+          name: name
+          externalIpAddress: externalIpAddress
+          location:
+            continent: continent
+            country: country
+            city: city
+            cityCode: cityCode
+            latitude: 0.8008281904610115
+            subdivision: subdivision
+            regionCode: regionCode
+            countryCode: countryCode
+            name: name
+            subdivisionCode: subdivisionCode
+            region: region
+            continentCode: continentCode
+            longitude: 6.027456183070403
+          containers:
+            key:
+              image: image
+              livenessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              readinessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+              env:
+                key:
+                  secretValue: secretValue
+                  value: value
+              ports:
+                key:
+                  protocol: protocol
+                  port: 0
+                  enableImplicitNetworkPolicy: true
+              command:
+              - command
+              - command
+              volumeMounts:
+              - mountPath: mountPath
+                slug: slug
+              - mountPath: mountPath
+                slug: slug
+          id: id
+          scheduledAt: 2000-01-23T04:56:07.000+00:00
+        - reason: reason
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          containerStatuses:
+          - running:
+              startedAt: 2000-01-23T04:56:07.000+00:00
+            waiting:
+              reason: reason
+              message: message
+            restartCount: 6
+            ready: true
+            name: name
+            startedAt: 2000-01-23T04:56:07.000+00:00
+            containerId: containerId
+            terminated:
+              reason: reason
+              exitCode: 0
+              startedAt: 2000-01-23T04:56:07.000+00:00
+              message: message
+              finishedAt: 2000-01-23T04:56:07.000+00:00
+            finishedAt: 2000-01-23T04:56:07.000+00:00
+          - running:
+              startedAt: 2000-01-23T04:56:07.000+00:00
+            waiting:
+              reason: reason
+              message: message
+            restartCount: 6
+            ready: true
+            name: name
+            startedAt: 2000-01-23T04:56:07.000+00:00
+            containerId: containerId
+            terminated:
+              reason: reason
+              exitCode: 0
+              startedAt: 2000-01-23T04:56:07.000+00:00
+              message: message
+              finishedAt: 2000-01-23T04:56:07.000+00:00
+            finishedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          ipAddress: ipAddress
+          startedAt: 2000-01-23T04:56:07.000+00:00
+          resources:
+            requests:
+              key: requests
+            limits:
+              key: limits
+          virtualMachines:
+            key:
+              image: image
+              livenessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              userData: userData
+              readinessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+              ports:
+                key:
+                  protocol: protocol
+                  port: 0
+                  enableImplicitNetworkPolicy: true
+              volumeMounts:
+              - mountPath: mountPath
+                slug: slug
+              - mountPath: mountPath
+                slug: slug
+          message: message
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          deletedAt: 2000-01-23T04:56:07.000+00:00
+          networkInterfaces:
+          - ipAddressAliases:
+            - ipAddressAliases
+            - ipAddressAliases
+            ipAddress: ipAddress
+            gateway: gateway
+            network: network
+          - ipAddressAliases:
+            - ipAddressAliases
+            - ipAddressAliases
+            ipAddress: ipAddress
+            gateway: gateway
+            network: network
+          virtualMachineStatuses:
+          - reason: reason
+            name: name
+            message: message
+          - reason: reason
+            name: name
+            message: message
+          workloadId: workloadId
+          name: name
+          externalIpAddress: externalIpAddress
+          location:
+            continent: continent
+            country: country
+            city: city
+            cityCode: cityCode
+            latitude: 0.8008281904610115
+            subdivision: subdivision
+            regionCode: regionCode
+            countryCode: countryCode
+            name: name
+            subdivisionCode: subdivisionCode
+            region: region
+            continentCode: continentCode
+            longitude: 6.027456183070403
+          containers:
+            key:
+              image: image
+              livenessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              readinessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+              env:
+                key:
+                  secretValue: secretValue
+                  value: value
+              ports:
+                key:
+                  protocol: protocol
+                  port: 0
+                  enableImplicitNetworkPolicy: true
+              command:
+              - command
+              - command
+              volumeMounts:
+              - mountPath: mountPath
+                slug: slug
+              - mountPath: mountPath
+                slug: slug
+          id: id
+          scheduledAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested workload instances
+          items:
+            $ref: '#/components/schemas/workloadv1Instance'
+          type: array
+      type: object
+    v1GetWorkloadResponse:
+      description: A response from a request to retrieve an individual workload
+      example:
+        workload:
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          name: name
+          id: id
+          targets:
+            key:
+              spec:
+                deployments:
+                  maxReplicas: 2
+                  scaleSettings:
+                    metrics:
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                  minReplicas: 3
+                  selectors:
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                deploymentScope: deploymentScope
+          slug: slug
+          spec:
+            networkInterfaces:
+            - network: network
+            - network: network
+            containers:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                env:
+                  key:
+                    secretValue: secretValue
+                    value: value
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                command:
+                - command
+                - command
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            virtualMachines:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                userData: userData
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            imagePullCredentials:
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            volumeClaimTemplates:
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+      properties:
+        workload:
+          $ref: '#/components/schemas/v1Workload'
+      type: object
+    v1GetWorkloadsResponse:
+      description: A response from a request to retrieve a stack's workloads
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          name: name
+          id: id
+          targets:
+            key:
+              spec:
+                deployments:
+                  maxReplicas: 2
+                  scaleSettings:
+                    metrics:
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                  minReplicas: 3
+                  selectors:
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                deploymentScope: deploymentScope
+          slug: slug
+          spec:
+            networkInterfaces:
+            - network: network
+            - network: network
+            containers:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                env:
+                  key:
+                    secretValue: secretValue
+                    value: value
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                command:
+                - command
+                - command
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            virtualMachines:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                userData: userData
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            imagePullCredentials:
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            volumeClaimTemplates:
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+        - metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          name: name
+          id: id
+          targets:
+            key:
+              spec:
+                deployments:
+                  maxReplicas: 2
+                  scaleSettings:
+                    metrics:
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                  minReplicas: 3
+                  selectors:
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                deploymentScope: deploymentScope
+          slug: slug
+          spec:
+            networkInterfaces:
+            - network: network
+            - network: network
+            containers:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                env:
+                  key:
+                    secretValue: secretValue
+                    value: value
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                command:
+                - command
+                - command
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            virtualMachines:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                userData: userData
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            imagePullCredentials:
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            volumeClaimTemplates:
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested workloads
+          items:
+            $ref: '#/components/schemas/v1Workload'
+          type: array
+      type: object
+    v1HTTPGetAction:
+      description: Execute an HTTP GET request against an endpoint running on an instance
+      example:
+        path: path
+        scheme: scheme
+        port: 6
+        httpHeaders:
+          key: httpHeaders
+      properties:
+        path:
+          description: The path portion of the URL to request
+          type: string
+        port:
+          description: The TCP port to query in the HTTP request
+          format: int32
+          type: integer
+        scheme:
+          description: HTTP scheme to use in the HTTP request
+          type: string
+        httpHeaders:
+          additionalProperties:
+            type: string
+          description: A string to string key/value pair
+          type: object
+      type: object
+    v1Image:
+      description: A virtual machine image
+      example:
+        metadata:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          annotations:
+            key: annotations
+          labels:
+            key: labels
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        stackId: stackId
+        description: description
+        id: id
+        tag: tag
+        imageSize: imageSize
+        family: family
+        deprecation:
+          deprecationDate: 2000-01-23T04:56:07.000+00:00
+          deletionDate: 2000-01-23T04:56:07.000+00:00
+          obsoletionDate: 2000-01-23T04:56:07.000+00:00
+        conditions:
+        - reason: reason
+          checkedAt: 2000-01-23T04:56:07.000+00:00
+          type: type
+          message: message
+          transitionedAt: 2000-01-23T04:56:07.000+00:00
+        - reason: reason
+          checkedAt: 2000-01-23T04:56:07.000+00:00
+          type: type
+          message: message
+          transitionedAt: 2000-01-23T04:56:07.000+00:00
+        volumeSize: volumeSize
+      properties:
+        stackId:
+          description: The ID of the stack that an image belongs to
+          readOnly: true
+          type: string
+        id:
+          description: An image's unique identifier
+          readOnly: true
+          type: string
+        family:
+          description: |-
+            An image's family
+
+            Families are logical groupings of images
+          type: string
+        tag:
+          description: |-
+            The image's tag
+
+            Image tags are akin to versions
+          type: string
+        metadata:
+          $ref: '#/components/schemas/v1ImageMetadata'
+        description:
+          description: |-
+            An image's description
+
+            This is optional and may not be more than 1,000 characters
+          type: string
+        status:
+          $ref: '#/components/schemas/v1ImageStatus'
+        imageSize:
+          description: |-
+            An image's archive size in bytes
+
+            This is only available on ready images
+          readOnly: true
+          type: string
+        volumeSize:
+          description: |-
+            An image's volume size in bytes
+
+            This is only available on ready images
+          readOnly: true
+          type: string
+        deprecation:
+          $ref: '#/components/schemas/v1ImageDeprecation'
+        conditions:
+          description: Details about an image's status
+          items:
+            $ref: '#/components/schemas/v1ImageCondition'
+          readOnly: true
+          type: array
+      type: object
+    v1ImageCondition:
+      description: Further information about an image's status
+      example:
+        reason: reason
+        checkedAt: 2000-01-23T04:56:07.000+00:00
+        type: type
+        message: message
+        transitionedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        type:
+          description: Type of the condition
+          type: string
+        status:
+          $ref: '#/components/schemas/v1ImageConditionStatus'
+        checkedAt:
+          description: The last time the condition was checked
+          format: date-time
+          type: string
+        transitionedAt:
+          description: The last time the condition transitioned status
+          format: date-time
+          type: string
+        reason:
+          description: A stable identifier for the reason the condition is in its
+            current state
+          type: string
+        message:
+          description: A human readable message with details regarding the condition
+          type: string
+      type: object
+    v1ImageConditionStatus:
+      default: IMAGE_CONDITION_STATUS_UNKNOWN
+      description: |-
+        Which status an image is currently in
+
+        - IMAGE_CONDITION_STATUS_UNKNOWN: The condition status is unknown
+         - TRUE: The condition is true
+         - FALSE: The condition is false
+      enum:
+      - IMAGE_CONDITION_STATUS_UNKNOWN
+      - "TRUE"
+      - "FALSE"
+      type: string
+    v1ImageDeprecation:
+      description: An image's deprecation settings
+      example:
+        deprecationDate: 2000-01-23T04:56:07.000+00:00
+        deletionDate: 2000-01-23T04:56:07.000+00:00
+        obsoletionDate: 2000-01-23T04:56:07.000+00:00
+      properties:
+        deprecationDate:
+          description: |-
+            The date when an image is considered deprecated
+
+            Deprecated images may be used in new virtual machine based workloads, but are no longer considered for the "default" tag, nor are they returned in image lists by default.
+          format: date-time
+          type: string
+        obsoletionDate:
+          description: |-
+            The date when an image is considered obsolete
+
+            Obsolete images may not be used in new virtual machine based workloads. If an obsoletion date is present then the deprecation date must also be present with a same or earlier date.
+          format: date-time
+          type: string
+        deletionDate:
+          description: |-
+            The date when an image is deleted
+
+            Deletion dates cannot be before an image's deprecation or obsoletion dates.
+          format: date-time
+          type: string
+      type: object
+    v1ImageMetadata:
+      description: An image's metadata
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        annotations:
+          key: annotations
+        labels:
+          key: labels
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        annotations:
+          additionalProperties:
+            type: string
+          description: A string to string key/value pair
+          type: object
+        labels:
+          additionalProperties:
+            type: string
+          description: A string to string key/value pair
+          type: object
+        createdAt:
+          description: |-
+            The date that a workload image was created
+
+            The date an image was created
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+        updatedAt:
+          description: |-
+            The date that a workload image was last updated
+
+            The date an image was last updated
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+      type: object
+    v1ImagePullCredential:
+      description: The credentials that should be used to pull the container image
+      example:
+        dockerRegistry:
+          server: server
+          password: password
+          email: email
+          username: username
+      properties:
+        dockerRegistry:
+          $ref: '#/components/schemas/v1DockerRegistryCredentials'
+      type: object
+    v1ImageSourceInstanceVolume:
+      description: A reference to the volume of an instance to capture an image from
+      properties:
+        workloadId:
+          description: The ID or slug of the workload containing the instance to reference
+          type: string
+        instanceName:
+          description: An instance's name to reference a volume on
+          type: string
+        volumeClaimSlug:
+          description: A reference to the volume to create an image from or unset
+            for the root volume
+          type: string
+      type: object
+    v1ImageStatus:
+      default: IMAGE_STATUS_UNKNOWN
+      description: |-
+        Which capture status an image is currently in
+
+        - IMAGE_STATUS_UNKNOWN: The image status is unknown
+         - PENDING: The image is pending creation
+         - PROCESSING: The image is processing
+         - READY: The image is ready
+         - FAILED: The image failed to be created
+      enum:
+      - IMAGE_STATUS_UNKNOWN
+      - PENDING
+      - PROCESSING
+      - READY
+      - FAILED
+      type: string
+    v1InstancePort:
+      description: A named port for an instance of a workload
+      example:
+        protocol: protocol
+        port: 0
+        enableImplicitNetworkPolicy: true
+      properties:
+        port:
+          description: The network port
+          format: int32
+          type: integer
+        protocol:
+          description: |-
+            The network protocol for the port
+
+            Values are either "TCP" or "UDP". Defaults to "TCP".
+          type: string
+        enableImplicitNetworkPolicy:
+          description: |-
+            Allow the internet to connect to the port
+
+            When true, this port will be given an implicit network policy of priority 65534 permitting 0.0.0.0/0 access to the port. This can be overridden by creating network policies of a higher priority to block the port.
+          format: boolean
+          type: boolean
+      type: object
+    v1InstancePortMapEntry:
+      additionalProperties:
+        $ref: '#/components/schemas/v1InstancePort'
+      description: A string to network port key/value pair
+      type: object
+    v1InstanceVolumeMount:
+      description: Describes mounting a volume on containers or vms in an instance
+      example:
+        mountPath: mountPath
+        slug: slug
+      properties:
+        slug:
+          description: The slug of the volume claim to mount
+          type: string
+        mountPath:
+          description: The path in an instance to mount a volume
+          type: string
+      type: object
+    v1LogChunk:
+      description: A chunk of raw log data
+      example:
+        bytes: bytes
+      properties:
+        bytes:
+          description: Raw log contents
+          format: byte
+          type: string
+      type: object
+    v1MatchExpression:
+      description: An expression to match selectors against a set of values
+      example:
+        values:
+        - values
+        - values
+        key: key
+        operator: operator
+      properties:
+        key:
+          description: The name of the selector to perform a match against
+          type: string
+        operator:
+          description: |-
+            The operation to perform to match a selector
+
+            Valid values are "In", "NotIn", "Exists", and "DoesNotExist".
+          type: string
+        values:
+          description: The values to match in the selector
+          items:
+            type: string
+          type: array
+      type: object
+    v1Metadata:
+      description: Metadata associated with an entity
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        annotations:
+          key: annotations
+        deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+        version: version
+        labels:
+          key: labels
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        annotations:
+          additionalProperties:
+            type: string
+          description: A string to string key/value pair
+          type: object
+        labels:
+          additionalProperties:
+            type: string
+          description: A string to string key/value pair
+          type: object
+        createdAt:
+          description: The date that a metadata entry was created
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+        updatedAt:
+          description: The date that a metadata entry was last updated
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+        deleteRequestedAt:
+          description: The date an entity was requested to be deleted
+          format: date-time
+          nullable: true
+          readOnly: true
+          type: string
+        version:
+          description: |-
+            A metadata entry's version number
+
+            Metadata versions start at 1 when they are created and increment by 1 every time they are updated.
+          type: string
+      type: object
+    v1MetricSpec:
+      example:
+        averageValue: averageValue
+        metric: metric
+        averageUtilization: 4
+      properties:
+        metric:
+          description: The metric to measure against
+          type: string
+        averageValue:
+          description: The target average value for the metric measured across all
+            instances within a deployment, expressed as a quantity.
+          type: string
+        averageUtilization:
+          description: The target average value for the metric measured across all
+            instances within a deployment, expressed as a percentage of requested
+            resources.
+          format: int32
+          type: integer
+      type: object
+    v1NetworkInterface:
+      description: Network interfaces that will be created on instances in the workload
+      example:
+        network: network
+      properties:
+        network:
+          description: A network interface's name
+          type: string
+      type: object
+    v1Probe:
+      description: A health check probe against a workload instance to determine if
+        it is alive or ready to receive traffic
+      example:
+        failureThreshold: 9
+        tcpSocket:
+          port: 1
+        timeoutSeconds: 5
+        periodSeconds: 2
+        successThreshold: 7
+        initialDelaySeconds: 5
+        httpGet:
+          path: path
+          scheme: scheme
+          port: 6
+          httpHeaders:
+            key: httpHeaders
+      properties:
+        httpGet:
+          $ref: '#/components/schemas/v1HTTPGetAction'
+        tcpSocket:
+          $ref: '#/components/schemas/v1TCPSocketAction'
+        initialDelaySeconds:
+          description: The number of seconds after a workload instance has started
+            before liveness probes are initiated
+          format: int32
+          type: integer
+        timeoutSeconds:
+          description: |-
+            The number of seconds after which a probe times out
+
+            Defaults to 1 second. Minimum value is 1.
+          format: int32
+          type: integer
+        periodSeconds:
+          description: |-
+            How often, in seconds, to perform a probe
+
+            Default to 10 seconds. Minimum value is 1.
+          format: int32
+          type: integer
+        successThreshold:
+          description: |-
+            The minimum consecutive successes for a probe to be considered successful after having failed
+
+            Defaults to 1. Must be 1 for liveness. Minimum value is 1.
+          format: int32
+          type: integer
+        failureThreshold:
+          description: |-
+            The minimum consecutive failures for a probe to be considered failed after having succeeded
+
+            Defaults to 3. Minimum value is 1.
+          format: int32
+          type: integer
+      type: object
+    v1ResourceRequirements:
+      description: |-
+        Resource requirements for an object
+
+        Resource requirements are key/value pairs.
+      example:
+        requests:
+          key: requests
+        limits:
+          key: limits
+      properties:
+        requests:
+          additionalProperties:
+            type: string
+          description: A string to string key/value pair
+          type: object
+        limits:
+          additionalProperties:
+            type: string
+          description: A string to string key/value pair
+          type: object
+      type: object
+    v1ScaleSettings:
+      example:
+        metrics:
+        - averageValue: averageValue
+          metric: metric
+          averageUtilization: 4
+        - averageValue: averageValue
+          metric: metric
+          averageUtilization: 4
+      properties:
+        metrics:
+          description: Metrics to observe for invoking scaling events.
+          items:
+            $ref: '#/components/schemas/v1MetricSpec'
+          type: array
+      type: object
+    v1StringMapEntry:
+      additionalProperties:
+        type: string
+      description: A string to string key/value pair
+      type: object
+    v1TCPSocketAction:
+      description: Connect to an instance's TCP port
+      example:
+        port: 1
+      properties:
+        port:
+          description: The TCP port to quert
+          format: int32
+          type: integer
+      type: object
+    v1Target:
+      description: How instances in a workload should be deployed
+      example:
+        spec:
+          deployments:
+            maxReplicas: 2
+            scaleSettings:
+              metrics:
+              - averageValue: averageValue
+                metric: metric
+                averageUtilization: 4
+              - averageValue: averageValue
+                metric: metric
+                averageUtilization: 4
+            minReplicas: 3
+            selectors:
+            - values:
+              - values
+              - values
+              key: key
+              operator: operator
+            - values:
+              - values
+              - values
+              key: key
+              operator: operator
+          deploymentScope: deploymentScope
+      properties:
+        spec:
+          $ref: '#/components/schemas/v1TargetSpec'
+      type: object
+    v1TargetMapEntry:
+      additionalProperties:
+        $ref: '#/components/schemas/v1Target'
+      description: A string to deployment target key/value pair
+      type: object
+    v1TargetSpec:
+      description: The specification for a target
+      example:
+        deployments:
+          maxReplicas: 2
+          scaleSettings:
+            metrics:
+            - averageValue: averageValue
+              metric: metric
+              averageUtilization: 4
+            - averageValue: averageValue
+              metric: metric
+              averageUtilization: 4
+          minReplicas: 3
+          selectors:
+          - values:
+            - values
+            - values
+            key: key
+            operator: operator
+          - values:
+            - values
+            - values
+            key: key
+            operator: operator
+        deploymentScope: deploymentScope
+      properties:
+        deploymentScope:
+          description: 'The scope at which a deployment should be created. Valid values
+            are: "cityCode"'
+          type: string
+        deployments:
+          $ref: '#/components/schemas/v1DeploymentSpec'
+      type: object
+    v1UpdateImageDeprecationResponse:
+      description: A response from a request to update image deprecation settings
+      example:
+        image:
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          description: description
+          id: id
+          tag: tag
+          imageSize: imageSize
+          family: family
+          deprecation:
+            deprecationDate: 2000-01-23T04:56:07.000+00:00
+            deletionDate: 2000-01-23T04:56:07.000+00:00
+            obsoletionDate: 2000-01-23T04:56:07.000+00:00
+          conditions:
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          volumeSize: volumeSize
+      properties:
+        image:
+          $ref: '#/components/schemas/v1Image'
+      type: object
+    v1UpdateImageRequest:
+      properties:
+        image:
+          $ref: '#/components/schemas/v1Image'
+      type: object
+    v1UpdateImageResponse:
+      description: A response from a request to update an image
+      example:
+        image:
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          description: description
+          id: id
+          tag: tag
+          imageSize: imageSize
+          family: family
+          deprecation:
+            deprecationDate: 2000-01-23T04:56:07.000+00:00
+            deletionDate: 2000-01-23T04:56:07.000+00:00
+            obsoletionDate: 2000-01-23T04:56:07.000+00:00
+          conditions:
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          - reason: reason
+            checkedAt: 2000-01-23T04:56:07.000+00:00
+            type: type
+            message: message
+            transitionedAt: 2000-01-23T04:56:07.000+00:00
+          volumeSize: volumeSize
+      properties:
+        image:
+          $ref: '#/components/schemas/v1Image'
+      type: object
+    v1UpdateWorkloadRequest:
+      properties:
+        workload:
+          $ref: '#/components/schemas/v1Workload'
+      type: object
+    v1UpdateWorkloadResponse:
+      description: A response from a request to update a workload
+      example:
+        workload:
+          metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          name: name
+          id: id
+          targets:
+            key:
+              spec:
+                deployments:
+                  maxReplicas: 2
+                  scaleSettings:
+                    metrics:
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                    - averageValue: averageValue
+                      metric: metric
+                      averageUtilization: 4
+                  minReplicas: 3
+                  selectors:
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                  - values:
+                    - values
+                    - values
+                    key: key
+                    operator: operator
+                deploymentScope: deploymentScope
+          slug: slug
+          spec:
+            networkInterfaces:
+            - network: network
+            - network: network
+            containers:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                env:
+                  key:
+                    secretValue: secretValue
+                    value: value
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                command:
+                - command
+                - command
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            virtualMachines:
+              key:
+                image: image
+                livenessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                userData: userData
+                readinessProbe:
+                  failureThreshold: 9
+                  tcpSocket:
+                    port: 1
+                  timeoutSeconds: 5
+                  periodSeconds: 2
+                  successThreshold: 7
+                  initialDelaySeconds: 5
+                  httpGet:
+                    path: path
+                    scheme: scheme
+                    port: 6
+                    httpHeaders:
+                      key: httpHeaders
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+                ports:
+                  key:
+                    protocol: protocol
+                    port: 0
+                    enableImplicitNetworkPolicy: true
+                volumeMounts:
+                - mountPath: mountPath
+                  slug: slug
+                - mountPath: mountPath
+                  slug: slug
+            imagePullCredentials:
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            - dockerRegistry:
+                server: server
+                password: password
+                email: email
+                username: username
+            volumeClaimTemplates:
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+            - metadata:
+                createdAt: 2000-01-23T04:56:07.000+00:00
+                annotations:
+                  key: annotations
+                deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+                version: version
+                labels:
+                  key: labels
+                updatedAt: 2000-01-23T04:56:07.000+00:00
+              stackId: stackId
+              name: name
+              id: id
+              slug: slug
+              spec:
+                resources:
+                  requests:
+                    key: requests
+                  limits:
+                    key: limits
+      properties:
+        workload:
+          $ref: '#/components/schemas/v1Workload'
+      type: object
+    v1VirtualMachineSpec:
+      description: The specification for the desired state of a virtual machine in
+        a workload
+      example:
+        image: image
+        livenessProbe:
+          failureThreshold: 9
+          tcpSocket:
+            port: 1
+          timeoutSeconds: 5
+          periodSeconds: 2
+          successThreshold: 7
+          initialDelaySeconds: 5
+          httpGet:
+            path: path
+            scheme: scheme
+            port: 6
+            httpHeaders:
+              key: httpHeaders
+        userData: userData
+        readinessProbe:
+          failureThreshold: 9
+          tcpSocket:
+            port: 1
+          timeoutSeconds: 5
+          periodSeconds: 2
+          successThreshold: 7
+          initialDelaySeconds: 5
+          httpGet:
+            path: path
+            scheme: scheme
+            port: 6
+            httpHeaders:
+              key: httpHeaders
+        resources:
+          requests:
+            key: requests
+          limits:
+            key: limits
+        ports:
+          key:
+            protocol: protocol
+            port: 0
+            enableImplicitNetworkPolicy: true
+        volumeMounts:
+        - mountPath: mountPath
+          slug: slug
+        - mountPath: mountPath
+          slug: slug
+      properties:
+        image:
+          description: |-
+            The image to use for the virtual machine
+
+            This is in the format of <stack-slug>/<image-family>[:<image-tag>]. If the image tag portion is omitted, 'default' is assumed which is the most recently created, ready, and non-deprecated image of that slug. A set of common images is present on the 'stackpath-edge' stack.
+          type: string
+        userData:
+          description: Base64 encoded cloud-init compatible user-data
+          format: base64
+          type: string
+        ports:
+          additionalProperties:
+            $ref: '#/components/schemas/v1InstancePort'
+          description: A string to network port key/value pair
+          type: object
+        livenessProbe:
+          $ref: '#/components/schemas/v1Probe'
+        readinessProbe:
+          $ref: '#/components/schemas/v1Probe'
+        resources:
+          $ref: '#/components/schemas/v1ResourceRequirements'
+        volumeMounts:
+          description: Volumes to mount in the virtual machine
+          items:
+            $ref: '#/components/schemas/v1InstanceVolumeMount'
+          type: array
+      type: object
+    v1VirtualMachineSpecMapEntry:
+      additionalProperties:
+        $ref: '#/components/schemas/v1VirtualMachineSpec'
+      description: A string to virtual machine configuration key/value pair
+      type: object
+    v1VirtualMachineStatus:
+      description: The status of a Virtual Machine
+      example:
+        reason: reason
+        name: name
+        message: message
+      properties:
+        name:
+          description: The name of the virtual machine the status applies to
+          type: string
+        phase:
+          $ref: '#/components/schemas/VirtualMachineStatusPhase'
+        reason:
+          description: A short reason why the virtual machine is in its current phase
+          type: string
+        message:
+          description: A longer message with details about why the virtual machine
+            is in its current phase
+          type: string
+      type: object
+    v1VolumeClaim:
+      description: |-
+        A claim for a volume
+
+        Volumes may be attached to workload instance containers or virtual machines
+      example:
+        metadata:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          annotations:
+            key: annotations
+          deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+          version: version
+          labels:
+            key: labels
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        stackId: stackId
+        name: name
+        id: id
+        slug: slug
+        spec:
+          resources:
+            requests:
+              key: requests
+            limits:
+              key: limits
+      properties:
+        stackId:
+          description: The ID of the stack that a volume claim belongs to
+          readOnly: true
+          type: string
+        id:
+          description: A volume claim's unique identifier
+          readOnly: true
+          type: string
+        name:
+          description: A volume claim's name as it appears in the StackPath portal
+          type: string
+        slug:
+          description: |-
+            A volume claim's programmatic name
+
+            Volume claim slugs are used to programatically label a claim
+          type: string
+        metadata:
+          $ref: '#/components/schemas/v1Metadata'
+        spec:
+          $ref: '#/components/schemas/v1VolumeClaimSpec'
+        phase:
+          $ref: '#/components/schemas/VolumeClaimVolumeClaimPhase'
+      type: object
+    v1VolumeClaimSpec:
+      description: The specification for a volume claim
+      example:
+        resources:
+          requests:
+            key: requests
+          limits:
+            key: limits
+      properties:
+        resources:
+          $ref: '#/components/schemas/v1ResourceRequirements'
+      type: object
+    v1Workload:
+      description: |-
+        A computing workload
+
+        Workloads define a computing application to deploy to StackPath's edge network.
+      example:
+        metadata:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          annotations:
+            key: annotations
+          deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+          version: version
+          labels:
+            key: labels
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        stackId: stackId
+        name: name
+        id: id
+        targets:
+          key:
+            spec:
+              deployments:
+                maxReplicas: 2
+                scaleSettings:
+                  metrics:
+                  - averageValue: averageValue
+                    metric: metric
+                    averageUtilization: 4
+                  - averageValue: averageValue
+                    metric: metric
+                    averageUtilization: 4
+                minReplicas: 3
+                selectors:
+                - values:
+                  - values
+                  - values
+                  key: key
+                  operator: operator
+                - values:
+                  - values
+                  - values
+                  key: key
+                  operator: operator
+              deploymentScope: deploymentScope
+        slug: slug
+        spec:
+          networkInterfaces:
+          - network: network
+          - network: network
+          containers:
+            key:
+              image: image
+              livenessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              readinessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+              env:
+                key:
+                  secretValue: secretValue
+                  value: value
+              ports:
+                key:
+                  protocol: protocol
+                  port: 0
+                  enableImplicitNetworkPolicy: true
+              command:
+              - command
+              - command
+              volumeMounts:
+              - mountPath: mountPath
+                slug: slug
+              - mountPath: mountPath
+                slug: slug
+          virtualMachines:
+            key:
+              image: image
+              livenessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              userData: userData
+              readinessProbe:
+                failureThreshold: 9
+                tcpSocket:
+                  port: 1
+                timeoutSeconds: 5
+                periodSeconds: 2
+                successThreshold: 7
+                initialDelaySeconds: 5
+                httpGet:
+                  path: path
+                  scheme: scheme
+                  port: 6
+                  httpHeaders:
+                    key: httpHeaders
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+              ports:
+                key:
+                  protocol: protocol
+                  port: 0
+                  enableImplicitNetworkPolicy: true
+              volumeMounts:
+              - mountPath: mountPath
+                slug: slug
+              - mountPath: mountPath
+                slug: slug
+          imagePullCredentials:
+          - dockerRegistry:
+              server: server
+              password: password
+              email: email
+              username: username
+          - dockerRegistry:
+              server: server
+              password: password
+              email: email
+              username: username
+          volumeClaimTemplates:
+          - metadata:
+              createdAt: 2000-01-23T04:56:07.000+00:00
+              annotations:
+                key: annotations
+              deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+              version: version
+              labels:
+                key: labels
+              updatedAt: 2000-01-23T04:56:07.000+00:00
+            stackId: stackId
+            name: name
+            id: id
+            slug: slug
+            spec:
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+          - metadata:
+              createdAt: 2000-01-23T04:56:07.000+00:00
+              annotations:
+                key: annotations
+              deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+              version: version
+              labels:
+                key: labels
+              updatedAt: 2000-01-23T04:56:07.000+00:00
+            stackId: stackId
+            name: name
+            id: id
+            slug: slug
+            spec:
+              resources:
+                requests:
+                  key: requests
+                limits:
+                  key: limits
+      properties:
+        stackId:
+          description: The ID of the stack that a workload belongs to
+          readOnly: true
+          type: string
+        id:
+          description: A workload's unique identifier
+          readOnly: true
+          type: string
+        name:
+          description: A workload's name as it appears in the StackPath portal
+          type: string
+        slug:
+          description: |-
+            A workload's programmatic name
+
+            Workload slugs are used to build its instances names
+          type: string
+        metadata:
+          $ref: '#/components/schemas/v1Metadata'
+        spec:
+          $ref: '#/components/schemas/v1WorkloadSpec'
+        targets:
+          additionalProperties:
+            $ref: '#/components/schemas/v1Target'
+          description: A string to deployment target key/value pair
+          type: object
+        status:
+          $ref: '#/components/schemas/v1WorkloadStatus'
+      type: object
+    v1WorkloadSpec:
+      description: The specification for the desired state of a workload
+      example:
+        networkInterfaces:
+        - network: network
+        - network: network
+        containers:
+          key:
+            image: image
+            livenessProbe:
+              failureThreshold: 9
+              tcpSocket:
+                port: 1
+              timeoutSeconds: 5
+              periodSeconds: 2
+              successThreshold: 7
+              initialDelaySeconds: 5
+              httpGet:
+                path: path
+                scheme: scheme
+                port: 6
+                httpHeaders:
+                  key: httpHeaders
+            readinessProbe:
+              failureThreshold: 9
+              tcpSocket:
+                port: 1
+              timeoutSeconds: 5
+              periodSeconds: 2
+              successThreshold: 7
+              initialDelaySeconds: 5
+              httpGet:
+                path: path
+                scheme: scheme
+                port: 6
+                httpHeaders:
+                  key: httpHeaders
+            resources:
+              requests:
+                key: requests
+              limits:
+                key: limits
+            env:
+              key:
+                secretValue: secretValue
+                value: value
+            ports:
+              key:
+                protocol: protocol
+                port: 0
+                enableImplicitNetworkPolicy: true
+            command:
+            - command
+            - command
+            volumeMounts:
+            - mountPath: mountPath
+              slug: slug
+            - mountPath: mountPath
+              slug: slug
+        virtualMachines:
+          key:
+            image: image
+            livenessProbe:
+              failureThreshold: 9
+              tcpSocket:
+                port: 1
+              timeoutSeconds: 5
+              periodSeconds: 2
+              successThreshold: 7
+              initialDelaySeconds: 5
+              httpGet:
+                path: path
+                scheme: scheme
+                port: 6
+                httpHeaders:
+                  key: httpHeaders
+            userData: userData
+            readinessProbe:
+              failureThreshold: 9
+              tcpSocket:
+                port: 1
+              timeoutSeconds: 5
+              periodSeconds: 2
+              successThreshold: 7
+              initialDelaySeconds: 5
+              httpGet:
+                path: path
+                scheme: scheme
+                port: 6
+                httpHeaders:
+                  key: httpHeaders
+            resources:
+              requests:
+                key: requests
+              limits:
+                key: limits
+            ports:
+              key:
+                protocol: protocol
+                port: 0
+                enableImplicitNetworkPolicy: true
+            volumeMounts:
+            - mountPath: mountPath
+              slug: slug
+            - mountPath: mountPath
+              slug: slug
+        imagePullCredentials:
+        - dockerRegistry:
+            server: server
+            password: password
+            email: email
+            username: username
+        - dockerRegistry:
+            server: server
+            password: password
+            email: email
+            username: username
+        volumeClaimTemplates:
+        - metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          name: name
+          id: id
+          slug: slug
+          spec:
+            resources:
+              requests:
+                key: requests
+              limits:
+                key: limits
+        - metadata:
+            createdAt: 2000-01-23T04:56:07.000+00:00
+            annotations:
+              key: annotations
+            deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+            version: version
+            labels:
+              key: labels
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          stackId: stackId
+          name: name
+          id: id
+          slug: slug
+          spec:
+            resources:
+              requests:
+                key: requests
+              limits:
+                key: limits
+      properties:
+        networkInterfaces:
+          description: Network interfaces to bind to the workload's instances
+          items:
+            $ref: '#/components/schemas/v1NetworkInterface'
+          type: array
+        containers:
+          additionalProperties:
+            $ref: '#/components/schemas/v1ContainerSpec'
+          description: A string to container configuration key/value pair
+          type: object
+        virtualMachines:
+          additionalProperties:
+            $ref: '#/components/schemas/v1VirtualMachineSpec'
+          description: A string to virtual machine configuration key/value pair
+          type: object
+        volumeClaimTemplates:
+          description: |-
+            A list of claims that instances may reference
+
+            The slug of the claim will be used in combination with the name of the instance to create a stable identifier. The slug should be used in the volume mount specifications for containers and VMs.
+          items:
+            $ref: '#/components/schemas/v1VolumeClaim'
+          type: array
+        imagePullCredentials:
+          description: The credentials needed to pull a container image
+          items:
+            $ref: '#/components/schemas/v1ImagePullCredential'
+          type: array
+      type: object
+    v1WorkloadStatus:
+      default: ACTIVE
+      description: |-
+        Which status a workload is currently in
+
+        - ACTIVE: The workload is active
+         - SUSPENDED: The workload is suspended
+         - BILLING_SUSPENDED: The workload is suspended due to non-payment
+         - INACTIVE: The workload is inactive or has been deleted
+      enum:
+      - ACTIVE
+      - SUSPENDED
+      - BILLING_SUSPENDED
+      - INACTIVE
+      type: string
+    v1WrappedImagePullCredentials:
+      description: The credentials needed to pull a container image
+      items:
+        $ref: '#/components/schemas/v1ImagePullCredential'
+      type: array
+    workloadv1Instance:
+      description: An instance of a workload deployment
+      example:
+        reason: reason
+        metadata:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          annotations:
+            key: annotations
+          deleteRequestedAt: 2000-01-23T04:56:07.000+00:00
+          version: version
+          labels:
+            key: labels
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        containerStatuses:
+        - running:
+            startedAt: 2000-01-23T04:56:07.000+00:00
+          waiting:
+            reason: reason
+            message: message
+          restartCount: 6
+          ready: true
+          name: name
+          startedAt: 2000-01-23T04:56:07.000+00:00
+          containerId: containerId
+          terminated:
+            reason: reason
+            exitCode: 0
+            startedAt: 2000-01-23T04:56:07.000+00:00
+            message: message
+            finishedAt: 2000-01-23T04:56:07.000+00:00
+          finishedAt: 2000-01-23T04:56:07.000+00:00
+        - running:
+            startedAt: 2000-01-23T04:56:07.000+00:00
+          waiting:
+            reason: reason
+            message: message
+          restartCount: 6
+          ready: true
+          name: name
+          startedAt: 2000-01-23T04:56:07.000+00:00
+          containerId: containerId
+          terminated:
+            reason: reason
+            exitCode: 0
+            startedAt: 2000-01-23T04:56:07.000+00:00
+            message: message
+            finishedAt: 2000-01-23T04:56:07.000+00:00
+          finishedAt: 2000-01-23T04:56:07.000+00:00
+        stackId: stackId
+        ipAddress: ipAddress
+        startedAt: 2000-01-23T04:56:07.000+00:00
+        resources:
+          requests:
+            key: requests
+          limits:
+            key: limits
+        virtualMachines:
+          key:
+            image: image
+            livenessProbe:
+              failureThreshold: 9
+              tcpSocket:
+                port: 1
+              timeoutSeconds: 5
+              periodSeconds: 2
+              successThreshold: 7
+              initialDelaySeconds: 5
+              httpGet:
+                path: path
+                scheme: scheme
+                port: 6
+                httpHeaders:
+                  key: httpHeaders
+            userData: userData
+            readinessProbe:
+              failureThreshold: 9
+              tcpSocket:
+                port: 1
+              timeoutSeconds: 5
+              periodSeconds: 2
+              successThreshold: 7
+              initialDelaySeconds: 5
+              httpGet:
+                path: path
+                scheme: scheme
+                port: 6
+                httpHeaders:
+                  key: httpHeaders
+            resources:
+              requests:
+                key: requests
+              limits:
+                key: limits
+            ports:
+              key:
+                protocol: protocol
+                port: 0
+                enableImplicitNetworkPolicy: true
+            volumeMounts:
+            - mountPath: mountPath
+              slug: slug
+            - mountPath: mountPath
+              slug: slug
+        message: message
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        deletedAt: 2000-01-23T04:56:07.000+00:00
+        networkInterfaces:
+        - ipAddressAliases:
+          - ipAddressAliases
+          - ipAddressAliases
+          ipAddress: ipAddress
+          gateway: gateway
+          network: network
+        - ipAddressAliases:
+          - ipAddressAliases
+          - ipAddressAliases
+          ipAddress: ipAddress
+          gateway: gateway
+          network: network
+        virtualMachineStatuses:
+        - reason: reason
+          name: name
+          message: message
+        - reason: reason
+          name: name
+          message: message
+        workloadId: workloadId
+        name: name
+        externalIpAddress: externalIpAddress
+        location:
+          continent: continent
+          country: country
+          city: city
+          cityCode: cityCode
+          latitude: 0.8008281904610115
+          subdivision: subdivision
+          regionCode: regionCode
+          countryCode: countryCode
+          name: name
+          subdivisionCode: subdivisionCode
+          region: region
+          continentCode: continentCode
+          longitude: 6.027456183070403
+        containers:
+          key:
+            image: image
+            livenessProbe:
+              failureThreshold: 9
+              tcpSocket:
+                port: 1
+              timeoutSeconds: 5
+              periodSeconds: 2
+              successThreshold: 7
+              initialDelaySeconds: 5
+              httpGet:
+                path: path
+                scheme: scheme
+                port: 6
+                httpHeaders:
+                  key: httpHeaders
+            readinessProbe:
+              failureThreshold: 9
+              tcpSocket:
+                port: 1
+              timeoutSeconds: 5
+              periodSeconds: 2
+              successThreshold: 7
+              initialDelaySeconds: 5
+              httpGet:
+                path: path
+                scheme: scheme
+                port: 6
+                httpHeaders:
+                  key: httpHeaders
+            resources:
+              requests:
+                key: requests
+              limits:
+                key: limits
+            env:
+              key:
+                secretValue: secretValue
+                value: value
+            ports:
+              key:
+                protocol: protocol
+                port: 0
+                enableImplicitNetworkPolicy: true
+            command:
+            - command
+            - command
+            volumeMounts:
+            - mountPath: mountPath
+              slug: slug
+            - mountPath: mountPath
+              slug: slug
+        id: id
+        scheduledAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        stackId:
+          description: The ID of the stack that an instance belongs to
+          type: string
+        workloadId:
+          description: The ID of the workload that an instance belongs to
+          type: string
+        id:
+          description: An instance's unique identifier
+          type: string
+        name:
+          description: |-
+            An instance's name
+
+            Instance names are generated from their corresponsing workload's slug, followed by a unique hash
+          type: string
+        metadata:
+          $ref: '#/components/schemas/v1Metadata'
+        location:
+          $ref: '#/components/schemas/workloadv1Location'
+        phase:
+          $ref: '#/components/schemas/workloadv1InstanceInstancePhase'
+        ipAddress:
+          description: An instance's IP address
+          type: string
+        externalIpAddress:
+          description: An instance's publicly accessible IP address
+          type: string
+        createdAt:
+          description: The date an instance was created
+          format: date-time
+          type: string
+        startedAt:
+          description: The date an instance was started
+          format: date-time
+          type: string
+        deletedAt:
+          description: The date an instance was deleted
+          format: date-time
+          type: string
+        networkInterfaces:
+          description: An instance's network interfaces
+          items:
+            $ref: '#/components/schemas/workloadv1NetworkInterfaceStatus'
+          type: array
+        resources:
+          $ref: '#/components/schemas/v1ResourceRequirements'
+        containers:
+          additionalProperties:
+            $ref: '#/components/schemas/v1ContainerSpec'
+          description: A string to container configuration key/value pair
+          type: object
+        containerStatuses:
+          description: Status of the containers running within the workload instance
+          items:
+            $ref: '#/components/schemas/v1ContainerStatus'
+          type: array
+        virtualMachines:
+          additionalProperties:
+            $ref: '#/components/schemas/v1VirtualMachineSpec'
+          description: A string to virtual machine configuration key/value pair
+          type: object
+        virtualMachineStatuses:
+          description: The status of the virtual machines running within the workload
+            instance
+          items:
+            $ref: '#/components/schemas/v1VirtualMachineStatus'
+          type: array
+        reason:
+          description: A short reason that explains why an instance is in a phase
+          type: string
+        message:
+          description: A longer message that provides more detail on why an instance
+            is in a phase
+          type: string
+        scheduledAt:
+          description: The date an instance was scheduled
+          format: date-time
+          type: string
+      type: object
+    workloadv1InstanceInstancePhase:
+      default: INSTANCE_PHASE_UNSPECIFIED
+      description: |-
+        An instance's startup state
+
+        - INSTANCE_PHASE_UNSPECIFIED: StackPath is unable to determine the instance's startup state
+         - STARTING: The instance is still initializing
+         - RUNNING: The instance is running
+         - FAILED: The instance failed to start
+         - COMPLETED: The instance finished running
+         - SCHEDULING: The instance is being scheduled
+         - STOPPED: The instance is stopped
+      enum:
+      - INSTANCE_PHASE_UNSPECIFIED
+      - STARTING
+      - RUNNING
+      - FAILED
+      - COMPLETED
+      - SCHEDULING
+      - STOPPED
+      type: string
+    workloadv1Location:
+      description: Geographic location information
+      example:
+        continent: continent
+        country: country
+        city: city
+        cityCode: cityCode
+        latitude: 0.8008281904610115
+        subdivision: subdivision
+        regionCode: regionCode
+        countryCode: countryCode
+        name: name
+        subdivisionCode: subdivisionCode
+        region: region
+        continentCode: continentCode
+        longitude: 6.027456183070403
+      properties:
+        name:
+          description: A human readable location name
+          type: string
+        city:
+          description: A location's city
+          type: string
+        cityCode:
+          description: A location's city, expressed as an IATA airport code
+          type: string
+        subdivision:
+          description: A location's subdivision
+          type: string
+        subdivisionCode:
+          description: A location's subdivision code
+          type: string
+        country:
+          description: A location's country
+          type: string
+        countryCode:
+          description: A location's ISO-3166-1 alpha-2 country code
+          type: string
+        region:
+          description: A location's state or province
+          type: string
+        regionCode:
+          description: A location's ISO-3166-2 region code
+          type: string
+        continent:
+          description: A location's continent
+          type: string
+        continentCode:
+          description: A location's continent code
+          type: string
+        latitude:
+          description: A location's geographic latitude
+          format: double
+          type: number
+        longitude:
+          description: A location's geographic longitude
+          format: double
+          type: number
+      type: object
+    workloadv1NetworkInterfaceStatus:
+      description: Network interfaces that are attached to an instance in a workload
+      example:
+        ipAddressAliases:
+        - ipAddressAliases
+        - ipAddressAliases
+        ipAddress: ipAddress
+        gateway: gateway
+        network: network
+      properties:
+        network:
+          description: A network interface's name
+          type: string
+        ipAddress:
+          description: A network interface's primary IP address
+          type: string
+        ipAddressAliases:
+          description: Additional IP addresses bound to a network interface
+          items:
+            type: string
+          type: array
+        gateway:
+          description: A network interface's gateway address
+          type: string
+      type: object
+    stackpath_rpc_BadRequest_allOf:
+      properties:
+        fieldViolations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.BadRequest.FieldViolation'
+          type: array
+    stackpath_rpc_Help_allOf:
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.Help.Link'
+          type: array
+    stackpath_rpc_LocalizedMessage_allOf:
+      properties:
+        locale:
+          type: string
+        message:
+          type: string
+    stackpath_rpc_PreconditionFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.PreconditionFailure.Violation'
+          type: array
+    stackpath_rpc_QuotaFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.QuotaFailure.Violation'
+          type: array
+    stackpath_rpc_RequestInfo_allOf:
+      properties:
+        requestId:
+          type: string
+        servingData:
+          type: string
+    stackpath_rpc_ResourceInfo_allOf:
+      properties:
+        resourceType:
+          type: string
+        resourceName:
+          type: string
+        owner:
+          type: string
+        description:
+          type: string
+    stackpath_rpc_RetryInfo_allOf:
+      properties:
+        retryDelay:
+          type: string
+  securitySchemes:
+    oauth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://gateway.stackpath.com/identity/v1/oauth2/token
+      type: oauth2
+x-explorer-enabled: true
+x-proxy-enabled: true
+x-samples-enabled: true
+x-samples-languages:
+- curl
+- node
+- ruby
+- javascript
+- python

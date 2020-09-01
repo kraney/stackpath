@@ -1,0 +1,1592 @@
+openapi: 3.0.0
+info:
+  contact:
+    name: StackPath Support
+    url: https://support.stackpath.com/
+  title: Accounts and Users
+  version: 1.0.0
+externalDocs:
+  description: The StackPath API Reference
+  url: https://stackpath.dev/reference
+servers:
+- url: https://gateway.stackpath.com
+security:
+- oauth2: []
+paths:
+  /identity/v1/accounts/{account_id}:
+    get:
+      operationId: GetAccount
+      parameters:
+      - description: An account ID
+        explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityGetAccountResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get an account
+      tags:
+      - Accounts
+  /identity/v1/accounts/{account_id}/iam/policy:
+    get:
+      operationId: GetIAMPolicy
+      parameters:
+      - description: An account ID
+        explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityGetIAMPolicyResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all account policies
+      tags:
+      - Account Policies
+    put:
+      operationId: SetIAMPolicy
+      parameters:
+      - description: An account ID
+        explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identitySetIAMPolicyRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identitySetIAMPolicyResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update account policies
+      tags:
+      - Account Policies
+  /identity/v1/accounts/{account_id}/iam/test:
+    post:
+      operationId: TestIAMPermissions
+      parameters:
+      - description: An account ID
+        explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identityTestIAMPermissionsRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityTestIAMPermissionsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Test account policies
+      tags:
+      - Account Policies
+  /identity/v1/accounts/{account_id}/users:
+    get:
+      operationId: GetAccountUsers
+      parameters:
+      - description: An account ID
+        explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityGetAccountUsersResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all users
+      tags:
+      - Users
+    post:
+      description: The new user will receive an email to set their password.
+      operationId: CreateUser
+      parameters:
+      - description: An account ID
+        explode: false
+        in: path
+        name: account_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identityCreateUserRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityCreateUserResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Create a user
+      tags:
+      - Users
+  /identity/v1/oauth2/token:
+    post:
+      description: Authenticate to the StackPath API. Use the resulting bearer token
+        to authorize other StackPath API calls. API credentials can be generated in
+        the [StackPath customer portal](https://control.stackpath.com/).
+      operationId: GetAccessToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identityGetAccessTokenRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityGetAccessTokenResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      security: []
+      summary: Generate a bearer token
+      tags:
+      - Authentication
+  /identity/v1/users/{user_id}:
+    delete:
+      operationId: DeleteUser
+      parameters:
+      - description: A user ID
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Delete a user
+      tags:
+      - Users
+    get:
+      operationId: GetUser
+      parameters:
+      - description: A user ID
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityGetUserResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "404":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Not found.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get a user
+      tags:
+      - Users
+    patch:
+      description: Update a user's non-essential properties, such as their phone number.
+      operationId: UpdateUser
+      parameters:
+      - description: A user ID
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identityUpdateUserRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityUpdateUserResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update a user
+      tags:
+      - Users
+  /identity/v1/users/{user_id}/change_email:
+    post:
+      description: This immediately invalidates the user's StackPath customer portal
+        logins and API tokens.
+      operationId: ChangeUserEmail
+      parameters:
+      - description: A user ID
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identityChangeUserEmailRequest'
+        required: true
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Update a user's email address
+      tags:
+      - Users
+  /identity/v1/users/{user_id}/credentials:
+    get:
+      operationId: GetUserCredentials
+      parameters:
+      - description: A user ID
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The number of items desired.
+        explode: true
+        in: query
+        name: page_request.first
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: The cursor value after which data will be returned.
+        explode: true
+        in: query
+        name: page_request.after
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: SQL-style constraint filters.
+        explode: true
+        in: query
+        name: page_request.filter
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: Sort the response by the given field.
+        explode: true
+        in: query
+        name: page_request.sort_by
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityGetUserCredentialsResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Get all API credentials
+      tags:
+      - Authentication
+    post:
+      description: The client secret is returned only once and is not stored by StackPath.
+        Please take care to save this response.
+      operationId: CreateUserCredential
+      parameters:
+      - description: A user ID
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/identityCreateUserCredentialRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityCreateUserCredentialResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Create API credentials
+      tags:
+      - Authentication
+  /identity/v1/users/{user_id}/credentials/{credential_id}:
+    delete:
+      operationId: DeleteUserCredential
+      parameters:
+      - description: A user ID
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the API credentials to remove
+        explode: false
+        in: path
+        name: credential_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "204":
+          description: No content
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Delete API credentials
+      tags:
+      - Authentication
+  /identity/v1/users/{user_id}/credentials/{credential_id}/rotate:
+    post:
+      description: The client secret is returned only once and is not stored by StackPath.
+        Please take care to save this response.
+      operationId: RotateUserCredentialSecret
+      parameters:
+      - description: A user ID
+        explode: false
+        in: path
+        name: user_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      - description: The ID of the API client credential to rotate secrets for
+        explode: false
+        in: path
+        name: credential_id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/identityRotateUserCredentialSecretResponse'
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Returned when an unauthorized request is attempted.
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Internal server error.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/stackpathapiStatus'
+          description: Default error structure.
+      summary: Create a new API secret
+      tags:
+      - Authentication
+components:
+  schemas:
+    PolicyBinding:
+      description: An assignment of members to roles
+      example:
+        role: role
+        members:
+        - members
+        - members
+      properties:
+        role:
+          description: |-
+            The name of the role for this binding.
+
+            This is either roles/<name> or accounts/<id>/roles/<name>.
+          type: string
+        members:
+          description: |-
+            The members assigned to the roles in this binding.
+
+            This is user:<name>.
+          items:
+            type: string
+          type: array
+      type: object
+    apiStatusDetail:
+      discriminator:
+        propertyName: '@type'
+      properties:
+        '@type':
+          type: string
+      required:
+      - '@type'
+      type: object
+    iamPolicy:
+      description: A policy on a StackPath resource
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        bindings:
+        - role: role
+          members:
+          - members
+          - members
+        - role: role
+          members:
+          - members
+          - members
+        version: 0
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        bindings:
+          description: Bindings to assign members to roles
+          items:
+            $ref: '#/components/schemas/PolicyBinding'
+          type: array
+        version:
+          description: |-
+            The current update number used to ensure updates happen to the expected version.
+
+            On first update this must be 0 and on each successive update this must be the last known version. When getting or as the result of a set, this will be the current version.
+          format: int64
+          type: integer
+        createdAt:
+          description: |-
+            When this policy was created.
+
+            Always present on get, ignored on set.
+          format: date-time
+          readOnly: true
+          type: string
+        updatedAt:
+          description: |-
+            When this policy was last updated.
+
+            Could be absent on get if not updated since initial creation. Ignored on set.
+          format: date-time
+          readOnly: true
+          type: string
+      type: object
+    identityAccount:
+      description: |-
+        A StackPath account
+
+        An account is the top-most entity in the StackPath ecosystem. Accounts are associated with users and stacks (which in turn are associated with purchased products and services).
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        name: name
+        id: id
+        rootUserId: rootUserId
+        parentId: parentId
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          description: A StackPath account's unique identifier
+          type: string
+        parentId:
+          description: The ID of an account that a StackPath account may belong to
+          type: string
+        name:
+          description: A StackPath account's name
+          type: string
+        rootUserId:
+          description: The ID of a StackPath account's primary user
+          type: string
+        createdAt:
+          description: The date a StackPath account was created
+          format: date-time
+          type: string
+        updatedAt:
+          description: The date a StackPath account was last updated
+          format: date-time
+          type: string
+      type: object
+    identityAccountLink:
+      description: A relationship between a StackPath account and their identity providers
+      properties:
+        id:
+          description: An account link's unique identifier
+          type: string
+        provider:
+          description: The name of the identity provider powering an account link
+          type: string
+        remoteId:
+          description: A StackPath account's foreign key at an identity provider
+          type: string
+        accountId:
+          description: The ID of the StackPath account linked to an identify provider
+          type: string
+      type: object
+    identityChangeUserEmailRequest:
+      properties:
+        email:
+          description: The user's new email address
+          type: string
+        password:
+          description: The user's login password
+          type: string
+      type: object
+    identityCreateUserCredentialRequest:
+      properties:
+        name:
+          description: The name of the new API credentials
+          type: string
+      type: object
+    identityCreateUserCredentialResponse:
+      description: A response from a request to create new user API credentials
+      example:
+        clientId: clientId
+        name: name
+        clientSecret: clientSecret
+        id: id
+      properties:
+        id:
+          description: The new API credential's unique identifier
+          type: string
+        name:
+          description: The new API credential's name
+          type: string
+        clientId:
+          description: The new API credential's OAuth2 client ID
+          type: string
+        clientSecret:
+          description: |-
+            The new API credential's OAuth2 client secret
+
+            The client secret is returned only once and is not stored by StackPath. Please take care to save this response.
+          type: string
+      type: object
+    identityCreateUserRequest:
+      properties:
+        email:
+          description: |-
+            The user's email address
+
+            The user will use this as their login name at the StackPath customer portal
+          type: string
+        name:
+          description: The user's name
+          type: string
+        phoneNumber:
+          description: The user's phone number
+          type: string
+        authorizedApplications:
+          description: |-
+            A set of application slugs the user should have access to
+
+            If no application slugs are applied then the user will have access to the StackPath customer portal and API by default.
+          items:
+            type: string
+          type: array
+      type: object
+    identityCreateUserResponse:
+      description: A response from a request to create a new StackPath user
+      example:
+        user:
+          identities:
+          - provider:
+              name: name
+              id: id
+            identityId: identityId
+            id: id
+            email: email
+          - provider:
+              name: name
+              id: id
+            identityId: identityId
+            id: id
+            email: email
+          phoneNumber: phoneNumber
+          name: name
+          id: id
+          accounts:
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            id: id
+            rootUserId: rootUserId
+            parentId: parentId
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            id: id
+            rootUserId: rootUserId
+            parentId: parentId
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          email: email
+      properties:
+        user:
+          $ref: '#/components/schemas/identityUser'
+      type: object
+    identityGetAccessTokenRequest:
+      properties:
+        grant_type:
+          default: client_credentials
+          description: |-
+            The OAuth2 grant type
+
+            Currently, only the "client_credentials" grant type is supported.
+          type: string
+        client_id:
+          description: The client ID from your API credential
+          type: string
+        client_secret:
+          description: |-
+            The client secret from your API credential
+
+            For security reasons, client secrets are not stored in StackPath's internal systems after they are generated. Please record your API client secret after generating it.
+          type: string
+      type: object
+    identityGetAccessTokenResponse:
+      description: |-
+        A response from a request to generate an OAuth2 access token from API credentials
+
+        Use the resulting token to authorize subsequest StackPath API calls
+      example:
+        access_token: access_token
+        token_type: token_type
+        expires_in: 0
+      properties:
+        access_token:
+          description: The access token to be provided as a Bearer token in the Authorization
+            header to API calls
+          type: string
+        token_type:
+          description: |-
+            The token's type
+
+            Currently, only bearer tokens are supported
+          type: string
+        expires_in:
+          description: The token's expiration time, measured in seconds
+          format: int32
+          type: integer
+      type: object
+    identityGetAccountResponse:
+      description: A response from a request to retrieve a StackPath account
+      example:
+        account:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          id: id
+          rootUserId: rootUserId
+          parentId: parentId
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        account:
+          $ref: '#/components/schemas/identityAccount'
+      type: object
+    identityGetAccountUsersResponse:
+      description: A response from a request to retrieve a StackPath account's users
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - identities:
+          - provider:
+              name: name
+              id: id
+            identityId: identityId
+            id: id
+            email: email
+          - provider:
+              name: name
+              id: id
+            identityId: identityId
+            id: id
+            email: email
+          phoneNumber: phoneNumber
+          name: name
+          id: id
+          accounts:
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            id: id
+            rootUserId: rootUserId
+            parentId: parentId
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            id: id
+            rootUserId: rootUserId
+            parentId: parentId
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          email: email
+        - identities:
+          - provider:
+              name: name
+              id: id
+            identityId: identityId
+            id: id
+            email: email
+          - provider:
+              name: name
+              id: id
+            identityId: identityId
+            id: id
+            email: email
+          phoneNumber: phoneNumber
+          name: name
+          id: id
+          accounts:
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            id: id
+            rootUserId: rootUserId
+            parentId: parentId
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            id: id
+            rootUserId: rootUserId
+            parentId: parentId
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          email: email
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested user accounts
+          items:
+            $ref: '#/components/schemas/identityUser'
+          type: array
+      type: object
+    identityGetIAMPolicyResponse:
+      description: A response from a request to retrieve a StackPath account's policy
+      example:
+        accountId: accountId
+        policy:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          bindings:
+          - role: role
+            members:
+            - members
+            - members
+          - role: role
+            members:
+            - members
+            - members
+          version: 0
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        accountId:
+          description: The ID of the StackPath account the policy is on
+          type: string
+        policy:
+          $ref: '#/components/schemas/iamPolicy'
+      type: object
+    identityGetUserCredentialsResponse:
+      description: A response from a request to retrieve a user's API credentials
+      example:
+        pageInfo:
+          hasNextPage: true
+          hasPreviousPage: true
+          endCursor: endCursor
+          totalCount: totalCount
+          startCursor: startCursor
+        results:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          clientId: clientId
+          name: name
+          id: id
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          clientId: clientId
+          name: name
+          id: id
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        pageInfo:
+          $ref: '#/components/schemas/paginationPageInfo'
+        results:
+          description: The requested user API credentials
+          items:
+            $ref: '#/components/schemas/identityUserCredential'
+          type: array
+      type: object
+    identityGetUserResponse:
+      description: A response from a request to retrieve a StackPath user account
+      example:
+        user:
+          identities:
+          - provider:
+              name: name
+              id: id
+            identityId: identityId
+            id: id
+            email: email
+          - provider:
+              name: name
+              id: id
+            identityId: identityId
+            id: id
+            email: email
+          phoneNumber: phoneNumber
+          name: name
+          id: id
+          accounts:
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            id: id
+            rootUserId: rootUserId
+            parentId: parentId
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          - createdAt: 2000-01-23T04:56:07.000+00:00
+            name: name
+            id: id
+            rootUserId: rootUserId
+            parentId: parentId
+            updatedAt: 2000-01-23T04:56:07.000+00:00
+          email: email
+      properties:
+        user:
+          $ref: '#/components/schemas/identityUser'
+      type: object
+    identityProvider:
+      description: |-
+        An identity provider
+
+        Identity providers handle user authentication to the StackPath customer portal. They can be third party like Google or Facebook, or StackPath can provide identity resources for users.
+      example:
+        name: name
+        id: id
+      properties:
+        id:
+          description: An identity provider's unique identidier
+          type: string
+        name:
+          description: An identity provider's name
+          type: string
+      type: object
+    identityRotateUserCredentialSecretResponse:
+      description: A response from a request to generate a new API client secret for
+        a user
+      example:
+        clientId: clientId
+        name: name
+        clientSecret: clientSecret
+        id: id
+      properties:
+        id:
+          description: The API credential's unique identifier
+          type: string
+        name:
+          description: The API credential's name
+          type: string
+        clientId:
+          description: The API credential's OAuth2 client ID
+          type: string
+        clientSecret:
+          description: |-
+            The API credential's OAuth2 client secret
+
+            The client secret is returned only once and is not stored by StackPath. Please take care to save this response.
+          type: string
+      type: object
+    identitySetIAMPolicyRequest:
+      properties:
+        policy:
+          $ref: '#/components/schemas/iamPolicy'
+      type: object
+    identitySetIAMPolicyResponse:
+      description: A response from a request to set a StackPath account's policy
+      example:
+        accountId: accountId
+        policy:
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          bindings:
+          - role: role
+            members:
+            - members
+            - members
+          - role: role
+            members:
+            - members
+            - members
+          version: 0
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        accountId:
+          description: The ID of the StackPath account the policy is on
+          type: string
+        policy:
+          $ref: '#/components/schemas/iamPolicy'
+      type: object
+    identityTestIAMPermissionsRequest:
+      properties:
+        permissions:
+          description: The set of permissions to test
+          items:
+            type: string
+          type: array
+      type: object
+    identityTestIAMPermissionsResponse:
+      description: A response from a request to test permissions on a StackPath account
+      example:
+        accountId: accountId
+        permissions:
+        - permissions
+        - permissions
+      properties:
+        accountId:
+          description: The ID of the StackPath account the permissions were tested
+            on
+          type: string
+        permissions:
+          description: The set of permissions that the calling user does have on the
+            account
+          items:
+            type: string
+          type: array
+      type: object
+    identityUpdateUserRequest:
+      properties:
+        name:
+          description: The user's new name
+          type: string
+        phoneNumber:
+          description: The user's new phone number
+          type: string
+      type: object
+    identityUpdateUserResponse:
+      description: A response from a request to update a user's non-essential properties
+        (phone number, etc)
+      example:
+        success: true
+      properties:
+        success:
+          description: Whether or not the request was successful
+          format: boolean
+          type: boolean
+      type: object
+    identityUser:
+      description: |-
+        A user account
+
+        Users can interact with the StackPath customer portal and API.
+      example:
+        identities:
+        - provider:
+            name: name
+            id: id
+          identityId: identityId
+          id: id
+          email: email
+        - provider:
+            name: name
+            id: id
+          identityId: identityId
+          id: id
+          email: email
+        phoneNumber: phoneNumber
+        name: name
+        id: id
+        accounts:
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          id: id
+          rootUserId: rootUserId
+          parentId: parentId
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        - createdAt: 2000-01-23T04:56:07.000+00:00
+          name: name
+          id: id
+          rootUserId: rootUserId
+          parentId: parentId
+          updatedAt: 2000-01-23T04:56:07.000+00:00
+        email: email
+      properties:
+        id:
+          description: A user's unique identifier
+          type: string
+        email:
+          description: |-
+            A user's email address
+
+            Email addresses are used as login names to the StackPath customer portal
+          type: string
+        status:
+          $ref: '#/components/schemas/identityUserStatus'
+        identities:
+          description: A user's underlying authentication identities
+          items:
+            $ref: '#/components/schemas/identityUserIdentity'
+          type: array
+        accounts:
+          description: The accounts that a user belongs to
+          items:
+            $ref: '#/components/schemas/identityAccount'
+          type: array
+        name:
+          description: A user's name
+          type: string
+        phoneNumber:
+          description: A user's phone number
+          type: string
+      type: object
+    identityUserCredential:
+      description: |-
+        User API credentials
+
+        API credentials are used to generate authorization tokens for use with the StackPath API. Generating API credentials creates a client ID and secret. Client secrets are exposed to the user only once on creation and are not stored at StackPath. Please record your client secret after generating API credentials.
+
+        StackPath recommends using one set of API credentials per application and operating environment.
+      example:
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        clientId: clientId
+        name: name
+        id: id
+        updatedAt: 2000-01-23T04:56:07.000+00:00
+      properties:
+        id:
+          description: An API credential's unique identifier
+          type: string
+        name:
+          description: |-
+            An API credential's name
+
+            API credential names are typically associated with the user's application and operating environment
+          type: string
+        clientId:
+          description: An API credential's OAuth2 client ID
+          type: string
+        createdAt:
+          description: The date an API credential was created
+          format: date-time
+          type: string
+        updatedAt:
+          description: The date an API credential was last updated
+          format: date-time
+          type: string
+      type: object
+    identityUserIdentity:
+      example:
+        provider:
+          name: name
+          id: id
+        identityId: identityId
+        id: id
+        email: email
+      properties:
+        id:
+          type: string
+        identityId:
+          type: string
+        email:
+          type: string
+        provider:
+          $ref: '#/components/schemas/identityProvider'
+      type: object
+    identityUserStatus:
+      default: UNKNOWN
+      description: |-
+        A user's status
+
+        - UNKNOWN: StackPath is unable to determine a user's status
+         - ENABLED: A user is enabled and can log into their StackPath services
+         - DISABLED: A user is disabled and cannot log into the StackPath customer portal or place API calls
+      enum:
+      - UNKNOWN
+      - ENABLED
+      - DISABLED
+      type: string
+    paginationPageInfo:
+      description: |-
+        Information about a paginated response
+
+        This is modeled after the GraphQL Relay spec to support both cursor based pagination and traditional offset based pagination.
+      example:
+        hasNextPage: true
+        hasPreviousPage: true
+        endCursor: endCursor
+        totalCount: totalCount
+        startCursor: startCursor
+      properties:
+        totalCount:
+          description: The total number of items in the dataset
+          type: string
+        hasPreviousPage:
+          description: Whether or not a previous page of data exists
+          format: boolean
+          type: boolean
+        hasNextPage:
+          description: Whether or not another page of data is available
+          format: boolean
+          type: boolean
+        startCursor:
+          description: The cursor for the first item in the set of data returned
+          type: string
+        endCursor:
+          description: The cursor for the last item in the set of data returned
+          type: string
+      type: object
+    stackpath.rpc.BadRequest:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_BadRequest_allOf'
+    stackpath.rpc.BadRequest.FieldViolation:
+      properties:
+        field:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.Help:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_Help_allOf'
+    stackpath.rpc.Help.Link:
+      properties:
+        description:
+          type: string
+        url:
+          type: string
+      type: object
+    stackpath.rpc.LocalizedMessage:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_LocalizedMessage_allOf'
+    stackpath.rpc.PreconditionFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_PreconditionFailure_allOf'
+    stackpath.rpc.PreconditionFailure.Violation:
+      properties:
+        type:
+          type: string
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.QuotaFailure:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_QuotaFailure_allOf'
+    stackpath.rpc.QuotaFailure.Violation:
+      properties:
+        subject:
+          type: string
+        description:
+          type: string
+      type: object
+    stackpath.rpc.RequestInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RequestInfo_allOf'
+    stackpath.rpc.ResourceInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_ResourceInfo_allOf'
+    stackpath.rpc.RetryInfo:
+      allOf:
+      - $ref: '#/components/schemas/apiStatusDetail'
+      - $ref: '#/components/schemas/stackpath_rpc_RetryInfo_allOf'
+    stackpathapiStatus:
+      properties:
+        code:
+          format: int32
+          type: integer
+        details:
+          items:
+            $ref: '#/components/schemas/apiStatusDetail'
+          type: array
+        message:
+          type: string
+      type: object
+    stackpath_rpc_BadRequest_allOf:
+      properties:
+        fieldViolations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.BadRequest.FieldViolation'
+          type: array
+    stackpath_rpc_Help_allOf:
+      properties:
+        links:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.Help.Link'
+          type: array
+    stackpath_rpc_LocalizedMessage_allOf:
+      properties:
+        locale:
+          type: string
+        message:
+          type: string
+    stackpath_rpc_PreconditionFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.PreconditionFailure.Violation'
+          type: array
+    stackpath_rpc_QuotaFailure_allOf:
+      properties:
+        violations:
+          items:
+            $ref: '#/components/schemas/stackpath.rpc.QuotaFailure.Violation'
+          type: array
+    stackpath_rpc_RequestInfo_allOf:
+      properties:
+        requestId:
+          type: string
+        servingData:
+          type: string
+    stackpath_rpc_ResourceInfo_allOf:
+      properties:
+        resourceType:
+          type: string
+        resourceName:
+          type: string
+        owner:
+          type: string
+        description:
+          type: string
+    stackpath_rpc_RetryInfo_allOf:
+      properties:
+        retryDelay:
+          type: string
+  securitySchemes:
+    oauth2:
+      flows:
+        clientCredentials:
+          scopes: {}
+          tokenUrl: https://gateway.stackpath.com/identity/v1/oauth2/token
+      type: oauth2
+x-explorer-enabled: true
+x-proxy-enabled: true
+x-samples-enabled: true
+x-samples-languages:
+- curl
+- node
+- ruby
+- javascript
+- python
