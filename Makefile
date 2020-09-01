@@ -1,14 +1,14 @@
-APIS=accounts-and-users \
+APIS=accounts_and_users \
      stacks \
 	 sites \
 	 cdn \
 	 waf \
 	 dns \
-	 edge-compute \
-	 edge-compute-networking \
+	 edge_compute \
+	 edge_compute_networking \
 	 ssl \
 	 monitoring \
-	 object-storage
+	 object_storage
 
 all: $(APIS:%=pkg/%)
 
