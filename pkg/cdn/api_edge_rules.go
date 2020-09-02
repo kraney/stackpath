@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,44 +26,16 @@ var (
 // EdgeRulesApiService EdgeRulesApi service
 type EdgeRulesApiService service
 
-type apiCreateScopeRuleRequest struct {
-	ctx _context.Context
-	apiService *EdgeRulesApiService
-	stackId string
-	siteId string
-	scopeId string
-	cdnCreateScopeRuleRequest *CdnCreateScopeRuleRequest
-}
-
-
-func (r apiCreateScopeRuleRequest) CdnCreateScopeRuleRequest(cdnCreateScopeRuleRequest CdnCreateScopeRuleRequest) apiCreateScopeRuleRequest {
-	r.cdnCreateScopeRuleRequest = &cdnCreateScopeRuleRequest
-	return r
-}
-
 /*
 CreateScopeRule Create an EdgeRule
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
-@return apiCreateScopeRuleRequest
+ * @param cdnCreateScopeRuleRequest
+@return CdnCreateScopeRuleResponse
 */
-func (a *EdgeRulesApiService) CreateScopeRule(ctx _context.Context, stackId string, siteId string, scopeId string) apiCreateScopeRuleRequest {
-	return apiCreateScopeRuleRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scopeId: scopeId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnCreateScopeRuleResponse
-*/
-func (r apiCreateScopeRuleRequest) Execute() (CdnCreateScopeRuleResponse, *_nethttp.Response, error) {
+func (a *EdgeRulesApiService) CreateScopeRule(ctx _context.Context, stackId string, siteId string, scopeId string, cdnCreateScopeRuleRequest CdnCreateScopeRuleRequest) (CdnCreateScopeRuleResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -72,26 +45,17 @@ func (r apiCreateScopeRuleRequest) Execute() (CdnCreateScopeRuleResponse, *_neth
 		localVarReturnValue  CdnCreateScopeRuleResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EdgeRulesApiService.CreateScopeRule")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	if r.cdnCreateScopeRuleRequest == nil {
-		return localVarReturnValue, nil, reportError("cdnCreateScopeRuleRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -111,13 +75,13 @@ func (r apiCreateScopeRuleRequest) Execute() (CdnCreateScopeRuleResponse, *_neth
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.cdnCreateScopeRuleRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &cdnCreateScopeRuleRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -135,7 +99,7 @@ func (r apiCreateScopeRuleRequest) Execute() (CdnCreateScopeRuleResponse, *_neth
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -145,7 +109,7 @@ func (r apiCreateScopeRuleRequest) Execute() (CdnCreateScopeRuleResponse, *_neth
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -154,7 +118,7 @@ func (r apiCreateScopeRuleRequest) Execute() (CdnCreateScopeRuleResponse, *_neth
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -163,7 +127,7 @@ func (r apiCreateScopeRuleRequest) Execute() (CdnCreateScopeRuleResponse, *_neth
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -174,15 +138,6 @@ func (r apiCreateScopeRuleRequest) Execute() (CdnCreateScopeRuleResponse, *_neth
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiDeleteScopeRuleRequest struct {
-	ctx _context.Context
-	apiService *EdgeRulesApiService
-	stackId string
-	siteId string
-	scopeId string
-	ruleId string
-}
-
 
 /*
 DeleteScopeRule Delete an EdgeRule
@@ -191,51 +146,29 @@ DeleteScopeRule Delete an EdgeRule
  * @param siteId A site ID
  * @param scopeId A scope ID
  * @param ruleId An EdgeRule ID
-@return apiDeleteScopeRuleRequest
 */
-func (a *EdgeRulesApiService) DeleteScopeRule(ctx _context.Context, stackId string, siteId string, scopeId string, ruleId string) apiDeleteScopeRuleRequest {
-	return apiDeleteScopeRuleRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scopeId: scopeId,
-		ruleId: ruleId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDeleteScopeRuleRequest) Execute() (*_nethttp.Response, error) {
+func (a *EdgeRulesApiService) DeleteScopeRule(ctx _context.Context, stackId string, siteId string, scopeId string, ruleId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EdgeRulesApiService.DeleteScopeRule")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules/{rule_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules/{rule_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(r.ruleId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(ruleId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -254,12 +187,12 @@ func (r apiDeleteScopeRuleRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -277,7 +210,7 @@ func (r apiDeleteScopeRuleRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -287,7 +220,7 @@ func (r apiDeleteScopeRuleRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -296,7 +229,7 @@ func (r apiDeleteScopeRuleRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -307,15 +240,6 @@ func (r apiDeleteScopeRuleRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiGetScopeRuleRequest struct {
-	ctx _context.Context
-	apiService *EdgeRulesApiService
-	stackId string
-	siteId string
-	scopeId string
-	ruleId string
-}
-
 
 /*
 GetScopeRule Get an EdgeRule
@@ -324,24 +248,9 @@ GetScopeRule Get an EdgeRule
  * @param siteId A site ID
  * @param scopeId A scope ID
  * @param ruleId An EdgeRule ID
-@return apiGetScopeRuleRequest
+@return CdnGetScopeRuleResponse
 */
-func (a *EdgeRulesApiService) GetScopeRule(ctx _context.Context, stackId string, siteId string, scopeId string, ruleId string) apiGetScopeRuleRequest {
-	return apiGetScopeRuleRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scopeId: scopeId,
-		ruleId: ruleId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetScopeRuleResponse
-*/
-func (r apiGetScopeRuleRequest) Execute() (CdnGetScopeRuleResponse, *_nethttp.Response, error) {
+func (a *EdgeRulesApiService) GetScopeRule(ctx _context.Context, stackId string, siteId string, scopeId string, ruleId string) (CdnGetScopeRuleResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -351,24 +260,19 @@ func (r apiGetScopeRuleRequest) Execute() (CdnGetScopeRuleResponse, *_nethttp.Re
 		localVarReturnValue  CdnGetScopeRuleResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EdgeRulesApiService.GetScopeRule")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules/{rule_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules/{rule_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(r.ruleId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(ruleId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -387,12 +291,12 @@ func (r apiGetScopeRuleRequest) Execute() (CdnGetScopeRuleResponse, *_nethttp.Re
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -410,7 +314,7 @@ func (r apiGetScopeRuleRequest) Execute() (CdnGetScopeRuleResponse, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -420,7 +324,7 @@ func (r apiGetScopeRuleRequest) Execute() (CdnGetScopeRuleResponse, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -429,7 +333,7 @@ func (r apiGetScopeRuleRequest) Execute() (CdnGetScopeRuleResponse, *_nethttp.Re
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -438,7 +342,7 @@ func (r apiGetScopeRuleRequest) Execute() (CdnGetScopeRuleResponse, *_nethttp.Re
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -449,15 +353,6 @@ func (r apiGetScopeRuleRequest) Execute() (CdnGetScopeRuleResponse, *_nethttp.Re
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetScopeRuleConfigurationRequest struct {
-	ctx _context.Context
-	apiService *EdgeRulesApiService
-	stackId string
-	siteId string
-	scopeId string
-	ruleId string
-}
-
 
 /*
 GetScopeRuleConfiguration Get an EdgeRule's configuration
@@ -466,24 +361,9 @@ GetScopeRuleConfiguration Get an EdgeRule's configuration
  * @param siteId A site ID
  * @param scopeId A scope ID
  * @param ruleId An EdgeRule ID
-@return apiGetScopeRuleConfigurationRequest
+@return CdnGetScopeRuleConfigurationResponse
 */
-func (a *EdgeRulesApiService) GetScopeRuleConfiguration(ctx _context.Context, stackId string, siteId string, scopeId string, ruleId string) apiGetScopeRuleConfigurationRequest {
-	return apiGetScopeRuleConfigurationRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scopeId: scopeId,
-		ruleId: ruleId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetScopeRuleConfigurationResponse
-*/
-func (r apiGetScopeRuleConfigurationRequest) Execute() (CdnGetScopeRuleConfigurationResponse, *_nethttp.Response, error) {
+func (a *EdgeRulesApiService) GetScopeRuleConfiguration(ctx _context.Context, stackId string, siteId string, scopeId string, ruleId string) (CdnGetScopeRuleConfigurationResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -493,24 +373,19 @@ func (r apiGetScopeRuleConfigurationRequest) Execute() (CdnGetScopeRuleConfigura
 		localVarReturnValue  CdnGetScopeRuleConfigurationResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EdgeRulesApiService.GetScopeRuleConfiguration")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules/{rule_id}/configuration"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules/{rule_id}/configuration"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(r.ruleId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(ruleId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -529,12 +404,12 @@ func (r apiGetScopeRuleConfigurationRequest) Execute() (CdnGetScopeRuleConfigura
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -552,7 +427,7 @@ func (r apiGetScopeRuleConfigurationRequest) Execute() (CdnGetScopeRuleConfigura
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -562,7 +437,7 @@ func (r apiGetScopeRuleConfigurationRequest) Execute() (CdnGetScopeRuleConfigura
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -571,7 +446,7 @@ func (r apiGetScopeRuleConfigurationRequest) Execute() (CdnGetScopeRuleConfigura
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -580,7 +455,7 @@ func (r apiGetScopeRuleConfigurationRequest) Execute() (CdnGetScopeRuleConfigura
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -591,37 +466,13 @@ func (r apiGetScopeRuleConfigurationRequest) Execute() (CdnGetScopeRuleConfigura
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetScopeRulesRequest struct {
-	ctx _context.Context
-	apiService *EdgeRulesApiService
-	stackId string
-	siteId string
-	scopeId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetScopeRulesRequest) PageRequestFirst(pageRequestFirst string) apiGetScopeRulesRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetScopeRulesRequest) PageRequestAfter(pageRequestAfter string) apiGetScopeRulesRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetScopeRulesRequest) PageRequestFilter(pageRequestFilter string) apiGetScopeRulesRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetScopeRulesRequest) PageRequestSortBy(pageRequestSortBy string) apiGetScopeRulesRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetScopeRulesOpts Optional parameters for the method 'GetScopeRules'
+type GetScopeRulesOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
@@ -630,23 +481,14 @@ GetScopeRules Get all EdgeRules
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
-@return apiGetScopeRulesRequest
+ * @param optional nil or *GetScopeRulesOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return CdnGetScopeRulesResponse
 */
-func (a *EdgeRulesApiService) GetScopeRules(ctx _context.Context, stackId string, siteId string, scopeId string) apiGetScopeRulesRequest {
-	return apiGetScopeRulesRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scopeId: scopeId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetScopeRulesResponse
-*/
-func (r apiGetScopeRulesRequest) Execute() (CdnGetScopeRulesResponse, *_nethttp.Response, error) {
+func (a *EdgeRulesApiService) GetScopeRules(ctx _context.Context, stackId string, siteId string, scopeId string, localVarOptionals *GetScopeRulesOpts) (CdnGetScopeRulesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -656,34 +498,29 @@ func (r apiGetScopeRulesRequest) Execute() (CdnGetScopeRulesResponse, *_nethttp.
 		localVarReturnValue  CdnGetScopeRulesResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EdgeRulesApiService.GetScopeRules")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -702,12 +539,12 @@ func (r apiGetScopeRulesRequest) Execute() (CdnGetScopeRulesResponse, *_nethttp.
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -725,7 +562,7 @@ func (r apiGetScopeRulesRequest) Execute() (CdnGetScopeRulesResponse, *_nethttp.
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -735,7 +572,7 @@ func (r apiGetScopeRulesRequest) Execute() (CdnGetScopeRulesResponse, *_nethttp.
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -744,7 +581,7 @@ func (r apiGetScopeRulesRequest) Execute() (CdnGetScopeRulesResponse, *_nethttp.
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -753,7 +590,7 @@ func (r apiGetScopeRulesRequest) Execute() (CdnGetScopeRulesResponse, *_nethttp.
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -764,21 +601,6 @@ func (r apiGetScopeRulesRequest) Execute() (CdnGetScopeRulesResponse, *_nethttp.
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiUpdateScopeRuleConfigurationRequest struct {
-	ctx _context.Context
-	apiService *EdgeRulesApiService
-	stackId string
-	siteId string
-	scopeId string
-	ruleId string
-	cdnUpdateScopeRuleConfigurationRequest *CdnUpdateScopeRuleConfigurationRequest
-}
-
-
-func (r apiUpdateScopeRuleConfigurationRequest) CdnUpdateScopeRuleConfigurationRequest(cdnUpdateScopeRuleConfigurationRequest CdnUpdateScopeRuleConfigurationRequest) apiUpdateScopeRuleConfigurationRequest {
-	r.cdnUpdateScopeRuleConfigurationRequest = &cdnUpdateScopeRuleConfigurationRequest
-	return r
-}
 
 /*
 UpdateScopeRuleConfiguration Update an EdgeRule's configuration
@@ -787,24 +609,10 @@ UpdateScopeRuleConfiguration Update an EdgeRule's configuration
  * @param siteId A site ID
  * @param scopeId A scope ID
  * @param ruleId An EdgeRule ID
-@return apiUpdateScopeRuleConfigurationRequest
+ * @param cdnUpdateScopeRuleConfigurationRequest
+@return CdnUpdateScopeRuleConfigurationResponse
 */
-func (a *EdgeRulesApiService) UpdateScopeRuleConfiguration(ctx _context.Context, stackId string, siteId string, scopeId string, ruleId string) apiUpdateScopeRuleConfigurationRequest {
-	return apiUpdateScopeRuleConfigurationRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scopeId: scopeId,
-		ruleId: ruleId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnUpdateScopeRuleConfigurationResponse
-*/
-func (r apiUpdateScopeRuleConfigurationRequest) Execute() (CdnUpdateScopeRuleConfigurationResponse, *_nethttp.Response, error) {
+func (a *EdgeRulesApiService) UpdateScopeRuleConfiguration(ctx _context.Context, stackId string, siteId string, scopeId string, ruleId string, cdnUpdateScopeRuleConfigurationRequest CdnUpdateScopeRuleConfigurationRequest) (CdnUpdateScopeRuleConfigurationResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -814,28 +622,19 @@ func (r apiUpdateScopeRuleConfigurationRequest) Execute() (CdnUpdateScopeRuleCon
 		localVarReturnValue  CdnUpdateScopeRuleConfigurationResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EdgeRulesApiService.UpdateScopeRuleConfiguration")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules/{rule_id}/configuration"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/rules/{rule_id}/configuration"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(r.ruleId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(ruleId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	
-	if r.cdnUpdateScopeRuleConfigurationRequest == nil {
-		return localVarReturnValue, nil, reportError("cdnUpdateScopeRuleConfigurationRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -855,13 +654,13 @@ func (r apiUpdateScopeRuleConfigurationRequest) Execute() (CdnUpdateScopeRuleCon
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.cdnUpdateScopeRuleConfigurationRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &cdnUpdateScopeRuleConfigurationRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -879,7 +678,7 @@ func (r apiUpdateScopeRuleConfigurationRequest) Execute() (CdnUpdateScopeRuleCon
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -889,7 +688,7 @@ func (r apiUpdateScopeRuleConfigurationRequest) Execute() (CdnUpdateScopeRuleCon
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -898,7 +697,7 @@ func (r apiUpdateScopeRuleConfigurationRequest) Execute() (CdnUpdateScopeRuleCon
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -907,7 +706,7 @@ func (r apiUpdateScopeRuleConfigurationRequest) Execute() (CdnUpdateScopeRuleCon
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

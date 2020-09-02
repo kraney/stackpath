@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,38 +26,15 @@ var (
 // InstancesApiService InstancesApi service
 type InstancesApiService service
 
-type apiGetWorkloadInstanceRequest struct {
-	ctx _context.Context
-	apiService *InstancesApiService
-	stackId string
-	workloadId string
-	instanceName string
-}
-
-
 /*
 GetWorkloadInstance Get a workload instance
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param workloadId An EdgeCompute workload ID
  * @param instanceName An EdgeCompute workload instance name
-@return apiGetWorkloadInstanceRequest
+@return V1GetWorkloadInstanceResponse
 */
-func (a *InstancesApiService) GetWorkloadInstance(ctx _context.Context, stackId string, workloadId string, instanceName string) apiGetWorkloadInstanceRequest {
-	return apiGetWorkloadInstanceRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		workloadId: workloadId,
-		instanceName: instanceName,
-	}
-}
-
-/*
-Execute executes the request
- @return V1GetWorkloadInstanceResponse
-*/
-func (r apiGetWorkloadInstanceRequest) Execute() (V1GetWorkloadInstanceResponse, *_nethttp.Response, error) {
+func (a *InstancesApiService) GetWorkloadInstance(ctx _context.Context, stackId string, workloadId string, instanceName string) (V1GetWorkloadInstanceResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -66,22 +44,17 @@ func (r apiGetWorkloadInstanceRequest) Execute() (V1GetWorkloadInstanceResponse,
 		localVarReturnValue  V1GetWorkloadInstanceResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InstancesApiService.GetWorkloadInstance")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances/{instance_name}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances/{instance_name}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"workload_id"+"}", _neturl.QueryEscape(parameterToString(r.workloadId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"instance_name"+"}", _neturl.QueryEscape(parameterToString(r.instanceName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"workload_id"+"}", _neturl.QueryEscape(parameterToString(workloadId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"instance_name"+"}", _neturl.QueryEscape(parameterToString(instanceName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -100,12 +73,12 @@ func (r apiGetWorkloadInstanceRequest) Execute() (V1GetWorkloadInstanceResponse,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -123,7 +96,7 @@ func (r apiGetWorkloadInstanceRequest) Execute() (V1GetWorkloadInstanceResponse,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -133,7 +106,7 @@ func (r apiGetWorkloadInstanceRequest) Execute() (V1GetWorkloadInstanceResponse,
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -142,7 +115,7 @@ func (r apiGetWorkloadInstanceRequest) Execute() (V1GetWorkloadInstanceResponse,
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -151,7 +124,7 @@ func (r apiGetWorkloadInstanceRequest) Execute() (V1GetWorkloadInstanceResponse,
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -162,36 +135,13 @@ func (r apiGetWorkloadInstanceRequest) Execute() (V1GetWorkloadInstanceResponse,
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetWorkloadInstancesRequest struct {
-	ctx _context.Context
-	apiService *InstancesApiService
-	stackId string
-	workloadId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetWorkloadInstancesRequest) PageRequestFirst(pageRequestFirst string) apiGetWorkloadInstancesRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetWorkloadInstancesRequest) PageRequestAfter(pageRequestAfter string) apiGetWorkloadInstancesRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetWorkloadInstancesRequest) PageRequestFilter(pageRequestFilter string) apiGetWorkloadInstancesRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetWorkloadInstancesRequest) PageRequestSortBy(pageRequestSortBy string) apiGetWorkloadInstancesRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetWorkloadInstancesOpts Optional parameters for the method 'GetWorkloadInstances'
+type GetWorkloadInstancesOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
@@ -199,22 +149,14 @@ GetWorkloadInstances Get all workload instances
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param workloadId An EdgeCompute workload ID
-@return apiGetWorkloadInstancesRequest
+ * @param optional nil or *GetWorkloadInstancesOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return V1GetWorkloadInstancesResponse
 */
-func (a *InstancesApiService) GetWorkloadInstances(ctx _context.Context, stackId string, workloadId string) apiGetWorkloadInstancesRequest {
-	return apiGetWorkloadInstancesRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		workloadId: workloadId,
-	}
-}
-
-/*
-Execute executes the request
- @return V1GetWorkloadInstancesResponse
-*/
-func (r apiGetWorkloadInstancesRequest) Execute() (V1GetWorkloadInstancesResponse, *_nethttp.Response, error) {
+func (a *InstancesApiService) GetWorkloadInstances(ctx _context.Context, stackId string, workloadId string, localVarOptionals *GetWorkloadInstancesOpts) (V1GetWorkloadInstancesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -224,32 +166,27 @@ func (r apiGetWorkloadInstancesRequest) Execute() (V1GetWorkloadInstancesRespons
 		localVarReturnValue  V1GetWorkloadInstancesResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InstancesApiService.GetWorkloadInstances")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"workload_id"+"}", _neturl.QueryEscape(parameterToString(r.workloadId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"workload_id"+"}", _neturl.QueryEscape(parameterToString(workloadId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -268,12 +205,12 @@ func (r apiGetWorkloadInstancesRequest) Execute() (V1GetWorkloadInstancesRespons
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -291,7 +228,7 @@ func (r apiGetWorkloadInstancesRequest) Execute() (V1GetWorkloadInstancesRespons
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -301,7 +238,7 @@ func (r apiGetWorkloadInstancesRequest) Execute() (V1GetWorkloadInstancesRespons
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -310,7 +247,7 @@ func (r apiGetWorkloadInstancesRequest) Execute() (V1GetWorkloadInstancesRespons
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -319,7 +256,7 @@ func (r apiGetWorkloadInstancesRequest) Execute() (V1GetWorkloadInstancesRespons
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -330,14 +267,6 @@ func (r apiGetWorkloadInstancesRequest) Execute() (V1GetWorkloadInstancesRespons
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiRestartInstanceRequest struct {
-	ctx _context.Context
-	apiService *InstancesApiService
-	stackId string
-	workloadId string
-	instanceName string
-}
-
 
 /*
 RestartInstance Restart a workload instance
@@ -346,48 +275,27 @@ The action is performed asynchronously and a successful response does not mean t
  * @param stackId A stack ID or slug
  * @param workloadId An EdgeCompute workload ID
  * @param instanceName An EdgeCompute workload instance name
-@return apiRestartInstanceRequest
 */
-func (a *InstancesApiService) RestartInstance(ctx _context.Context, stackId string, workloadId string, instanceName string) apiRestartInstanceRequest {
-	return apiRestartInstanceRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		workloadId: workloadId,
-		instanceName: instanceName,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiRestartInstanceRequest) Execute() (*_nethttp.Response, error) {
+func (a *InstancesApiService) RestartInstance(ctx _context.Context, stackId string, workloadId string, instanceName string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InstancesApiService.RestartInstance")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances/{instance_name}/power/restart"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/workloads/{workload_id}/instances/{instance_name}/power/restart"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"workload_id"+"}", _neturl.QueryEscape(parameterToString(r.workloadId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"instance_name"+"}", _neturl.QueryEscape(parameterToString(r.instanceName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"workload_id"+"}", _neturl.QueryEscape(parameterToString(workloadId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"instance_name"+"}", _neturl.QueryEscape(parameterToString(instanceName, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -406,12 +314,12 @@ func (r apiRestartInstanceRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -429,7 +337,7 @@ func (r apiRestartInstanceRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -439,7 +347,7 @@ func (r apiRestartInstanceRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -448,7 +356,7 @@ func (r apiRestartInstanceRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr

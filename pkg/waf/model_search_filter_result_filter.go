@@ -8,11 +8,6 @@
  */
 
 package waf
-
-import (
-	"encoding/json"
-)
-
 // SearchFilterResultFilter Potential final results the WAF took on the event  A result reflects the end result of an event. For instance, if a user was first challenged with a captcha and then passed or failed the captcha.
 type SearchFilterResultFilter string
 
@@ -23,45 +18,3 @@ const (
 	ALLOWED_RESULT SearchFilterResultFilter = "ALLOWED_RESULT"
 	MONITORED_RESULT SearchFilterResultFilter = "MONITORED_RESULT"
 )
-
-// Ptr returns reference to SearchFilterResultFilter value
-func (v SearchFilterResultFilter) Ptr() *SearchFilterResultFilter {
-	return &v
-}
-
-
-type NullableSearchFilterResultFilter struct {
-	value *SearchFilterResultFilter
-	isSet bool
-}
-
-func (v NullableSearchFilterResultFilter) Get() *SearchFilterResultFilter {
-	return v.value
-}
-
-func (v *NullableSearchFilterResultFilter) Set(val *SearchFilterResultFilter) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableSearchFilterResultFilter) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableSearchFilterResultFilter) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableSearchFilterResultFilter(val *SearchFilterResultFilter) *NullableSearchFilterResultFilter {
-	return &NullableSearchFilterResultFilter{value: val, isSet: true}
-}
-
-func (v NullableSearchFilterResultFilter) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableSearchFilterResultFilter) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

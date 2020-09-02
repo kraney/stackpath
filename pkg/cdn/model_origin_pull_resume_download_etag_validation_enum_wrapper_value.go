@@ -8,11 +8,6 @@
  */
 
 package cdn
-
-import (
-	"encoding/json"
-)
-
 // OriginPullResumeDownloadEtagValidationEnumWrapperValue the model 'OriginPullResumeDownloadEtagValidationEnumWrapperValue'
 type OriginPullResumeDownloadEtagValidationEnumWrapperValue string
 
@@ -23,45 +18,3 @@ const (
 	OPTIONAL OriginPullResumeDownloadEtagValidationEnumWrapperValue = "OPTIONAL"
 	REQUIRED OriginPullResumeDownloadEtagValidationEnumWrapperValue = "REQUIRED"
 )
-
-// Ptr returns reference to OriginPullResumeDownloadEtagValidationEnumWrapperValue value
-func (v OriginPullResumeDownloadEtagValidationEnumWrapperValue) Ptr() *OriginPullResumeDownloadEtagValidationEnumWrapperValue {
-	return &v
-}
-
-
-type NullableOriginPullResumeDownloadEtagValidationEnumWrapperValue struct {
-	value *OriginPullResumeDownloadEtagValidationEnumWrapperValue
-	isSet bool
-}
-
-func (v NullableOriginPullResumeDownloadEtagValidationEnumWrapperValue) Get() *OriginPullResumeDownloadEtagValidationEnumWrapperValue {
-	return v.value
-}
-
-func (v *NullableOriginPullResumeDownloadEtagValidationEnumWrapperValue) Set(val *OriginPullResumeDownloadEtagValidationEnumWrapperValue) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableOriginPullResumeDownloadEtagValidationEnumWrapperValue) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableOriginPullResumeDownloadEtagValidationEnumWrapperValue) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableOriginPullResumeDownloadEtagValidationEnumWrapperValue(val *OriginPullResumeDownloadEtagValidationEnumWrapperValue) *NullableOriginPullResumeDownloadEtagValidationEnumWrapperValue {
-	return &NullableOriginPullResumeDownloadEtagValidationEnumWrapperValue{value: val, isSet: true}
-}
-
-func (v NullableOriginPullResumeDownloadEtagValidationEnumWrapperValue) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableOriginPullResumeDownloadEtagValidationEnumWrapperValue) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

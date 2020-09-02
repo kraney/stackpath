@@ -14,55 +14,18 @@ Method | HTTP request | Description
 
 ## CreateBucket
 
-> StorageCreateBucketResponse CreateBucket(ctx, stackId).StorageCreateBucketRequest(storageCreateBucketRequest).Execute()
+> StorageCreateBucketResponse CreateBucket(ctx, stackId, storageCreateBucketRequest)
 
 Create a bucket
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    storageCreateBucketRequest := openapiclient.storageCreateBucketRequest{Label: "Label_example", Region: "Region_example"} // StorageCreateBucketRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.BucketsApi.CreateBucket(context.Background(), stackId, storageCreateBucketRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `BucketsApi.CreateBucket``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `CreateBucket`: StorageCreateBucketResponse
-    fmt.Fprintf(os.Stdout, "Response from `BucketsApi.CreateBucket`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiCreateBucketRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **storageCreateBucketRequest** | [**StorageCreateBucketRequest**](StorageCreateBucketRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**storageCreateBucketRequest** | [**StorageCreateBucketRequest**](StorageCreateBucketRequest.md)|  | 
 
 ### Return type
 
@@ -84,56 +47,30 @@ Name | Type | Description  | Notes
 
 ## DeleteBucket
 
-> DeleteBucket(ctx, stackId, bucketId).ForceDelete(forceDelete).Execute()
+> DeleteBucket(ctx, stackId, bucketId, optional)
 
 Delete a bucket
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    bucketId := "bucketId_example" // string | A storage bucket ID
-    forceDelete := true // bool | Force bucket deletion even if there are contents inside it (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.BucketsApi.DeleteBucket(context.Background(), stackId, bucketId).ForceDelete(forceDelete).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `BucketsApi.DeleteBucket``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**bucketId** | **string** | A storage bucket ID | 
+**stackId** | **string**| A stack ID or slug | 
+**bucketId** | **string**| A storage bucket ID | 
+ **optional** | ***DeleteBucketOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiDeleteBucketRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a DeleteBucketOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **forceDelete** | **bool** | Force bucket deletion even if there are contents inside it | 
+ **forceDelete** | **optional.Bool**| Force bucket deletion even if there are contents inside it | 
 
 ### Return type
 
@@ -155,56 +92,18 @@ Name | Type | Description  | Notes
 
 ## GetBucket
 
-> StorageGetBucketResponse GetBucket(ctx, stackId, bucketId).Execute()
+> StorageGetBucketResponse GetBucket(ctx, stackId, bucketId)
 
 Get a bucket
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    bucketId := "bucketId_example" // string | A storage bucket ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.BucketsApi.GetBucket(context.Background(), stackId, bucketId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `BucketsApi.GetBucket``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetBucket`: StorageGetBucketResponse
-    fmt.Fprintf(os.Stdout, "Response from `BucketsApi.GetBucket`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**bucketId** | **string** | A storage bucket ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetBucketRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**bucketId** | **string**| A storage bucket ID | 
 
 ### Return type
 
@@ -226,61 +125,31 @@ Name | Type | Description  | Notes
 
 ## GetBuckets
 
-> StorageGetBucketsResponse GetBuckets(ctx, stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+> StorageGetBucketsResponse GetBuckets(ctx, stackId, optional)
 
 Get all buckets
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
-    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
-    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
-    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.BucketsApi.GetBuckets(context.Background(), stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `BucketsApi.GetBuckets``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetBuckets`: StorageGetBucketsResponse
-    fmt.Fprintf(os.Stdout, "Response from `BucketsApi.GetBuckets`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
+**stackId** | **string**| A stack ID or slug | 
+ **optional** | ***GetBucketsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetBucketsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetBucketsOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **pageRequestFirst** | **string** | The number of items desired. | 
- **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
- **pageRequestFilter** | **string** | SQL-style constraint filters. | 
- **pageRequestSortBy** | **string** | Sort the response by the given field. | 
+ **pageRequestFirst** | **optional.String**| The number of items desired. | 
+ **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
+ **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
 
 ### Return type
 
@@ -302,58 +171,19 @@ Name | Type | Description  | Notes
 
 ## UpdateBucket
 
-> StorageUpdateBucketResponse UpdateBucket(ctx, stackId, bucketId).StorageUpdateBucketRequest(storageUpdateBucketRequest).Execute()
+> StorageUpdateBucketResponse UpdateBucket(ctx, stackId, bucketId, storageUpdateBucketRequest)
 
 Update a bucket
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    bucketId := "bucketId_example" // string | A storage bucket ID
-    storageUpdateBucketRequest := openapiclient.storageUpdateBucketRequest{Visibility: openapiclient.storageBucketVisibility{}} // StorageUpdateBucketRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.BucketsApi.UpdateBucket(context.Background(), stackId, bucketId, storageUpdateBucketRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `BucketsApi.UpdateBucket``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `UpdateBucket`: StorageUpdateBucketResponse
-    fmt.Fprintf(os.Stdout, "Response from `BucketsApi.UpdateBucket`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**bucketId** | **string** | A storage bucket ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiUpdateBucketRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **storageUpdateBucketRequest** | [**StorageUpdateBucketRequest**](StorageUpdateBucketRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**bucketId** | **string**| A storage bucket ID | 
+**storageUpdateBucketRequest** | [**StorageUpdateBucketRequest**](StorageUpdateBucketRequest.md)|  | 
 
 ### Return type
 

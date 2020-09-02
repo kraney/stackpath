@@ -25,32 +25,13 @@ var (
 // InfrastructureApiService InfrastructureApi service
 type InfrastructureApiService service
 
-type apiGetLocationsRequest struct {
-	ctx _context.Context
-	apiService *InfrastructureApiService
-	stackId string
-}
-
-
 /*
 GetLocations Get monitoring locations
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiGetLocationsRequest
+@return V2GetLocationsResponse
 */
-func (a *InfrastructureApiService) GetLocations(ctx _context.Context, stackId string) apiGetLocationsRequest {
-	return apiGetLocationsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return V2GetLocationsResponse
-*/
-func (r apiGetLocationsRequest) Execute() (V2GetLocationsResponse, *_nethttp.Response, error) {
+func (a *InfrastructureApiService) GetLocations(ctx _context.Context, stackId string) (V2GetLocationsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -60,18 +41,13 @@ func (r apiGetLocationsRequest) Execute() (V2GetLocationsResponse, *_nethttp.Res
 		localVarReturnValue  V2GetLocationsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InfrastructureApiService.GetLocations")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/monitoring/v2/stacks/{stack_id}/locations"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/monitoring/v2/stacks/{stack_id}/locations"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -90,12 +66,12 @@ func (r apiGetLocationsRequest) Execute() (V2GetLocationsResponse, *_nethttp.Res
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -113,7 +89,7 @@ func (r apiGetLocationsRequest) Execute() (V2GetLocationsResponse, *_nethttp.Res
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -123,7 +99,7 @@ func (r apiGetLocationsRequest) Execute() (V2GetLocationsResponse, *_nethttp.Res
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -132,7 +108,7 @@ func (r apiGetLocationsRequest) Execute() (V2GetLocationsResponse, *_nethttp.Res
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -141,7 +117,7 @@ func (r apiGetLocationsRequest) Execute() (V2GetLocationsResponse, *_nethttp.Res
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

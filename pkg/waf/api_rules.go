@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,68 +26,31 @@ var (
 // RulesApiService RulesApi service
 type RulesApiService service
 
-type apiBulkDeleteRulesRequest struct {
-	ctx _context.Context
-	apiService *RulesApiService
-	stackId string
-	siteId string
-	wafBulkDeleteRulesRequest *WafBulkDeleteRulesRequest
-}
-
-
-func (r apiBulkDeleteRulesRequest) WafBulkDeleteRulesRequest(wafBulkDeleteRulesRequest WafBulkDeleteRulesRequest) apiBulkDeleteRulesRequest {
-	r.wafBulkDeleteRulesRequest = &wafBulkDeleteRulesRequest
-	return r
-}
-
 /*
 BulkDeleteRules Delete multiple rules
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return apiBulkDeleteRulesRequest
+ * @param wafBulkDeleteRulesRequest
 */
-func (a *RulesApiService) BulkDeleteRules(ctx _context.Context, stackId string, siteId string) apiBulkDeleteRulesRequest {
-	return apiBulkDeleteRulesRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiBulkDeleteRulesRequest) Execute() (*_nethttp.Response, error) {
+func (a *RulesApiService) BulkDeleteRules(ctx _context.Context, stackId string, siteId string, wafBulkDeleteRulesRequest WafBulkDeleteRulesRequest) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "RulesApiService.BulkDeleteRules")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/bulk_delete"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/bulk_delete"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.wafBulkDeleteRulesRequest == nil {
-		return nil, reportError("wafBulkDeleteRulesRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -106,13 +70,13 @@ func (r apiBulkDeleteRulesRequest) Execute() (*_nethttp.Response, error) {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.wafBulkDeleteRulesRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &wafBulkDeleteRulesRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -130,7 +94,7 @@ func (r apiBulkDeleteRulesRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -140,7 +104,7 @@ func (r apiBulkDeleteRulesRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -149,7 +113,7 @@ func (r apiBulkDeleteRulesRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -160,41 +124,16 @@ func (r apiBulkDeleteRulesRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiCreateRuleRequest struct {
-	ctx _context.Context
-	apiService *RulesApiService
-	stackId string
-	siteId string
-	wafCreateRuleRequest *WafCreateRuleRequest
-}
-
-
-func (r apiCreateRuleRequest) WafCreateRuleRequest(wafCreateRuleRequest WafCreateRuleRequest) apiCreateRuleRequest {
-	r.wafCreateRuleRequest = &wafCreateRuleRequest
-	return r
-}
 
 /*
 CreateRule Create a rule
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return apiCreateRuleRequest
+ * @param wafCreateRuleRequest
+@return WafCreateRuleResponse
 */
-func (a *RulesApiService) CreateRule(ctx _context.Context, stackId string, siteId string) apiCreateRuleRequest {
-	return apiCreateRuleRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-	}
-}
-
-/*
-Execute executes the request
- @return WafCreateRuleResponse
-*/
-func (r apiCreateRuleRequest) Execute() (WafCreateRuleResponse, *_nethttp.Response, error) {
+func (a *RulesApiService) CreateRule(ctx _context.Context, stackId string, siteId string, wafCreateRuleRequest WafCreateRuleRequest) (WafCreateRuleResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -204,24 +143,15 @@ func (r apiCreateRuleRequest) Execute() (WafCreateRuleResponse, *_nethttp.Respon
 		localVarReturnValue  WafCreateRuleResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "RulesApiService.CreateRule")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.wafCreateRuleRequest == nil {
-		return localVarReturnValue, nil, reportError("wafCreateRuleRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -241,13 +171,13 @@ func (r apiCreateRuleRequest) Execute() (WafCreateRuleResponse, *_nethttp.Respon
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.wafCreateRuleRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &wafCreateRuleRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -265,7 +195,7 @@ func (r apiCreateRuleRequest) Execute() (WafCreateRuleResponse, *_nethttp.Respon
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -275,7 +205,7 @@ func (r apiCreateRuleRequest) Execute() (WafCreateRuleResponse, *_nethttp.Respon
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -284,7 +214,7 @@ func (r apiCreateRuleRequest) Execute() (WafCreateRuleResponse, *_nethttp.Respon
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -293,7 +223,7 @@ func (r apiCreateRuleRequest) Execute() (WafCreateRuleResponse, *_nethttp.Respon
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -304,14 +234,6 @@ func (r apiCreateRuleRequest) Execute() (WafCreateRuleResponse, *_nethttp.Respon
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiDeleteRuleRequest struct {
-	ctx _context.Context
-	apiService *RulesApiService
-	stackId string
-	siteId string
-	ruleId string
-}
-
 
 /*
 DeleteRule Delete a rule
@@ -319,48 +241,27 @@ DeleteRule Delete a rule
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param ruleId A WAF rule ID
-@return apiDeleteRuleRequest
 */
-func (a *RulesApiService) DeleteRule(ctx _context.Context, stackId string, siteId string, ruleId string) apiDeleteRuleRequest {
-	return apiDeleteRuleRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		ruleId: ruleId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDeleteRuleRequest) Execute() (*_nethttp.Response, error) {
+func (a *RulesApiService) DeleteRule(ctx _context.Context, stackId string, siteId string, ruleId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "RulesApiService.DeleteRule")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(r.ruleId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(ruleId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -379,12 +280,12 @@ func (r apiDeleteRuleRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -402,7 +303,7 @@ func (r apiDeleteRuleRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -412,7 +313,7 @@ func (r apiDeleteRuleRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -421,7 +322,7 @@ func (r apiDeleteRuleRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -432,14 +333,6 @@ func (r apiDeleteRuleRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiDisableRuleRequest struct {
-	ctx _context.Context
-	apiService *RulesApiService
-	stackId string
-	siteId string
-	ruleId string
-}
-
 
 /*
 DisableRule Disable a rule
@@ -447,48 +340,27 @@ DisableRule Disable a rule
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param ruleId A WAF rule ID
-@return apiDisableRuleRequest
 */
-func (a *RulesApiService) DisableRule(ctx _context.Context, stackId string, siteId string, ruleId string) apiDisableRuleRequest {
-	return apiDisableRuleRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		ruleId: ruleId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDisableRuleRequest) Execute() (*_nethttp.Response, error) {
+func (a *RulesApiService) DisableRule(ctx _context.Context, stackId string, siteId string, ruleId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "RulesApiService.DisableRule")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}/disable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}/disable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(r.ruleId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(ruleId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -507,12 +379,12 @@ func (r apiDisableRuleRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -530,7 +402,7 @@ func (r apiDisableRuleRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -540,7 +412,7 @@ func (r apiDisableRuleRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -549,7 +421,7 @@ func (r apiDisableRuleRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -560,14 +432,6 @@ func (r apiDisableRuleRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiEnableRuleRequest struct {
-	ctx _context.Context
-	apiService *RulesApiService
-	stackId string
-	siteId string
-	ruleId string
-}
-
 
 /*
 EnableRule Enable a rule
@@ -575,48 +439,27 @@ EnableRule Enable a rule
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param ruleId A WAF rule ID
-@return apiEnableRuleRequest
 */
-func (a *RulesApiService) EnableRule(ctx _context.Context, stackId string, siteId string, ruleId string) apiEnableRuleRequest {
-	return apiEnableRuleRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		ruleId: ruleId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiEnableRuleRequest) Execute() (*_nethttp.Response, error) {
+func (a *RulesApiService) EnableRule(ctx _context.Context, stackId string, siteId string, ruleId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "RulesApiService.EnableRule")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}/enable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}/enable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(r.ruleId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(ruleId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -635,12 +478,12 @@ func (r apiEnableRuleRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -658,7 +501,7 @@ func (r apiEnableRuleRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -668,7 +511,7 @@ func (r apiEnableRuleRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -677,7 +520,7 @@ func (r apiEnableRuleRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -688,14 +531,6 @@ func (r apiEnableRuleRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiGetRuleRequest struct {
-	ctx _context.Context
-	apiService *RulesApiService
-	stackId string
-	siteId string
-	ruleId string
-}
-
 
 /*
 GetRule Get a rule
@@ -703,23 +538,9 @@ GetRule Get a rule
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param ruleId A WAF rule ID
-@return apiGetRuleRequest
+@return WafGetRuleResponse
 */
-func (a *RulesApiService) GetRule(ctx _context.Context, stackId string, siteId string, ruleId string) apiGetRuleRequest {
-	return apiGetRuleRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		ruleId: ruleId,
-	}
-}
-
-/*
-Execute executes the request
- @return WafGetRuleResponse
-*/
-func (r apiGetRuleRequest) Execute() (WafGetRuleResponse, *_nethttp.Response, error) {
+func (a *RulesApiService) GetRule(ctx _context.Context, stackId string, siteId string, ruleId string) (WafGetRuleResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -729,22 +550,17 @@ func (r apiGetRuleRequest) Execute() (WafGetRuleResponse, *_nethttp.Response, er
 		localVarReturnValue  WafGetRuleResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "RulesApiService.GetRule")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(r.ruleId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(ruleId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -763,12 +579,12 @@ func (r apiGetRuleRequest) Execute() (WafGetRuleResponse, *_nethttp.Response, er
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -786,7 +602,7 @@ func (r apiGetRuleRequest) Execute() (WafGetRuleResponse, *_nethttp.Response, er
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -796,7 +612,7 @@ func (r apiGetRuleRequest) Execute() (WafGetRuleResponse, *_nethttp.Response, er
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -805,7 +621,7 @@ func (r apiGetRuleRequest) Execute() (WafGetRuleResponse, *_nethttp.Response, er
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -814,7 +630,7 @@ func (r apiGetRuleRequest) Execute() (WafGetRuleResponse, *_nethttp.Response, er
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -825,36 +641,13 @@ func (r apiGetRuleRequest) Execute() (WafGetRuleResponse, *_nethttp.Response, er
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetRulesRequest struct {
-	ctx _context.Context
-	apiService *RulesApiService
-	stackId string
-	siteId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetRulesRequest) PageRequestFirst(pageRequestFirst string) apiGetRulesRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetRulesRequest) PageRequestAfter(pageRequestAfter string) apiGetRulesRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetRulesRequest) PageRequestFilter(pageRequestFilter string) apiGetRulesRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetRulesRequest) PageRequestSortBy(pageRequestSortBy string) apiGetRulesRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetRulesOpts Optional parameters for the method 'GetRules'
+type GetRulesOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
@@ -862,22 +655,14 @@ GetRules Get all rules
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return apiGetRulesRequest
+ * @param optional nil or *GetRulesOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return WafGetRulesResponse
 */
-func (a *RulesApiService) GetRules(ctx _context.Context, stackId string, siteId string) apiGetRulesRequest {
-	return apiGetRulesRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-	}
-}
-
-/*
-Execute executes the request
- @return WafGetRulesResponse
-*/
-func (r apiGetRulesRequest) Execute() (WafGetRulesResponse, *_nethttp.Response, error) {
+func (a *RulesApiService) GetRules(ctx _context.Context, stackId string, siteId string, localVarOptionals *GetRulesOpts) (WafGetRulesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -887,32 +672,27 @@ func (r apiGetRulesRequest) Execute() (WafGetRulesResponse, *_nethttp.Response, 
 		localVarReturnValue  WafGetRulesResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "RulesApiService.GetRules")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -931,12 +711,12 @@ func (r apiGetRulesRequest) Execute() (WafGetRulesResponse, *_nethttp.Response, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -954,7 +734,7 @@ func (r apiGetRulesRequest) Execute() (WafGetRulesResponse, *_nethttp.Response, 
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -964,7 +744,7 @@ func (r apiGetRulesRequest) Execute() (WafGetRulesResponse, *_nethttp.Response, 
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -973,7 +753,7 @@ func (r apiGetRulesRequest) Execute() (WafGetRulesResponse, *_nethttp.Response, 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -982,7 +762,7 @@ func (r apiGetRulesRequest) Execute() (WafGetRulesResponse, *_nethttp.Response, 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -993,20 +773,6 @@ func (r apiGetRulesRequest) Execute() (WafGetRulesResponse, *_nethttp.Response, 
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiUpdateRuleRequest struct {
-	ctx _context.Context
-	apiService *RulesApiService
-	stackId string
-	siteId string
-	ruleId string
-	wafUpdateRuleRequest *WafUpdateRuleRequest
-}
-
-
-func (r apiUpdateRuleRequest) WafUpdateRuleRequest(wafUpdateRuleRequest WafUpdateRuleRequest) apiUpdateRuleRequest {
-	r.wafUpdateRuleRequest = &wafUpdateRuleRequest
-	return r
-}
 
 /*
 UpdateRule Update a rule
@@ -1015,23 +781,10 @@ Only properties present in the request will be updated.
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param ruleId A WAF rule ID
-@return apiUpdateRuleRequest
+ * @param wafUpdateRuleRequest
+@return WafUpdateRuleResponse
 */
-func (a *RulesApiService) UpdateRule(ctx _context.Context, stackId string, siteId string, ruleId string) apiUpdateRuleRequest {
-	return apiUpdateRuleRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		ruleId: ruleId,
-	}
-}
-
-/*
-Execute executes the request
- @return WafUpdateRuleResponse
-*/
-func (r apiUpdateRuleRequest) Execute() (WafUpdateRuleResponse, *_nethttp.Response, error) {
+func (a *RulesApiService) UpdateRule(ctx _context.Context, stackId string, siteId string, ruleId string, wafUpdateRuleRequest WafUpdateRuleRequest) (WafUpdateRuleResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -1041,26 +794,17 @@ func (r apiUpdateRuleRequest) Execute() (WafUpdateRuleResponse, *_nethttp.Respon
 		localVarReturnValue  WafUpdateRuleResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "RulesApiService.UpdateRule")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/rules/{rule_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(r.ruleId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"rule_id"+"}", _neturl.QueryEscape(parameterToString(ruleId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	if r.wafUpdateRuleRequest == nil {
-		return localVarReturnValue, nil, reportError("wafUpdateRuleRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1080,13 +824,13 @@ func (r apiUpdateRuleRequest) Execute() (WafUpdateRuleResponse, *_nethttp.Respon
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.wafUpdateRuleRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &wafUpdateRuleRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1104,7 +848,7 @@ func (r apiUpdateRuleRequest) Execute() (WafUpdateRuleResponse, *_nethttp.Respon
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1114,7 +858,7 @@ func (r apiUpdateRuleRequest) Execute() (WafUpdateRuleResponse, *_nethttp.Respon
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1123,7 +867,7 @@ func (r apiUpdateRuleRequest) Execute() (WafUpdateRuleResponse, *_nethttp.Respon
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1132,7 +876,7 @@ func (r apiUpdateRuleRequest) Execute() (WafUpdateRuleResponse, *_nethttp.Respon
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

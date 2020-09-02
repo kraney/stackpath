@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,21 +26,6 @@ var (
 // OriginsApiService OriginsApi service
 type OriginsApiService service
 
-type apiConnectScopeToOriginRequest struct {
-	ctx _context.Context
-	apiService *OriginsApiService
-	stackId string
-	siteId string
-	scopeId string
-	deliveryConnectScopeToOriginRequest *DeliveryConnectScopeToOriginRequest
-}
-
-
-func (r apiConnectScopeToOriginRequest) DeliveryConnectScopeToOriginRequest(deliveryConnectScopeToOriginRequest DeliveryConnectScopeToOriginRequest) apiConnectScopeToOriginRequest {
-	r.deliveryConnectScopeToOriginRequest = &deliveryConnectScopeToOriginRequest
-	return r
-}
-
 /*
 ConnectScopeToOrigin Connect an origin to a scope
 The origin is automatically created if necessary. When the request contains a priority which an origin already associated with the scope has set, the existing origin is disconnected. The priority of an origin already associated with a scope can be modified via this endpoint.
@@ -47,23 +33,10 @@ The origin is automatically created if necessary. When the request contains a pr
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
-@return apiConnectScopeToOriginRequest
+ * @param deliveryConnectScopeToOriginRequest
+@return DeliveryConnectScopeToOriginResponse
 */
-func (a *OriginsApiService) ConnectScopeToOrigin(ctx _context.Context, stackId string, siteId string, scopeId string) apiConnectScopeToOriginRequest {
-	return apiConnectScopeToOriginRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scopeId: scopeId,
-	}
-}
-
-/*
-Execute executes the request
- @return DeliveryConnectScopeToOriginResponse
-*/
-func (r apiConnectScopeToOriginRequest) Execute() (DeliveryConnectScopeToOriginResponse, *_nethttp.Response, error) {
+func (a *OriginsApiService) ConnectScopeToOrigin(ctx _context.Context, stackId string, siteId string, scopeId string, deliveryConnectScopeToOriginRequest DeliveryConnectScopeToOriginRequest) (DeliveryConnectScopeToOriginResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -73,26 +46,17 @@ func (r apiConnectScopeToOriginRequest) Execute() (DeliveryConnectScopeToOriginR
 		localVarReturnValue  DeliveryConnectScopeToOriginResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "OriginsApiService.ConnectScopeToOrigin")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	if r.deliveryConnectScopeToOriginRequest == nil {
-		return localVarReturnValue, nil, reportError("deliveryConnectScopeToOriginRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -112,13 +76,13 @@ func (r apiConnectScopeToOriginRequest) Execute() (DeliveryConnectScopeToOriginR
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.deliveryConnectScopeToOriginRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &deliveryConnectScopeToOriginRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -136,7 +100,7 @@ func (r apiConnectScopeToOriginRequest) Execute() (DeliveryConnectScopeToOriginR
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -146,7 +110,7 @@ func (r apiConnectScopeToOriginRequest) Execute() (DeliveryConnectScopeToOriginR
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -155,7 +119,7 @@ func (r apiConnectScopeToOriginRequest) Execute() (DeliveryConnectScopeToOriginR
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -164,7 +128,7 @@ func (r apiConnectScopeToOriginRequest) Execute() (DeliveryConnectScopeToOriginR
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -175,35 +139,15 @@ func (r apiConnectScopeToOriginRequest) Execute() (DeliveryConnectScopeToOriginR
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetOriginRequest struct {
-	ctx _context.Context
-	apiService *OriginsApiService
-	stackId string
-	originId string
-}
-
 
 /*
 GetOrigin Get an origin
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param originId An origin ID
-@return apiGetOriginRequest
+@return DeliveryGetOriginResponse
 */
-func (a *OriginsApiService) GetOrigin(ctx _context.Context, stackId string, originId string) apiGetOriginRequest {
-	return apiGetOriginRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		originId: originId,
-	}
-}
-
-/*
-Execute executes the request
- @return DeliveryGetOriginResponse
-*/
-func (r apiGetOriginRequest) Execute() (DeliveryGetOriginResponse, *_nethttp.Response, error) {
+func (a *OriginsApiService) GetOrigin(ctx _context.Context, stackId string, originId string) (DeliveryGetOriginResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -213,20 +157,15 @@ func (r apiGetOriginRequest) Execute() (DeliveryGetOriginResponse, *_nethttp.Res
 		localVarReturnValue  DeliveryGetOriginResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "OriginsApiService.GetOrigin")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/origins/{origin_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/origins/{origin_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"origin_id"+"}", _neturl.QueryEscape(parameterToString(r.originId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"origin_id"+"}", _neturl.QueryEscape(parameterToString(originId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -245,12 +184,12 @@ func (r apiGetOriginRequest) Execute() (DeliveryGetOriginResponse, *_nethttp.Res
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -268,7 +207,7 @@ func (r apiGetOriginRequest) Execute() (DeliveryGetOriginResponse, *_nethttp.Res
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -278,7 +217,7 @@ func (r apiGetOriginRequest) Execute() (DeliveryGetOriginResponse, *_nethttp.Res
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -287,7 +226,7 @@ func (r apiGetOriginRequest) Execute() (DeliveryGetOriginResponse, *_nethttp.Res
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -296,7 +235,7 @@ func (r apiGetOriginRequest) Execute() (DeliveryGetOriginResponse, *_nethttp.Res
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -307,57 +246,28 @@ func (r apiGetOriginRequest) Execute() (DeliveryGetOriginResponse, *_nethttp.Res
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetOriginsRequest struct {
-	ctx _context.Context
-	apiService *OriginsApiService
-	stackId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetOriginsRequest) PageRequestFirst(pageRequestFirst string) apiGetOriginsRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetOriginsRequest) PageRequestAfter(pageRequestAfter string) apiGetOriginsRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetOriginsRequest) PageRequestFilter(pageRequestFilter string) apiGetOriginsRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetOriginsRequest) PageRequestSortBy(pageRequestSortBy string) apiGetOriginsRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetOriginsOpts Optional parameters for the method 'GetOrigins'
+type GetOriginsOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
 GetOrigins Get all origins
-Retrieve all origins associated with a site's stack
+Retrieve all origins associated with a site&#39;s stack
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiGetOriginsRequest
+ * @param optional nil or *GetOriginsOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return DeliveryGetOriginsResponse
 */
-func (a *OriginsApiService) GetOrigins(ctx _context.Context, stackId string) apiGetOriginsRequest {
-	return apiGetOriginsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return DeliveryGetOriginsResponse
-*/
-func (r apiGetOriginsRequest) Execute() (DeliveryGetOriginsResponse, *_nethttp.Response, error) {
+func (a *OriginsApiService) GetOrigins(ctx _context.Context, stackId string, localVarOptionals *GetOriginsOpts) (DeliveryGetOriginsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -367,30 +277,25 @@ func (r apiGetOriginsRequest) Execute() (DeliveryGetOriginsResponse, *_nethttp.R
 		localVarReturnValue  DeliveryGetOriginsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "OriginsApiService.GetOrigins")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/origins"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/origins"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -409,12 +314,12 @@ func (r apiGetOriginsRequest) Execute() (DeliveryGetOriginsResponse, *_nethttp.R
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -432,7 +337,7 @@ func (r apiGetOriginsRequest) Execute() (DeliveryGetOriginsResponse, *_nethttp.R
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -442,7 +347,7 @@ func (r apiGetOriginsRequest) Execute() (DeliveryGetOriginsResponse, *_nethttp.R
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -451,7 +356,7 @@ func (r apiGetOriginsRequest) Execute() (DeliveryGetOriginsResponse, *_nethttp.R
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -460,7 +365,7 @@ func (r apiGetOriginsRequest) Execute() (DeliveryGetOriginsResponse, *_nethttp.R
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -471,37 +376,13 @@ func (r apiGetOriginsRequest) Execute() (DeliveryGetOriginsResponse, *_nethttp.R
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetScopeOriginsRequest struct {
-	ctx _context.Context
-	apiService *OriginsApiService
-	stackId string
-	siteId string
-	scopeId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetScopeOriginsRequest) PageRequestFirst(pageRequestFirst string) apiGetScopeOriginsRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetScopeOriginsRequest) PageRequestAfter(pageRequestAfter string) apiGetScopeOriginsRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetScopeOriginsRequest) PageRequestFilter(pageRequestFilter string) apiGetScopeOriginsRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetScopeOriginsRequest) PageRequestSortBy(pageRequestSortBy string) apiGetScopeOriginsRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetScopeOriginsOpts Optional parameters for the method 'GetScopeOrigins'
+type GetScopeOriginsOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
@@ -510,23 +391,14 @@ GetScopeOrigins Get a scope's origins
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
-@return apiGetScopeOriginsRequest
+ * @param optional nil or *GetScopeOriginsOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return DeliveryGetScopeOriginsResponse
 */
-func (a *OriginsApiService) GetScopeOrigins(ctx _context.Context, stackId string, siteId string, scopeId string) apiGetScopeOriginsRequest {
-	return apiGetScopeOriginsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scopeId: scopeId,
-	}
-}
-
-/*
-Execute executes the request
- @return DeliveryGetScopeOriginsResponse
-*/
-func (r apiGetScopeOriginsRequest) Execute() (DeliveryGetScopeOriginsResponse, *_nethttp.Response, error) {
+func (a *OriginsApiService) GetScopeOrigins(ctx _context.Context, stackId string, siteId string, scopeId string, localVarOptionals *GetScopeOriginsOpts) (DeliveryGetScopeOriginsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -536,34 +408,29 @@ func (r apiGetScopeOriginsRequest) Execute() (DeliveryGetScopeOriginsResponse, *
 		localVarReturnValue  DeliveryGetScopeOriginsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "OriginsApiService.GetScopeOrigins")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -582,12 +449,12 @@ func (r apiGetScopeOriginsRequest) Execute() (DeliveryGetScopeOriginsResponse, *
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -605,7 +472,7 @@ func (r apiGetScopeOriginsRequest) Execute() (DeliveryGetScopeOriginsResponse, *
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -615,7 +482,7 @@ func (r apiGetScopeOriginsRequest) Execute() (DeliveryGetScopeOriginsResponse, *
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -624,7 +491,7 @@ func (r apiGetScopeOriginsRequest) Execute() (DeliveryGetScopeOriginsResponse, *
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -633,7 +500,7 @@ func (r apiGetScopeOriginsRequest) Execute() (DeliveryGetScopeOriginsResponse, *
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -644,41 +511,16 @@ func (r apiGetScopeOriginsRequest) Execute() (DeliveryGetScopeOriginsResponse, *
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiUpdateOriginRequest struct {
-	ctx _context.Context
-	apiService *OriginsApiService
-	stackId string
-	originId string
-	deliveryUpdateOriginRequest *DeliveryUpdateOriginRequest
-}
-
-
-func (r apiUpdateOriginRequest) DeliveryUpdateOriginRequest(deliveryUpdateOriginRequest DeliveryUpdateOriginRequest) apiUpdateOriginRequest {
-	r.deliveryUpdateOriginRequest = &deliveryUpdateOriginRequest
-	return r
-}
 
 /*
 UpdateOrigin Update an origin
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param originId An origin ID
-@return apiUpdateOriginRequest
+ * @param deliveryUpdateOriginRequest
+@return DeliveryUpdateOriginResponse
 */
-func (a *OriginsApiService) UpdateOrigin(ctx _context.Context, stackId string, originId string) apiUpdateOriginRequest {
-	return apiUpdateOriginRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		originId: originId,
-	}
-}
-
-/*
-Execute executes the request
- @return DeliveryUpdateOriginResponse
-*/
-func (r apiUpdateOriginRequest) Execute() (DeliveryUpdateOriginResponse, *_nethttp.Response, error) {
+func (a *OriginsApiService) UpdateOrigin(ctx _context.Context, stackId string, originId string, deliveryUpdateOriginRequest DeliveryUpdateOriginRequest) (DeliveryUpdateOriginResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -688,24 +530,15 @@ func (r apiUpdateOriginRequest) Execute() (DeliveryUpdateOriginResponse, *_netht
 		localVarReturnValue  DeliveryUpdateOriginResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "OriginsApiService.UpdateOrigin")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/origins/{origin_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/origins/{origin_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"origin_id"+"}", _neturl.QueryEscape(parameterToString(r.originId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"origin_id"+"}", _neturl.QueryEscape(parameterToString(originId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.deliveryUpdateOriginRequest == nil {
-		return localVarReturnValue, nil, reportError("deliveryUpdateOriginRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -725,13 +558,13 @@ func (r apiUpdateOriginRequest) Execute() (DeliveryUpdateOriginResponse, *_netht
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.deliveryUpdateOriginRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &deliveryUpdateOriginRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -749,7 +582,7 @@ func (r apiUpdateOriginRequest) Execute() (DeliveryUpdateOriginResponse, *_netht
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -759,7 +592,7 @@ func (r apiUpdateOriginRequest) Execute() (DeliveryUpdateOriginResponse, *_netht
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -768,7 +601,7 @@ func (r apiUpdateOriginRequest) Execute() (DeliveryUpdateOriginResponse, *_netht
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -777,7 +610,7 @@ func (r apiUpdateOriginRequest) Execute() (DeliveryUpdateOriginResponse, *_netht
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

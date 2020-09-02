@@ -25,33 +25,14 @@ var (
 // ScanningApiService ScanningApi service
 type ScanningApiService service
 
-type apiGetDiscoveryProviderDetailsRequest struct {
-	ctx _context.Context
-	apiService *ScanningApiService
-	domain string
-}
-
-
 /*
 GetDiscoveryProviderDetails Get provider details
 Scan a domain for DNS provider information
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domain A hostname to scan for provider information
-@return apiGetDiscoveryProviderDetailsRequest
+@return ZoneGetDiscoveryProviderDetailsResponse
 */
-func (a *ScanningApiService) GetDiscoveryProviderDetails(ctx _context.Context, domain string) apiGetDiscoveryProviderDetailsRequest {
-	return apiGetDiscoveryProviderDetailsRequest{
-		apiService: a,
-		ctx: ctx,
-		domain: domain,
-	}
-}
-
-/*
-Execute executes the request
- @return ZoneGetDiscoveryProviderDetailsResponse
-*/
-func (r apiGetDiscoveryProviderDetailsRequest) Execute() (ZoneGetDiscoveryProviderDetailsResponse, *_nethttp.Response, error) {
+func (a *ScanningApiService) GetDiscoveryProviderDetails(ctx _context.Context, domain string) (ZoneGetDiscoveryProviderDetailsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -61,18 +42,13 @@ func (r apiGetDiscoveryProviderDetailsRequest) Execute() (ZoneGetDiscoveryProvid
 		localVarReturnValue  ZoneGetDiscoveryProviderDetailsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ScanningApiService.GetDiscoveryProviderDetails")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/dns/v1/discovery/{domain}/provider_details"
-	localVarPath = strings.Replace(localVarPath, "{"+"domain"+"}", _neturl.QueryEscape(parameterToString(r.domain, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/dns/v1/discovery/{domain}/provider_details"
+	localVarPath = strings.Replace(localVarPath, "{"+"domain"+"}", _neturl.QueryEscape(parameterToString(domain, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -91,12 +67,12 @@ func (r apiGetDiscoveryProviderDetailsRequest) Execute() (ZoneGetDiscoveryProvid
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -114,7 +90,7 @@ func (r apiGetDiscoveryProviderDetailsRequest) Execute() (ZoneGetDiscoveryProvid
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -124,7 +100,7 @@ func (r apiGetDiscoveryProviderDetailsRequest) Execute() (ZoneGetDiscoveryProvid
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -133,7 +109,7 @@ func (r apiGetDiscoveryProviderDetailsRequest) Execute() (ZoneGetDiscoveryProvid
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -142,7 +118,7 @@ func (r apiGetDiscoveryProviderDetailsRequest) Execute() (ZoneGetDiscoveryProvid
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -153,39 +129,16 @@ func (r apiGetDiscoveryProviderDetailsRequest) Execute() (ZoneGetDiscoveryProvid
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiScanDomainForRecordsRequest struct {
-	ctx _context.Context
-	apiService *ScanningApiService
-	domain string
-	scanDomainForRecordsRequestProviderConfig *ScanDomainForRecordsRequestProviderConfig
-}
-
-
-func (r apiScanDomainForRecordsRequest) ScanDomainForRecordsRequestProviderConfig(scanDomainForRecordsRequestProviderConfig ScanDomainForRecordsRequestProviderConfig) apiScanDomainForRecordsRequest {
-	r.scanDomainForRecordsRequestProviderConfig = &scanDomainForRecordsRequestProviderConfig
-	return r
-}
 
 /*
 ScanDomainForRecords Get resource records
 Scan a domain for resource records. This call returns the records that StackPath is able to scan at the time of execution. It performs a best effort, but cannot guarantee all resource records were found.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param domain A hostname to scan for resource records
-@return apiScanDomainForRecordsRequest
+ * @param scanDomainForRecordsRequestProviderConfig
+@return ZoneScanDomainForRecordsResponse
 */
-func (a *ScanningApiService) ScanDomainForRecords(ctx _context.Context, domain string) apiScanDomainForRecordsRequest {
-	return apiScanDomainForRecordsRequest{
-		apiService: a,
-		ctx: ctx,
-		domain: domain,
-	}
-}
-
-/*
-Execute executes the request
- @return ZoneScanDomainForRecordsResponse
-*/
-func (r apiScanDomainForRecordsRequest) Execute() (ZoneScanDomainForRecordsResponse, *_nethttp.Response, error) {
+func (a *ScanningApiService) ScanDomainForRecords(ctx _context.Context, domain string, scanDomainForRecordsRequestProviderConfig ScanDomainForRecordsRequestProviderConfig) (ZoneScanDomainForRecordsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -195,22 +148,13 @@ func (r apiScanDomainForRecordsRequest) Execute() (ZoneScanDomainForRecordsRespo
 		localVarReturnValue  ZoneScanDomainForRecordsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ScanningApiService.ScanDomainForRecords")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/dns/v1/discovery/{domain}/records"
-	localVarPath = strings.Replace(localVarPath, "{"+"domain"+"}", _neturl.QueryEscape(parameterToString(r.domain, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/dns/v1/discovery/{domain}/records"
+	localVarPath = strings.Replace(localVarPath, "{"+"domain"+"}", _neturl.QueryEscape(parameterToString(domain, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	if r.scanDomainForRecordsRequestProviderConfig == nil {
-		return localVarReturnValue, nil, reportError("scanDomainForRecordsRequestProviderConfig is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -230,13 +174,13 @@ func (r apiScanDomainForRecordsRequest) Execute() (ZoneScanDomainForRecordsRespo
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.scanDomainForRecordsRequestProviderConfig
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &scanDomainForRecordsRequestProviderConfig
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -254,7 +198,7 @@ func (r apiScanDomainForRecordsRequest) Execute() (ZoneScanDomainForRecordsRespo
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -264,7 +208,7 @@ func (r apiScanDomainForRecordsRequest) Execute() (ZoneScanDomainForRecordsRespo
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -273,7 +217,7 @@ func (r apiScanDomainForRecordsRequest) Execute() (ZoneScanDomainForRecordsRespo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -282,7 +226,7 @@ func (r apiScanDomainForRecordsRequest) Execute() (ZoneScanDomainForRecordsRespo
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

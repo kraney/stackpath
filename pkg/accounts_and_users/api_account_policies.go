@@ -25,53 +25,29 @@ var (
 // AccountPoliciesApiService AccountPoliciesApi service
 type AccountPoliciesApiService service
 
-type apiGetIAMPolicyRequest struct {
-	ctx _context.Context
-	apiService *AccountPoliciesApiService
-	accountId string
-}
-
-
 /*
 GetIAMPolicy Get all account policies
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param accountId An account ID
-@return apiGetIAMPolicyRequest
+@return IdentityGetIamPolicyResponse
 */
-func (a *AccountPoliciesApiService) GetIAMPolicy(ctx _context.Context, accountId string) apiGetIAMPolicyRequest {
-	return apiGetIAMPolicyRequest{
-		apiService: a,
-		ctx: ctx,
-		accountId: accountId,
-	}
-}
-
-/*
-Execute executes the request
- @return IdentityGetIAMPolicyResponse
-*/
-func (r apiGetIAMPolicyRequest) Execute() (IdentityGetIAMPolicyResponse, *_nethttp.Response, error) {
+func (a *AccountPoliciesApiService) GetIAMPolicy(ctx _context.Context, accountId string) (IdentityGetIamPolicyResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  IdentityGetIAMPolicyResponse
+		localVarReturnValue  IdentityGetIamPolicyResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AccountPoliciesApiService.GetIAMPolicy")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/identity/v1/accounts/{account_id}/iam/policy"
-	localVarPath = strings.Replace(localVarPath, "{"+"account_id"+"}", _neturl.QueryEscape(parameterToString(r.accountId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/identity/v1/accounts/{account_id}/iam/policy"
+	localVarPath = strings.Replace(localVarPath, "{"+"account_id"+"}", _neturl.QueryEscape(parameterToString(accountId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -90,12 +66,12 @@ func (r apiGetIAMPolicyRequest) Execute() (IdentityGetIAMPolicyResponse, *_netht
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -113,7 +89,7 @@ func (r apiGetIAMPolicyRequest) Execute() (IdentityGetIAMPolicyResponse, *_netht
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -123,7 +99,7 @@ func (r apiGetIAMPolicyRequest) Execute() (IdentityGetIAMPolicyResponse, *_netht
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -132,7 +108,7 @@ func (r apiGetIAMPolicyRequest) Execute() (IdentityGetIAMPolicyResponse, *_netht
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -141,7 +117,7 @@ func (r apiGetIAMPolicyRequest) Execute() (IdentityGetIAMPolicyResponse, *_netht
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -151,64 +127,32 @@ func (r apiGetIAMPolicyRequest) Execute() (IdentityGetIAMPolicyResponse, *_netht
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
-}
-type apiSetIAMPolicyRequest struct {
-	ctx _context.Context
-	apiService *AccountPoliciesApiService
-	accountId string
-	identitySetIAMPolicyRequest *IdentitySetIAMPolicyRequest
-}
-
-
-func (r apiSetIAMPolicyRequest) IdentitySetIAMPolicyRequest(identitySetIAMPolicyRequest IdentitySetIAMPolicyRequest) apiSetIAMPolicyRequest {
-	r.identitySetIAMPolicyRequest = &identitySetIAMPolicyRequest
-	return r
 }
 
 /*
 SetIAMPolicy Update account policies
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param accountId An account ID
-@return apiSetIAMPolicyRequest
+ * @param identitySetIamPolicyRequest
+@return IdentitySetIamPolicyResponse
 */
-func (a *AccountPoliciesApiService) SetIAMPolicy(ctx _context.Context, accountId string) apiSetIAMPolicyRequest {
-	return apiSetIAMPolicyRequest{
-		apiService: a,
-		ctx: ctx,
-		accountId: accountId,
-	}
-}
-
-/*
-Execute executes the request
- @return IdentitySetIAMPolicyResponse
-*/
-func (r apiSetIAMPolicyRequest) Execute() (IdentitySetIAMPolicyResponse, *_nethttp.Response, error) {
+func (a *AccountPoliciesApiService) SetIAMPolicy(ctx _context.Context, accountId string, identitySetIamPolicyRequest IdentitySetIamPolicyRequest) (IdentitySetIamPolicyResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  IdentitySetIAMPolicyResponse
+		localVarReturnValue  IdentitySetIamPolicyResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AccountPoliciesApiService.SetIAMPolicy")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/identity/v1/accounts/{account_id}/iam/policy"
-	localVarPath = strings.Replace(localVarPath, "{"+"account_id"+"}", _neturl.QueryEscape(parameterToString(r.accountId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/identity/v1/accounts/{account_id}/iam/policy"
+	localVarPath = strings.Replace(localVarPath, "{"+"account_id"+"}", _neturl.QueryEscape(parameterToString(accountId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	if r.identitySetIAMPolicyRequest == nil {
-		return localVarReturnValue, nil, reportError("identitySetIAMPolicyRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -228,13 +172,13 @@ func (r apiSetIAMPolicyRequest) Execute() (IdentitySetIAMPolicyResponse, *_netht
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.identitySetIAMPolicyRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &identitySetIamPolicyRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -252,7 +196,7 @@ func (r apiSetIAMPolicyRequest) Execute() (IdentitySetIAMPolicyResponse, *_netht
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -262,7 +206,7 @@ func (r apiSetIAMPolicyRequest) Execute() (IdentitySetIAMPolicyResponse, *_netht
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -271,7 +215,7 @@ func (r apiSetIAMPolicyRequest) Execute() (IdentitySetIAMPolicyResponse, *_netht
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -280,7 +224,7 @@ func (r apiSetIAMPolicyRequest) Execute() (IdentitySetIAMPolicyResponse, *_netht
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -291,63 +235,31 @@ func (r apiSetIAMPolicyRequest) Execute() (IdentitySetIAMPolicyResponse, *_netht
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiTestIAMPermissionsRequest struct {
-	ctx _context.Context
-	apiService *AccountPoliciesApiService
-	accountId string
-	identityTestIAMPermissionsRequest *IdentityTestIAMPermissionsRequest
-}
-
-
-func (r apiTestIAMPermissionsRequest) IdentityTestIAMPermissionsRequest(identityTestIAMPermissionsRequest IdentityTestIAMPermissionsRequest) apiTestIAMPermissionsRequest {
-	r.identityTestIAMPermissionsRequest = &identityTestIAMPermissionsRequest
-	return r
-}
 
 /*
 TestIAMPermissions Test account policies
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param accountId An account ID
-@return apiTestIAMPermissionsRequest
+ * @param identityTestIamPermissionsRequest
+@return IdentityTestIamPermissionsResponse
 */
-func (a *AccountPoliciesApiService) TestIAMPermissions(ctx _context.Context, accountId string) apiTestIAMPermissionsRequest {
-	return apiTestIAMPermissionsRequest{
-		apiService: a,
-		ctx: ctx,
-		accountId: accountId,
-	}
-}
-
-/*
-Execute executes the request
- @return IdentityTestIAMPermissionsResponse
-*/
-func (r apiTestIAMPermissionsRequest) Execute() (IdentityTestIAMPermissionsResponse, *_nethttp.Response, error) {
+func (a *AccountPoliciesApiService) TestIAMPermissions(ctx _context.Context, accountId string, identityTestIamPermissionsRequest IdentityTestIamPermissionsRequest) (IdentityTestIamPermissionsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  IdentityTestIAMPermissionsResponse
+		localVarReturnValue  IdentityTestIamPermissionsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AccountPoliciesApiService.TestIAMPermissions")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/identity/v1/accounts/{account_id}/iam/test"
-	localVarPath = strings.Replace(localVarPath, "{"+"account_id"+"}", _neturl.QueryEscape(parameterToString(r.accountId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/identity/v1/accounts/{account_id}/iam/test"
+	localVarPath = strings.Replace(localVarPath, "{"+"account_id"+"}", _neturl.QueryEscape(parameterToString(accountId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	if r.identityTestIAMPermissionsRequest == nil {
-		return localVarReturnValue, nil, reportError("identityTestIAMPermissionsRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -367,13 +279,13 @@ func (r apiTestIAMPermissionsRequest) Execute() (IdentityTestIAMPermissionsRespo
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.identityTestIAMPermissionsRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &identityTestIamPermissionsRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -391,7 +303,7 @@ func (r apiTestIAMPermissionsRequest) Execute() (IdentityTestIAMPermissionsRespo
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -401,7 +313,7 @@ func (r apiTestIAMPermissionsRequest) Execute() (IdentityTestIAMPermissionsRespo
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -410,7 +322,7 @@ func (r apiTestIAMPermissionsRequest) Execute() (IdentityTestIAMPermissionsRespo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -419,7 +331,7 @@ func (r apiTestIAMPermissionsRequest) Execute() (IdentityTestIAMPermissionsRespo
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

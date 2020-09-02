@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,18 +26,9 @@ var (
 // CertificatesApiService CertificatesApi service
 type CertificatesApiService service
 
-type apiDeleteCertificateRequest struct {
-	ctx _context.Context
-	apiService *CertificatesApiService
-	stackId string
-	certificateId string
-	reason *string
-}
-
-
-func (r apiDeleteCertificateRequest) Reason(reason string) apiDeleteCertificateRequest {
-	r.reason = &reason
-	return r
+// DeleteCertificateOpts Optional parameters for the method 'DeleteCertificate'
+type DeleteCertificateOpts struct {
+    Reason optional.String
 }
 
 /*
@@ -44,48 +36,30 @@ DeleteCertificate Delete a certificate
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param certificateId A certificate ID
-@return apiDeleteCertificateRequest
+ * @param optional nil or *DeleteCertificateOpts - Optional Parameters:
+ * @param "Reason" (optional.String) - 
 */
-func (a *CertificatesApiService) DeleteCertificate(ctx _context.Context, stackId string, certificateId string) apiDeleteCertificateRequest {
-	return apiDeleteCertificateRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		certificateId: certificateId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDeleteCertificateRequest) Execute() (*_nethttp.Response, error) {
+func (a *CertificatesApiService) DeleteCertificate(ctx _context.Context, stackId string, certificateId string, localVarOptionals *DeleteCertificateOpts) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "CertificatesApiService.DeleteCertificate")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(r.certificateId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(certificateId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.reason != nil {
-		localVarQueryParams.Add("reason", parameterToString(*r.reason, ""))
+
+	if localVarOptionals != nil && localVarOptionals.Reason.IsSet() {
+		localVarQueryParams.Add("reason", parameterToString(localVarOptionals.Reason.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -104,12 +78,12 @@ func (r apiDeleteCertificateRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -127,7 +101,7 @@ func (r apiDeleteCertificateRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -137,7 +111,7 @@ func (r apiDeleteCertificateRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -146,7 +120,7 @@ func (r apiDeleteCertificateRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -157,35 +131,15 @@ func (r apiDeleteCertificateRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiGetCertificateRequest struct {
-	ctx _context.Context
-	apiService *CertificatesApiService
-	stackId string
-	certificateId string
-}
-
 
 /*
 GetCertificate Get a certificate
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param certificateId A certificate ID
-@return apiGetCertificateRequest
+@return CertificateGetCertificateResponse
 */
-func (a *CertificatesApiService) GetCertificate(ctx _context.Context, stackId string, certificateId string) apiGetCertificateRequest {
-	return apiGetCertificateRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		certificateId: certificateId,
-	}
-}
-
-/*
-Execute executes the request
- @return CertificateGetCertificateResponse
-*/
-func (r apiGetCertificateRequest) Execute() (CertificateGetCertificateResponse, *_nethttp.Response, error) {
+func (a *CertificatesApiService) GetCertificate(ctx _context.Context, stackId string, certificateId string) (CertificateGetCertificateResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -195,20 +149,15 @@ func (r apiGetCertificateRequest) Execute() (CertificateGetCertificateResponse, 
 		localVarReturnValue  CertificateGetCertificateResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "CertificatesApiService.GetCertificate")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(r.certificateId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(certificateId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -227,12 +176,12 @@ func (r apiGetCertificateRequest) Execute() (CertificateGetCertificateResponse, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -250,7 +199,7 @@ func (r apiGetCertificateRequest) Execute() (CertificateGetCertificateResponse, 
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -260,7 +209,7 @@ func (r apiGetCertificateRequest) Execute() (CertificateGetCertificateResponse, 
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -269,7 +218,7 @@ func (r apiGetCertificateRequest) Execute() (CertificateGetCertificateResponse, 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -278,7 +227,7 @@ func (r apiGetCertificateRequest) Execute() (CertificateGetCertificateResponse, 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -289,56 +238,27 @@ func (r apiGetCertificateRequest) Execute() (CertificateGetCertificateResponse, 
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetCertificatesRequest struct {
-	ctx _context.Context
-	apiService *CertificatesApiService
-	stackId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetCertificatesRequest) PageRequestFirst(pageRequestFirst string) apiGetCertificatesRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetCertificatesRequest) PageRequestAfter(pageRequestAfter string) apiGetCertificatesRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetCertificatesRequest) PageRequestFilter(pageRequestFilter string) apiGetCertificatesRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetCertificatesRequest) PageRequestSortBy(pageRequestSortBy string) apiGetCertificatesRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetCertificatesOpts Optional parameters for the method 'GetCertificates'
+type GetCertificatesOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
 GetCertificates Get all certificates
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiGetCertificatesRequest
+ * @param optional nil or *GetCertificatesOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return CertificateGetCertificatesResponse
 */
-func (a *CertificatesApiService) GetCertificates(ctx _context.Context, stackId string) apiGetCertificatesRequest {
-	return apiGetCertificatesRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return CertificateGetCertificatesResponse
-*/
-func (r apiGetCertificatesRequest) Execute() (CertificateGetCertificatesResponse, *_nethttp.Response, error) {
+func (a *CertificatesApiService) GetCertificates(ctx _context.Context, stackId string, localVarOptionals *GetCertificatesOpts) (CertificateGetCertificatesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -348,30 +268,25 @@ func (r apiGetCertificatesRequest) Execute() (CertificateGetCertificatesResponse
 		localVarReturnValue  CertificateGetCertificatesResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "CertificatesApiService.GetCertificates")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/ssl/v1/stacks/{stack_id}/certificates"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/ssl/v1/stacks/{stack_id}/certificates"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -390,12 +305,12 @@ func (r apiGetCertificatesRequest) Execute() (CertificateGetCertificatesResponse
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -413,7 +328,7 @@ func (r apiGetCertificatesRequest) Execute() (CertificateGetCertificatesResponse
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -423,7 +338,7 @@ func (r apiGetCertificatesRequest) Execute() (CertificateGetCertificatesResponse
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -432,7 +347,7 @@ func (r apiGetCertificatesRequest) Execute() (CertificateGetCertificatesResponse
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -441,7 +356,7 @@ func (r apiGetCertificatesRequest) Execute() (CertificateGetCertificatesResponse
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -452,35 +367,15 @@ func (r apiGetCertificatesRequest) Execute() (CertificateGetCertificatesResponse
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetLatestCertificateRequest struct {
-	ctx _context.Context
-	apiService *CertificatesApiService
-	stackId string
-	certificateId string
-}
-
 
 /*
 GetLatestCertificate Get a certificate's latest version
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param certificateId A certificate ID
-@return apiGetLatestCertificateRequest
+@return CertificateGetLatestCertificateResponse
 */
-func (a *CertificatesApiService) GetLatestCertificate(ctx _context.Context, stackId string, certificateId string) apiGetLatestCertificateRequest {
-	return apiGetLatestCertificateRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		certificateId: certificateId,
-	}
-}
-
-/*
-Execute executes the request
- @return CertificateGetLatestCertificateResponse
-*/
-func (r apiGetLatestCertificateRequest) Execute() (CertificateGetLatestCertificateResponse, *_nethttp.Response, error) {
+func (a *CertificatesApiService) GetLatestCertificate(ctx _context.Context, stackId string, certificateId string) (CertificateGetLatestCertificateResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -490,20 +385,15 @@ func (r apiGetLatestCertificateRequest) Execute() (CertificateGetLatestCertifica
 		localVarReturnValue  CertificateGetLatestCertificateResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "CertificatesApiService.GetLatestCertificate")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}/latest"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}/latest"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(r.certificateId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(certificateId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -522,12 +412,12 @@ func (r apiGetLatestCertificateRequest) Execute() (CertificateGetLatestCertifica
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -545,7 +435,7 @@ func (r apiGetLatestCertificateRequest) Execute() (CertificateGetLatestCertifica
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -555,7 +445,7 @@ func (r apiGetLatestCertificateRequest) Execute() (CertificateGetLatestCertifica
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -564,7 +454,7 @@ func (r apiGetLatestCertificateRequest) Execute() (CertificateGetLatestCertifica
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -573,7 +463,7 @@ func (r apiGetLatestCertificateRequest) Execute() (CertificateGetLatestCertifica
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -584,35 +474,15 @@ func (r apiGetLatestCertificateRequest) Execute() (CertificateGetLatestCertifica
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiRenewCertificateRequest struct {
-	ctx _context.Context
-	apiService *CertificatesApiService
-	stackId string
-	certificateId string
-}
-
 
 /*
 RenewCertificate Renew a certificate
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param certificateId A certificate ID
-@return apiRenewCertificateRequest
+@return CertificateRenewCertificateResponse
 */
-func (a *CertificatesApiService) RenewCertificate(ctx _context.Context, stackId string, certificateId string) apiRenewCertificateRequest {
-	return apiRenewCertificateRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		certificateId: certificateId,
-	}
-}
-
-/*
-Execute executes the request
- @return CertificateRenewCertificateResponse
-*/
-func (r apiRenewCertificateRequest) Execute() (CertificateRenewCertificateResponse, *_nethttp.Response, error) {
+func (a *CertificatesApiService) RenewCertificate(ctx _context.Context, stackId string, certificateId string) (CertificateRenewCertificateResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -622,20 +492,15 @@ func (r apiRenewCertificateRequest) Execute() (CertificateRenewCertificateRespon
 		localVarReturnValue  CertificateRenewCertificateResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "CertificatesApiService.RenewCertificate")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}/renew"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}/renew"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(r.certificateId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(certificateId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -654,12 +519,12 @@ func (r apiRenewCertificateRequest) Execute() (CertificateRenewCertificateRespon
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -677,7 +542,7 @@ func (r apiRenewCertificateRequest) Execute() (CertificateRenewCertificateRespon
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -687,7 +552,7 @@ func (r apiRenewCertificateRequest) Execute() (CertificateRenewCertificateRespon
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -696,7 +561,7 @@ func (r apiRenewCertificateRequest) Execute() (CertificateRenewCertificateRespon
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -705,7 +570,7 @@ func (r apiRenewCertificateRequest) Execute() (CertificateRenewCertificateRespon
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -716,58 +581,31 @@ func (r apiRenewCertificateRequest) Execute() (CertificateRenewCertificateRespon
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiRevokeCertificateRequest struct {
-	ctx _context.Context
-	apiService *CertificatesApiService
-	stackId string
-	certificateId string
-}
-
 
 /*
 RevokeCertificate Revoke a certificate
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param certificateId A certificate ID
-@return apiRevokeCertificateRequest
 */
-func (a *CertificatesApiService) RevokeCertificate(ctx _context.Context, stackId string, certificateId string) apiRevokeCertificateRequest {
-	return apiRevokeCertificateRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		certificateId: certificateId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiRevokeCertificateRequest) Execute() (*_nethttp.Response, error) {
+func (a *CertificatesApiService) RevokeCertificate(ctx _context.Context, stackId string, certificateId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "CertificatesApiService.RevokeCertificate")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}/revoke"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}/revoke"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(r.certificateId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(certificateId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -786,12 +624,12 @@ func (r apiRevokeCertificateRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -809,7 +647,7 @@ func (r apiRevokeCertificateRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -819,7 +657,7 @@ func (r apiRevokeCertificateRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -828,7 +666,7 @@ func (r apiRevokeCertificateRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -839,19 +677,6 @@ func (r apiRevokeCertificateRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiUpdateCertificateRequest struct {
-	ctx _context.Context
-	apiService *CertificatesApiService
-	stackId string
-	certificateId string
-	certificateUpdateCertificateRequest *CertificateUpdateCertificateRequest
-}
-
-
-func (r apiUpdateCertificateRequest) CertificateUpdateCertificateRequest(certificateUpdateCertificateRequest CertificateUpdateCertificateRequest) apiUpdateCertificateRequest {
-	r.certificateUpdateCertificateRequest = &certificateUpdateCertificateRequest
-	return r
-}
 
 /*
 UpdateCertificate Update a certificate
@@ -859,22 +684,10 @@ Updating a certificate creates a new CSR and issues a new certificate.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param certificateId A certificate ID
-@return apiUpdateCertificateRequest
+ * @param certificateUpdateCertificateRequest
+@return CertificateUpdateCertificateResponse
 */
-func (a *CertificatesApiService) UpdateCertificate(ctx _context.Context, stackId string, certificateId string) apiUpdateCertificateRequest {
-	return apiUpdateCertificateRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		certificateId: certificateId,
-	}
-}
-
-/*
-Execute executes the request
- @return CertificateUpdateCertificateResponse
-*/
-func (r apiUpdateCertificateRequest) Execute() (CertificateUpdateCertificateResponse, *_nethttp.Response, error) {
+func (a *CertificatesApiService) UpdateCertificate(ctx _context.Context, stackId string, certificateId string, certificateUpdateCertificateRequest CertificateUpdateCertificateRequest) (CertificateUpdateCertificateResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -884,24 +697,15 @@ func (r apiUpdateCertificateRequest) Execute() (CertificateUpdateCertificateResp
 		localVarReturnValue  CertificateUpdateCertificateResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "CertificatesApiService.UpdateCertificate")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/ssl/v1/stacks/{stack_id}/certificates/{certificate_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(r.certificateId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(certificateId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.certificateUpdateCertificateRequest == nil {
-		return localVarReturnValue, nil, reportError("certificateUpdateCertificateRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -921,13 +725,13 @@ func (r apiUpdateCertificateRequest) Execute() (CertificateUpdateCertificateResp
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.certificateUpdateCertificateRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &certificateUpdateCertificateRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -945,7 +749,7 @@ func (r apiUpdateCertificateRequest) Execute() (CertificateUpdateCertificateResp
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -955,7 +759,7 @@ func (r apiUpdateCertificateRequest) Execute() (CertificateUpdateCertificateResp
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -964,7 +768,7 @@ func (r apiUpdateCertificateRequest) Execute() (CertificateUpdateCertificateResp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -973,7 +777,7 @@ func (r apiUpdateCertificateRequest) Execute() (CertificateUpdateCertificateResp
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

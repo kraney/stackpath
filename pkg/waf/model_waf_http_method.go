@@ -8,11 +8,6 @@
  */
 
 package waf
-
-import (
-	"encoding/json"
-)
-
 // WafHttpMethod HTTP methods of a request  - METHOD_UNSPECIFIED: Unspecified HTTP method  - GET: HTTP GET method  - POST: HTTP POST method  - PUT: HTTP PUT method  - DELETE: HTTP DELETE method  - HEAD: HTTP HEAD method  - PATCH: HTTP PATCH method  - OPTIONS: HTTP OPTIONS method  - CONNECT: HTTP CONNECT method  - TRACE: HTTP TRACE method
 type WafHttpMethod string
 
@@ -29,45 +24,3 @@ const (
 	CONNECT WafHttpMethod = "CONNECT"
 	TRACE WafHttpMethod = "TRACE"
 )
-
-// Ptr returns reference to wafHttpMethod value
-func (v WafHttpMethod) Ptr() *WafHttpMethod {
-	return &v
-}
-
-
-type NullableWafHttpMethod struct {
-	value *WafHttpMethod
-	isSet bool
-}
-
-func (v NullableWafHttpMethod) Get() *WafHttpMethod {
-	return v.value
-}
-
-func (v *NullableWafHttpMethod) Set(val *WafHttpMethod) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableWafHttpMethod) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableWafHttpMethod) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableWafHttpMethod(val *WafHttpMethod) *NullableWafHttpMethod {
-	return &NullableWafHttpMethod{value: val, isSet: true}
-}
-
-func (v NullableWafHttpMethod) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableWafHttpMethod) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

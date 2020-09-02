@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,44 +26,16 @@ var (
 // VirtualMachineImagesApiService VirtualMachineImagesApi service
 type VirtualMachineImagesApiService service
 
-type apiCreateImageRequest struct {
-	ctx _context.Context
-	apiService *VirtualMachineImagesApiService
-	stackId string
-	imageFamily string
-	imageTag string
-	v1CreateImageRequest *V1CreateImageRequest
-}
-
-
-func (r apiCreateImageRequest) V1CreateImageRequest(v1CreateImageRequest V1CreateImageRequest) apiCreateImageRequest {
-	r.v1CreateImageRequest = &v1CreateImageRequest
-	return r
-}
-
 /*
 CreateImage Create an image
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param imageFamily The image's family
  * @param imageTag The image's tag
-@return apiCreateImageRequest
+ * @param v1CreateImageRequest
+@return V1CreateImageResponse
 */
-func (a *VirtualMachineImagesApiService) CreateImage(ctx _context.Context, stackId string, imageFamily string, imageTag string) apiCreateImageRequest {
-	return apiCreateImageRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		imageFamily: imageFamily,
-		imageTag: imageTag,
-	}
-}
-
-/*
-Execute executes the request
- @return V1CreateImageResponse
-*/
-func (r apiCreateImageRequest) Execute() (V1CreateImageResponse, *_nethttp.Response, error) {
+func (a *VirtualMachineImagesApiService) CreateImage(ctx _context.Context, stackId string, imageFamily string, imageTag string, v1CreateImageRequest V1CreateImageRequest) (V1CreateImageResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -72,26 +45,17 @@ func (r apiCreateImageRequest) Execute() (V1CreateImageResponse, *_nethttp.Respo
 		localVarReturnValue  V1CreateImageResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineImagesApiService.CreateImage")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(r.imageFamily, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(r.imageTag, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(imageFamily, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(imageTag, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	if r.v1CreateImageRequest == nil {
-		return localVarReturnValue, nil, reportError("v1CreateImageRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -111,13 +75,13 @@ func (r apiCreateImageRequest) Execute() (V1CreateImageResponse, *_nethttp.Respo
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.v1CreateImageRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &v1CreateImageRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -135,7 +99,7 @@ func (r apiCreateImageRequest) Execute() (V1CreateImageResponse, *_nethttp.Respo
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -145,7 +109,7 @@ func (r apiCreateImageRequest) Execute() (V1CreateImageResponse, *_nethttp.Respo
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -154,7 +118,7 @@ func (r apiCreateImageRequest) Execute() (V1CreateImageResponse, *_nethttp.Respo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -163,7 +127,7 @@ func (r apiCreateImageRequest) Execute() (V1CreateImageResponse, *_nethttp.Respo
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -174,14 +138,6 @@ func (r apiCreateImageRequest) Execute() (V1CreateImageResponse, *_nethttp.Respo
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiDeleteImageRequest struct {
-	ctx _context.Context
-	apiService *VirtualMachineImagesApiService
-	stackId string
-	imageFamily string
-	imageTag string
-}
-
 
 /*
 DeleteImage Delete an image
@@ -189,48 +145,27 @@ DeleteImage Delete an image
  * @param stackId A stack ID or slug
  * @param imageFamily An image's family
  * @param imageTag An image's tag
-@return apiDeleteImageRequest
 */
-func (a *VirtualMachineImagesApiService) DeleteImage(ctx _context.Context, stackId string, imageFamily string, imageTag string) apiDeleteImageRequest {
-	return apiDeleteImageRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		imageFamily: imageFamily,
-		imageTag: imageTag,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDeleteImageRequest) Execute() (*_nethttp.Response, error) {
+func (a *VirtualMachineImagesApiService) DeleteImage(ctx _context.Context, stackId string, imageFamily string, imageTag string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineImagesApiService.DeleteImage")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(r.imageFamily, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(r.imageTag, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(imageFamily, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(imageTag, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -249,12 +184,12 @@ func (r apiDeleteImageRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -272,7 +207,7 @@ func (r apiDeleteImageRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -282,7 +217,7 @@ func (r apiDeleteImageRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -291,7 +226,7 @@ func (r apiDeleteImageRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -302,58 +237,31 @@ func (r apiDeleteImageRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiDeleteImagesForFamilyRequest struct {
-	ctx _context.Context
-	apiService *VirtualMachineImagesApiService
-	stackId string
-	imageFamily string
-}
-
 
 /*
 DeleteImagesForFamily Delete a family's images
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param imageFamily An image family
-@return apiDeleteImagesForFamilyRequest
 */
-func (a *VirtualMachineImagesApiService) DeleteImagesForFamily(ctx _context.Context, stackId string, imageFamily string) apiDeleteImagesForFamilyRequest {
-	return apiDeleteImagesForFamilyRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		imageFamily: imageFamily,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDeleteImagesForFamilyRequest) Execute() (*_nethttp.Response, error) {
+func (a *VirtualMachineImagesApiService) DeleteImagesForFamily(ctx _context.Context, stackId string, imageFamily string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineImagesApiService.DeleteImagesForFamily")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(r.imageFamily, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(imageFamily, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -372,12 +280,12 @@ func (r apiDeleteImagesForFamilyRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -395,7 +303,7 @@ func (r apiDeleteImagesForFamilyRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -405,7 +313,7 @@ func (r apiDeleteImagesForFamilyRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -414,7 +322,7 @@ func (r apiDeleteImagesForFamilyRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -425,14 +333,6 @@ func (r apiDeleteImagesForFamilyRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiGetImageRequest struct {
-	ctx _context.Context
-	apiService *VirtualMachineImagesApiService
-	stackId string
-	imageFamily string
-	imageTag string
-}
-
 
 /*
 GetImage Get an image
@@ -440,23 +340,9 @@ GetImage Get an image
  * @param stackId A stack ID or slug
  * @param imageFamily An image family
  * @param imageTag An image tag
-@return apiGetImageRequest
+@return V1GetImageResponse
 */
-func (a *VirtualMachineImagesApiService) GetImage(ctx _context.Context, stackId string, imageFamily string, imageTag string) apiGetImageRequest {
-	return apiGetImageRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		imageFamily: imageFamily,
-		imageTag: imageTag,
-	}
-}
-
-/*
-Execute executes the request
- @return V1GetImageResponse
-*/
-func (r apiGetImageRequest) Execute() (V1GetImageResponse, *_nethttp.Response, error) {
+func (a *VirtualMachineImagesApiService) GetImage(ctx _context.Context, stackId string, imageFamily string, imageTag string) (V1GetImageResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -466,22 +352,17 @@ func (r apiGetImageRequest) Execute() (V1GetImageResponse, *_nethttp.Response, e
 		localVarReturnValue  V1GetImageResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineImagesApiService.GetImage")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(r.imageFamily, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(r.imageTag, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(imageFamily, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(imageTag, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -500,12 +381,12 @@ func (r apiGetImageRequest) Execute() (V1GetImageResponse, *_nethttp.Response, e
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -523,7 +404,7 @@ func (r apiGetImageRequest) Execute() (V1GetImageResponse, *_nethttp.Response, e
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -533,7 +414,7 @@ func (r apiGetImageRequest) Execute() (V1GetImageResponse, *_nethttp.Response, e
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -542,7 +423,7 @@ func (r apiGetImageRequest) Execute() (V1GetImageResponse, *_nethttp.Response, e
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -551,7 +432,7 @@ func (r apiGetImageRequest) Execute() (V1GetImageResponse, *_nethttp.Response, e
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -562,41 +443,14 @@ func (r apiGetImageRequest) Execute() (V1GetImageResponse, *_nethttp.Response, e
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetImagesRequest struct {
-	ctx _context.Context
-	apiService *VirtualMachineImagesApiService
-	stackId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-	deprecated *bool
-}
 
-
-func (r apiGetImagesRequest) PageRequestFirst(pageRequestFirst string) apiGetImagesRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetImagesRequest) PageRequestAfter(pageRequestAfter string) apiGetImagesRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetImagesRequest) PageRequestFilter(pageRequestFilter string) apiGetImagesRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetImagesRequest) PageRequestSortBy(pageRequestSortBy string) apiGetImagesRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
-}
-
-func (r apiGetImagesRequest) Deprecated(deprecated bool) apiGetImagesRequest {
-	r.deprecated = &deprecated
-	return r
+// GetImagesOpts Optional parameters for the method 'GetImages'
+type GetImagesOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
+    Deprecated optional.Bool
 }
 
 /*
@@ -604,21 +458,15 @@ GetImages Get all images
 Only non-deprecated images are returned by default
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiGetImagesRequest
+ * @param optional nil or *GetImagesOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+ * @param "Deprecated" (optional.Bool) -  If present and true, include deprecated images in the result.
+@return V1GetImagesResponse
 */
-func (a *VirtualMachineImagesApiService) GetImages(ctx _context.Context, stackId string) apiGetImagesRequest {
-	return apiGetImagesRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return V1GetImagesResponse
-*/
-func (r apiGetImagesRequest) Execute() (V1GetImagesResponse, *_nethttp.Response, error) {
+func (a *VirtualMachineImagesApiService) GetImages(ctx _context.Context, stackId string, localVarOptionals *GetImagesOpts) (V1GetImagesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -628,33 +476,28 @@ func (r apiGetImagesRequest) Execute() (V1GetImagesResponse, *_nethttp.Response,
 		localVarReturnValue  V1GetImagesResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineImagesApiService.GetImages")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/images"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/images"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-					
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
-	if r.deprecated != nil {
-		localVarQueryParams.Add("deprecated", parameterToString(*r.deprecated, ""))
+	if localVarOptionals != nil && localVarOptionals.Deprecated.IsSet() {
+		localVarQueryParams.Add("deprecated", parameterToString(localVarOptionals.Deprecated.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -673,12 +516,12 @@ func (r apiGetImagesRequest) Execute() (V1GetImagesResponse, *_nethttp.Response,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -696,7 +539,7 @@ func (r apiGetImagesRequest) Execute() (V1GetImagesResponse, *_nethttp.Response,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -706,7 +549,7 @@ func (r apiGetImagesRequest) Execute() (V1GetImagesResponse, *_nethttp.Response,
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -715,7 +558,7 @@ func (r apiGetImagesRequest) Execute() (V1GetImagesResponse, *_nethttp.Response,
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -724,7 +567,7 @@ func (r apiGetImagesRequest) Execute() (V1GetImagesResponse, *_nethttp.Response,
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -735,42 +578,14 @@ func (r apiGetImagesRequest) Execute() (V1GetImagesResponse, *_nethttp.Response,
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetImagesForFamilyRequest struct {
-	ctx _context.Context
-	apiService *VirtualMachineImagesApiService
-	stackId string
-	imageFamily string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-	deprecated *bool
-}
 
-
-func (r apiGetImagesForFamilyRequest) PageRequestFirst(pageRequestFirst string) apiGetImagesForFamilyRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetImagesForFamilyRequest) PageRequestAfter(pageRequestAfter string) apiGetImagesForFamilyRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetImagesForFamilyRequest) PageRequestFilter(pageRequestFilter string) apiGetImagesForFamilyRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetImagesForFamilyRequest) PageRequestSortBy(pageRequestSortBy string) apiGetImagesForFamilyRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
-}
-
-func (r apiGetImagesForFamilyRequest) Deprecated(deprecated bool) apiGetImagesForFamilyRequest {
-	r.deprecated = &deprecated
-	return r
+// GetImagesForFamilyOpts Optional parameters for the method 'GetImagesForFamily'
+type GetImagesForFamilyOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
+    Deprecated optional.Bool
 }
 
 /*
@@ -779,22 +594,15 @@ Only non-deprecated images are returned by default. This will not error but inst
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param imageFamily An image family
-@return apiGetImagesForFamilyRequest
+ * @param optional nil or *GetImagesForFamilyOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+ * @param "Deprecated" (optional.Bool) -  If present and true, include deprecated images in the result.
+@return V1GetImagesForFamilyResponse
 */
-func (a *VirtualMachineImagesApiService) GetImagesForFamily(ctx _context.Context, stackId string, imageFamily string) apiGetImagesForFamilyRequest {
-	return apiGetImagesForFamilyRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		imageFamily: imageFamily,
-	}
-}
-
-/*
-Execute executes the request
- @return V1GetImagesForFamilyResponse
-*/
-func (r apiGetImagesForFamilyRequest) Execute() (V1GetImagesForFamilyResponse, *_nethttp.Response, error) {
+func (a *VirtualMachineImagesApiService) GetImagesForFamily(ctx _context.Context, stackId string, imageFamily string, localVarOptionals *GetImagesForFamilyOpts) (V1GetImagesForFamilyResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -804,35 +612,30 @@ func (r apiGetImagesForFamilyRequest) Execute() (V1GetImagesForFamilyResponse, *
 		localVarReturnValue  V1GetImagesForFamilyResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineImagesApiService.GetImagesForFamily")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(r.imageFamily, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(imageFamily, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-					
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
-	if r.deprecated != nil {
-		localVarQueryParams.Add("deprecated", parameterToString(*r.deprecated, ""))
+	if localVarOptionals != nil && localVarOptionals.Deprecated.IsSet() {
+		localVarQueryParams.Add("deprecated", parameterToString(localVarOptionals.Deprecated.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -851,12 +654,12 @@ func (r apiGetImagesForFamilyRequest) Execute() (V1GetImagesForFamilyResponse, *
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -874,7 +677,7 @@ func (r apiGetImagesForFamilyRequest) Execute() (V1GetImagesForFamilyResponse, *
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -884,7 +687,7 @@ func (r apiGetImagesForFamilyRequest) Execute() (V1GetImagesForFamilyResponse, *
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -893,7 +696,7 @@ func (r apiGetImagesForFamilyRequest) Execute() (V1GetImagesForFamilyResponse, *
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -902,7 +705,7 @@ func (r apiGetImagesForFamilyRequest) Execute() (V1GetImagesForFamilyResponse, *
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -913,45 +716,18 @@ func (r apiGetImagesForFamilyRequest) Execute() (V1GetImagesForFamilyResponse, *
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiUpdateImageRequest struct {
-	ctx _context.Context
-	apiService *VirtualMachineImagesApiService
-	stackId string
-	imageFamily string
-	imageTag string
-	v1UpdateImageRequest *V1UpdateImageRequest
-}
-
-
-func (r apiUpdateImageRequest) V1UpdateImageRequest(v1UpdateImageRequest V1UpdateImageRequest) apiUpdateImageRequest {
-	r.v1UpdateImageRequest = &v1UpdateImageRequest
-	return r
-}
 
 /*
 UpdateImage Update an image
-Only metadata and description can be updated. The metadata, if set, replaces the entire existing metadata set. The tag cannot be "default".
+Only metadata and description can be updated. The metadata, if set, replaces the entire existing metadata set. The tag cannot be \&quot;default\&quot;.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param imageFamily An image's family!
  * @param imageTag An image's tag!
-@return apiUpdateImageRequest
+ * @param v1UpdateImageRequest
+@return V1UpdateImageResponse
 */
-func (a *VirtualMachineImagesApiService) UpdateImage(ctx _context.Context, stackId string, imageFamily string, imageTag string) apiUpdateImageRequest {
-	return apiUpdateImageRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		imageFamily: imageFamily,
-		imageTag: imageTag,
-	}
-}
-
-/*
-Execute executes the request
- @return V1UpdateImageResponse
-*/
-func (r apiUpdateImageRequest) Execute() (V1UpdateImageResponse, *_nethttp.Response, error) {
+func (a *VirtualMachineImagesApiService) UpdateImage(ctx _context.Context, stackId string, imageFamily string, imageTag string, v1UpdateImageRequest V1UpdateImageRequest) (V1UpdateImageResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -961,26 +737,17 @@ func (r apiUpdateImageRequest) Execute() (V1UpdateImageResponse, *_nethttp.Respo
 		localVarReturnValue  V1UpdateImageResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineImagesApiService.UpdateImage")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(r.imageFamily, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(r.imageTag, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(imageFamily, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(imageTag, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	if r.v1UpdateImageRequest == nil {
-		return localVarReturnValue, nil, reportError("v1UpdateImageRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1000,13 +767,13 @@ func (r apiUpdateImageRequest) Execute() (V1UpdateImageResponse, *_nethttp.Respo
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.v1UpdateImageRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &v1UpdateImageRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1024,7 +791,7 @@ func (r apiUpdateImageRequest) Execute() (V1UpdateImageResponse, *_nethttp.Respo
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1034,7 +801,7 @@ func (r apiUpdateImageRequest) Execute() (V1UpdateImageResponse, *_nethttp.Respo
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1043,7 +810,7 @@ func (r apiUpdateImageRequest) Execute() (V1UpdateImageResponse, *_nethttp.Respo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1052,7 +819,7 @@ func (r apiUpdateImageRequest) Execute() (V1UpdateImageResponse, *_nethttp.Respo
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1063,45 +830,18 @@ func (r apiUpdateImageRequest) Execute() (V1UpdateImageResponse, *_nethttp.Respo
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiUpdateImageDeprecationRequest struct {
-	ctx _context.Context
-	apiService *VirtualMachineImagesApiService
-	stackId string
-	imageFamily string
-	imageTag string
-	v1ImageDeprecation *V1ImageDeprecation
-}
-
-
-func (r apiUpdateImageDeprecationRequest) V1ImageDeprecation(v1ImageDeprecation V1ImageDeprecation) apiUpdateImageDeprecationRequest {
-	r.v1ImageDeprecation = &v1ImageDeprecation
-	return r
-}
 
 /*
 UpdateImageDeprecation Update deprecation settings
-This replaces an image's deprecation settings, so it can also undeprecate an image.
+This replaces an image&#39;s deprecation settings, so it can also undeprecate an image.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param imageFamily An image family
  * @param imageTag An image tag
-@return apiUpdateImageDeprecationRequest
+ * @param v1ImageDeprecation
+@return V1UpdateImageDeprecationResponse
 */
-func (a *VirtualMachineImagesApiService) UpdateImageDeprecation(ctx _context.Context, stackId string, imageFamily string, imageTag string) apiUpdateImageDeprecationRequest {
-	return apiUpdateImageDeprecationRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		imageFamily: imageFamily,
-		imageTag: imageTag,
-	}
-}
-
-/*
-Execute executes the request
- @return V1UpdateImageDeprecationResponse
-*/
-func (r apiUpdateImageDeprecationRequest) Execute() (V1UpdateImageDeprecationResponse, *_nethttp.Response, error) {
+func (a *VirtualMachineImagesApiService) UpdateImageDeprecation(ctx _context.Context, stackId string, imageFamily string, imageTag string, v1ImageDeprecation V1ImageDeprecation) (V1UpdateImageDeprecationResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -1111,26 +851,17 @@ func (r apiUpdateImageDeprecationRequest) Execute() (V1UpdateImageDeprecationRes
 		localVarReturnValue  V1UpdateImageDeprecationResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "VirtualMachineImagesApiService.UpdateImageDeprecation")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}/deprecation"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/workload/v1/stacks/{stack_id}/images/{image_family}/{image_tag}/deprecation"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(r.imageFamily, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(r.imageTag, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"image_family"+"}", _neturl.QueryEscape(parameterToString(imageFamily, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"image_tag"+"}", _neturl.QueryEscape(parameterToString(imageTag, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	if r.v1ImageDeprecation == nil {
-		return localVarReturnValue, nil, reportError("v1ImageDeprecation is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1150,13 +881,13 @@ func (r apiUpdateImageDeprecationRequest) Execute() (V1UpdateImageDeprecationRes
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.v1ImageDeprecation
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &v1ImageDeprecation
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1174,7 +905,7 @@ func (r apiUpdateImageDeprecationRequest) Execute() (V1UpdateImageDeprecationRes
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1184,7 +915,7 @@ func (r apiUpdateImageDeprecationRequest) Execute() (V1UpdateImageDeprecationRes
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1193,7 +924,7 @@ func (r apiUpdateImageDeprecationRequest) Execute() (V1UpdateImageDeprecationRes
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1202,7 +933,7 @@ func (r apiUpdateImageDeprecationRequest) Execute() (V1UpdateImageDeprecationRes
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

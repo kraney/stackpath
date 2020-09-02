@@ -14,6 +14,7 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -24,67 +25,42 @@ var (
 // InfrastructureApiService InfrastructureApi service
 type InfrastructureApiService service
 
-type apiGetCDNIPsRequest struct {
-	ctx _context.Context
-	apiService *InfrastructureApiService
-	filter *string
-	responseType *string
-}
-
-
-func (r apiGetCDNIPsRequest) Filter(filter string) apiGetCDNIPsRequest {
-	r.filter = &filter
-	return r
-}
-
-func (r apiGetCDNIPsRequest) ResponseType(responseType string) apiGetCDNIPsRequest {
-	r.responseType = &responseType
-	return r
+// GetCDNIPsOpts Optional parameters for the method 'GetCDNIPs'
+type GetCDNIPsOpts struct {
+    Filter optional.String
+    ResponseType optional.String
 }
 
 /*
 GetCDNIPs Get IP addresses
 Retrieve all IP addresses used by the StackPath CDN
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return apiGetCDNIPsRequest
+ * @param optional nil or *GetCDNIPsOpts - Optional Parameters:
+ * @param "Filter" (optional.String) -  Whether to search for IPv4, IPv6, or all IP addresses
+ * @param "ResponseType" (optional.String) -  The format to return the result in
+@return CdnGetCdniPsResponse
 */
-func (a *InfrastructureApiService) GetCDNIPs(ctx _context.Context) apiGetCDNIPsRequest {
-	return apiGetCDNIPsRequest{
-		apiService: a,
-		ctx: ctx,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetCDNIPsResponse
-*/
-func (r apiGetCDNIPsRequest) Execute() (CdnGetCDNIPsResponse, *_nethttp.Response, error) {
+func (a *InfrastructureApiService) GetCDNIPs(ctx _context.Context, localVarOptionals *GetCDNIPsOpts) (CdnGetCdniPsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  CdnGetCDNIPsResponse
+		localVarReturnValue  CdnGetCdniPsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InfrastructureApiService.GetCDNIPs")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/cdn/v1/ips"
-
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/ips"
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-		
-	if r.filter != nil {
-		localVarQueryParams.Add("filter", parameterToString(*r.filter, ""))
+
+	if localVarOptionals != nil && localVarOptionals.Filter.IsSet() {
+		localVarQueryParams.Add("filter", parameterToString(localVarOptionals.Filter.Value(), ""))
 	}
-	if r.responseType != nil {
-		localVarQueryParams.Add("response_type", parameterToString(*r.responseType, ""))
+	if localVarOptionals != nil && localVarOptionals.ResponseType.IsSet() {
+		localVarQueryParams.Add("response_type", parameterToString(localVarOptionals.ResponseType.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -103,12 +79,12 @@ func (r apiGetCDNIPsRequest) Execute() (CdnGetCDNIPsResponse, *_nethttp.Response
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -126,7 +102,7 @@ func (r apiGetCDNIPsRequest) Execute() (CdnGetCDNIPsResponse, *_nethttp.Response
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -136,7 +112,7 @@ func (r apiGetCDNIPsRequest) Execute() (CdnGetCDNIPsResponse, *_nethttp.Response
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -145,7 +121,7 @@ func (r apiGetCDNIPsRequest) Execute() (CdnGetCDNIPsResponse, *_nethttp.Response
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -154,7 +130,7 @@ func (r apiGetCDNIPsRequest) Execute() (CdnGetCDNIPsResponse, *_nethttp.Response
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -165,36 +141,21 @@ func (r apiGetCDNIPsRequest) Execute() (CdnGetCDNIPsResponse, *_nethttp.Response
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetClosestPopsRequest struct {
-	ctx _context.Context
-	apiService *InfrastructureApiService
-	url *string
-}
 
-
-func (r apiGetClosestPopsRequest) Url(url string) apiGetClosestPopsRequest {
-	r.url = &url
-	return r
+// GetClosestPopsOpts Optional parameters for the method 'GetClosestPops'
+type GetClosestPopsOpts struct {
+    Url optional.String
 }
 
 /*
 GetClosestPops Get POP performance
 Scan a URL from the StackPath edge network and return a performance report. Results are ordered with the fastest POP response first.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return apiGetClosestPopsRequest
+ * @param optional nil or *GetClosestPopsOpts - Optional Parameters:
+ * @param "Url" (optional.String) -  The URL to scan.
+@return CdnGetClosestPopsResponse
 */
-func (a *InfrastructureApiService) GetClosestPops(ctx _context.Context) apiGetClosestPopsRequest {
-	return apiGetClosestPopsRequest{
-		apiService: a,
-		ctx: ctx,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetClosestPopsResponse
-*/
-func (r apiGetClosestPopsRequest) Execute() (CdnGetClosestPopsResponse, *_nethttp.Response, error) {
+func (a *InfrastructureApiService) GetClosestPops(ctx _context.Context, localVarOptionals *GetClosestPopsOpts) (CdnGetClosestPopsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -204,19 +165,14 @@ func (r apiGetClosestPopsRequest) Execute() (CdnGetClosestPopsResponse, *_nethtt
 		localVarReturnValue  CdnGetClosestPopsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InfrastructureApiService.GetClosestPops")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/cdn/v1/pops/closest"
-
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/pops/closest"
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	if r.url != nil {
-		localVarQueryParams.Add("url", parameterToString(*r.url, ""))
+
+	if localVarOptionals != nil && localVarOptionals.Url.IsSet() {
+		localVarQueryParams.Add("url", parameterToString(localVarOptionals.Url.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -235,12 +191,12 @@ func (r apiGetClosestPopsRequest) Execute() (CdnGetClosestPopsResponse, *_nethtt
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -258,7 +214,7 @@ func (r apiGetClosestPopsRequest) Execute() (CdnGetClosestPopsResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -268,7 +224,7 @@ func (r apiGetClosestPopsRequest) Execute() (CdnGetClosestPopsResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -277,7 +233,7 @@ func (r apiGetClosestPopsRequest) Execute() (CdnGetClosestPopsResponse, *_nethtt
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -286,7 +242,7 @@ func (r apiGetClosestPopsRequest) Execute() (CdnGetClosestPopsResponse, *_nethtt
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -297,30 +253,14 @@ func (r apiGetClosestPopsRequest) Execute() (CdnGetClosestPopsResponse, *_nethtt
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetPopsRequest struct {
-	ctx _context.Context
-	apiService *InfrastructureApiService
-}
-
 
 /*
 GetPops Get points of presence
-Get the StackPath CDN's points of presence
+Get the StackPath CDN&#39;s points of presence
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return apiGetPopsRequest
+@return CdnGetPopsResponse
 */
-func (a *InfrastructureApiService) GetPops(ctx _context.Context) apiGetPopsRequest {
-	return apiGetPopsRequest{
-		apiService: a,
-		ctx: ctx,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetPopsResponse
-*/
-func (r apiGetPopsRequest) Execute() (CdnGetPopsResponse, *_nethttp.Response, error) {
+func (a *InfrastructureApiService) GetPops(ctx _context.Context) (CdnGetPopsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -330,13 +270,8 @@ func (r apiGetPopsRequest) Execute() (CdnGetPopsResponse, *_nethttp.Response, er
 		localVarReturnValue  CdnGetPopsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InfrastructureApiService.GetPops")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/cdn/v1/pops"
-
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/pops"
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
@@ -358,12 +293,12 @@ func (r apiGetPopsRequest) Execute() (CdnGetPopsResponse, *_nethttp.Response, er
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -381,7 +316,7 @@ func (r apiGetPopsRequest) Execute() (CdnGetPopsResponse, *_nethttp.Response, er
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -391,7 +326,7 @@ func (r apiGetPopsRequest) Execute() (CdnGetPopsResponse, *_nethttp.Response, er
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -400,7 +335,7 @@ func (r apiGetPopsRequest) Execute() (CdnGetPopsResponse, *_nethttp.Response, er
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -409,7 +344,7 @@ func (r apiGetPopsRequest) Execute() (CdnGetPopsResponse, *_nethttp.Response, er
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -420,36 +355,15 @@ func (r apiGetPopsRequest) Execute() (CdnGetPopsResponse, *_nethttp.Response, er
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiScanOriginRequest struct {
-	ctx _context.Context
-	apiService *InfrastructureApiService
-	cdnScanOriginRequest *CdnScanOriginRequest
-}
-
-
-func (r apiScanOriginRequest) CdnScanOriginRequest(cdnScanOriginRequest CdnScanOriginRequest) apiScanOriginRequest {
-	r.cdnScanOriginRequest = &cdnScanOriginRequest
-	return r
-}
 
 /*
 ScanOrigin Scan an origin
-Scan an origin from StackPath's CDN. Retrieve information regarding the origin, such as its IP address and whether or not it supports SSL.
+Scan an origin from StackPath&#39;s CDN. Retrieve information regarding the origin, such as its IP address and whether or not it supports SSL.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return apiScanOriginRequest
+ * @param cdnScanOriginRequest
+@return CdnScanOriginResponse
 */
-func (a *InfrastructureApiService) ScanOrigin(ctx _context.Context) apiScanOriginRequest {
-	return apiScanOriginRequest{
-		apiService: a,
-		ctx: ctx,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnScanOriginResponse
-*/
-func (r apiScanOriginRequest) Execute() (CdnScanOriginResponse, *_nethttp.Response, error) {
+func (a *InfrastructureApiService) ScanOrigin(ctx _context.Context, cdnScanOriginRequest CdnScanOriginRequest) (CdnScanOriginResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -459,20 +373,11 @@ func (r apiScanOriginRequest) Execute() (CdnScanOriginResponse, *_nethttp.Respon
 		localVarReturnValue  CdnScanOriginResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InfrastructureApiService.ScanOrigin")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/cdn/v1/origins/scan"
-
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/origins/scan"
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	if r.cdnScanOriginRequest == nil {
-		return localVarReturnValue, nil, reportError("cdnScanOriginRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -492,13 +397,13 @@ func (r apiScanOriginRequest) Execute() (CdnScanOriginResponse, *_nethttp.Respon
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.cdnScanOriginRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &cdnScanOriginRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -516,7 +421,7 @@ func (r apiScanOriginRequest) Execute() (CdnScanOriginResponse, *_nethttp.Respon
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -526,7 +431,7 @@ func (r apiScanOriginRequest) Execute() (CdnScanOriginResponse, *_nethttp.Respon
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -535,7 +440,7 @@ func (r apiScanOriginRequest) Execute() (CdnScanOriginResponse, *_nethttp.Respon
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -544,7 +449,7 @@ func (r apiScanOriginRequest) Execute() (CdnScanOriginResponse, *_nethttp.Respon
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

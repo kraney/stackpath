@@ -8,11 +8,6 @@
  */
 
 package edge_compute
-
-import (
-	"encoding/json"
-)
-
 // VolumeClaimVolumeClaimPhase Which phase a volume claim is currently in  - VOLUME_CLAIM_PHASE_UNSPECIFIED: StackPath is unable to determine the volume claim's state  - PENDING: The volume claim is pending  - UNBOUND: The volume claim is unbound  - BOUND: The volume claim is bound to an instance
 type VolumeClaimVolumeClaimPhase string
 
@@ -23,45 +18,3 @@ const (
 	UNBOUND VolumeClaimVolumeClaimPhase = "UNBOUND"
 	BOUND VolumeClaimVolumeClaimPhase = "BOUND"
 )
-
-// Ptr returns reference to VolumeClaimVolumeClaimPhase value
-func (v VolumeClaimVolumeClaimPhase) Ptr() *VolumeClaimVolumeClaimPhase {
-	return &v
-}
-
-
-type NullableVolumeClaimVolumeClaimPhase struct {
-	value *VolumeClaimVolumeClaimPhase
-	isSet bool
-}
-
-func (v NullableVolumeClaimVolumeClaimPhase) Get() *VolumeClaimVolumeClaimPhase {
-	return v.value
-}
-
-func (v *NullableVolumeClaimVolumeClaimPhase) Set(val *VolumeClaimVolumeClaimPhase) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableVolumeClaimVolumeClaimPhase) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableVolumeClaimVolumeClaimPhase) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableVolumeClaimVolumeClaimPhase(val *VolumeClaimVolumeClaimPhase) *NullableVolumeClaimVolumeClaimPhase {
-	return &NullableVolumeClaimVolumeClaimPhase{value: val, isSet: true}
-}
-
-func (v NullableVolumeClaimVolumeClaimPhase) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableVolumeClaimVolumeClaimPhase) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

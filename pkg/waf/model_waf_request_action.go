@@ -8,11 +8,6 @@
  */
 
 package waf
-
-import (
-	"encoding/json"
-)
-
 // WafRequestAction The actions that the WAF takes when a request triggers a WAF rule  - ACTION_UNSPECIFIED: The WAF performed an unspecified action with the request  - BLOCK: The WAF blocked the request  - ALLOW: The WAF allowed the request  - CAPTCHA: The WAF presented the user with a captcha  - HANDSHAKE: The WAF performed automatic browser validation  - MONITOR: The WAF monitored the request but took no action
 type WafRequestAction string
 
@@ -25,45 +20,3 @@ const (
 	HANDSHAKE WafRequestAction = "HANDSHAKE"
 	MONITOR WafRequestAction = "MONITOR"
 )
-
-// Ptr returns reference to wafRequestAction value
-func (v WafRequestAction) Ptr() *WafRequestAction {
-	return &v
-}
-
-
-type NullableWafRequestAction struct {
-	value *WafRequestAction
-	isSet bool
-}
-
-func (v NullableWafRequestAction) Get() *WafRequestAction {
-	return v.value
-}
-
-func (v *NullableWafRequestAction) Set(val *WafRequestAction) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableWafRequestAction) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableWafRequestAction) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableWafRequestAction(val *WafRequestAction) *NullableWafRequestAction {
-	return &NullableWafRequestAction{value: val, isSet: true}
-}
-
-func (v NullableWafRequestAction) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableWafRequestAction) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

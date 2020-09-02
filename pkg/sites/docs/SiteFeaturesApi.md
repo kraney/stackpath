@@ -15,54 +15,18 @@ Method | HTTP request | Description
 
 ## DisableSiteCDN
 
-> DisableSiteCDN(ctx, stackId, siteId).Execute()
+> DisableSiteCDN(ctx, stackId, siteId)
 
 Disable CDN
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.SiteFeaturesApi.DisableSiteCDN(context.Background(), stackId, siteId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `SiteFeaturesApi.DisableSiteCDN``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDisableSiteCDNRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
 
 ### Return type
 
@@ -84,54 +48,18 @@ Name | Type | Description  | Notes
 
 ## DisableSiteEdgeEngine2
 
-> DisableSiteEdgeEngine2(ctx, stackId, siteId).Execute()
+> DisableSiteEdgeEngine2(ctx, stackId, siteId)
 
 Disable serverless scripting
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.SiteFeaturesApi.DisableSiteEdgeEngine2(context.Background(), stackId, siteId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `SiteFeaturesApi.DisableSiteEdgeEngine2``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDisableSiteEdgeEngine2Request struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
 
 ### Return type
 
@@ -153,54 +81,18 @@ Name | Type | Description  | Notes
 
 ## DisableSiteWAF
 
-> DisableSiteWAF(ctx, stackId, siteId).Execute()
+> DisableSiteWAF(ctx, stackId, siteId)
 
 Disable WAF
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.SiteFeaturesApi.DisableSiteWAF(context.Background(), stackId, siteId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `SiteFeaturesApi.DisableSiteWAF``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDisableSiteWAFRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
 
 ### Return type
 
@@ -222,54 +114,18 @@ Name | Type | Description  | Notes
 
 ## EnableSiteCDN
 
-> EnableSiteCDN(ctx, stackId, siteId).Execute()
+> EnableSiteCDN(ctx, stackId, siteId)
 
 Enable CDN
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.SiteFeaturesApi.EnableSiteCDN(context.Background(), stackId, siteId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `SiteFeaturesApi.EnableSiteCDN``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiEnableSiteCDNRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
 
 ### Return type
 
@@ -291,54 +147,18 @@ Name | Type | Description  | Notes
 
 ## EnableSiteEdgeEngine2
 
-> EnableSiteEdgeEngine2(ctx, stackId, siteId).Execute()
+> EnableSiteEdgeEngine2(ctx, stackId, siteId)
 
 Enable serverless scripting
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.SiteFeaturesApi.EnableSiteEdgeEngine2(context.Background(), stackId, siteId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `SiteFeaturesApi.EnableSiteEdgeEngine2``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiEnableSiteEdgeEngine2Request struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
 
 ### Return type
 
@@ -360,56 +180,19 @@ Name | Type | Description  | Notes
 
 ## EnableSiteWAF
 
-> EnableSiteWAF(ctx, stackId, siteId).DeliveryEnableSiteWAFRequest(deliveryEnableSiteWAFRequest).Execute()
+> EnableSiteWAF(ctx, stackId, siteId, deliveryEnableSiteWafRequest)
 
 Enable WAF
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-    deliveryEnableSiteWAFRequest := openapiclient.deliveryEnableSiteWAFRequest{ApiUrls: []string{"ApiUrls_example")} // DeliveryEnableSiteWAFRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.SiteFeaturesApi.EnableSiteWAF(context.Background(), stackId, siteId, deliveryEnableSiteWAFRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `SiteFeaturesApi.EnableSiteWAF``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiEnableSiteWAFRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **deliveryEnableSiteWAFRequest** | [**DeliveryEnableSiteWAFRequest**](DeliveryEnableSiteWAFRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
+**deliveryEnableSiteWafRequest** | [**DeliveryEnableSiteWafRequest**](DeliveryEnableSiteWafRequest.md)|  | 
 
 ### Return type
 

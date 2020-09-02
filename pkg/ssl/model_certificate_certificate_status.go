@@ -8,11 +8,6 @@
  */
 
 package ssl
-
-import (
-	"encoding/json"
-)
-
 // CertificateCertificateStatus the model 'CertificateCertificateStatus'
 type CertificateCertificateStatus string
 
@@ -26,45 +21,3 @@ const (
 	PENDING_VERIFICATION CertificateCertificateStatus = "PENDING_VERIFICATION"
 	REVOKED CertificateCertificateStatus = "REVOKED"
 )
-
-// Ptr returns reference to certificateCertificateStatus value
-func (v CertificateCertificateStatus) Ptr() *CertificateCertificateStatus {
-	return &v
-}
-
-
-type NullableCertificateCertificateStatus struct {
-	value *CertificateCertificateStatus
-	isSet bool
-}
-
-func (v NullableCertificateCertificateStatus) Get() *CertificateCertificateStatus {
-	return v.value
-}
-
-func (v *NullableCertificateCertificateStatus) Set(val *CertificateCertificateStatus) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableCertificateCertificateStatus) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableCertificateCertificateStatus) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableCertificateCertificateStatus(val *CertificateCertificateStatus) *NullableCertificateCertificateStatus {
-	return &NullableCertificateCertificateStatus{value: val, isSet: true}
-}
-
-func (v NullableCertificateCertificateStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableCertificateCertificateStatus) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

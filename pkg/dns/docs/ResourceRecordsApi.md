@@ -17,60 +17,21 @@ Method | HTTP request | Description
 
 ## BulkCreateOrUpdateZoneRecords
 
-> ZoneBulkCreateOrUpdateZoneRecordsResponse BulkCreateOrUpdateZoneRecords(ctx, stackId, zoneId).ZoneBulkCreateOrUpdateZoneRecordsRequest(zoneBulkCreateOrUpdateZoneRecordsRequest).Execute()
+> ZoneBulkCreateOrUpdateZoneRecordsResponse BulkCreateOrUpdateZoneRecords(ctx, stackId, zoneId, zoneBulkCreateOrUpdateZoneRecordsRequest)
 
 Create or update multiple records
 
+Existing resource records are updated while new records are created
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    zoneId := "zoneId_example" // string | A DNS zone ID
-    zoneBulkCreateOrUpdateZoneRecordsRequest := openapiclient.zoneBulkCreateOrUpdateZoneRecordsRequest{Records: []ZoneBulkCreateOrUpdateZoneRecordMessage{openapiclient.zoneBulkCreateOrUpdateZoneRecordMessage{Name: "Name_example", Type: openapiclient.zoneRecordType{}, Ttl: 123, Data: "Data_example", Weight: 123, Labels: map[string]string{ "Key" = "Value" }, Id: "Id_example"})} // ZoneBulkCreateOrUpdateZoneRecordsRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.ResourceRecordsApi.BulkCreateOrUpdateZoneRecords(context.Background(), stackId, zoneId, zoneBulkCreateOrUpdateZoneRecordsRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `ResourceRecordsApi.BulkCreateOrUpdateZoneRecords``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `BulkCreateOrUpdateZoneRecords`: ZoneBulkCreateOrUpdateZoneRecordsResponse
-    fmt.Fprintf(os.Stdout, "Response from `ResourceRecordsApi.BulkCreateOrUpdateZoneRecords`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**zoneId** | **string** | A DNS zone ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiBulkCreateOrUpdateZoneRecordsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **zoneBulkCreateOrUpdateZoneRecordsRequest** | [**ZoneBulkCreateOrUpdateZoneRecordsRequest**](ZoneBulkCreateOrUpdateZoneRecordsRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**zoneId** | **string**| A DNS zone ID | 
+**zoneBulkCreateOrUpdateZoneRecordsRequest** | [**ZoneBulkCreateOrUpdateZoneRecordsRequest**](ZoneBulkCreateOrUpdateZoneRecordsRequest.md)|  | 
 
 ### Return type
 
@@ -92,56 +53,19 @@ Name | Type | Description  | Notes
 
 ## BulkDeleteZoneRecords
 
-> BulkDeleteZoneRecords(ctx, stackId, zoneId).ZoneBulkDeleteZoneRecordsMessage(zoneBulkDeleteZoneRecordsMessage).Execute()
+> BulkDeleteZoneRecords(ctx, stackId, zoneId, zoneBulkDeleteZoneRecordsMessage)
 
 Delete multiple records
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    zoneId := "zoneId_example" // string | A DNS zone ID
-    zoneBulkDeleteZoneRecordsMessage := openapiclient.zoneBulkDeleteZoneRecordsMessage{ZoneRecordIds: []string{"ZoneRecordIds_example")} // ZoneBulkDeleteZoneRecordsMessage | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.ResourceRecordsApi.BulkDeleteZoneRecords(context.Background(), stackId, zoneId, zoneBulkDeleteZoneRecordsMessage).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `ResourceRecordsApi.BulkDeleteZoneRecords``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**zoneId** | **string** | A DNS zone ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiBulkDeleteZoneRecordsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **zoneBulkDeleteZoneRecordsMessage** | [**ZoneBulkDeleteZoneRecordsMessage**](ZoneBulkDeleteZoneRecordsMessage.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**zoneId** | **string**| A DNS zone ID | 
+**zoneBulkDeleteZoneRecordsMessage** | [**ZoneBulkDeleteZoneRecordsMessage**](ZoneBulkDeleteZoneRecordsMessage.md)|  | 
 
 ### Return type
 
@@ -163,58 +87,19 @@ Name | Type | Description  | Notes
 
 ## CreateZoneRecord
 
-> ZoneCreateZoneRecordResponse CreateZoneRecord(ctx, stackId, zoneId).ZoneUpdateZoneRecordMessage(zoneUpdateZoneRecordMessage).Execute()
+> ZoneCreateZoneRecordResponse CreateZoneRecord(ctx, stackId, zoneId, zoneUpdateZoneRecordMessage)
 
 Create a record
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    zoneId := "zoneId_example" // string | A DNS zone ID
-    zoneUpdateZoneRecordMessage := openapiclient.zoneUpdateZoneRecordMessage{Name: "Name_example", Type: openapiclient.zoneRecordType{}, Ttl: 123, Data: "Data_example", Weight: 123, Labels: map[string]string{ "Key" = "Value" }} // ZoneUpdateZoneRecordMessage | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.ResourceRecordsApi.CreateZoneRecord(context.Background(), stackId, zoneId, zoneUpdateZoneRecordMessage).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `ResourceRecordsApi.CreateZoneRecord``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `CreateZoneRecord`: ZoneCreateZoneRecordResponse
-    fmt.Fprintf(os.Stdout, "Response from `ResourceRecordsApi.CreateZoneRecord`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**zoneId** | **string** | A DNS zone ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiCreateZoneRecordRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **zoneUpdateZoneRecordMessage** | [**ZoneUpdateZoneRecordMessage**](ZoneUpdateZoneRecordMessage.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**zoneId** | **string**| A DNS zone ID | 
+**zoneUpdateZoneRecordMessage** | [**ZoneUpdateZoneRecordMessage**](ZoneUpdateZoneRecordMessage.md)|  | 
 
 ### Return type
 
@@ -236,57 +121,19 @@ Name | Type | Description  | Notes
 
 ## DeleteZoneRecord
 
-> DeleteZoneRecord(ctx, stackId, zoneId, zoneRecordId).Execute()
+> DeleteZoneRecord(ctx, stackId, zoneId, zoneRecordId)
 
 Delete a record
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    zoneId := "zoneId_example" // string | A DNS zone ID
-    zoneRecordId := "zoneRecordId_example" // string | A DNS resource record ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.ResourceRecordsApi.DeleteZoneRecord(context.Background(), stackId, zoneId, zoneRecordId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `ResourceRecordsApi.DeleteZoneRecord``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**zoneId** | **string** | A DNS zone ID | 
-**zoneRecordId** | **string** | A DNS resource record ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDeleteZoneRecordRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
+**stackId** | **string**| A stack ID or slug | 
+**zoneId** | **string**| A DNS zone ID | 
+**zoneRecordId** | **string**| A DNS resource record ID | 
 
 ### Return type
 
@@ -308,59 +155,19 @@ Name | Type | Description  | Notes
 
 ## GetZoneRecord
 
-> ZoneGetZoneRecordResponse GetZoneRecord(ctx, stackId, zoneId, zoneRecordId).Execute()
+> ZoneGetZoneRecordResponse GetZoneRecord(ctx, stackId, zoneId, zoneRecordId)
 
 Get a record
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    zoneId := "zoneId_example" // string | A DNS zone ID
-    zoneRecordId := "zoneRecordId_example" // string | A DNS resource record ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.ResourceRecordsApi.GetZoneRecord(context.Background(), stackId, zoneId, zoneRecordId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `ResourceRecordsApi.GetZoneRecord``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetZoneRecord`: ZoneGetZoneRecordResponse
-    fmt.Fprintf(os.Stdout, "Response from `ResourceRecordsApi.GetZoneRecord`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**zoneId** | **string** | A DNS zone ID | 
-**zoneRecordId** | **string** | A DNS resource record ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetZoneRecordRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
+**stackId** | **string**| A stack ID or slug | 
+**zoneId** | **string**| A DNS zone ID | 
+**zoneRecordId** | **string**| A DNS resource record ID | 
 
 ### Return type
 
@@ -382,64 +189,33 @@ Name | Type | Description  | Notes
 
 ## GetZoneRecords
 
-> ZoneGetZoneRecordsResponse GetZoneRecords(ctx, stackId, zoneId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+> ZoneGetZoneRecordsResponse GetZoneRecords(ctx, stackId, zoneId, optional)
 
 Get all records
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    zoneId := "zoneId_example" // string | A DNS zone ID
-    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
-    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
-    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
-    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.ResourceRecordsApi.GetZoneRecords(context.Background(), stackId, zoneId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `ResourceRecordsApi.GetZoneRecords``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetZoneRecords`: ZoneGetZoneRecordsResponse
-    fmt.Fprintf(os.Stdout, "Response from `ResourceRecordsApi.GetZoneRecords`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**zoneId** | **string** | A DNS zone ID | 
+**stackId** | **string**| A stack ID or slug | 
+**zoneId** | **string**| A DNS zone ID | 
+ **optional** | ***GetZoneRecordsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetZoneRecordsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetZoneRecordsOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **pageRequestFirst** | **string** | The number of items desired. | 
- **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
- **pageRequestFilter** | **string** | SQL-style constraint filters. | 
- **pageRequestSortBy** | **string** | Sort the response by the given field. | 
+ **pageRequestFirst** | **optional.String**| The number of items desired. | 
+ **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
+ **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
 
 ### Return type
 
@@ -461,61 +237,20 @@ Name | Type | Description  | Notes
 
 ## PatchZoneRecord
 
-> ZoneUpdateZoneRecordResponse PatchZoneRecord(ctx, stackId, zoneId, zoneRecordId).ZonePatchZoneRecordMessage(zonePatchZoneRecordMessage).Execute()
+> ZoneUpdateZoneRecordResponse PatchZoneRecord(ctx, stackId, zoneId, zoneRecordId, zonePatchZoneRecordMessage)
 
 Replace a record
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    zoneId := "zoneId_example" // string | A DNS zone ID
-    zoneRecordId := "zoneRecordId_example" // string | A DNS resource record ID
-    zonePatchZoneRecordMessage := openapiclient.zonePatchZoneRecordMessage{Name: "Name_example", Type: , Ttl: 123, Data: "Data_example", Weight: 123} // ZonePatchZoneRecordMessage | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.ResourceRecordsApi.PatchZoneRecord(context.Background(), stackId, zoneId, zoneRecordId, zonePatchZoneRecordMessage).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `ResourceRecordsApi.PatchZoneRecord``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `PatchZoneRecord`: ZoneUpdateZoneRecordResponse
-    fmt.Fprintf(os.Stdout, "Response from `ResourceRecordsApi.PatchZoneRecord`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**zoneId** | **string** | A DNS zone ID | 
-**zoneRecordId** | **string** | A DNS resource record ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiPatchZoneRecordRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
- **zonePatchZoneRecordMessage** | [**ZonePatchZoneRecordMessage**](ZonePatchZoneRecordMessage.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**zoneId** | **string**| A DNS zone ID | 
+**zoneRecordId** | **string**| A DNS resource record ID | 
+**zonePatchZoneRecordMessage** | [**ZonePatchZoneRecordMessage**](ZonePatchZoneRecordMessage.md)|  | 
 
 ### Return type
 
@@ -537,61 +272,20 @@ Name | Type | Description  | Notes
 
 ## UpdateZoneRecord
 
-> ZoneUpdateZoneRecordResponse UpdateZoneRecord(ctx, stackId, zoneId, zoneRecordId).ZoneUpdateZoneRecordMessage(zoneUpdateZoneRecordMessage).Execute()
+> ZoneUpdateZoneRecordResponse UpdateZoneRecord(ctx, stackId, zoneId, zoneRecordId, zoneUpdateZoneRecordMessage)
 
 Update a record
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    zoneId := "zoneId_example" // string | A DNS zone ID
-    zoneRecordId := "zoneRecordId_example" // string | A DNS resource record ID
-    zoneUpdateZoneRecordMessage := openapiclient.zoneUpdateZoneRecordMessage{Name: "Name_example", Type: , Ttl: 123, Data: "Data_example", Weight: 123, Labels: map[string]string{ "Key" = "Value" }} // ZoneUpdateZoneRecordMessage | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.ResourceRecordsApi.UpdateZoneRecord(context.Background(), stackId, zoneId, zoneRecordId, zoneUpdateZoneRecordMessage).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `ResourceRecordsApi.UpdateZoneRecord``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `UpdateZoneRecord`: ZoneUpdateZoneRecordResponse
-    fmt.Fprintf(os.Stdout, "Response from `ResourceRecordsApi.UpdateZoneRecord`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**zoneId** | **string** | A DNS zone ID | 
-**zoneRecordId** | **string** | A DNS resource record ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiUpdateZoneRecordRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
- **zoneUpdateZoneRecordMessage** | [**ZoneUpdateZoneRecordMessage**](ZoneUpdateZoneRecordMessage.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**zoneId** | **string**| A DNS zone ID | 
+**zoneRecordId** | **string**| A DNS resource record ID | 
+**zoneUpdateZoneRecordMessage** | [**ZoneUpdateZoneRecordMessage**](ZoneUpdateZoneRecordMessage.md)|  | 
 
 ### Return type
 

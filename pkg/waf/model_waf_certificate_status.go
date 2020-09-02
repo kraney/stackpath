@@ -8,11 +8,6 @@
  */
 
 package waf
-
-import (
-	"encoding/json"
-)
-
 // WafCertificateStatus A StackPath-provided certificate's status  - UNKNOWN: StackPath is unable to determine the certificate's status. This is the default status for end-user provided certificates.  - PENDING: The certificate is provisioning  - EXPIRED: The certificate has expired  - FAILED: The certificate failed to provision  - PENDING_VERIFICATION: The certificate is pending domain verification by the end user  - ACTIVE: The certificate is valid and is in use by one or more hosts  - INACTIVE: The certificate is valid but is not in use by any hosts
 type WafCertificateStatus string
 
@@ -26,45 +21,3 @@ const (
 	ACTIVE WafCertificateStatus = "ACTIVE"
 	INACTIVE WafCertificateStatus = "INACTIVE"
 )
-
-// Ptr returns reference to wafCertificateStatus value
-func (v WafCertificateStatus) Ptr() *WafCertificateStatus {
-	return &v
-}
-
-
-type NullableWafCertificateStatus struct {
-	value *WafCertificateStatus
-	isSet bool
-}
-
-func (v NullableWafCertificateStatus) Get() *WafCertificateStatus {
-	return v.value
-}
-
-func (v *NullableWafCertificateStatus) Set(val *WafCertificateStatus) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableWafCertificateStatus) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableWafCertificateStatus) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableWafCertificateStatus(val *WafCertificateStatus) *NullableWafCertificateStatus {
-	return &NullableWafCertificateStatus{value: val, isSet: true}
-}
-
-func (v NullableWafCertificateStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableWafCertificateStatus) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

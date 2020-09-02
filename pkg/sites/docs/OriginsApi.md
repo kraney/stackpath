@@ -14,63 +14,22 @@ Method | HTTP request | Description
 
 ## ConnectScopeToOrigin
 
-> DeliveryConnectScopeToOriginResponse ConnectScopeToOrigin(ctx, stackId, siteId, scopeId).DeliveryConnectScopeToOriginRequest(deliveryConnectScopeToOriginRequest).Execute()
+> DeliveryConnectScopeToOriginResponse ConnectScopeToOrigin(ctx, stackId, siteId, scopeId, deliveryConnectScopeToOriginRequest)
 
 Connect an origin to a scope
 
+The origin is automatically created if necessary. When the request contains a priority which an origin already associated with the scope has set, the existing origin is disconnected. The priority of an origin already associated with a scope can be modified via this endpoint.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-    scopeId := "scopeId_example" // string | A scope ID
-    deliveryConnectScopeToOriginRequest := openapiclient.deliveryConnectScopeToOriginRequest{Origin: openapiclient.deliveryConnectScopeToOriginRequestOrigin{Http: openapiclient.deliveryHTTPOrigin{Path: "Path_example", Hostname: "Hostname_example", Port: 123, SecurePort: 123, Authentication: openapiclient.deliveryOriginAuthentication{Basic: openapiclient.deliveryBasicAuthentication{Username: "Username_example", Password: "Password_example"}, S3: openapiclient.deliveryS3Authentication{AccessKey: "AccessKey_example", SecretKey: "SecretKey_example"}}, VerifyCertificate: false, CertificateCommonName: "CertificateCommonName_example"}, StackpathStorage: openapiclient.deliveryStackPathStorageOrigin{BucketName: "BucketName_example", BucketRegion: "BucketRegion_example", Authentication: openapiclient.deliveryOriginAuthentication{Basic: openapiclient.deliveryBasicAuthentication{Username: "Username_example", Password: "Password_example"}, S3: openapiclient.deliveryS3Authentication{AccessKey: "AccessKey_example", SecretKey: "SecretKey_example"}}}, S3Storage: openapiclient.deliveryAWSS3Origin{BucketName: "BucketName_example", BucketRegion: "BucketRegion_example", Authentication: }, GoogleCloudStorage: openapiclient.deliveryGoogleStorageOrigin{BucketName: "BucketName_example"}}, Priority: 123, OriginId: "OriginId_example"} // DeliveryConnectScopeToOriginRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.OriginsApi.ConnectScopeToOrigin(context.Background(), stackId, siteId, scopeId, deliveryConnectScopeToOriginRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `OriginsApi.ConnectScopeToOrigin``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `ConnectScopeToOrigin`: DeliveryConnectScopeToOriginResponse
-    fmt.Fprintf(os.Stdout, "Response from `OriginsApi.ConnectScopeToOrigin`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-**scopeId** | **string** | A scope ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiConnectScopeToOriginRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
- **deliveryConnectScopeToOriginRequest** | [**DeliveryConnectScopeToOriginRequest**](DeliveryConnectScopeToOriginRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
+**scopeId** | **string**| A scope ID | 
+**deliveryConnectScopeToOriginRequest** | [**DeliveryConnectScopeToOriginRequest**](DeliveryConnectScopeToOriginRequest.md)|  | 
 
 ### Return type
 
@@ -92,56 +51,18 @@ Name | Type | Description  | Notes
 
 ## GetOrigin
 
-> DeliveryGetOriginResponse GetOrigin(ctx, stackId, originId).Execute()
+> DeliveryGetOriginResponse GetOrigin(ctx, stackId, originId)
 
 Get an origin
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    originId := "originId_example" // string | An origin ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.OriginsApi.GetOrigin(context.Background(), stackId, originId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `OriginsApi.GetOrigin``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetOrigin`: DeliveryGetOriginResponse
-    fmt.Fprintf(os.Stdout, "Response from `OriginsApi.GetOrigin`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**originId** | **string** | An origin ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetOriginRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**originId** | **string**| An origin ID | 
 
 ### Return type
 
@@ -163,63 +84,33 @@ Name | Type | Description  | Notes
 
 ## GetOrigins
 
-> DeliveryGetOriginsResponse GetOrigins(ctx, stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+> DeliveryGetOriginsResponse GetOrigins(ctx, stackId, optional)
 
 Get all origins
 
+Retrieve all origins associated with a site's stack
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
-    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
-    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
-    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.OriginsApi.GetOrigins(context.Background(), stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `OriginsApi.GetOrigins``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetOrigins`: DeliveryGetOriginsResponse
-    fmt.Fprintf(os.Stdout, "Response from `OriginsApi.GetOrigins`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
+**stackId** | **string**| A stack ID or slug | 
+ **optional** | ***GetOriginsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetOriginsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetOriginsOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **pageRequestFirst** | **string** | The number of items desired. | 
- **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
- **pageRequestFilter** | **string** | SQL-style constraint filters. | 
- **pageRequestSortBy** | **string** | Sort the response by the given field. | 
+ **pageRequestFirst** | **optional.String**| The number of items desired. | 
+ **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
+ **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
 
 ### Return type
 
@@ -241,56 +132,24 @@ Name | Type | Description  | Notes
 
 ## GetScopeOrigins
 
-> DeliveryGetScopeOriginsResponse GetScopeOrigins(ctx, stackId, siteId, scopeId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+> DeliveryGetScopeOriginsResponse GetScopeOrigins(ctx, stackId, siteId, scopeId, optional)
 
 Get a scope's origins
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-    scopeId := "scopeId_example" // string | A scope ID
-    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
-    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
-    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
-    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.OriginsApi.GetScopeOrigins(context.Background(), stackId, siteId, scopeId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `OriginsApi.GetScopeOrigins``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetScopeOrigins`: DeliveryGetScopeOriginsResponse
-    fmt.Fprintf(os.Stdout, "Response from `OriginsApi.GetScopeOrigins`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-**scopeId** | **string** | A scope ID | 
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
+**scopeId** | **string**| A scope ID | 
+ **optional** | ***GetScopeOriginsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetScopeOriginsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetScopeOriginsOpts struct
 
 
 Name | Type | Description  | Notes
@@ -298,10 +157,10 @@ Name | Type | Description  | Notes
 
 
 
- **pageRequestFirst** | **string** | The number of items desired. | 
- **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
- **pageRequestFilter** | **string** | SQL-style constraint filters. | 
- **pageRequestSortBy** | **string** | Sort the response by the given field. | 
+ **pageRequestFirst** | **optional.String**| The number of items desired. | 
+ **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
+ **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
 
 ### Return type
 
@@ -323,58 +182,19 @@ Name | Type | Description  | Notes
 
 ## UpdateOrigin
 
-> DeliveryUpdateOriginResponse UpdateOrigin(ctx, stackId, originId).DeliveryUpdateOriginRequest(deliveryUpdateOriginRequest).Execute()
+> DeliveryUpdateOriginResponse UpdateOrigin(ctx, stackId, originId, deliveryUpdateOriginRequest)
 
 Update an origin
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    originId := "originId_example" // string | An origin ID
-    deliveryUpdateOriginRequest := openapiclient.deliveryUpdateOriginRequest{Http: openapiclient.deliveryHTTPOrigin{Path: "Path_example", Hostname: "Hostname_example", Port: 123, SecurePort: 123, Authentication: , VerifyCertificate: false, CertificateCommonName: "CertificateCommonName_example"}, StackpathStorage: openapiclient.deliveryStackPathStorageOrigin{BucketName: "BucketName_example", BucketRegion: "BucketRegion_example", Authentication: }, S3Storage: openapiclient.deliveryAWSS3Origin{BucketName: "BucketName_example", BucketRegion: "BucketRegion_example", Authentication: }, GoogleCloudStorage: openapiclient.deliveryGoogleStorageOrigin{BucketName: "BucketName_example"}} // DeliveryUpdateOriginRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.OriginsApi.UpdateOrigin(context.Background(), stackId, originId, deliveryUpdateOriginRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `OriginsApi.UpdateOrigin``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `UpdateOrigin`: DeliveryUpdateOriginResponse
-    fmt.Fprintf(os.Stdout, "Response from `OriginsApi.UpdateOrigin`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**originId** | **string** | An origin ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiUpdateOriginRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **deliveryUpdateOriginRequest** | [**DeliveryUpdateOriginRequest**](DeliveryUpdateOriginRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**originId** | **string**| An origin ID | 
+**deliveryUpdateOriginRequest** | [**DeliveryUpdateOriginRequest**](DeliveryUpdateOriginRequest.md)|  | 
 
 ### Return type
 

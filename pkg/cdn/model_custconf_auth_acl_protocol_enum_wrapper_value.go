@@ -8,60 +8,13 @@
  */
 
 package cdn
-
-import (
-	"encoding/json"
-)
-
-// CustconfAuthACLProtocolEnumWrapperValue the model 'CustconfAuthACLProtocolEnumWrapperValue'
-type CustconfAuthACLProtocolEnumWrapperValue string
+// CustconfAuthAclProtocolEnumWrapperValue the model 'CustconfAuthAclProtocolEnumWrapperValue'
+type CustconfAuthAclProtocolEnumWrapperValue string
 
 // List of custconfAuthACLProtocolEnumWrapperValue
 const (
-	UNKNOWN CustconfAuthACLProtocolEnumWrapperValue = "UNKNOWN"
-	HTTP CustconfAuthACLProtocolEnumWrapperValue = "http"
-	HTTPS CustconfAuthACLProtocolEnumWrapperValue = "https"
-	BOTH CustconfAuthACLProtocolEnumWrapperValue = "both"
+	UNKNOWN CustconfAuthAclProtocolEnumWrapperValue = "UNKNOWN"
+	HTTP CustconfAuthAclProtocolEnumWrapperValue = "http"
+	HTTPS CustconfAuthAclProtocolEnumWrapperValue = "https"
+	BOTH CustconfAuthAclProtocolEnumWrapperValue = "both"
 )
-
-// Ptr returns reference to custconfAuthACLProtocolEnumWrapperValue value
-func (v CustconfAuthACLProtocolEnumWrapperValue) Ptr() *CustconfAuthACLProtocolEnumWrapperValue {
-	return &v
-}
-
-
-type NullableCustconfAuthACLProtocolEnumWrapperValue struct {
-	value *CustconfAuthACLProtocolEnumWrapperValue
-	isSet bool
-}
-
-func (v NullableCustconfAuthACLProtocolEnumWrapperValue) Get() *CustconfAuthACLProtocolEnumWrapperValue {
-	return v.value
-}
-
-func (v *NullableCustconfAuthACLProtocolEnumWrapperValue) Set(val *CustconfAuthACLProtocolEnumWrapperValue) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableCustconfAuthACLProtocolEnumWrapperValue) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableCustconfAuthACLProtocolEnumWrapperValue) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableCustconfAuthACLProtocolEnumWrapperValue(val *CustconfAuthACLProtocolEnumWrapperValue) *NullableCustconfAuthACLProtocolEnumWrapperValue {
-	return &NullableCustconfAuthACLProtocolEnumWrapperValue{value: val, isSet: true}
-}
-
-func (v NullableCustconfAuthACLProtocolEnumWrapperValue) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableCustconfAuthACLProtocolEnumWrapperValue) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

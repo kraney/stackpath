@@ -12,57 +12,19 @@ Method | HTTP request | Description
 
 ## DeleteCredential
 
-> DeleteCredential(ctx, stackId, userId, accessKey).Execute()
+> DeleteCredential(ctx, stackId, userId, accessKey)
 
 Delete credentials
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    userId := "userId_example" // string | A user ID
-    accessKey := "accessKey_example" // string | A user's access key
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.UserCredentialsApi.DeleteCredential(context.Background(), stackId, userId, accessKey).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `UserCredentialsApi.DeleteCredential``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**userId** | **string** | A user ID | 
-**accessKey** | **string** | A user&#39;s access key | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDeleteCredentialRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
+**stackId** | **string**| A stack ID or slug | 
+**userId** | **string**| A user ID | 
+**accessKey** | **string**| A user&#39;s access key | 
 
 ### Return type
 
@@ -84,58 +46,20 @@ Name | Type | Description  | Notes
 
 ## GenerateCredentials
 
-> StorageGenerateCredentialsResponse GenerateCredentials(ctx, stackId, userId).Execute()
+> StorageGenerateCredentialsResponse GenerateCredentials(ctx, stackId, userId)
 
 Create credentials
 
+Generate storage credentials for the given user. Users can only have one set of credentials. Calling this method will generate a new set and invalidate any existing ones.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    userId := "userId_example" // string | A user ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.UserCredentialsApi.GenerateCredentials(context.Background(), stackId, userId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `UserCredentialsApi.GenerateCredentials``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GenerateCredentials`: StorageGenerateCredentialsResponse
-    fmt.Fprintf(os.Stdout, "Response from `UserCredentialsApi.GenerateCredentials`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**userId** | **string** | A user ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGenerateCredentialsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**userId** | **string**| A user ID | 
 
 ### Return type
 
@@ -157,56 +81,18 @@ Name | Type | Description  | Notes
 
 ## GetCredentials
 
-> StorageGetCredentialsResponse GetCredentials(ctx, stackId, userId).Execute()
+> StorageGetCredentialsResponse GetCredentials(ctx, stackId, userId)
 
 Get credentials
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    userId := "userId_example" // string | A user ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.UserCredentialsApi.GetCredentials(context.Background(), stackId, userId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `UserCredentialsApi.GetCredentials``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetCredentials`: StorageGetCredentialsResponse
-    fmt.Fprintf(os.Stdout, "Response from `UserCredentialsApi.GetCredentials`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**userId** | **string** | A user ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetCredentialsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**userId** | **string**| A user ID | 
 
 ### Return type
 

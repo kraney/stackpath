@@ -15,7 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"time"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,15 +26,6 @@ var (
 // EventsApiService EventsApi service
 type EventsApiService service
 
-type apiGetEventRequest struct {
-	ctx _context.Context
-	apiService *EventsApiService
-	stackId string
-	siteId string
-	eventId string
-}
-
-
 /*
 GetEvent LEGACY: Get an event
 **Note:** This endpoint is deprecated and will be removed in the future. WAF events will be replaced with requests, which provide more functionality. Please use the [get request](ref:getrequest) and [get request details](ref:getrequestdetails) calls to retrieve WAF requests.
@@ -42,23 +33,9 @@ GetEvent LEGACY: Get an event
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param eventId A WAF event ID
-@return apiGetEventRequest
+@return WafGetEventResponse
 */
-func (a *EventsApiService) GetEvent(ctx _context.Context, stackId string, siteId string, eventId string) apiGetEventRequest {
-	return apiGetEventRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		eventId: eventId,
-	}
-}
-
-/*
-Execute executes the request
- @return WafGetEventResponse
-*/
-func (r apiGetEventRequest) Execute() (WafGetEventResponse, *_nethttp.Response, error) {
+func (a *EventsApiService) GetEvent(ctx _context.Context, stackId string, siteId string, eventId string) (WafGetEventResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -68,22 +45,17 @@ func (r apiGetEventRequest) Execute() (WafGetEventResponse, *_nethttp.Response, 
 		localVarReturnValue  WafGetEventResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EventsApiService.GetEvent")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/events/{event_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/events/{event_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"event_id"+"}", _neturl.QueryEscape(parameterToString(r.eventId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"event_id"+"}", _neturl.QueryEscape(parameterToString(eventId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -102,12 +74,12 @@ func (r apiGetEventRequest) Execute() (WafGetEventResponse, *_nethttp.Response, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -125,7 +97,7 @@ func (r apiGetEventRequest) Execute() (WafGetEventResponse, *_nethttp.Response, 
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -135,7 +107,7 @@ func (r apiGetEventRequest) Execute() (WafGetEventResponse, *_nethttp.Response, 
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -144,7 +116,7 @@ func (r apiGetEventRequest) Execute() (WafGetEventResponse, *_nethttp.Response, 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -153,7 +125,7 @@ func (r apiGetEventRequest) Execute() (WafGetEventResponse, *_nethttp.Response, 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -164,74 +136,33 @@ func (r apiGetEventRequest) Execute() (WafGetEventResponse, *_nethttp.Response, 
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetEventStatisticsRequest struct {
-	ctx _context.Context
-	apiService *EventsApiService
-	stackId string
-	siteId string
-	startDate *time.Time
-	endDate *time.Time
-	filterActionValue *string
-	filterResultValue *string
-	filterClientIp *string
-	filterReferenceId *string
-}
 
-
-func (r apiGetEventStatisticsRequest) StartDate(startDate time.Time) apiGetEventStatisticsRequest {
-	r.startDate = &startDate
-	return r
-}
-
-func (r apiGetEventStatisticsRequest) EndDate(endDate time.Time) apiGetEventStatisticsRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r apiGetEventStatisticsRequest) FilterActionValue(filterActionValue string) apiGetEventStatisticsRequest {
-	r.filterActionValue = &filterActionValue
-	return r
-}
-
-func (r apiGetEventStatisticsRequest) FilterResultValue(filterResultValue string) apiGetEventStatisticsRequest {
-	r.filterResultValue = &filterResultValue
-	return r
-}
-
-func (r apiGetEventStatisticsRequest) FilterClientIp(filterClientIp string) apiGetEventStatisticsRequest {
-	r.filterClientIp = &filterClientIp
-	return r
-}
-
-func (r apiGetEventStatisticsRequest) FilterReferenceId(filterReferenceId string) apiGetEventStatisticsRequest {
-	r.filterReferenceId = &filterReferenceId
-	return r
+// GetEventStatisticsOpts Optional parameters for the method 'GetEventStatistics'
+type GetEventStatisticsOpts struct {
+    StartDate optional.Time
+    EndDate optional.Time
+    FilterActionValue optional.String
+    FilterResultValue optional.String
+    FilterClientIp optional.String
+    FilterReferenceId optional.String
 }
 
 /*
 GetEventStatistics LEGACY: Get event statistics
-Event statistics collect the total number of and number of blocked events for a site over a given time frame. Statistics are collected per country of origin, the rules that triggered events, the requesting organization as determined by WHOIS lookup against the client IP address, and by actions taken by the WAF as a result of the event.
-
-**Note:** This endpoint is deprecated and will be removed in the future. WAF events will be replaced with requests, which provide more functionality. A replacement for this call is in development.
+Event statistics collect the total number of and number of blocked events for a site over a given time frame. Statistics are collected per country of origin, the rules that triggered events, the requesting organization as determined by WHOIS lookup against the client IP address, and by actions taken by the WAF as a result of the event.  **Note:** This endpoint is deprecated and will be removed in the future. WAF events will be replaced with requests, which provide more functionality. A replacement for this call is in development.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return apiGetEventStatisticsRequest
+ * @param optional nil or *GetEventStatisticsOpts - Optional Parameters:
+ * @param "StartDate" (optional.Time) -  A lower bound date to search events for.
+ * @param "EndDate" (optional.Time) -  An upper bound date to search events for.
+ * @param "FilterActionValue" (optional.String) - 
+ * @param "FilterResultValue" (optional.String) - 
+ * @param "FilterClientIp" (optional.String) -  Filter events by client IP address.
+ * @param "FilterReferenceId" (optional.String) -  Filter events by reference ID. Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that an event's ID and reference ID are different.
+@return WafGetEventStatisticsResponse
 */
-func (a *EventsApiService) GetEventStatistics(ctx _context.Context, stackId string, siteId string) apiGetEventStatisticsRequest {
-	return apiGetEventStatisticsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-	}
-}
-
-/*
-Execute executes the request
- @return WafGetEventStatisticsResponse
-*/
-func (r apiGetEventStatisticsRequest) Execute() (WafGetEventStatisticsResponse, *_nethttp.Response, error) {
+func (a *EventsApiService) GetEventStatistics(ctx _context.Context, stackId string, siteId string, localVarOptionals *GetEventStatisticsOpts) (WafGetEventStatisticsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -241,38 +172,33 @@ func (r apiGetEventStatisticsRequest) Execute() (WafGetEventStatisticsResponse, 
 		localVarReturnValue  WafGetEventStatisticsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EventsApiService.GetEventStatistics")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/event_stats"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/event_stats"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-						
-	if r.startDate != nil {
-		localVarQueryParams.Add("start_date", parameterToString(*r.startDate, ""))
+
+	if localVarOptionals != nil && localVarOptionals.StartDate.IsSet() {
+		localVarQueryParams.Add("start_date", parameterToString(localVarOptionals.StartDate.Value(), ""))
 	}
-	if r.endDate != nil {
-		localVarQueryParams.Add("end_date", parameterToString(*r.endDate, ""))
+	if localVarOptionals != nil && localVarOptionals.EndDate.IsSet() {
+		localVarQueryParams.Add("end_date", parameterToString(localVarOptionals.EndDate.Value(), ""))
 	}
-	if r.filterActionValue != nil {
-		localVarQueryParams.Add("filter.action_value", parameterToString(*r.filterActionValue, ""))
+	if localVarOptionals != nil && localVarOptionals.FilterActionValue.IsSet() {
+		localVarQueryParams.Add("filter.action_value", parameterToString(localVarOptionals.FilterActionValue.Value(), ""))
 	}
-	if r.filterResultValue != nil {
-		localVarQueryParams.Add("filter.result_value", parameterToString(*r.filterResultValue, ""))
+	if localVarOptionals != nil && localVarOptionals.FilterResultValue.IsSet() {
+		localVarQueryParams.Add("filter.result_value", parameterToString(localVarOptionals.FilterResultValue.Value(), ""))
 	}
-	if r.filterClientIp != nil {
-		localVarQueryParams.Add("filter.client_ip", parameterToString(*r.filterClientIp, ""))
+	if localVarOptionals != nil && localVarOptionals.FilterClientIp.IsSet() {
+		localVarQueryParams.Add("filter.client_ip", parameterToString(localVarOptionals.FilterClientIp.Value(), ""))
 	}
-	if r.filterReferenceId != nil {
-		localVarQueryParams.Add("filter.reference_id", parameterToString(*r.filterReferenceId, ""))
+	if localVarOptionals != nil && localVarOptionals.FilterReferenceId.IsSet() {
+		localVarQueryParams.Add("filter.reference_id", parameterToString(localVarOptionals.FilterReferenceId.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -291,12 +217,12 @@ func (r apiGetEventStatisticsRequest) Execute() (WafGetEventStatisticsResponse, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -314,7 +240,7 @@ func (r apiGetEventStatisticsRequest) Execute() (WafGetEventStatisticsResponse, 
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -324,7 +250,7 @@ func (r apiGetEventStatisticsRequest) Execute() (WafGetEventStatisticsResponse, 
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -333,7 +259,7 @@ func (r apiGetEventStatisticsRequest) Execute() (WafGetEventStatisticsResponse, 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -342,7 +268,7 @@ func (r apiGetEventStatisticsRequest) Execute() (WafGetEventStatisticsResponse, 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -353,84 +279,21 @@ func (r apiGetEventStatisticsRequest) Execute() (WafGetEventStatisticsResponse, 
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiSearchEventsRequest struct {
-	ctx _context.Context
-	apiService *EventsApiService
-	stackId string
-	siteId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-	startDate *time.Time
-	endDate *time.Time
-	filterActionValue *string
-	filterResultValue *string
-	filterClientIp *string
-	filterReferenceId *string
-	sortBy *string
-	sortOrder *string
-}
 
-
-func (r apiSearchEventsRequest) PageRequestFirst(pageRequestFirst string) apiSearchEventsRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiSearchEventsRequest) PageRequestAfter(pageRequestAfter string) apiSearchEventsRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiSearchEventsRequest) PageRequestFilter(pageRequestFilter string) apiSearchEventsRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiSearchEventsRequest) PageRequestSortBy(pageRequestSortBy string) apiSearchEventsRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
-}
-
-func (r apiSearchEventsRequest) StartDate(startDate time.Time) apiSearchEventsRequest {
-	r.startDate = &startDate
-	return r
-}
-
-func (r apiSearchEventsRequest) EndDate(endDate time.Time) apiSearchEventsRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r apiSearchEventsRequest) FilterActionValue(filterActionValue string) apiSearchEventsRequest {
-	r.filterActionValue = &filterActionValue
-	return r
-}
-
-func (r apiSearchEventsRequest) FilterResultValue(filterResultValue string) apiSearchEventsRequest {
-	r.filterResultValue = &filterResultValue
-	return r
-}
-
-func (r apiSearchEventsRequest) FilterClientIp(filterClientIp string) apiSearchEventsRequest {
-	r.filterClientIp = &filterClientIp
-	return r
-}
-
-func (r apiSearchEventsRequest) FilterReferenceId(filterReferenceId string) apiSearchEventsRequest {
-	r.filterReferenceId = &filterReferenceId
-	return r
-}
-
-func (r apiSearchEventsRequest) SortBy(sortBy string) apiSearchEventsRequest {
-	r.sortBy = &sortBy
-	return r
-}
-
-func (r apiSearchEventsRequest) SortOrder(sortOrder string) apiSearchEventsRequest {
-	r.sortOrder = &sortOrder
-	return r
+// SearchEventsOpts Optional parameters for the method 'SearchEvents'
+type SearchEventsOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
+    StartDate optional.Time
+    EndDate optional.Time
+    FilterActionValue optional.String
+    FilterResultValue optional.String
+    FilterClientIp optional.String
+    FilterReferenceId optional.String
+    SortBy optional.String
+    SortOrder optional.String
 }
 
 /*
@@ -439,22 +302,22 @@ SearchEvents LEGACY: Get all events
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return apiSearchEventsRequest
+ * @param optional nil or *SearchEventsOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+ * @param "StartDate" (optional.Time) -  A lower bound date to search events for.
+ * @param "EndDate" (optional.Time) -  An upper bound date to search events for.
+ * @param "FilterActionValue" (optional.String) - 
+ * @param "FilterResultValue" (optional.String) - 
+ * @param "FilterClientIp" (optional.String) -  Filter events by client IP address.
+ * @param "FilterReferenceId" (optional.String) -  Filter events by reference ID. Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that an event's ID and reference ID are different.
+ * @param "SortBy" (optional.String) - 
+ * @param "SortOrder" (optional.String) - 
+@return WafSearchEventsResponse
 */
-func (a *EventsApiService) SearchEvents(ctx _context.Context, stackId string, siteId string) apiSearchEventsRequest {
-	return apiSearchEventsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-	}
-}
-
-/*
-Execute executes the request
- @return WafSearchEventsResponse
-*/
-func (r apiSearchEventsRequest) Execute() (WafSearchEventsResponse, *_nethttp.Response, error) {
+func (a *EventsApiService) SearchEvents(ctx _context.Context, stackId string, siteId string, localVarOptionals *SearchEventsOpts) (WafSearchEventsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -464,56 +327,51 @@ func (r apiSearchEventsRequest) Execute() (WafSearchEventsResponse, *_nethttp.Re
 		localVarReturnValue  WafSearchEventsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "EventsApiService.SearchEvents")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/events"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/events"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-												
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
-	if r.startDate != nil {
-		localVarQueryParams.Add("start_date", parameterToString(*r.startDate, ""))
+	if localVarOptionals != nil && localVarOptionals.StartDate.IsSet() {
+		localVarQueryParams.Add("start_date", parameterToString(localVarOptionals.StartDate.Value(), ""))
 	}
-	if r.endDate != nil {
-		localVarQueryParams.Add("end_date", parameterToString(*r.endDate, ""))
+	if localVarOptionals != nil && localVarOptionals.EndDate.IsSet() {
+		localVarQueryParams.Add("end_date", parameterToString(localVarOptionals.EndDate.Value(), ""))
 	}
-	if r.filterActionValue != nil {
-		localVarQueryParams.Add("filter.action_value", parameterToString(*r.filterActionValue, ""))
+	if localVarOptionals != nil && localVarOptionals.FilterActionValue.IsSet() {
+		localVarQueryParams.Add("filter.action_value", parameterToString(localVarOptionals.FilterActionValue.Value(), ""))
 	}
-	if r.filterResultValue != nil {
-		localVarQueryParams.Add("filter.result_value", parameterToString(*r.filterResultValue, ""))
+	if localVarOptionals != nil && localVarOptionals.FilterResultValue.IsSet() {
+		localVarQueryParams.Add("filter.result_value", parameterToString(localVarOptionals.FilterResultValue.Value(), ""))
 	}
-	if r.filterClientIp != nil {
-		localVarQueryParams.Add("filter.client_ip", parameterToString(*r.filterClientIp, ""))
+	if localVarOptionals != nil && localVarOptionals.FilterClientIp.IsSet() {
+		localVarQueryParams.Add("filter.client_ip", parameterToString(localVarOptionals.FilterClientIp.Value(), ""))
 	}
-	if r.filterReferenceId != nil {
-		localVarQueryParams.Add("filter.reference_id", parameterToString(*r.filterReferenceId, ""))
+	if localVarOptionals != nil && localVarOptionals.FilterReferenceId.IsSet() {
+		localVarQueryParams.Add("filter.reference_id", parameterToString(localVarOptionals.FilterReferenceId.Value(), ""))
 	}
-	if r.sortBy != nil {
-		localVarQueryParams.Add("sort_by", parameterToString(*r.sortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.SortBy.IsSet() {
+		localVarQueryParams.Add("sort_by", parameterToString(localVarOptionals.SortBy.Value(), ""))
 	}
-	if r.sortOrder != nil {
-		localVarQueryParams.Add("sort_order", parameterToString(*r.sortOrder, ""))
+	if localVarOptionals != nil && localVarOptionals.SortOrder.IsSet() {
+		localVarQueryParams.Add("sort_order", parameterToString(localVarOptionals.SortOrder.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -532,12 +390,12 @@ func (r apiSearchEventsRequest) Execute() (WafSearchEventsResponse, *_nethttp.Re
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -555,7 +413,7 @@ func (r apiSearchEventsRequest) Execute() (WafSearchEventsResponse, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -565,7 +423,7 @@ func (r apiSearchEventsRequest) Execute() (WafSearchEventsResponse, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -574,7 +432,7 @@ func (r apiSearchEventsRequest) Execute() (WafSearchEventsResponse, *_nethttp.Re
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -583,7 +441,7 @@ func (r apiSearchEventsRequest) Execute() (WafSearchEventsResponse, *_nethttp.Re
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

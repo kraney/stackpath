@@ -8,11 +8,6 @@
  */
 
 package waf
-
-import (
-	"encoding/json"
-)
-
 // SearchFilterActionFilter Potential actions the WAF took on an event
 type SearchFilterActionFilter string
 
@@ -25,45 +20,3 @@ const (
 	HANDSHAKE_ACTION SearchFilterActionFilter = "HANDSHAKE_ACTION"
 	MONITOR_ACTION SearchFilterActionFilter = "MONITOR_ACTION"
 )
-
-// Ptr returns reference to SearchFilterActionFilter value
-func (v SearchFilterActionFilter) Ptr() *SearchFilterActionFilter {
-	return &v
-}
-
-
-type NullableSearchFilterActionFilter struct {
-	value *SearchFilterActionFilter
-	isSet bool
-}
-
-func (v NullableSearchFilterActionFilter) Get() *SearchFilterActionFilter {
-	return v.value
-}
-
-func (v *NullableSearchFilterActionFilter) Set(val *SearchFilterActionFilter) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableSearchFilterActionFilter) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableSearchFilterActionFilter) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableSearchFilterActionFilter(val *SearchFilterActionFilter) *NullableSearchFilterActionFilter {
-	return &NullableSearchFilterActionFilter{value: val, isSet: true}
-}
-
-func (v NullableSearchFilterActionFilter) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableSearchFilterActionFilter) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

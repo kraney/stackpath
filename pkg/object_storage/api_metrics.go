@@ -15,7 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"time"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,49 +26,24 @@ var (
 // MetricsApiService MetricsApi service
 type MetricsApiService service
 
-type apiGetBucketMetricsRequest struct {
-	ctx _context.Context
-	apiService *MetricsApiService
-	stackId string
-	bucketId string
-	startTime *time.Time
-	endTime *time.Time
-}
-
-
-func (r apiGetBucketMetricsRequest) StartTime(startTime time.Time) apiGetBucketMetricsRequest {
-	r.startTime = &startTime
-	return r
-}
-
-func (r apiGetBucketMetricsRequest) EndTime(endTime time.Time) apiGetBucketMetricsRequest {
-	r.endTime = &endTime
-	return r
+// GetBucketMetricsOpts Optional parameters for the method 'GetBucketMetrics'
+type GetBucketMetricsOpts struct {
+    StartTime optional.Time
+    EndTime optional.Time
 }
 
 /*
 GetBucketMetrics Get bucket metrics
-When the start & end dates are not provided, the metrics for the last day will be returned.
-The date range used must be at least a day apart, and only beginning times are allowed (e.g. 2019-01-01T00:00:00)
+When the start &amp; end dates are not provided, the metrics for the last day will be returned. The date range used must be at least a day apart, and only beginning times are allowed (e.g. 2019-01-01T00:00:00)
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param bucketId A storage bucket ID
-@return apiGetBucketMetricsRequest
+ * @param optional nil or *GetBucketMetricsOpts - Optional Parameters:
+ * @param "StartTime" (optional.Time) -  The start date for the range of metrics.
+ * @param "EndTime" (optional.Time) -  The end date for the range of metrics.
+@return PrometheusMetrics
 */
-func (a *MetricsApiService) GetBucketMetrics(ctx _context.Context, stackId string, bucketId string) apiGetBucketMetricsRequest {
-	return apiGetBucketMetricsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		bucketId: bucketId,
-	}
-}
-
-/*
-Execute executes the request
- @return PrometheusMetrics
-*/
-func (r apiGetBucketMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Response, error) {
+func (a *MetricsApiService) GetBucketMetrics(ctx _context.Context, stackId string, bucketId string, localVarOptionals *GetBucketMetricsOpts) (PrometheusMetrics, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -78,26 +53,21 @@ func (r apiGetBucketMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Resp
 		localVarReturnValue  PrometheusMetrics
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "MetricsApiService.GetBucketMetrics")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/buckets/{bucket_id}/metrics"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/buckets/{bucket_id}/metrics"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", _neturl.QueryEscape(parameterToString(r.bucketId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", _neturl.QueryEscape(parameterToString(bucketId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-		
-	if r.startTime != nil {
-		localVarQueryParams.Add("start_time", parameterToString(*r.startTime, ""))
+
+	if localVarOptionals != nil && localVarOptionals.StartTime.IsSet() {
+		localVarQueryParams.Add("start_time", parameterToString(localVarOptionals.StartTime.Value(), ""))
 	}
-	if r.endTime != nil {
-		localVarQueryParams.Add("end_time", parameterToString(*r.endTime, ""))
+	if localVarOptionals != nil && localVarOptionals.EndTime.IsSet() {
+		localVarQueryParams.Add("end_time", parameterToString(localVarOptionals.EndTime.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -116,12 +86,12 @@ func (r apiGetBucketMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Resp
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -139,7 +109,7 @@ func (r apiGetBucketMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Resp
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -149,7 +119,7 @@ func (r apiGetBucketMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Resp
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -158,7 +128,7 @@ func (r apiGetBucketMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Resp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -167,7 +137,7 @@ func (r apiGetBucketMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Resp
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -178,46 +148,24 @@ func (r apiGetBucketMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Resp
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetStackMetricsRequest struct {
-	ctx _context.Context
-	apiService *MetricsApiService
-	stackId string
-	startTime *time.Time
-	endTime *time.Time
-}
 
-
-func (r apiGetStackMetricsRequest) StartTime(startTime time.Time) apiGetStackMetricsRequest {
-	r.startTime = &startTime
-	return r
-}
-
-func (r apiGetStackMetricsRequest) EndTime(endTime time.Time) apiGetStackMetricsRequest {
-	r.endTime = &endTime
-	return r
+// GetStackMetricsOpts Optional parameters for the method 'GetStackMetrics'
+type GetStackMetricsOpts struct {
+    StartTime optional.Time
+    EndTime optional.Time
 }
 
 /*
 GetStackMetrics Get stack metrics
-When the start & end dates are not provided, the metrics for the last day will be returned.
-The date range used must be at least a day apart, and only beginning times are allowed (e.g. 2019-01-01T00:00:00)
+When the start &amp; end dates are not provided, the metrics for the last day will be returned. The date range used must be at least a day apart, and only beginning times are allowed (e.g. 2019-01-01T00:00:00)
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiGetStackMetricsRequest
+ * @param optional nil or *GetStackMetricsOpts - Optional Parameters:
+ * @param "StartTime" (optional.Time) -  The start date for the range of metrics.
+ * @param "EndTime" (optional.Time) -  The end date for the range of metrics.
+@return PrometheusMetrics
 */
-func (a *MetricsApiService) GetStackMetrics(ctx _context.Context, stackId string) apiGetStackMetricsRequest {
-	return apiGetStackMetricsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return PrometheusMetrics
-*/
-func (r apiGetStackMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Response, error) {
+func (a *MetricsApiService) GetStackMetrics(ctx _context.Context, stackId string, localVarOptionals *GetStackMetricsOpts) (PrometheusMetrics, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -227,24 +175,19 @@ func (r apiGetStackMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Respo
 		localVarReturnValue  PrometheusMetrics
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "MetricsApiService.GetStackMetrics")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/metrics"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/metrics"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-		
-	if r.startTime != nil {
-		localVarQueryParams.Add("start_time", parameterToString(*r.startTime, ""))
+
+	if localVarOptionals != nil && localVarOptionals.StartTime.IsSet() {
+		localVarQueryParams.Add("start_time", parameterToString(localVarOptionals.StartTime.Value(), ""))
 	}
-	if r.endTime != nil {
-		localVarQueryParams.Add("end_time", parameterToString(*r.endTime, ""))
+	if localVarOptionals != nil && localVarOptionals.EndTime.IsSet() {
+		localVarQueryParams.Add("end_time", parameterToString(localVarOptionals.EndTime.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -263,12 +206,12 @@ func (r apiGetStackMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Respo
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -286,7 +229,7 @@ func (r apiGetStackMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Respo
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -296,7 +239,7 @@ func (r apiGetStackMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Respo
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -305,7 +248,7 @@ func (r apiGetStackMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Respo
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -314,7 +257,7 @@ func (r apiGetStackMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Respo
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

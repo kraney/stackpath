@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,68 +26,31 @@ var (
 // AlertConditionsApiService AlertConditionsApi service
 type AlertConditionsApiService service
 
-type apiBatchDeleteAlertConditionsRequest struct {
-	ctx _context.Context
-	apiService *AlertConditionsApiService
-	stackId string
-	monitorId string
-	v2BatchDeleteAlertConditionsRequest *V2BatchDeleteAlertConditionsRequest
-}
-
-
-func (r apiBatchDeleteAlertConditionsRequest) V2BatchDeleteAlertConditionsRequest(v2BatchDeleteAlertConditionsRequest V2BatchDeleteAlertConditionsRequest) apiBatchDeleteAlertConditionsRequest {
-	r.v2BatchDeleteAlertConditionsRequest = &v2BatchDeleteAlertConditionsRequest
-	return r
-}
-
 /*
 BatchDeleteAlertConditions Delete multiple alert conditions
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param monitorId A monitor ID
-@return apiBatchDeleteAlertConditionsRequest
+ * @param v2BatchDeleteAlertConditionsRequest
 */
-func (a *AlertConditionsApiService) BatchDeleteAlertConditions(ctx _context.Context, stackId string, monitorId string) apiBatchDeleteAlertConditionsRequest {
-	return apiBatchDeleteAlertConditionsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		monitorId: monitorId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiBatchDeleteAlertConditionsRequest) Execute() (*_nethttp.Response, error) {
+func (a *AlertConditionsApiService) BatchDeleteAlertConditions(ctx _context.Context, stackId string, monitorId string, v2BatchDeleteAlertConditionsRequest V2BatchDeleteAlertConditionsRequest) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AlertConditionsApiService.BatchDeleteAlertConditions")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/batch_delete"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/batch_delete"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(r.monitorId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(monitorId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.v2BatchDeleteAlertConditionsRequest == nil {
-		return nil, reportError("v2BatchDeleteAlertConditionsRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -106,13 +70,13 @@ func (r apiBatchDeleteAlertConditionsRequest) Execute() (*_nethttp.Response, err
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.v2BatchDeleteAlertConditionsRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &v2BatchDeleteAlertConditionsRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -130,7 +94,7 @@ func (r apiBatchDeleteAlertConditionsRequest) Execute() (*_nethttp.Response, err
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -140,7 +104,7 @@ func (r apiBatchDeleteAlertConditionsRequest) Execute() (*_nethttp.Response, err
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -149,7 +113,7 @@ func (r apiBatchDeleteAlertConditionsRequest) Execute() (*_nethttp.Response, err
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -160,19 +124,6 @@ func (r apiBatchDeleteAlertConditionsRequest) Execute() (*_nethttp.Response, err
 
 	return localVarHTTPResponse, nil
 }
-type apiCreateAlertConditionRequest struct {
-	ctx _context.Context
-	apiService *AlertConditionsApiService
-	stackId string
-	monitorId string
-	v2CreateAlertConditionRequest *V2CreateAlertConditionRequest
-}
-
-
-func (r apiCreateAlertConditionRequest) V2CreateAlertConditionRequest(v2CreateAlertConditionRequest V2CreateAlertConditionRequest) apiCreateAlertConditionRequest {
-	r.v2CreateAlertConditionRequest = &v2CreateAlertConditionRequest
-	return r
-}
 
 /*
 CreateAlertCondition Create an alert condition
@@ -180,22 +131,10 @@ An alert condition defines when to be alerted by a change in the monitored servi
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param monitorId A monitor ID
-@return apiCreateAlertConditionRequest
+ * @param v2CreateAlertConditionRequest
+@return V2CreateAlertConditionResponse
 */
-func (a *AlertConditionsApiService) CreateAlertCondition(ctx _context.Context, stackId string, monitorId string) apiCreateAlertConditionRequest {
-	return apiCreateAlertConditionRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		monitorId: monitorId,
-	}
-}
-
-/*
-Execute executes the request
- @return V2CreateAlertConditionResponse
-*/
-func (r apiCreateAlertConditionRequest) Execute() (V2CreateAlertConditionResponse, *_nethttp.Response, error) {
+func (a *AlertConditionsApiService) CreateAlertCondition(ctx _context.Context, stackId string, monitorId string, v2CreateAlertConditionRequest V2CreateAlertConditionRequest) (V2CreateAlertConditionResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -205,24 +144,15 @@ func (r apiCreateAlertConditionRequest) Execute() (V2CreateAlertConditionRespons
 		localVarReturnValue  V2CreateAlertConditionResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AlertConditionsApiService.CreateAlertCondition")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(r.monitorId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(monitorId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.v2CreateAlertConditionRequest == nil {
-		return localVarReturnValue, nil, reportError("v2CreateAlertConditionRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -242,13 +172,13 @@ func (r apiCreateAlertConditionRequest) Execute() (V2CreateAlertConditionRespons
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.v2CreateAlertConditionRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &v2CreateAlertConditionRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -266,7 +196,7 @@ func (r apiCreateAlertConditionRequest) Execute() (V2CreateAlertConditionRespons
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -276,7 +206,7 @@ func (r apiCreateAlertConditionRequest) Execute() (V2CreateAlertConditionRespons
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -285,7 +215,7 @@ func (r apiCreateAlertConditionRequest) Execute() (V2CreateAlertConditionRespons
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -294,7 +224,7 @@ func (r apiCreateAlertConditionRequest) Execute() (V2CreateAlertConditionRespons
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -305,14 +235,6 @@ func (r apiCreateAlertConditionRequest) Execute() (V2CreateAlertConditionRespons
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiDeleteAlertConditionRequest struct {
-	ctx _context.Context
-	apiService *AlertConditionsApiService
-	stackId string
-	monitorId string
-	conditionId string
-}
-
 
 /*
 DeleteAlertCondition Delete an alert condition
@@ -320,48 +242,27 @@ DeleteAlertCondition Delete an alert condition
  * @param stackId A stack ID or slug
  * @param monitorId A monitor ID
  * @param conditionId A monitoring alert condition ID
-@return apiDeleteAlertConditionRequest
 */
-func (a *AlertConditionsApiService) DeleteAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string) apiDeleteAlertConditionRequest {
-	return apiDeleteAlertConditionRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		monitorId: monitorId,
-		conditionId: conditionId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDeleteAlertConditionRequest) Execute() (*_nethttp.Response, error) {
+func (a *AlertConditionsApiService) DeleteAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AlertConditionsApiService.DeleteAlertCondition")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(r.monitorId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(r.conditionId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(monitorId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(conditionId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -380,12 +281,12 @@ func (r apiDeleteAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -403,7 +304,7 @@ func (r apiDeleteAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -413,7 +314,7 @@ func (r apiDeleteAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -422,7 +323,7 @@ func (r apiDeleteAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -433,14 +334,6 @@ func (r apiDeleteAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiDisableAlertConditionRequest struct {
-	ctx _context.Context
-	apiService *AlertConditionsApiService
-	stackId string
-	monitorId string
-	conditionId string
-}
-
 
 /*
 DisableAlertCondition Disable an alert condition
@@ -448,48 +341,27 @@ DisableAlertCondition Disable an alert condition
  * @param stackId A stack ID or slug
  * @param monitorId A monitor ID
  * @param conditionId A monitoring alert condition ID
-@return apiDisableAlertConditionRequest
 */
-func (a *AlertConditionsApiService) DisableAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string) apiDisableAlertConditionRequest {
-	return apiDisableAlertConditionRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		monitorId: monitorId,
-		conditionId: conditionId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDisableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
+func (a *AlertConditionsApiService) DisableAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AlertConditionsApiService.DisableAlertCondition")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}/disable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}/disable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(r.monitorId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(r.conditionId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(monitorId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(conditionId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -508,12 +380,12 @@ func (r apiDisableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -531,7 +403,7 @@ func (r apiDisableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -541,7 +413,7 @@ func (r apiDisableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -550,7 +422,7 @@ func (r apiDisableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -561,14 +433,6 @@ func (r apiDisableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiEnableAlertConditionRequest struct {
-	ctx _context.Context
-	apiService *AlertConditionsApiService
-	stackId string
-	monitorId string
-	conditionId string
-}
-
 
 /*
 EnableAlertCondition Enable an alert condition
@@ -576,48 +440,27 @@ EnableAlertCondition Enable an alert condition
  * @param stackId A stack ID or slug
  * @param monitorId A monitor ID
  * @param conditionId A monitoring alert condition ID
-@return apiEnableAlertConditionRequest
 */
-func (a *AlertConditionsApiService) EnableAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string) apiEnableAlertConditionRequest {
-	return apiEnableAlertConditionRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		monitorId: monitorId,
-		conditionId: conditionId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiEnableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
+func (a *AlertConditionsApiService) EnableAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AlertConditionsApiService.EnableAlertCondition")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}/enable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}/enable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(r.monitorId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(r.conditionId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(monitorId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(conditionId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -636,12 +479,12 @@ func (r apiEnableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -659,7 +502,7 @@ func (r apiEnableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -669,7 +512,7 @@ func (r apiEnableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -678,7 +521,7 @@ func (r apiEnableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -689,14 +532,6 @@ func (r apiEnableAlertConditionRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiGetAlertConditionRequest struct {
-	ctx _context.Context
-	apiService *AlertConditionsApiService
-	stackId string
-	monitorId string
-	conditionId string
-}
-
 
 /*
 GetAlertCondition Get an alert condition
@@ -704,23 +539,9 @@ GetAlertCondition Get an alert condition
  * @param stackId A stack ID or slug
  * @param monitorId A monitor ID
  * @param conditionId A monitoring alert condition ID
-@return apiGetAlertConditionRequest
+@return V2GetAlertConditionResponse
 */
-func (a *AlertConditionsApiService) GetAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string) apiGetAlertConditionRequest {
-	return apiGetAlertConditionRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		monitorId: monitorId,
-		conditionId: conditionId,
-	}
-}
-
-/*
-Execute executes the request
- @return V2GetAlertConditionResponse
-*/
-func (r apiGetAlertConditionRequest) Execute() (V2GetAlertConditionResponse, *_nethttp.Response, error) {
+func (a *AlertConditionsApiService) GetAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string) (V2GetAlertConditionResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -730,22 +551,17 @@ func (r apiGetAlertConditionRequest) Execute() (V2GetAlertConditionResponse, *_n
 		localVarReturnValue  V2GetAlertConditionResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AlertConditionsApiService.GetAlertCondition")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(r.monitorId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(r.conditionId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(monitorId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(conditionId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -764,12 +580,12 @@ func (r apiGetAlertConditionRequest) Execute() (V2GetAlertConditionResponse, *_n
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -787,7 +603,7 @@ func (r apiGetAlertConditionRequest) Execute() (V2GetAlertConditionResponse, *_n
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -797,7 +613,7 @@ func (r apiGetAlertConditionRequest) Execute() (V2GetAlertConditionResponse, *_n
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -806,7 +622,7 @@ func (r apiGetAlertConditionRequest) Execute() (V2GetAlertConditionResponse, *_n
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -815,7 +631,7 @@ func (r apiGetAlertConditionRequest) Execute() (V2GetAlertConditionResponse, *_n
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -826,36 +642,13 @@ func (r apiGetAlertConditionRequest) Execute() (V2GetAlertConditionResponse, *_n
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetAlertConditionsRequest struct {
-	ctx _context.Context
-	apiService *AlertConditionsApiService
-	stackId string
-	monitorId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetAlertConditionsRequest) PageRequestFirst(pageRequestFirst string) apiGetAlertConditionsRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetAlertConditionsRequest) PageRequestAfter(pageRequestAfter string) apiGetAlertConditionsRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetAlertConditionsRequest) PageRequestFilter(pageRequestFilter string) apiGetAlertConditionsRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetAlertConditionsRequest) PageRequestSortBy(pageRequestSortBy string) apiGetAlertConditionsRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetAlertConditionsOpts Optional parameters for the method 'GetAlertConditions'
+type GetAlertConditionsOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
@@ -863,22 +656,14 @@ GetAlertConditions Get all alert conditions
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param monitorId A monitor ID
-@return apiGetAlertConditionsRequest
+ * @param optional nil or *GetAlertConditionsOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return V2GetAlertConditionsResponse
 */
-func (a *AlertConditionsApiService) GetAlertConditions(ctx _context.Context, stackId string, monitorId string) apiGetAlertConditionsRequest {
-	return apiGetAlertConditionsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		monitorId: monitorId,
-	}
-}
-
-/*
-Execute executes the request
- @return V2GetAlertConditionsResponse
-*/
-func (r apiGetAlertConditionsRequest) Execute() (V2GetAlertConditionsResponse, *_nethttp.Response, error) {
+func (a *AlertConditionsApiService) GetAlertConditions(ctx _context.Context, stackId string, monitorId string, localVarOptionals *GetAlertConditionsOpts) (V2GetAlertConditionsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -888,32 +673,27 @@ func (r apiGetAlertConditionsRequest) Execute() (V2GetAlertConditionsResponse, *
 		localVarReturnValue  V2GetAlertConditionsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AlertConditionsApiService.GetAlertConditions")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(r.monitorId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(monitorId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -932,12 +712,12 @@ func (r apiGetAlertConditionsRequest) Execute() (V2GetAlertConditionsResponse, *
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -955,7 +735,7 @@ func (r apiGetAlertConditionsRequest) Execute() (V2GetAlertConditionsResponse, *
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -965,7 +745,7 @@ func (r apiGetAlertConditionsRequest) Execute() (V2GetAlertConditionsResponse, *
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -974,7 +754,7 @@ func (r apiGetAlertConditionsRequest) Execute() (V2GetAlertConditionsResponse, *
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -983,7 +763,7 @@ func (r apiGetAlertConditionsRequest) Execute() (V2GetAlertConditionsResponse, *
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -994,20 +774,6 @@ func (r apiGetAlertConditionsRequest) Execute() (V2GetAlertConditionsResponse, *
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiUpdateAlertConditionRequest struct {
-	ctx _context.Context
-	apiService *AlertConditionsApiService
-	stackId string
-	monitorId string
-	conditionId string
-	v2UpdateAlertConditionRequest *V2UpdateAlertConditionRequest
-}
-
-
-func (r apiUpdateAlertConditionRequest) V2UpdateAlertConditionRequest(v2UpdateAlertConditionRequest V2UpdateAlertConditionRequest) apiUpdateAlertConditionRequest {
-	r.v2UpdateAlertConditionRequest = &v2UpdateAlertConditionRequest
-	return r
-}
 
 /*
 UpdateAlertCondition Update an alert condition
@@ -1015,23 +781,10 @@ UpdateAlertCondition Update an alert condition
  * @param stackId A stack ID or slug
  * @param monitorId A monitor ID
  * @param conditionId A monitoring alert condition ID
-@return apiUpdateAlertConditionRequest
+ * @param v2UpdateAlertConditionRequest
+@return V2UpdateAlertConditionResponse
 */
-func (a *AlertConditionsApiService) UpdateAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string) apiUpdateAlertConditionRequest {
-	return apiUpdateAlertConditionRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		monitorId: monitorId,
-		conditionId: conditionId,
-	}
-}
-
-/*
-Execute executes the request
- @return V2UpdateAlertConditionResponse
-*/
-func (r apiUpdateAlertConditionRequest) Execute() (V2UpdateAlertConditionResponse, *_nethttp.Response, error) {
+func (a *AlertConditionsApiService) UpdateAlertCondition(ctx _context.Context, stackId string, monitorId string, conditionId string, v2UpdateAlertConditionRequest V2UpdateAlertConditionRequest) (V2UpdateAlertConditionResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -1041,26 +794,17 @@ func (r apiUpdateAlertConditionRequest) Execute() (V2UpdateAlertConditionRespons
 		localVarReturnValue  V2UpdateAlertConditionResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AlertConditionsApiService.UpdateAlertCondition")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/monitoring/v2/stacks/{stack_id}/monitors/{monitor_id}/alerts/conditions/{condition_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(r.monitorId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(r.conditionId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitor_id"+"}", _neturl.QueryEscape(parameterToString(monitorId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"condition_id"+"}", _neturl.QueryEscape(parameterToString(conditionId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	if r.v2UpdateAlertConditionRequest == nil {
-		return localVarReturnValue, nil, reportError("v2UpdateAlertConditionRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1080,13 +824,13 @@ func (r apiUpdateAlertConditionRequest) Execute() (V2UpdateAlertConditionRespons
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.v2UpdateAlertConditionRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &v2UpdateAlertConditionRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1104,7 +848,7 @@ func (r apiUpdateAlertConditionRequest) Execute() (V2UpdateAlertConditionRespons
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1114,7 +858,7 @@ func (r apiUpdateAlertConditionRequest) Execute() (V2UpdateAlertConditionRespons
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1123,7 +867,7 @@ func (r apiUpdateAlertConditionRequest) Execute() (V2UpdateAlertConditionRespons
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1132,7 +876,7 @@ func (r apiUpdateAlertConditionRequest) Execute() (V2UpdateAlertConditionRespons
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

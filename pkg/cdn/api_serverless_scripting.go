@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,41 +26,15 @@ var (
 // ServerlessScriptingApiService ServerlessScriptingApi service
 type ServerlessScriptingApiService service
 
-type apiCreateSiteScriptRequest struct {
-	ctx _context.Context
-	apiService *ServerlessScriptingApiService
-	stackId string
-	siteId string
-	cdnCreateSiteScriptRequest *CdnCreateSiteScriptRequest
-}
-
-
-func (r apiCreateSiteScriptRequest) CdnCreateSiteScriptRequest(cdnCreateSiteScriptRequest CdnCreateSiteScriptRequest) apiCreateSiteScriptRequest {
-	r.cdnCreateSiteScriptRequest = &cdnCreateSiteScriptRequest
-	return r
-}
-
 /*
 CreateSiteScript Create a serverless script
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return apiCreateSiteScriptRequest
+ * @param cdnCreateSiteScriptRequest
+@return CdnCreateSiteScriptResponse
 */
-func (a *ServerlessScriptingApiService) CreateSiteScript(ctx _context.Context, stackId string, siteId string) apiCreateSiteScriptRequest {
-	return apiCreateSiteScriptRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnCreateSiteScriptResponse
-*/
-func (r apiCreateSiteScriptRequest) Execute() (CdnCreateSiteScriptResponse, *_nethttp.Response, error) {
+func (a *ServerlessScriptingApiService) CreateSiteScript(ctx _context.Context, stackId string, siteId string, cdnCreateSiteScriptRequest CdnCreateSiteScriptRequest) (CdnCreateSiteScriptResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -69,24 +44,15 @@ func (r apiCreateSiteScriptRequest) Execute() (CdnCreateSiteScriptResponse, *_ne
 		localVarReturnValue  CdnCreateSiteScriptResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ServerlessScriptingApiService.CreateSiteScript")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.cdnCreateSiteScriptRequest == nil {
-		return localVarReturnValue, nil, reportError("cdnCreateSiteScriptRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -106,13 +72,13 @@ func (r apiCreateSiteScriptRequest) Execute() (CdnCreateSiteScriptResponse, *_ne
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.cdnCreateSiteScriptRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &cdnCreateSiteScriptRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -130,7 +96,7 @@ func (r apiCreateSiteScriptRequest) Execute() (CdnCreateSiteScriptResponse, *_ne
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -140,7 +106,7 @@ func (r apiCreateSiteScriptRequest) Execute() (CdnCreateSiteScriptResponse, *_ne
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -149,7 +115,7 @@ func (r apiCreateSiteScriptRequest) Execute() (CdnCreateSiteScriptResponse, *_ne
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -158,7 +124,7 @@ func (r apiCreateSiteScriptRequest) Execute() (CdnCreateSiteScriptResponse, *_ne
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -169,14 +135,6 @@ func (r apiCreateSiteScriptRequest) Execute() (CdnCreateSiteScriptResponse, *_ne
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiDeleteSiteScriptRequest struct {
-	ctx _context.Context
-	apiService *ServerlessScriptingApiService
-	stackId string
-	siteId string
-	scriptId string
-}
-
 
 /*
 DeleteSiteScript Delete a serverless script
@@ -184,48 +142,27 @@ DeleteSiteScript Delete a serverless script
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scriptId A serverless script ID
-@return apiDeleteSiteScriptRequest
 */
-func (a *ServerlessScriptingApiService) DeleteSiteScript(ctx _context.Context, stackId string, siteId string, scriptId string) apiDeleteSiteScriptRequest {
-	return apiDeleteSiteScriptRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scriptId: scriptId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDeleteSiteScriptRequest) Execute() (*_nethttp.Response, error) {
+func (a *ServerlessScriptingApiService) DeleteSiteScript(ctx _context.Context, stackId string, siteId string, scriptId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ServerlessScriptingApiService.DeleteSiteScript")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts/{script_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts/{script_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"script_id"+"}", _neturl.QueryEscape(parameterToString(r.scriptId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"script_id"+"}", _neturl.QueryEscape(parameterToString(scriptId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -244,12 +181,12 @@ func (r apiDeleteSiteScriptRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -267,7 +204,7 @@ func (r apiDeleteSiteScriptRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -277,7 +214,7 @@ func (r apiDeleteSiteScriptRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -286,7 +223,7 @@ func (r apiDeleteSiteScriptRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -297,19 +234,10 @@ func (r apiDeleteSiteScriptRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiGetSiteScriptRequest struct {
-	ctx _context.Context
-	apiService *ServerlessScriptingApiService
-	stackId string
-	siteId string
-	scriptId string
-	scriptVersion *string
-}
 
-
-func (r apiGetSiteScriptRequest) ScriptVersion(scriptVersion string) apiGetSiteScriptRequest {
-	r.scriptVersion = &scriptVersion
-	return r
+// GetSiteScriptOpts Optional parameters for the method 'GetSiteScript'
+type GetSiteScriptOpts struct {
+    ScriptVersion optional.String
 }
 
 /*
@@ -318,23 +246,11 @@ GetSiteScript Get a serverless script
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scriptId A serverless script ID
-@return apiGetSiteScriptRequest
+ * @param optional nil or *GetSiteScriptOpts - Optional Parameters:
+ * @param "ScriptVersion" (optional.String) -  The version of the serverless script to get
+@return CdnGetSiteScriptResponse
 */
-func (a *ServerlessScriptingApiService) GetSiteScript(ctx _context.Context, stackId string, siteId string, scriptId string) apiGetSiteScriptRequest {
-	return apiGetSiteScriptRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scriptId: scriptId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetSiteScriptResponse
-*/
-func (r apiGetSiteScriptRequest) Execute() (CdnGetSiteScriptResponse, *_nethttp.Response, error) {
+func (a *ServerlessScriptingApiService) GetSiteScript(ctx _context.Context, stackId string, siteId string, scriptId string, localVarOptionals *GetSiteScriptOpts) (CdnGetSiteScriptResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -344,25 +260,20 @@ func (r apiGetSiteScriptRequest) Execute() (CdnGetSiteScriptResponse, *_nethttp.
 		localVarReturnValue  CdnGetSiteScriptResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ServerlessScriptingApiService.GetSiteScript")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts/{script_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts/{script_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"script_id"+"}", _neturl.QueryEscape(parameterToString(r.scriptId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"script_id"+"}", _neturl.QueryEscape(parameterToString(scriptId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	if r.scriptVersion != nil {
-		localVarQueryParams.Add("script_version", parameterToString(*r.scriptVersion, ""))
+
+	if localVarOptionals != nil && localVarOptionals.ScriptVersion.IsSet() {
+		localVarQueryParams.Add("script_version", parameterToString(localVarOptionals.ScriptVersion.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -381,12 +292,12 @@ func (r apiGetSiteScriptRequest) Execute() (CdnGetSiteScriptResponse, *_nethttp.
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -404,7 +315,7 @@ func (r apiGetSiteScriptRequest) Execute() (CdnGetSiteScriptResponse, *_nethttp.
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -414,7 +325,7 @@ func (r apiGetSiteScriptRequest) Execute() (CdnGetSiteScriptResponse, *_nethttp.
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -423,7 +334,7 @@ func (r apiGetSiteScriptRequest) Execute() (CdnGetSiteScriptResponse, *_nethttp.
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -432,7 +343,7 @@ func (r apiGetSiteScriptRequest) Execute() (CdnGetSiteScriptResponse, *_nethttp.
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -443,15 +354,6 @@ func (r apiGetSiteScriptRequest) Execute() (CdnGetSiteScriptResponse, *_nethttp.
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetSiteScript2Request struct {
-	ctx _context.Context
-	apiService *ServerlessScriptingApiService
-	stackId string
-	siteId string
-	scriptId string
-	scriptVersion string
-}
-
 
 /*
 GetSiteScript2 Get a serverless script version
@@ -460,24 +362,9 @@ GetSiteScript2 Get a serverless script version
  * @param siteId A site ID
  * @param scriptId A serverless script ID
  * @param scriptVersion The version of the serverless script to get
-@return apiGetSiteScript2Request
+@return CdnGetSiteScriptResponse
 */
-func (a *ServerlessScriptingApiService) GetSiteScript2(ctx _context.Context, stackId string, siteId string, scriptId string, scriptVersion string) apiGetSiteScript2Request {
-	return apiGetSiteScript2Request{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scriptId: scriptId,
-		scriptVersion: scriptVersion,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetSiteScriptResponse
-*/
-func (r apiGetSiteScript2Request) Execute() (CdnGetSiteScriptResponse, *_nethttp.Response, error) {
+func (a *ServerlessScriptingApiService) GetSiteScript2(ctx _context.Context, stackId string, siteId string, scriptId string, scriptVersion string) (CdnGetSiteScriptResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -487,24 +374,19 @@ func (r apiGetSiteScript2Request) Execute() (CdnGetSiteScriptResponse, *_nethttp
 		localVarReturnValue  CdnGetSiteScriptResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ServerlessScriptingApiService.GetSiteScript2")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts/{script_id}/{script_version}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts/{script_id}/{script_version}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"script_id"+"}", _neturl.QueryEscape(parameterToString(r.scriptId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"script_version"+"}", _neturl.QueryEscape(parameterToString(r.scriptVersion, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"script_id"+"}", _neturl.QueryEscape(parameterToString(scriptId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"script_version"+"}", _neturl.QueryEscape(parameterToString(scriptVersion, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -523,12 +405,12 @@ func (r apiGetSiteScript2Request) Execute() (CdnGetSiteScriptResponse, *_nethttp
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -546,7 +428,7 @@ func (r apiGetSiteScript2Request) Execute() (CdnGetSiteScriptResponse, *_nethttp
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -556,7 +438,7 @@ func (r apiGetSiteScript2Request) Execute() (CdnGetSiteScriptResponse, *_nethttp
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -565,7 +447,7 @@ func (r apiGetSiteScript2Request) Execute() (CdnGetSiteScriptResponse, *_nethttp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -574,7 +456,7 @@ func (r apiGetSiteScript2Request) Execute() (CdnGetSiteScriptResponse, *_nethttp
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -585,36 +467,13 @@ func (r apiGetSiteScript2Request) Execute() (CdnGetSiteScriptResponse, *_nethttp
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetSiteScriptsRequest struct {
-	ctx _context.Context
-	apiService *ServerlessScriptingApiService
-	stackId string
-	siteId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetSiteScriptsRequest) PageRequestFirst(pageRequestFirst string) apiGetSiteScriptsRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetSiteScriptsRequest) PageRequestAfter(pageRequestAfter string) apiGetSiteScriptsRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetSiteScriptsRequest) PageRequestFilter(pageRequestFilter string) apiGetSiteScriptsRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetSiteScriptsRequest) PageRequestSortBy(pageRequestSortBy string) apiGetSiteScriptsRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetSiteScriptsOpts Optional parameters for the method 'GetSiteScripts'
+type GetSiteScriptsOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
@@ -622,22 +481,14 @@ GetSiteScripts Get all serverless scripts
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return apiGetSiteScriptsRequest
+ * @param optional nil or *GetSiteScriptsOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return CdnGetSiteScriptsResponse
 */
-func (a *ServerlessScriptingApiService) GetSiteScripts(ctx _context.Context, stackId string, siteId string) apiGetSiteScriptsRequest {
-	return apiGetSiteScriptsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetSiteScriptsResponse
-*/
-func (r apiGetSiteScriptsRequest) Execute() (CdnGetSiteScriptsResponse, *_nethttp.Response, error) {
+func (a *ServerlessScriptingApiService) GetSiteScripts(ctx _context.Context, stackId string, siteId string, localVarOptionals *GetSiteScriptsOpts) (CdnGetSiteScriptsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -647,32 +498,27 @@ func (r apiGetSiteScriptsRequest) Execute() (CdnGetSiteScriptsResponse, *_nethtt
 		localVarReturnValue  CdnGetSiteScriptsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ServerlessScriptingApiService.GetSiteScripts")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -691,12 +537,12 @@ func (r apiGetSiteScriptsRequest) Execute() (CdnGetSiteScriptsResponse, *_nethtt
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -714,7 +560,7 @@ func (r apiGetSiteScriptsRequest) Execute() (CdnGetSiteScriptsResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -724,7 +570,7 @@ func (r apiGetSiteScriptsRequest) Execute() (CdnGetSiteScriptsResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -733,7 +579,7 @@ func (r apiGetSiteScriptsRequest) Execute() (CdnGetSiteScriptsResponse, *_nethtt
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -742,7 +588,7 @@ func (r apiGetSiteScriptsRequest) Execute() (CdnGetSiteScriptsResponse, *_nethtt
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -753,20 +599,6 @@ func (r apiGetSiteScriptsRequest) Execute() (CdnGetSiteScriptsResponse, *_nethtt
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiUpdateSiteScriptRequest struct {
-	ctx _context.Context
-	apiService *ServerlessScriptingApiService
-	stackId string
-	siteId string
-	scriptId string
-	cdnUpdateSiteScriptRequest *CdnUpdateSiteScriptRequest
-}
-
-
-func (r apiUpdateSiteScriptRequest) CdnUpdateSiteScriptRequest(cdnUpdateSiteScriptRequest CdnUpdateSiteScriptRequest) apiUpdateSiteScriptRequest {
-	r.cdnUpdateSiteScriptRequest = &cdnUpdateSiteScriptRequest
-	return r
-}
 
 /*
 UpdateSiteScript Update a serverless script
@@ -774,23 +606,10 @@ UpdateSiteScript Update a serverless script
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scriptId A serverless script ID
-@return apiUpdateSiteScriptRequest
+ * @param cdnUpdateSiteScriptRequest
+@return CdnUpdateSiteScriptResponse
 */
-func (a *ServerlessScriptingApiService) UpdateSiteScript(ctx _context.Context, stackId string, siteId string, scriptId string) apiUpdateSiteScriptRequest {
-	return apiUpdateSiteScriptRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		scriptId: scriptId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnUpdateSiteScriptResponse
-*/
-func (r apiUpdateSiteScriptRequest) Execute() (CdnUpdateSiteScriptResponse, *_nethttp.Response, error) {
+func (a *ServerlessScriptingApiService) UpdateSiteScript(ctx _context.Context, stackId string, siteId string, scriptId string, cdnUpdateSiteScriptRequest CdnUpdateSiteScriptRequest) (CdnUpdateSiteScriptResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -800,26 +619,17 @@ func (r apiUpdateSiteScriptRequest) Execute() (CdnUpdateSiteScriptResponse, *_ne
 		localVarReturnValue  CdnUpdateSiteScriptResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ServerlessScriptingApiService.UpdateSiteScript")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts/{script_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scripts/{script_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"script_id"+"}", _neturl.QueryEscape(parameterToString(r.scriptId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"script_id"+"}", _neturl.QueryEscape(parameterToString(scriptId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	
-	if r.cdnUpdateSiteScriptRequest == nil {
-		return localVarReturnValue, nil, reportError("cdnUpdateSiteScriptRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -839,13 +649,13 @@ func (r apiUpdateSiteScriptRequest) Execute() (CdnUpdateSiteScriptResponse, *_ne
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.cdnUpdateSiteScriptRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &cdnUpdateSiteScriptRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -863,7 +673,7 @@ func (r apiUpdateSiteScriptRequest) Execute() (CdnUpdateSiteScriptResponse, *_ne
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -873,7 +683,7 @@ func (r apiUpdateSiteScriptRequest) Execute() (CdnUpdateSiteScriptResponse, *_ne
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -882,7 +692,7 @@ func (r apiUpdateSiteScriptRequest) Execute() (CdnUpdateSiteScriptResponse, *_ne
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -891,7 +701,7 @@ func (r apiUpdateSiteScriptRequest) Execute() (CdnUpdateSiteScriptResponse, *_ne
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

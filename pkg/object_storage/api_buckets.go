@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,38 +26,14 @@ var (
 // BucketsApiService BucketsApi service
 type BucketsApiService service
 
-type apiCreateBucketRequest struct {
-	ctx _context.Context
-	apiService *BucketsApiService
-	stackId string
-	storageCreateBucketRequest *StorageCreateBucketRequest
-}
-
-
-func (r apiCreateBucketRequest) StorageCreateBucketRequest(storageCreateBucketRequest StorageCreateBucketRequest) apiCreateBucketRequest {
-	r.storageCreateBucketRequest = &storageCreateBucketRequest
-	return r
-}
-
 /*
 CreateBucket Create a bucket
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiCreateBucketRequest
+ * @param storageCreateBucketRequest
+@return StorageCreateBucketResponse
 */
-func (a *BucketsApiService) CreateBucket(ctx _context.Context, stackId string) apiCreateBucketRequest {
-	return apiCreateBucketRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return StorageCreateBucketResponse
-*/
-func (r apiCreateBucketRequest) Execute() (StorageCreateBucketResponse, *_nethttp.Response, error) {
+func (a *BucketsApiService) CreateBucket(ctx _context.Context, stackId string, storageCreateBucketRequest StorageCreateBucketRequest) (StorageCreateBucketResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -66,22 +43,13 @@ func (r apiCreateBucketRequest) Execute() (StorageCreateBucketResponse, *_nethtt
 		localVarReturnValue  StorageCreateBucketResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BucketsApiService.CreateBucket")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/buckets"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/buckets"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	if r.storageCreateBucketRequest == nil {
-		return localVarReturnValue, nil, reportError("storageCreateBucketRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -101,13 +69,13 @@ func (r apiCreateBucketRequest) Execute() (StorageCreateBucketResponse, *_nethtt
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.storageCreateBucketRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &storageCreateBucketRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -125,7 +93,7 @@ func (r apiCreateBucketRequest) Execute() (StorageCreateBucketResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -135,7 +103,7 @@ func (r apiCreateBucketRequest) Execute() (StorageCreateBucketResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -144,7 +112,7 @@ func (r apiCreateBucketRequest) Execute() (StorageCreateBucketResponse, *_nethtt
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -153,7 +121,7 @@ func (r apiCreateBucketRequest) Execute() (StorageCreateBucketResponse, *_nethtt
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -164,18 +132,10 @@ func (r apiCreateBucketRequest) Execute() (StorageCreateBucketResponse, *_nethtt
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiDeleteBucketRequest struct {
-	ctx _context.Context
-	apiService *BucketsApiService
-	stackId string
-	bucketId string
-	forceDelete *bool
-}
 
-
-func (r apiDeleteBucketRequest) ForceDelete(forceDelete bool) apiDeleteBucketRequest {
-	r.forceDelete = &forceDelete
-	return r
+// DeleteBucketOpts Optional parameters for the method 'DeleteBucket'
+type DeleteBucketOpts struct {
+    ForceDelete optional.Bool
 }
 
 /*
@@ -183,48 +143,30 @@ DeleteBucket Delete a bucket
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param bucketId A storage bucket ID
-@return apiDeleteBucketRequest
+ * @param optional nil or *DeleteBucketOpts - Optional Parameters:
+ * @param "ForceDelete" (optional.Bool) -  Force bucket deletion even if there are contents inside it
 */
-func (a *BucketsApiService) DeleteBucket(ctx _context.Context, stackId string, bucketId string) apiDeleteBucketRequest {
-	return apiDeleteBucketRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		bucketId: bucketId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDeleteBucketRequest) Execute() (*_nethttp.Response, error) {
+func (a *BucketsApiService) DeleteBucket(ctx _context.Context, stackId string, bucketId string, localVarOptionals *DeleteBucketOpts) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BucketsApiService.DeleteBucket")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/buckets/{bucket_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/buckets/{bucket_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", _neturl.QueryEscape(parameterToString(r.bucketId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", _neturl.QueryEscape(parameterToString(bucketId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.forceDelete != nil {
-		localVarQueryParams.Add("force_delete", parameterToString(*r.forceDelete, ""))
+
+	if localVarOptionals != nil && localVarOptionals.ForceDelete.IsSet() {
+		localVarQueryParams.Add("force_delete", parameterToString(localVarOptionals.ForceDelete.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -243,12 +185,12 @@ func (r apiDeleteBucketRequest) Execute() (*_nethttp.Response, error) {
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -266,7 +208,7 @@ func (r apiDeleteBucketRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -276,7 +218,7 @@ func (r apiDeleteBucketRequest) Execute() (*_nethttp.Response, error) {
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -285,7 +227,7 @@ func (r apiDeleteBucketRequest) Execute() (*_nethttp.Response, error) {
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -296,35 +238,15 @@ func (r apiDeleteBucketRequest) Execute() (*_nethttp.Response, error) {
 
 	return localVarHTTPResponse, nil
 }
-type apiGetBucketRequest struct {
-	ctx _context.Context
-	apiService *BucketsApiService
-	stackId string
-	bucketId string
-}
-
 
 /*
 GetBucket Get a bucket
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param bucketId A storage bucket ID
-@return apiGetBucketRequest
+@return StorageGetBucketResponse
 */
-func (a *BucketsApiService) GetBucket(ctx _context.Context, stackId string, bucketId string) apiGetBucketRequest {
-	return apiGetBucketRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		bucketId: bucketId,
-	}
-}
-
-/*
-Execute executes the request
- @return StorageGetBucketResponse
-*/
-func (r apiGetBucketRequest) Execute() (StorageGetBucketResponse, *_nethttp.Response, error) {
+func (a *BucketsApiService) GetBucket(ctx _context.Context, stackId string, bucketId string) (StorageGetBucketResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -334,20 +256,15 @@ func (r apiGetBucketRequest) Execute() (StorageGetBucketResponse, *_nethttp.Resp
 		localVarReturnValue  StorageGetBucketResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BucketsApiService.GetBucket")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/buckets/{bucket_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/buckets/{bucket_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", _neturl.QueryEscape(parameterToString(r.bucketId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", _neturl.QueryEscape(parameterToString(bucketId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -366,12 +283,12 @@ func (r apiGetBucketRequest) Execute() (StorageGetBucketResponse, *_nethttp.Resp
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -389,7 +306,7 @@ func (r apiGetBucketRequest) Execute() (StorageGetBucketResponse, *_nethttp.Resp
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -399,7 +316,7 @@ func (r apiGetBucketRequest) Execute() (StorageGetBucketResponse, *_nethttp.Resp
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -408,7 +325,7 @@ func (r apiGetBucketRequest) Execute() (StorageGetBucketResponse, *_nethttp.Resp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -417,7 +334,7 @@ func (r apiGetBucketRequest) Execute() (StorageGetBucketResponse, *_nethttp.Resp
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -428,56 +345,27 @@ func (r apiGetBucketRequest) Execute() (StorageGetBucketResponse, *_nethttp.Resp
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetBucketsRequest struct {
-	ctx _context.Context
-	apiService *BucketsApiService
-	stackId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetBucketsRequest) PageRequestFirst(pageRequestFirst string) apiGetBucketsRequest {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetBucketsRequest) PageRequestAfter(pageRequestAfter string) apiGetBucketsRequest {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetBucketsRequest) PageRequestFilter(pageRequestFilter string) apiGetBucketsRequest {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetBucketsRequest) PageRequestSortBy(pageRequestSortBy string) apiGetBucketsRequest {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetBucketsOpts Optional parameters for the method 'GetBuckets'
+type GetBucketsOpts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
 GetBuckets Get all buckets
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiGetBucketsRequest
+ * @param optional nil or *GetBucketsOpts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return StorageGetBucketsResponse
 */
-func (a *BucketsApiService) GetBuckets(ctx _context.Context, stackId string) apiGetBucketsRequest {
-	return apiGetBucketsRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return StorageGetBucketsResponse
-*/
-func (r apiGetBucketsRequest) Execute() (StorageGetBucketsResponse, *_nethttp.Response, error) {
+func (a *BucketsApiService) GetBuckets(ctx _context.Context, stackId string, localVarOptionals *GetBucketsOpts) (StorageGetBucketsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -487,30 +375,25 @@ func (r apiGetBucketsRequest) Execute() (StorageGetBucketsResponse, *_nethttp.Re
 		localVarReturnValue  StorageGetBucketsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BucketsApiService.GetBuckets")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/buckets"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/buckets"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -529,12 +412,12 @@ func (r apiGetBucketsRequest) Execute() (StorageGetBucketsResponse, *_nethttp.Re
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -552,7 +435,7 @@ func (r apiGetBucketsRequest) Execute() (StorageGetBucketsResponse, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -562,7 +445,7 @@ func (r apiGetBucketsRequest) Execute() (StorageGetBucketsResponse, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -571,7 +454,7 @@ func (r apiGetBucketsRequest) Execute() (StorageGetBucketsResponse, *_nethttp.Re
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -580,7 +463,7 @@ func (r apiGetBucketsRequest) Execute() (StorageGetBucketsResponse, *_nethttp.Re
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -591,41 +474,16 @@ func (r apiGetBucketsRequest) Execute() (StorageGetBucketsResponse, *_nethttp.Re
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiUpdateBucketRequest struct {
-	ctx _context.Context
-	apiService *BucketsApiService
-	stackId string
-	bucketId string
-	storageUpdateBucketRequest *StorageUpdateBucketRequest
-}
-
-
-func (r apiUpdateBucketRequest) StorageUpdateBucketRequest(storageUpdateBucketRequest StorageUpdateBucketRequest) apiUpdateBucketRequest {
-	r.storageUpdateBucketRequest = &storageUpdateBucketRequest
-	return r
-}
 
 /*
 UpdateBucket Update a bucket
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param bucketId A storage bucket ID
-@return apiUpdateBucketRequest
+ * @param storageUpdateBucketRequest
+@return StorageUpdateBucketResponse
 */
-func (a *BucketsApiService) UpdateBucket(ctx _context.Context, stackId string, bucketId string) apiUpdateBucketRequest {
-	return apiUpdateBucketRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		bucketId: bucketId,
-	}
-}
-
-/*
-Execute executes the request
- @return StorageUpdateBucketResponse
-*/
-func (r apiUpdateBucketRequest) Execute() (StorageUpdateBucketResponse, *_nethttp.Response, error) {
+func (a *BucketsApiService) UpdateBucket(ctx _context.Context, stackId string, bucketId string, storageUpdateBucketRequest StorageUpdateBucketRequest) (StorageUpdateBucketResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -635,24 +493,15 @@ func (r apiUpdateBucketRequest) Execute() (StorageUpdateBucketResponse, *_nethtt
 		localVarReturnValue  StorageUpdateBucketResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "BucketsApiService.UpdateBucket")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/buckets/{bucket_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/buckets/{bucket_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", _neturl.QueryEscape(parameterToString(r.bucketId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"bucket_id"+"}", _neturl.QueryEscape(parameterToString(bucketId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.storageUpdateBucketRequest == nil {
-		return localVarReturnValue, nil, reportError("storageUpdateBucketRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -672,13 +521,13 @@ func (r apiUpdateBucketRequest) Execute() (StorageUpdateBucketResponse, *_nethtt
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.storageUpdateBucketRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &storageUpdateBucketRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -696,7 +545,7 @@ func (r apiUpdateBucketRequest) Execute() (StorageUpdateBucketResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -706,7 +555,7 @@ func (r apiUpdateBucketRequest) Execute() (StorageUpdateBucketResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -715,7 +564,7 @@ func (r apiUpdateBucketRequest) Execute() (StorageUpdateBucketResponse, *_nethtt
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -724,7 +573,7 @@ func (r apiUpdateBucketRequest) Execute() (StorageUpdateBucketResponse, *_nethtt
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

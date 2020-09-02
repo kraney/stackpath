@@ -8,11 +8,6 @@
  */
 
 package sites
-
-import (
-	"encoding/json"
-)
-
 // CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue the model 'CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue'
 type CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue string
 
@@ -22,45 +17,3 @@ const (
 	QUERY CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue = "query"
 	HEADER CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue = "header"
 )
-
-// Ptr returns reference to custconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue value
-func (v CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue) Ptr() *CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue {
-	return &v
-}
-
-
-type NullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue struct {
-	value *CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue
-	isSet bool
-}
-
-func (v NullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue) Get() *CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue {
-	return v.value
-}
-
-func (v *NullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue) Set(val *CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue(val *CustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue) *NullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue {
-	return &NullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue{value: val, isSet: true}
-}
-
-func (v NullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableCustconfAwsSignedOriginPullV4AuthenticationTypeEnumWrapperValue) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

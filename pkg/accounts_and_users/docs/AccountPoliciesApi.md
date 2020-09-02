@@ -12,57 +12,21 @@ Method | HTTP request | Description
 
 ## GetIAMPolicy
 
-> IdentityGetIAMPolicyResponse GetIAMPolicy(ctx, accountId).Execute()
+> IdentityGetIamPolicyResponse GetIAMPolicy(ctx, accountId)
 
 Get all account policies
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    accountId := "accountId_example" // string | An account ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.AccountPoliciesApi.GetIAMPolicy(context.Background(), accountId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `AccountPoliciesApi.GetIAMPolicy``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetIAMPolicy`: IdentityGetIAMPolicyResponse
-    fmt.Fprintf(os.Stdout, "Response from `AccountPoliciesApi.GetIAMPolicy`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**accountId** | **string** | An account ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetIAMPolicyRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
+**accountId** | **string**| An account ID | 
 
 ### Return type
 
-[**IdentityGetIAMPolicyResponse**](identityGetIAMPolicyResponse.md)
+[**IdentityGetIamPolicyResponse**](identityGetIAMPolicyResponse.md)
 
 ### Authorization
 
@@ -80,59 +44,22 @@ Name | Type | Description  | Notes
 
 ## SetIAMPolicy
 
-> IdentitySetIAMPolicyResponse SetIAMPolicy(ctx, accountId).IdentitySetIAMPolicyRequest(identitySetIAMPolicyRequest).Execute()
+> IdentitySetIamPolicyResponse SetIAMPolicy(ctx, accountId, identitySetIamPolicyRequest)
 
 Update account policies
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    accountId := "accountId_example" // string | An account ID
-    identitySetIAMPolicyRequest := openapiclient.identitySetIAMPolicyRequest{Policy: openapiclient.iamPolicy{Bindings: []PolicyBinding{openapiclient.PolicyBinding{Role: "Role_example", Members: []string{"Members_example")}), Version: int64(123), CreatedAt: "TODO", UpdatedAt: "TODO"}} // IdentitySetIAMPolicyRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.AccountPoliciesApi.SetIAMPolicy(context.Background(), accountId, identitySetIAMPolicyRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `AccountPoliciesApi.SetIAMPolicy``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `SetIAMPolicy`: IdentitySetIAMPolicyResponse
-    fmt.Fprintf(os.Stdout, "Response from `AccountPoliciesApi.SetIAMPolicy`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**accountId** | **string** | An account ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiSetIAMPolicyRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **identitySetIAMPolicyRequest** | [**IdentitySetIAMPolicyRequest**](IdentitySetIAMPolicyRequest.md) |  | 
+**accountId** | **string**| An account ID | 
+**identitySetIamPolicyRequest** | [**IdentitySetIamPolicyRequest**](IdentitySetIamPolicyRequest.md)|  | 
 
 ### Return type
 
-[**IdentitySetIAMPolicyResponse**](identitySetIAMPolicyResponse.md)
+[**IdentitySetIamPolicyResponse**](identitySetIAMPolicyResponse.md)
 
 ### Authorization
 
@@ -150,59 +77,22 @@ Name | Type | Description  | Notes
 
 ## TestIAMPermissions
 
-> IdentityTestIAMPermissionsResponse TestIAMPermissions(ctx, accountId).IdentityTestIAMPermissionsRequest(identityTestIAMPermissionsRequest).Execute()
+> IdentityTestIamPermissionsResponse TestIAMPermissions(ctx, accountId, identityTestIamPermissionsRequest)
 
 Test account policies
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    accountId := "accountId_example" // string | An account ID
-    identityTestIAMPermissionsRequest := openapiclient.identityTestIAMPermissionsRequest{Permissions: []string{"Permissions_example")} // IdentityTestIAMPermissionsRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.AccountPoliciesApi.TestIAMPermissions(context.Background(), accountId, identityTestIAMPermissionsRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `AccountPoliciesApi.TestIAMPermissions``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `TestIAMPermissions`: IdentityTestIAMPermissionsResponse
-    fmt.Fprintf(os.Stdout, "Response from `AccountPoliciesApi.TestIAMPermissions`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**accountId** | **string** | An account ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiTestIAMPermissionsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **identityTestIAMPermissionsRequest** | [**IdentityTestIAMPermissionsRequest**](IdentityTestIAMPermissionsRequest.md) |  | 
+**accountId** | **string**| An account ID | 
+**identityTestIamPermissionsRequest** | [**IdentityTestIamPermissionsRequest**](IdentityTestIamPermissionsRequest.md)|  | 
 
 ### Return type
 
-[**IdentityTestIAMPermissionsResponse**](identityTestIAMPermissionsResponse.md)
+[**IdentityTestIamPermissionsResponse**](identityTestIAMPermissionsResponse.md)
 
 ### Authorization
 

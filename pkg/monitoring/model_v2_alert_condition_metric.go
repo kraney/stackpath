@@ -8,11 +8,6 @@
  */
 
 package monitoring
-
-import (
-	"encoding/json"
-)
-
 // V2AlertConditionMetric The metric to compare in an alert condition.   - STATUS: The status metric for an alert condition. This condition allows for alerting based on a monitor being 'UP', 'DOWN', or 'SLOW'.  - CODE: The HTTP status code for an alert condition
 type V2AlertConditionMetric string
 
@@ -21,45 +16,3 @@ const (
 	STATUS V2AlertConditionMetric = "STATUS"
 	CODE V2AlertConditionMetric = "CODE"
 )
-
-// Ptr returns reference to v2AlertConditionMetric value
-func (v V2AlertConditionMetric) Ptr() *V2AlertConditionMetric {
-	return &v
-}
-
-
-type NullableV2AlertConditionMetric struct {
-	value *V2AlertConditionMetric
-	isSet bool
-}
-
-func (v NullableV2AlertConditionMetric) Get() *V2AlertConditionMetric {
-	return v.value
-}
-
-func (v *NullableV2AlertConditionMetric) Set(val *V2AlertConditionMetric) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableV2AlertConditionMetric) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableV2AlertConditionMetric) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableV2AlertConditionMetric(val *V2AlertConditionMetric) *NullableV2AlertConditionMetric {
-	return &NullableV2AlertConditionMetric{value: val, isSet: true}
-}
-
-func (v NullableV2AlertConditionMetric) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableV2AlertConditionMetric) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

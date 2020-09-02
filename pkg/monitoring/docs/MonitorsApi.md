@@ -20,53 +20,18 @@ Method | HTTP request | Description
 
 ## BatchDeleteMonitors
 
-> BatchDeleteMonitors(ctx, stackId).V2BatchDeleteMonitorsRequest(v2BatchDeleteMonitorsRequest).Execute()
+> BatchDeleteMonitors(ctx, stackId, v2BatchDeleteMonitorsRequest)
 
 Delete multiple monitors
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    v2BatchDeleteMonitorsRequest := openapiclient.v2BatchDeleteMonitorsRequest{MonitorIds: []string{"MonitorIds_example")} // V2BatchDeleteMonitorsRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.BatchDeleteMonitors(context.Background(), stackId, v2BatchDeleteMonitorsRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.BatchDeleteMonitors``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiBatchDeleteMonitorsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **v2BatchDeleteMonitorsRequest** | [**V2BatchDeleteMonitorsRequest**](V2BatchDeleteMonitorsRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**v2BatchDeleteMonitorsRequest** | [**V2BatchDeleteMonitorsRequest**](V2BatchDeleteMonitorsRequest.md)|  | 
 
 ### Return type
 
@@ -88,55 +53,18 @@ Name | Type | Description  | Notes
 
 ## CreateMonitor
 
-> V2CreateMonitorResponse CreateMonitor(ctx, stackId).V2CreateMonitorRequest(v2CreateMonitorRequest).Execute()
+> V2CreateMonitorResponse CreateMonitor(ctx, stackId, v2CreateMonitorRequest)
 
 Create a monitor
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    v2CreateMonitorRequest := openapiclient.v2CreateMonitorRequest{Name: "Name_example", Locations: []string{"Locations_example"), Interval: "Interval_example", Timeout: "Timeout_example", IpVersion: openapiclient.v2IpVersion{}, Http: openapiclient.v2HttpConfiguration{Url: "Url_example", Method: "Method_example", Body: 123, Headers: []V2Header{openapiclient.v2Header{Header: "Header_example", Value: "Value_example"}), Basic: openapiclient.v2HttpConfigurationBasicAuth{Username: "Username_example", Password: "Password_example"}, Digest: openapiclient.v2HttpConfigurationDigestAuth{Username: "Username_example", Password: "Password_example"}, ClientCertificate: openapiclient.v2HttpConfigurationClientCertificate{PublicCertificate: "PublicCertificate_example", PrivateKey: "PrivateKey_example", CaBundle: "CaBundle_example"}, ValidateCertificate: false}, Tcp: openapiclient.v2TcpConfiguration{Host: "Host_example", Port: 123, Data: 123}, Enabled: false} // V2CreateMonitorRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.CreateMonitor(context.Background(), stackId, v2CreateMonitorRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.CreateMonitor``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `CreateMonitor`: V2CreateMonitorResponse
-    fmt.Fprintf(os.Stdout, "Response from `MonitorsApi.CreateMonitor`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiCreateMonitorRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **v2CreateMonitorRequest** | [**V2CreateMonitorRequest**](V2CreateMonitorRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**v2CreateMonitorRequest** | [**V2CreateMonitorRequest**](V2CreateMonitorRequest.md)|  | 
 
 ### Return type
 
@@ -158,54 +86,18 @@ Name | Type | Description  | Notes
 
 ## DeleteMonitor
 
-> DeleteMonitor(ctx, stackId, monitorId).Execute()
+> DeleteMonitor(ctx, stackId, monitorId)
 
 Delete a monitor
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    monitorId := "monitorId_example" // string | A monitor ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.DeleteMonitor(context.Background(), stackId, monitorId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.DeleteMonitor``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**monitorId** | **string** | A monitor ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDeleteMonitorRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**monitorId** | **string**| A monitor ID | 
 
 ### Return type
 
@@ -227,51 +119,17 @@ Name | Type | Description  | Notes
 
 ## Disable
 
-> Disable(ctx, stackId).Execute()
+> Disable(ctx, stackId)
 
 Disable all monitors
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.Disable(context.Background(), stackId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.Disable``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiDisableRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
+**stackId** | **string**| A stack ID or slug | 
 
 ### Return type
 
@@ -293,51 +151,17 @@ Name | Type | Description  | Notes
 
 ## Enable
 
-> Enable(ctx, stackId).Execute()
+> Enable(ctx, stackId)
 
 Enable all monitors
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.Enable(context.Background(), stackId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.Enable``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiEnableRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
+**stackId** | **string**| A stack ID or slug | 
 
 ### Return type
 
@@ -359,56 +183,18 @@ Name | Type | Description  | Notes
 
 ## GetMonitor
 
-> V2GetMonitorResponse GetMonitor(ctx, stackId, monitorId).Execute()
+> V2GetMonitorResponse GetMonitor(ctx, stackId, monitorId)
 
 Get a monitor
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    monitorId := "monitorId_example" // string | A monitor ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.GetMonitor(context.Background(), stackId, monitorId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.GetMonitor``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetMonitor`: V2GetMonitorResponse
-    fmt.Fprintf(os.Stdout, "Response from `MonitorsApi.GetMonitor`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**monitorId** | **string** | A monitor ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetMonitorRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**monitorId** | **string**| A monitor ID | 
 
 ### Return type
 
@@ -430,56 +216,18 @@ Name | Type | Description  | Notes
 
 ## GetMonitorErrors
 
-> V2GetMonitorErrorsResponse GetMonitorErrors(ctx, stackId, monitorId).Execute()
+> V2GetMonitorErrorsResponse GetMonitorErrors(ctx, stackId, monitorId)
 
 Get monitoring errors
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    monitorId := "monitorId_example" // string | A monitor ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.GetMonitorErrors(context.Background(), stackId, monitorId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.GetMonitorErrors``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetMonitorErrors`: V2GetMonitorErrorsResponse
-    fmt.Fprintf(os.Stdout, "Response from `MonitorsApi.GetMonitorErrors`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**monitorId** | **string** | A monitor ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetMonitorErrorsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**monitorId** | **string**| A monitor ID | 
 
 ### Return type
 
@@ -501,56 +249,18 @@ Name | Type | Description  | Notes
 
 ## GetMonitorLocations
 
-> V2GetMonitorLocationsResponse GetMonitorLocations(ctx, stackId, monitorId).Execute()
+> V2GetMonitorLocationsResponse GetMonitorLocations(ctx, stackId, monitorId)
 
 Get a monitor's locations
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    monitorId := "monitorId_example" // string | A monitor ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.GetMonitorLocations(context.Background(), stackId, monitorId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.GetMonitorLocations``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetMonitorLocations`: V2GetMonitorLocationsResponse
-    fmt.Fprintf(os.Stdout, "Response from `MonitorsApi.GetMonitorLocations`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**monitorId** | **string** | A monitor ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetMonitorLocationsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**monitorId** | **string**| A monitor ID | 
 
 ### Return type
 
@@ -572,61 +282,31 @@ Name | Type | Description  | Notes
 
 ## GetMonitors
 
-> V2GetMonitorsResponse GetMonitors(ctx, stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+> V2GetMonitorsResponse GetMonitors(ctx, stackId, optional)
 
 Get all monitors
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
-    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
-    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
-    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.GetMonitors(context.Background(), stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.GetMonitors``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetMonitors`: V2GetMonitorsResponse
-    fmt.Fprintf(os.Stdout, "Response from `MonitorsApi.GetMonitors`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
+**stackId** | **string**| A stack ID or slug | 
+ **optional** | ***GetMonitorsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetMonitorsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetMonitorsOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **pageRequestFirst** | **string** | The number of items desired. | 
- **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
- **pageRequestFilter** | **string** | SQL-style constraint filters. | 
- **pageRequestSortBy** | **string** | Sort the response by the given field. | 
+ **pageRequestFirst** | **optional.String**| The number of items desired. | 
+ **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
+ **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
 
 ### Return type
 
@@ -648,60 +328,21 @@ Name | Type | Description  | Notes
 
 ## ReplaceMonitor
 
-> V2ReplaceMonitorResponse ReplaceMonitor(ctx, stackId, monitorId).V2ReplaceMonitorRequest(v2ReplaceMonitorRequest).Execute()
+> V2ReplaceMonitorResponse ReplaceMonitor(ctx, stackId, monitorId, v2ReplaceMonitorRequest)
 
 Replace a monitor
 
+When replacing a monitor you must provide all fields or they will be overwritten with empty or default values.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    monitorId := "monitorId_example" // string | A monitor ID
-    v2ReplaceMonitorRequest := openapiclient.v2ReplaceMonitorRequest{Name: "Name_example", Locations: []string{"Locations_example"), Interval: "Interval_example", Timeout: "Timeout_example", IpVersion: openapiclient.v2IpVersion{}, Http: openapiclient.v2HttpConfiguration{Url: "Url_example", Method: "Method_example", Body: 123, Headers: []V2Header{openapiclient.v2Header{Header: "Header_example", Value: "Value_example"}), Basic: openapiclient.v2HttpConfigurationBasicAuth{Username: "Username_example", Password: "Password_example"}, Digest: openapiclient.v2HttpConfigurationDigestAuth{Username: "Username_example", Password: "Password_example"}, ClientCertificate: openapiclient.v2HttpConfigurationClientCertificate{PublicCertificate: "PublicCertificate_example", PrivateKey: "PrivateKey_example", CaBundle: "CaBundle_example"}, ValidateCertificate: false}, Tcp: openapiclient.v2TcpConfiguration{Host: "Host_example", Port: 123, Data: 123}, Enabled: false} // V2ReplaceMonitorRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.ReplaceMonitor(context.Background(), stackId, monitorId, v2ReplaceMonitorRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.ReplaceMonitor``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `ReplaceMonitor`: V2ReplaceMonitorResponse
-    fmt.Fprintf(os.Stdout, "Response from `MonitorsApi.ReplaceMonitor`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**monitorId** | **string** | A monitor ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiReplaceMonitorRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **v2ReplaceMonitorRequest** | [**V2ReplaceMonitorRequest**](V2ReplaceMonitorRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**monitorId** | **string**| A monitor ID | 
+**v2ReplaceMonitorRequest** | [**V2ReplaceMonitorRequest**](V2ReplaceMonitorRequest.md)|  | 
 
 ### Return type
 
@@ -723,58 +364,19 @@ Name | Type | Description  | Notes
 
 ## UpdateMonitor
 
-> V2UpdateMonitorResponse UpdateMonitor(ctx, stackId, monitorId).V2UpdateMonitorRequest(v2UpdateMonitorRequest).Execute()
+> V2UpdateMonitorResponse UpdateMonitor(ctx, stackId, monitorId, v2UpdateMonitorRequest)
 
 Update a monitor
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    monitorId := "monitorId_example" // string | A monitor ID
-    v2UpdateMonitorRequest := openapiclient.v2UpdateMonitorRequest{Name: "Name_example", Locations: openapiclient.UpdateMonitorRequestLocationsValue{Value: []string{"Value_example")}, Interval: "Interval_example", Timeout: "Timeout_example", IpVersion: openapiclient.UpdateMonitorRequestIpVersionValue{Value: }, Http: openapiclient.UpdateMonitorRequestPatchHttpConfiguration{Url: "Url_example", Method: "Method_example", Body: "Body_example", Headers: openapiclient.PatchHttpConfigurationHeaderValue{Value: []V2Header{)}, Basic: openapiclient.UpdateMonitorRequestPatchHttpConfigurationBasicAuth{Username: "Username_example", Password: "Password_example"}, Digest: openapiclient.UpdateMonitorRequestPatchHttpConfigurationDigestAuth{Username: "Username_example", Password: "Password_example"}, ClientCertificate: openapiclient.UpdateMonitorRequestPatchHttpConfigurationClientCertificate{PublicCertificate: "PublicCertificate_example", PrivateKey: "PrivateKey_example", CaBundle: "CaBundle_example"}, ValidateCertificate: false}, Tcp: openapiclient.UpdateMonitorRequestPatchTcpConfiguration{Host: "Host_example", Port: 123, Data: "Data_example"}, Enabled: false} // V2UpdateMonitorRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MonitorsApi.UpdateMonitor(context.Background(), stackId, monitorId, v2UpdateMonitorRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MonitorsApi.UpdateMonitor``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `UpdateMonitor`: V2UpdateMonitorResponse
-    fmt.Fprintf(os.Stdout, "Response from `MonitorsApi.UpdateMonitor`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**monitorId** | **string** | A monitor ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiUpdateMonitorRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **v2UpdateMonitorRequest** | [**V2UpdateMonitorRequest**](V2UpdateMonitorRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**monitorId** | **string**| A monitor ID | 
+**v2UpdateMonitorRequest** | [**V2UpdateMonitorRequest**](V2UpdateMonitorRequest.md)|  | 
 
 ### Return type
 

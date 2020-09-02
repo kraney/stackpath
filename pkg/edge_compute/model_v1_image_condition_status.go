@@ -8,11 +8,6 @@
  */
 
 package edge_compute
-
-import (
-	"encoding/json"
-)
-
 // V1ImageConditionStatus Which status an image is currently in  - IMAGE_CONDITION_STATUS_UNKNOWN: The condition status is unknown  - TRUE: The condition is true  - FALSE: The condition is false
 type V1ImageConditionStatus string
 
@@ -22,45 +17,3 @@ const (
 	TRUE V1ImageConditionStatus = "TRUE"
 	FALSE V1ImageConditionStatus = "FALSE"
 )
-
-// Ptr returns reference to v1ImageConditionStatus value
-func (v V1ImageConditionStatus) Ptr() *V1ImageConditionStatus {
-	return &v
-}
-
-
-type NullableV1ImageConditionStatus struct {
-	value *V1ImageConditionStatus
-	isSet bool
-}
-
-func (v NullableV1ImageConditionStatus) Get() *V1ImageConditionStatus {
-	return v.value
-}
-
-func (v *NullableV1ImageConditionStatus) Set(val *V1ImageConditionStatus) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableV1ImageConditionStatus) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableV1ImageConditionStatus) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableV1ImageConditionStatus(val *V1ImageConditionStatus) *NullableV1ImageConditionStatus {
-	return &NullableV1ImageConditionStatus{value: val, isSet: true}
-}
-
-func (v NullableV1ImageConditionStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableV1ImageConditionStatus) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

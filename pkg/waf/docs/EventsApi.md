@@ -12,61 +12,21 @@ Method | HTTP request | Description
 
 ## GetEvent
 
-> WafGetEventResponse GetEvent(ctx, stackId, siteId, eventId).Execute()
+> WafGetEventResponse GetEvent(ctx, stackId, siteId, eventId)
 
 LEGACY: Get an event
 
+**Note:** This endpoint is deprecated and will be removed in the future. WAF events will be replaced with requests, which provide more functionality. Please use the [get request](ref:getrequest) and [get request details](ref:getrequestdetails) calls to retrieve WAF requests.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-    eventId := "eventId_example" // string | A WAF event ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.EventsApi.GetEvent(context.Background(), stackId, siteId, eventId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `EventsApi.GetEvent``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetEvent`: WafGetEventResponse
-    fmt.Fprintf(os.Stdout, "Response from `EventsApi.GetEvent`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-**eventId** | **string** | A WAF event ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetEventRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
+**eventId** | **string**| A WAF event ID | 
 
 ### Return type
 
@@ -88,70 +48,37 @@ Name | Type | Description  | Notes
 
 ## GetEventStatistics
 
-> WafGetEventStatisticsResponse GetEventStatistics(ctx, stackId, siteId).StartDate(startDate).EndDate(endDate).FilterActionValue(filterActionValue).FilterResultValue(filterResultValue).FilterClientIp(filterClientIp).FilterReferenceId(filterReferenceId).Execute()
+> WafGetEventStatisticsResponse GetEventStatistics(ctx, stackId, siteId, optional)
 
 LEGACY: Get event statistics
 
+Event statistics collect the total number of and number of blocked events for a site over a given time frame. Statistics are collected per country of origin, the rules that triggered events, the requesting organization as determined by WHOIS lookup against the client IP address, and by actions taken by the WAF as a result of the event.  **Note:** This endpoint is deprecated and will be removed in the future. WAF events will be replaced with requests, which provide more functionality. A replacement for this call is in development.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-    startDate := Get-Date // time.Time | A lower bound date to search events for. (optional)
-    endDate := Get-Date // time.Time | An upper bound date to search events for. (optional)
-    filterActionValue := "filterActionValue_example" // string |  (optional) (default to "ANY_ACTION")
-    filterResultValue := "filterResultValue_example" // string |  (optional) (default to "ANY_RESULT")
-    filterClientIp := "filterClientIp_example" // string | Filter events by client IP address. (optional)
-    filterReferenceId := "filterReferenceId_example" // string | Filter events by reference ID. Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that an event's ID and reference ID are different. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.EventsApi.GetEventStatistics(context.Background(), stackId, siteId).StartDate(startDate).EndDate(endDate).FilterActionValue(filterActionValue).FilterResultValue(filterResultValue).FilterClientIp(filterClientIp).FilterReferenceId(filterReferenceId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `EventsApi.GetEventStatistics``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetEventStatistics`: WafGetEventStatisticsResponse
-    fmt.Fprintf(os.Stdout, "Response from `EventsApi.GetEventStatistics`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
+ **optional** | ***GetEventStatisticsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetEventStatisticsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetEventStatisticsOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **startDate** | **time.Time** | A lower bound date to search events for. | 
- **endDate** | **time.Time** | An upper bound date to search events for. | 
- **filterActionValue** | **string** |  | [default to &quot;ANY_ACTION&quot;]
- **filterResultValue** | **string** |  | [default to &quot;ANY_RESULT&quot;]
- **filterClientIp** | **string** | Filter events by client IP address. | 
- **filterReferenceId** | **string** | Filter events by reference ID. Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that an event&#39;s ID and reference ID are different. | 
+ **startDate** | **optional.Time**| A lower bound date to search events for. | 
+ **endDate** | **optional.Time**| An upper bound date to search events for. | 
+ **filterActionValue** | **optional.String**|  | [default to ANY_ACTION]
+ **filterResultValue** | **optional.String**|  | [default to ANY_RESULT]
+ **filterClientIp** | **optional.String**| Filter events by client IP address. | 
+ **filterReferenceId** | **optional.String**| Filter events by reference ID. Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that an event&#39;s ID and reference ID are different. | 
 
 ### Return type
 
@@ -173,82 +100,43 @@ Name | Type | Description  | Notes
 
 ## SearchEvents
 
-> WafSearchEventsResponse SearchEvents(ctx, stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).StartDate(startDate).EndDate(endDate).FilterActionValue(filterActionValue).FilterResultValue(filterResultValue).FilterClientIp(filterClientIp).FilterReferenceId(filterReferenceId).SortBy(sortBy).SortOrder(sortOrder).Execute()
+> WafSearchEventsResponse SearchEvents(ctx, stackId, siteId, optional)
 
 LEGACY: Get all events
 
+**Note:** This endpoint is deprecated and will be removed in the future. WAF events will be replaced with requests, which provide more functionality. Please use the [get all requests](ref:getrequests) call to search for WAF requests.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
-    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
-    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
-    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
-    startDate := Get-Date // time.Time | A lower bound date to search events for. (optional)
-    endDate := Get-Date // time.Time | An upper bound date to search events for. (optional)
-    filterActionValue := "filterActionValue_example" // string |  (optional) (default to "ANY_ACTION")
-    filterResultValue := "filterResultValue_example" // string |  (optional) (default to "ANY_RESULT")
-    filterClientIp := "filterClientIp_example" // string | Filter events by client IP address. (optional)
-    filterReferenceId := "filterReferenceId_example" // string | Filter events by reference ID. Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that an event's ID and reference ID are different. (optional)
-    sortBy := "sortBy_example" // string |  (optional) (default to "TIMESTAMP")
-    sortOrder := "sortOrder_example" // string |  (optional) (default to "ASCENDING")
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.EventsApi.SearchEvents(context.Background(), stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).StartDate(startDate).EndDate(endDate).FilterActionValue(filterActionValue).FilterResultValue(filterResultValue).FilterClientIp(filterClientIp).FilterReferenceId(filterReferenceId).SortBy(sortBy).SortOrder(sortOrder).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `EventsApi.SearchEvents``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `SearchEvents`: WafSearchEventsResponse
-    fmt.Fprintf(os.Stdout, "Response from `EventsApi.SearchEvents`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
+ **optional** | ***SearchEventsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiSearchEventsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a SearchEventsOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **pageRequestFirst** | **string** | The number of items desired. | 
- **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
- **pageRequestFilter** | **string** | SQL-style constraint filters. | 
- **pageRequestSortBy** | **string** | Sort the response by the given field. | 
- **startDate** | **time.Time** | A lower bound date to search events for. | 
- **endDate** | **time.Time** | An upper bound date to search events for. | 
- **filterActionValue** | **string** |  | [default to &quot;ANY_ACTION&quot;]
- **filterResultValue** | **string** |  | [default to &quot;ANY_RESULT&quot;]
- **filterClientIp** | **string** | Filter events by client IP address. | 
- **filterReferenceId** | **string** | Filter events by reference ID. Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that an event&#39;s ID and reference ID are different. | 
- **sortBy** | **string** |  | [default to &quot;TIMESTAMP&quot;]
- **sortOrder** | **string** |  | [default to &quot;ASCENDING&quot;]
+ **pageRequestFirst** | **optional.String**| The number of items desired. | 
+ **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
+ **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
+ **startDate** | **optional.Time**| A lower bound date to search events for. | 
+ **endDate** | **optional.Time**| An upper bound date to search events for. | 
+ **filterActionValue** | **optional.String**|  | [default to ANY_ACTION]
+ **filterResultValue** | **optional.String**|  | [default to ANY_RESULT]
+ **filterClientIp** | **optional.String**| Filter events by client IP address. | 
+ **filterReferenceId** | **optional.String**| Filter events by reference ID. Reference IDs are displayed to the end user when the WAF blocks a request to a site. Please note that an event&#39;s ID and reference ID are different. | 
+ **sortBy** | **optional.String**|  | [default to TIMESTAMP]
+ **sortOrder** | **optional.String**|  | [default to ASCENDING]
 
 ### Return type
 

@@ -11,62 +11,33 @@ Method | HTTP request | Description
 
 ## GetBucketMetrics
 
-> PrometheusMetrics GetBucketMetrics(ctx, stackId, bucketId).StartTime(startTime).EndTime(endTime).Execute()
+> PrometheusMetrics GetBucketMetrics(ctx, stackId, bucketId, optional)
 
 Get bucket metrics
 
+When the start & end dates are not provided, the metrics for the last day will be returned. The date range used must be at least a day apart, and only beginning times are allowed (e.g. 2019-01-01T00:00:00)
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    bucketId := "bucketId_example" // string | A storage bucket ID
-    startTime := Get-Date // time.Time | The start date for the range of metrics. (optional)
-    endTime := Get-Date // time.Time | The end date for the range of metrics. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MetricsApi.GetBucketMetrics(context.Background(), stackId, bucketId).StartTime(startTime).EndTime(endTime).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MetricsApi.GetBucketMetrics``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetBucketMetrics`: PrometheusMetrics
-    fmt.Fprintf(os.Stdout, "Response from `MetricsApi.GetBucketMetrics`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**bucketId** | **string** | A storage bucket ID | 
+**stackId** | **string**| A stack ID or slug | 
+**bucketId** | **string**| A storage bucket ID | 
+ **optional** | ***GetBucketMetricsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetBucketMetricsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetBucketMetricsOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **startTime** | **time.Time** | The start date for the range of metrics. | 
- **endTime** | **time.Time** | The end date for the range of metrics. | 
+ **startTime** | **optional.Time**| The start date for the range of metrics. | 
+ **endTime** | **optional.Time**| The end date for the range of metrics. | 
 
 ### Return type
 
@@ -88,59 +59,31 @@ Name | Type | Description  | Notes
 
 ## GetStackMetrics
 
-> PrometheusMetrics GetStackMetrics(ctx, stackId).StartTime(startTime).EndTime(endTime).Execute()
+> PrometheusMetrics GetStackMetrics(ctx, stackId, optional)
 
 Get stack metrics
 
+When the start & end dates are not provided, the metrics for the last day will be returned. The date range used must be at least a day apart, and only beginning times are allowed (e.g. 2019-01-01T00:00:00)
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    startTime := Get-Date // time.Time | The start date for the range of metrics. (optional)
-    endTime := Get-Date // time.Time | The end date for the range of metrics. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.MetricsApi.GetStackMetrics(context.Background(), stackId).StartTime(startTime).EndTime(endTime).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `MetricsApi.GetStackMetrics``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetStackMetrics`: PrometheusMetrics
-    fmt.Fprintf(os.Stdout, "Response from `MetricsApi.GetStackMetrics`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
+**stackId** | **string**| A stack ID or slug | 
+ **optional** | ***GetStackMetricsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetStackMetricsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetStackMetricsOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **startTime** | **time.Time** | The start date for the range of metrics. | 
- **endTime** | **time.Time** | The end date for the range of metrics. | 
+ **startTime** | **optional.Time**| The start date for the range of metrics. | 
+ **endTime** | **optional.Time**| The end date for the range of metrics. | 
 
 ### Return type
 

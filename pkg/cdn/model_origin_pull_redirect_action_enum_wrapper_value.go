@@ -8,11 +8,6 @@
  */
 
 package cdn
-
-import (
-	"encoding/json"
-)
-
 // OriginPullRedirectActionEnumWrapperValue the model 'OriginPullRedirectActionEnumWrapperValue'
 type OriginPullRedirectActionEnumWrapperValue string
 
@@ -22,45 +17,3 @@ const (
 	FOLLOW OriginPullRedirectActionEnumWrapperValue = "follow"
 	PROXY OriginPullRedirectActionEnumWrapperValue = "proxy"
 )
-
-// Ptr returns reference to OriginPullRedirectActionEnumWrapperValue value
-func (v OriginPullRedirectActionEnumWrapperValue) Ptr() *OriginPullRedirectActionEnumWrapperValue {
-	return &v
-}
-
-
-type NullableOriginPullRedirectActionEnumWrapperValue struct {
-	value *OriginPullRedirectActionEnumWrapperValue
-	isSet bool
-}
-
-func (v NullableOriginPullRedirectActionEnumWrapperValue) Get() *OriginPullRedirectActionEnumWrapperValue {
-	return v.value
-}
-
-func (v *NullableOriginPullRedirectActionEnumWrapperValue) Set(val *OriginPullRedirectActionEnumWrapperValue) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableOriginPullRedirectActionEnumWrapperValue) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableOriginPullRedirectActionEnumWrapperValue) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableOriginPullRedirectActionEnumWrapperValue(val *OriginPullRedirectActionEnumWrapperValue) *NullableOriginPullRedirectActionEnumWrapperValue {
-	return &NullableOriginPullRedirectActionEnumWrapperValue{value: val, isSet: true}
-}
-
-func (v NullableOriginPullRedirectActionEnumWrapperValue) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableOriginPullRedirectActionEnumWrapperValue) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

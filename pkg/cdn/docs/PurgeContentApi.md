@@ -11,56 +11,18 @@ Method | HTTP request | Description
 
 ## GetPurgeStatus
 
-> CdnGetPurgeStatusResponse GetPurgeStatus(ctx, stackId, purgeId).Execute()
+> CdnGetPurgeStatusResponse GetPurgeStatus(ctx, stackId, purgeId)
 
 Get purge status
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    purgeId := "purgeId_example" // string | A CDN purge ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.PurgeContentApi.GetPurgeStatus(context.Background(), stackId, purgeId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `PurgeContentApi.GetPurgeStatus``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetPurgeStatus`: CdnGetPurgeStatusResponse
-    fmt.Fprintf(os.Stdout, "Response from `PurgeContentApi.GetPurgeStatus`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**purgeId** | **string** | A CDN purge ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetPurgeStatusRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**purgeId** | **string**| A CDN purge ID | 
 
 ### Return type
 
@@ -82,57 +44,20 @@ Name | Type | Description  | Notes
 
 ## PurgeContent
 
-> CdnPurgeContentResponse PurgeContent(ctx, stackId).CdnPurgeContentRequest(cdnPurgeContentRequest).Execute()
+> CdnPurgeContentResponse PurgeContent(ctx, stackId, cdnPurgeContentRequest)
 
 Purge content
 
+Purge cached content for all CDN sites on a stack. Content is re-cached on the CDN the next time it is requested. Use the returned purge ID to see the status of a purge request.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    cdnPurgeContentRequest := openapiclient.cdnPurgeContentRequest{Items: []PurgeContentRequestItem{openapiclient.PurgeContentRequestItem{Url: "Url_example", Recursive: false, InvalidateOnly: false, PurgeAllDynamic: false, Headers: []string{"Headers_example"), PurgeSelector: []PurgeContentRequestPurgeSelector{openapiclient.PurgeContentRequestPurgeSelector{SelectorType: openapiclient.PurgeContentRequestPurgeSelectorType{}, SelectorName: "SelectorName_example", SelectorValue: "SelectorValue_example", SelectorValueDelimiter: "SelectorValueDelimiter_example"})})} // CdnPurgeContentRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.PurgeContentApi.PurgeContent(context.Background(), stackId, cdnPurgeContentRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `PurgeContentApi.PurgeContent``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `PurgeContent`: CdnPurgeContentResponse
-    fmt.Fprintf(os.Stdout, "Response from `PurgeContentApi.PurgeContent`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiPurgeContentRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
- **cdnPurgeContentRequest** | [**CdnPurgeContentRequest**](CdnPurgeContentRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**cdnPurgeContentRequest** | [**CdnPurgeContentRequest**](CdnPurgeContentRequest.md)|  | 
 
 ### Return type
 

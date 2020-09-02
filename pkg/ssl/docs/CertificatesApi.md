@@ -16,56 +16,30 @@ Method | HTTP request | Description
 
 ## DeleteCertificate
 
-> DeleteCertificate(ctx, stackId, certificateId).Reason(reason).Execute()
+> DeleteCertificate(ctx, stackId, certificateId, optional)
 
 Delete a certificate
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    certificateId := "certificateId_example" // string | A certificate ID
-    reason := "reason_example" // string |  (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.CertificatesApi.DeleteCertificate(context.Background(), stackId, certificateId).Reason(reason).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CertificatesApi.DeleteCertificate``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**certificateId** | **string** | A certificate ID | 
+**stackId** | **string**| A stack ID or slug | 
+**certificateId** | **string**| A certificate ID | 
+ **optional** | ***DeleteCertificateOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiDeleteCertificateRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a DeleteCertificateOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **reason** | **string** |  | 
+ **reason** | **optional.String**|  | 
 
 ### Return type
 
@@ -87,56 +61,18 @@ Name | Type | Description  | Notes
 
 ## GetCertificate
 
-> CertificateGetCertificateResponse GetCertificate(ctx, stackId, certificateId).Execute()
+> CertificateGetCertificateResponse GetCertificate(ctx, stackId, certificateId)
 
 Get a certificate
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    certificateId := "certificateId_example" // string | A certificate ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.CertificatesApi.GetCertificate(context.Background(), stackId, certificateId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CertificatesApi.GetCertificate``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetCertificate`: CertificateGetCertificateResponse
-    fmt.Fprintf(os.Stdout, "Response from `CertificatesApi.GetCertificate`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**certificateId** | **string** | A certificate ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetCertificateRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**certificateId** | **string**| A certificate ID | 
 
 ### Return type
 
@@ -158,61 +94,31 @@ Name | Type | Description  | Notes
 
 ## GetCertificates
 
-> CertificateGetCertificatesResponse GetCertificates(ctx, stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+> CertificateGetCertificatesResponse GetCertificates(ctx, stackId, optional)
 
 Get all certificates
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
-    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
-    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
-    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.CertificatesApi.GetCertificates(context.Background(), stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CertificatesApi.GetCertificates``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetCertificates`: CertificateGetCertificatesResponse
-    fmt.Fprintf(os.Stdout, "Response from `CertificatesApi.GetCertificates`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
+**stackId** | **string**| A stack ID or slug | 
+ **optional** | ***GetCertificatesOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetCertificatesRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetCertificatesOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **pageRequestFirst** | **string** | The number of items desired. | 
- **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
- **pageRequestFilter** | **string** | SQL-style constraint filters. | 
- **pageRequestSortBy** | **string** | Sort the response by the given field. | 
+ **pageRequestFirst** | **optional.String**| The number of items desired. | 
+ **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
+ **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
 
 ### Return type
 
@@ -234,56 +140,18 @@ Name | Type | Description  | Notes
 
 ## GetLatestCertificate
 
-> CertificateGetLatestCertificateResponse GetLatestCertificate(ctx, stackId, certificateId).Execute()
+> CertificateGetLatestCertificateResponse GetLatestCertificate(ctx, stackId, certificateId)
 
 Get a certificate's latest version
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    certificateId := "certificateId_example" // string | A certificate ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.CertificatesApi.GetLatestCertificate(context.Background(), stackId, certificateId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CertificatesApi.GetLatestCertificate``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetLatestCertificate`: CertificateGetLatestCertificateResponse
-    fmt.Fprintf(os.Stdout, "Response from `CertificatesApi.GetLatestCertificate`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**certificateId** | **string** | A certificate ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetLatestCertificateRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**certificateId** | **string**| A certificate ID | 
 
 ### Return type
 
@@ -305,56 +173,18 @@ Name | Type | Description  | Notes
 
 ## RenewCertificate
 
-> CertificateRenewCertificateResponse RenewCertificate(ctx, stackId, certificateId).Execute()
+> CertificateRenewCertificateResponse RenewCertificate(ctx, stackId, certificateId)
 
 Renew a certificate
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    certificateId := "certificateId_example" // string | A certificate ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.CertificatesApi.RenewCertificate(context.Background(), stackId, certificateId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CertificatesApi.RenewCertificate``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `RenewCertificate`: CertificateRenewCertificateResponse
-    fmt.Fprintf(os.Stdout, "Response from `CertificatesApi.RenewCertificate`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**certificateId** | **string** | A certificate ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiRenewCertificateRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**certificateId** | **string**| A certificate ID | 
 
 ### Return type
 
@@ -376,54 +206,18 @@ Name | Type | Description  | Notes
 
 ## RevokeCertificate
 
-> RevokeCertificate(ctx, stackId, certificateId).Execute()
+> RevokeCertificate(ctx, stackId, certificateId)
 
 Revoke a certificate
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    certificateId := "certificateId_example" // string | A certificate ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.CertificatesApi.RevokeCertificate(context.Background(), stackId, certificateId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CertificatesApi.RevokeCertificate``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**certificateId** | **string** | A certificate ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiRevokeCertificateRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**certificateId** | **string**| A certificate ID | 
 
 ### Return type
 
@@ -445,60 +239,21 @@ Name | Type | Description  | Notes
 
 ## UpdateCertificate
 
-> CertificateUpdateCertificateResponse UpdateCertificate(ctx, stackId, certificateId).CertificateUpdateCertificateRequest(certificateUpdateCertificateRequest).Execute()
+> CertificateUpdateCertificateResponse UpdateCertificate(ctx, stackId, certificateId, certificateUpdateCertificateRequest)
 
 Update a certificate
 
+Updating a certificate creates a new CSR and issues a new certificate.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    certificateId := "certificateId_example" // string | A certificate ID
-    certificateUpdateCertificateRequest := openapiclient.certificateUpdateCertificateRequest{CommonName: "CommonName_example", Hosts: []string{"Hosts_example"), Organization: "Organization_example", OrganizationalUnit: "OrganizationalUnit_example", Locality: "Locality_example", Province: "Province_example", Country: "Country_example"} // CertificateUpdateCertificateRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.CertificatesApi.UpdateCertificate(context.Background(), stackId, certificateId, certificateUpdateCertificateRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `CertificatesApi.UpdateCertificate``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `UpdateCertificate`: CertificateUpdateCertificateResponse
-    fmt.Fprintf(os.Stdout, "Response from `CertificatesApi.UpdateCertificate`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**certificateId** | **string** | A certificate ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiUpdateCertificateRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
- **certificateUpdateCertificateRequest** | [**CertificateUpdateCertificateRequest**](CertificateUpdateCertificateRequest.md) |  | 
+**stackId** | **string**| A stack ID or slug | 
+**certificateId** | **string**| A certificate ID | 
+**certificateUpdateCertificateRequest** | [**CertificateUpdateCertificateRequest**](CertificateUpdateCertificateRequest.md)|  | 
 
 ### Return type
 

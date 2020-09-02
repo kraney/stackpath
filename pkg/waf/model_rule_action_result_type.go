@@ -8,11 +8,6 @@
  */
 
 package waf
-
-import (
-	"encoding/json"
-)
-
 // RuleActionResultType Results from a WAF event  - RESULT_TYPE_UNSPECIFIED: The event resulted in an unknown action  - BLOCKED: The event was blocked by the WAF  - ALLOWED: The event was allowed by the WAF  - MONITORED: The event was monitored by the WAF but no action was taken
 type RuleActionResultType string
 
@@ -23,45 +18,3 @@ const (
 	ALLOWED RuleActionResultType = "ALLOWED"
 	MONITORED RuleActionResultType = "MONITORED"
 )
-
-// Ptr returns reference to RuleActionResultType value
-func (v RuleActionResultType) Ptr() *RuleActionResultType {
-	return &v
-}
-
-
-type NullableRuleActionResultType struct {
-	value *RuleActionResultType
-	isSet bool
-}
-
-func (v NullableRuleActionResultType) Get() *RuleActionResultType {
-	return v.value
-}
-
-func (v *NullableRuleActionResultType) Set(val *RuleActionResultType) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableRuleActionResultType) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableRuleActionResultType) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableRuleActionResultType(val *RuleActionResultType) *NullableRuleActionResultType {
-	return &NullableRuleActionResultType{value: val, isSet: true}
-}
-
-func (v NullableRuleActionResultType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableRuleActionResultType) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

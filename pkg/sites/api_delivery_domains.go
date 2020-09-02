@@ -15,6 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,41 +26,15 @@ var (
 // DeliveryDomainsApiService DeliveryDomainsApi service
 type DeliveryDomainsApiService service
 
-type apiCreateSiteDeliveryDomainRequest struct {
-	ctx _context.Context
-	apiService *DeliveryDomainsApiService
-	stackId string
-	siteId string
-	deliveryCreateSiteDeliveryDomainRequest *DeliveryCreateSiteDeliveryDomainRequest
-}
-
-
-func (r apiCreateSiteDeliveryDomainRequest) DeliveryCreateSiteDeliveryDomainRequest(deliveryCreateSiteDeliveryDomainRequest DeliveryCreateSiteDeliveryDomainRequest) apiCreateSiteDeliveryDomainRequest {
-	r.deliveryCreateSiteDeliveryDomainRequest = &deliveryCreateSiteDeliveryDomainRequest
-	return r
-}
-
 /*
 CreateSiteDeliveryDomain Add a delivery domain to a site
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return apiCreateSiteDeliveryDomainRequest
+ * @param deliveryCreateSiteDeliveryDomainRequest
+@return DeliveryCreateSiteDeliveryDomainResponse
 */
-func (a *DeliveryDomainsApiService) CreateSiteDeliveryDomain(ctx _context.Context, stackId string, siteId string) apiCreateSiteDeliveryDomainRequest {
-	return apiCreateSiteDeliveryDomainRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-	}
-}
-
-/*
-Execute executes the request
- @return DeliveryCreateSiteDeliveryDomainResponse
-*/
-func (r apiCreateSiteDeliveryDomainRequest) Execute() (DeliveryCreateSiteDeliveryDomainResponse, *_nethttp.Response, error) {
+func (a *DeliveryDomainsApiService) CreateSiteDeliveryDomain(ctx _context.Context, stackId string, siteId string, deliveryCreateSiteDeliveryDomainRequest DeliveryCreateSiteDeliveryDomainRequest) (DeliveryCreateSiteDeliveryDomainResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -69,24 +44,15 @@ func (r apiCreateSiteDeliveryDomainRequest) Execute() (DeliveryCreateSiteDeliver
 		localVarReturnValue  DeliveryCreateSiteDeliveryDomainResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "DeliveryDomainsApiService.CreateSiteDeliveryDomain")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/delivery_domains"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/delivery_domains"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
-	if r.deliveryCreateSiteDeliveryDomainRequest == nil {
-		return localVarReturnValue, nil, reportError("deliveryCreateSiteDeliveryDomainRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -106,13 +72,13 @@ func (r apiCreateSiteDeliveryDomainRequest) Execute() (DeliveryCreateSiteDeliver
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.deliveryCreateSiteDeliveryDomainRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &deliveryCreateSiteDeliveryDomainRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -130,7 +96,7 @@ func (r apiCreateSiteDeliveryDomainRequest) Execute() (DeliveryCreateSiteDeliver
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -140,7 +106,7 @@ func (r apiCreateSiteDeliveryDomainRequest) Execute() (DeliveryCreateSiteDeliver
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -149,7 +115,7 @@ func (r apiCreateSiteDeliveryDomainRequest) Execute() (DeliveryCreateSiteDeliver
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -158,7 +124,7 @@ func (r apiCreateSiteDeliveryDomainRequest) Execute() (DeliveryCreateSiteDeliver
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -169,14 +135,6 @@ func (r apiCreateSiteDeliveryDomainRequest) Execute() (DeliveryCreateSiteDeliver
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiDeleteSiteDeliveryDomainRequest struct {
-	ctx _context.Context
-	apiService *DeliveryDomainsApiService
-	stackId string
-	siteId string
-	domain string
-}
-
 
 /*
 DeleteSiteDeliveryDomain Remove a delivery domain from a site
@@ -184,48 +142,27 @@ DeleteSiteDeliveryDomain Remove a delivery domain from a site
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param domain The delivery domain to remove from a site
-@return apiDeleteSiteDeliveryDomainRequest
 */
-func (a *DeliveryDomainsApiService) DeleteSiteDeliveryDomain(ctx _context.Context, stackId string, siteId string, domain string) apiDeleteSiteDeliveryDomainRequest {
-	return apiDeleteSiteDeliveryDomainRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-		domain: domain,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiDeleteSiteDeliveryDomainRequest) Execute() (*_nethttp.Response, error) {
+func (a *DeliveryDomainsApiService) DeleteSiteDeliveryDomain(ctx _context.Context, stackId string, siteId string, domain string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "DeliveryDomainsApiService.DeleteSiteDeliveryDomain")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/delivery_domains/{domain}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/delivery_domains/{domain}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"domain"+"}", _neturl.QueryEscape(parameterToString(r.domain, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+
+	localVarPath = strings.Replace(localVarPath, "{"+"domain"+"}", _neturl.QueryEscape(parameterToString(domain, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -244,12 +181,12 @@ func (r apiDeleteSiteDeliveryDomainRequest) Execute() (*_nethttp.Response, error
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -267,7 +204,7 @@ func (r apiDeleteSiteDeliveryDomainRequest) Execute() (*_nethttp.Response, error
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -277,7 +214,7 @@ func (r apiDeleteSiteDeliveryDomainRequest) Execute() (*_nethttp.Response, error
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -286,7 +223,7 @@ func (r apiDeleteSiteDeliveryDomainRequest) Execute() (*_nethttp.Response, error
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -297,36 +234,13 @@ func (r apiDeleteSiteDeliveryDomainRequest) Execute() (*_nethttp.Response, error
 
 	return localVarHTTPResponse, nil
 }
-type apiGetSiteDeliveryDomains2Request struct {
-	ctx _context.Context
-	apiService *DeliveryDomainsApiService
-	stackId string
-	siteId string
-	pageRequestFirst *string
-	pageRequestAfter *string
-	pageRequestFilter *string
-	pageRequestSortBy *string
-}
 
-
-func (r apiGetSiteDeliveryDomains2Request) PageRequestFirst(pageRequestFirst string) apiGetSiteDeliveryDomains2Request {
-	r.pageRequestFirst = &pageRequestFirst
-	return r
-}
-
-func (r apiGetSiteDeliveryDomains2Request) PageRequestAfter(pageRequestAfter string) apiGetSiteDeliveryDomains2Request {
-	r.pageRequestAfter = &pageRequestAfter
-	return r
-}
-
-func (r apiGetSiteDeliveryDomains2Request) PageRequestFilter(pageRequestFilter string) apiGetSiteDeliveryDomains2Request {
-	r.pageRequestFilter = &pageRequestFilter
-	return r
-}
-
-func (r apiGetSiteDeliveryDomains2Request) PageRequestSortBy(pageRequestSortBy string) apiGetSiteDeliveryDomains2Request {
-	r.pageRequestSortBy = &pageRequestSortBy
-	return r
+// GetSiteDeliveryDomains2Opts Optional parameters for the method 'GetSiteDeliveryDomains2'
+type GetSiteDeliveryDomains2Opts struct {
+    PageRequestFirst optional.String
+    PageRequestAfter optional.String
+    PageRequestFilter optional.String
+    PageRequestSortBy optional.String
 }
 
 /*
@@ -335,22 +249,14 @@ Delivery domains allow the CDN to recognize an HTTP request and associate it wit
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return apiGetSiteDeliveryDomains2Request
+ * @param optional nil or *GetSiteDeliveryDomains2Opts - Optional Parameters:
+ * @param "PageRequestFirst" (optional.String) -  The number of items desired.
+ * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
+ * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
+ * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
+@return DeliveryGetSiteDeliveryDomainsResponse
 */
-func (a *DeliveryDomainsApiService) GetSiteDeliveryDomains2(ctx _context.Context, stackId string, siteId string) apiGetSiteDeliveryDomains2Request {
-	return apiGetSiteDeliveryDomains2Request{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		siteId: siteId,
-	}
-}
-
-/*
-Execute executes the request
- @return DeliveryGetSiteDeliveryDomainsResponse
-*/
-func (r apiGetSiteDeliveryDomains2Request) Execute() (DeliveryGetSiteDeliveryDomainsResponse, *_nethttp.Response, error) {
+func (a *DeliveryDomainsApiService) GetSiteDeliveryDomains2(ctx _context.Context, stackId string, siteId string, localVarOptionals *GetSiteDeliveryDomains2Opts) (DeliveryGetSiteDeliveryDomainsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -360,32 +266,27 @@ func (r apiGetSiteDeliveryDomains2Request) Execute() (DeliveryGetSiteDeliveryDom
 		localVarReturnValue  DeliveryGetSiteDeliveryDomainsResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "DeliveryDomainsApiService.GetSiteDeliveryDomains2")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/delivery_domains"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/sites/{site_id}/delivery_domains"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-				
-	if r.pageRequestFirst != nil {
-		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
+
+	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
+		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
 	}
-	if r.pageRequestAfter != nil {
-		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
+		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
 	}
-	if r.pageRequestFilter != nil {
-		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
+		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
 	}
-	if r.pageRequestSortBy != nil {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
+	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -404,12 +305,12 @@ func (r apiGetSiteDeliveryDomains2Request) Execute() (DeliveryGetSiteDeliveryDom
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -427,7 +328,7 @@ func (r apiGetSiteDeliveryDomains2Request) Execute() (DeliveryGetSiteDeliveryDom
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -437,7 +338,7 @@ func (r apiGetSiteDeliveryDomains2Request) Execute() (DeliveryGetSiteDeliveryDom
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -446,7 +347,7 @@ func (r apiGetSiteDeliveryDomains2Request) Execute() (DeliveryGetSiteDeliveryDom
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -455,7 +356,7 @@ func (r apiGetSiteDeliveryDomains2Request) Execute() (DeliveryGetSiteDeliveryDom
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

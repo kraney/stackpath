@@ -8,11 +8,6 @@
  */
 
 package edge_compute
-
-import (
-	"encoding/json"
-)
-
 // V1ContainerStatusContainerPhase Which phase of runtime a container is currently in  - CONTAINER_PHASE_UNSPECIFIED: The container has not reported a state back or StackPath is unable to determine the container's state  - STARTING: The container is starting up  - RUNNING: The container is running  - FAILED: The container has terminated due to a failure  - STOPPED: The container was terminated by the user
 type V1ContainerStatusContainerPhase string
 
@@ -24,45 +19,3 @@ const (
 	FAILED V1ContainerStatusContainerPhase = "FAILED"
 	STOPPED V1ContainerStatusContainerPhase = "STOPPED"
 )
-
-// Ptr returns reference to v1ContainerStatusContainerPhase value
-func (v V1ContainerStatusContainerPhase) Ptr() *V1ContainerStatusContainerPhase {
-	return &v
-}
-
-
-type NullableV1ContainerStatusContainerPhase struct {
-	value *V1ContainerStatusContainerPhase
-	isSet bool
-}
-
-func (v NullableV1ContainerStatusContainerPhase) Get() *V1ContainerStatusContainerPhase {
-	return v.value
-}
-
-func (v *NullableV1ContainerStatusContainerPhase) Set(val *V1ContainerStatusContainerPhase) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableV1ContainerStatusContainerPhase) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableV1ContainerStatusContainerPhase) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableV1ContainerStatusContainerPhase(val *V1ContainerStatusContainerPhase) *NullableV1ContainerStatusContainerPhase {
-	return &NullableV1ContainerStatusContainerPhase{value: val, isSet: true}
-}
-
-func (v NullableV1ContainerStatusContainerPhase) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableV1ContainerStatusContainerPhase) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

@@ -8,11 +8,6 @@
  */
 
 package dns
-
-import (
-	"encoding/json"
-)
-
 // ZoneRecordType The resource record types supported by StackPath  - EMPTY: The resource record has no type  - A: The resource record translates a host to an IPv4 address  - AAAA: The resource record translates a host to an IPv6 address  - CNAME: The resource record aliases one name to another  - TXT: The resource record contains a descriptive string. Many applications use TXT records for configuration  - MX: The resource record defines a mail exchanger for the given host  - SRV: The resource record defines a service on the domain  - NS: The resource record describes a nameserver that serves its domain's zone and records
 type ZoneRecordType string
 
@@ -27,45 +22,3 @@ const (
 	SRV ZoneRecordType = "SRV"
 	NS ZoneRecordType = "NS"
 )
-
-// Ptr returns reference to zoneRecordType value
-func (v ZoneRecordType) Ptr() *ZoneRecordType {
-	return &v
-}
-
-
-type NullableZoneRecordType struct {
-	value *ZoneRecordType
-	isSet bool
-}
-
-func (v NullableZoneRecordType) Get() *ZoneRecordType {
-	return v.value
-}
-
-func (v *NullableZoneRecordType) Set(val *ZoneRecordType) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableZoneRecordType) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableZoneRecordType) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableZoneRecordType(val *ZoneRecordType) *NullableZoneRecordType {
-	return &NullableZoneRecordType{value: val, isSet: true}
-}
-
-func (v NullableZoneRecordType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableZoneRecordType) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

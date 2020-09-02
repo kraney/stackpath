@@ -8,11 +8,6 @@
  */
 
 package waf
-
-import (
-	"encoding/json"
-)
-
 // OwnerTypeConditionOwnerType Potential owner type values to match against
 type OwnerTypeConditionOwnerType string
 
@@ -27,45 +22,3 @@ const (
 	NETWORK OwnerTypeConditionOwnerType = "NETWORK"
 	RESERVED OwnerTypeConditionOwnerType = "RESERVED"
 )
-
-// Ptr returns reference to OwnerTypeConditionOwnerType value
-func (v OwnerTypeConditionOwnerType) Ptr() *OwnerTypeConditionOwnerType {
-	return &v
-}
-
-
-type NullableOwnerTypeConditionOwnerType struct {
-	value *OwnerTypeConditionOwnerType
-	isSet bool
-}
-
-func (v NullableOwnerTypeConditionOwnerType) Get() *OwnerTypeConditionOwnerType {
-	return v.value
-}
-
-func (v *NullableOwnerTypeConditionOwnerType) Set(val *OwnerTypeConditionOwnerType) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableOwnerTypeConditionOwnerType) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableOwnerTypeConditionOwnerType) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableOwnerTypeConditionOwnerType(val *OwnerTypeConditionOwnerType) *NullableOwnerTypeConditionOwnerType {
-	return &NullableOwnerTypeConditionOwnerType{value: val, isSet: true}
-}
-
-func (v NullableOwnerTypeConditionOwnerType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableOwnerTypeConditionOwnerType) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

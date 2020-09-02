@@ -8,11 +8,6 @@
  */
 
 package sites
-
-import (
-	"encoding/json"
-)
-
 // AuthGeoCodeEnumWrapperValue the model 'AuthGeoCodeEnumWrapperValue'
 type AuthGeoCodeEnumWrapperValue string
 
@@ -29,45 +24,3 @@ const (
 	DMA_CODE AuthGeoCodeEnumWrapperValue = "dmaCode"
 	AREA_CODE AuthGeoCodeEnumWrapperValue = "areaCode"
 )
-
-// Ptr returns reference to AuthGeoCodeEnumWrapperValue value
-func (v AuthGeoCodeEnumWrapperValue) Ptr() *AuthGeoCodeEnumWrapperValue {
-	return &v
-}
-
-
-type NullableAuthGeoCodeEnumWrapperValue struct {
-	value *AuthGeoCodeEnumWrapperValue
-	isSet bool
-}
-
-func (v NullableAuthGeoCodeEnumWrapperValue) Get() *AuthGeoCodeEnumWrapperValue {
-	return v.value
-}
-
-func (v *NullableAuthGeoCodeEnumWrapperValue) Set(val *AuthGeoCodeEnumWrapperValue) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableAuthGeoCodeEnumWrapperValue) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableAuthGeoCodeEnumWrapperValue) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableAuthGeoCodeEnumWrapperValue(val *AuthGeoCodeEnumWrapperValue) *NullableAuthGeoCodeEnumWrapperValue {
-	return &NullableAuthGeoCodeEnumWrapperValue{value: val, isSet: true}
-}
-
-func (v NullableAuthGeoCodeEnumWrapperValue) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableAuthGeoCodeEnumWrapperValue) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

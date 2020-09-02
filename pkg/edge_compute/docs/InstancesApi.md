@@ -12,59 +12,19 @@ Method | HTTP request | Description
 
 ## GetWorkloadInstance
 
-> V1GetWorkloadInstanceResponse GetWorkloadInstance(ctx, stackId, workloadId, instanceName).Execute()
+> V1GetWorkloadInstanceResponse GetWorkloadInstance(ctx, stackId, workloadId, instanceName)
 
 Get a workload instance
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    workloadId := "workloadId_example" // string | An EdgeCompute workload ID
-    instanceName := "instanceName_example" // string | An EdgeCompute workload instance name
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.InstancesApi.GetWorkloadInstance(context.Background(), stackId, workloadId, instanceName).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `InstancesApi.GetWorkloadInstance``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetWorkloadInstance`: V1GetWorkloadInstanceResponse
-    fmt.Fprintf(os.Stdout, "Response from `InstancesApi.GetWorkloadInstance`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**workloadId** | **string** | An EdgeCompute workload ID | 
-**instanceName** | **string** | An EdgeCompute workload instance name | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetWorkloadInstanceRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
+**stackId** | **string**| A stack ID or slug | 
+**workloadId** | **string**| An EdgeCompute workload ID | 
+**instanceName** | **string**| An EdgeCompute workload instance name | 
 
 ### Return type
 
@@ -86,64 +46,33 @@ Name | Type | Description  | Notes
 
 ## GetWorkloadInstances
 
-> V1GetWorkloadInstancesResponse GetWorkloadInstances(ctx, stackId, workloadId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+> V1GetWorkloadInstancesResponse GetWorkloadInstances(ctx, stackId, workloadId, optional)
 
 Get all workload instances
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    workloadId := "workloadId_example" // string | An EdgeCompute workload ID
-    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
-    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
-    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
-    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.InstancesApi.GetWorkloadInstances(context.Background(), stackId, workloadId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `InstancesApi.GetWorkloadInstances``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetWorkloadInstances`: V1GetWorkloadInstancesResponse
-    fmt.Fprintf(os.Stdout, "Response from `InstancesApi.GetWorkloadInstances`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**workloadId** | **string** | An EdgeCompute workload ID | 
+**stackId** | **string**| A stack ID or slug | 
+**workloadId** | **string**| An EdgeCompute workload ID | 
+ **optional** | ***GetWorkloadInstancesOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetWorkloadInstancesRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetWorkloadInstancesOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **pageRequestFirst** | **string** | The number of items desired. | 
- **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
- **pageRequestFilter** | **string** | SQL-style constraint filters. | 
- **pageRequestSortBy** | **string** | Sort the response by the given field. | 
+ **pageRequestFirst** | **optional.String**| The number of items desired. | 
+ **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
+ **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
 
 ### Return type
 
@@ -165,59 +94,21 @@ Name | Type | Description  | Notes
 
 ## RestartInstance
 
-> RestartInstance(ctx, stackId, workloadId, instanceName).Execute()
+> RestartInstance(ctx, stackId, workloadId, instanceName)
 
 Restart a workload instance
 
+The action is performed asynchronously and a successful response does not mean the instance has restarted yet.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    workloadId := "workloadId_example" // string | An EdgeCompute workload ID
-    instanceName := "instanceName_example" // string | An EdgeCompute workload instance name
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.InstancesApi.RestartInstance(context.Background(), stackId, workloadId, instanceName).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `InstancesApi.RestartInstance``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**workloadId** | **string** | An EdgeCompute workload ID | 
-**instanceName** | **string** | An EdgeCompute workload instance name | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiRestartInstanceRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
+**stackId** | **string**| A stack ID or slug | 
+**workloadId** | **string**| An EdgeCompute workload ID | 
+**instanceName** | **string**| An EdgeCompute workload instance name | 
 
 ### Return type
 

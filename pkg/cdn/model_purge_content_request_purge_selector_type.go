@@ -8,11 +8,6 @@
  */
 
 package cdn
-
-import (
-	"encoding/json"
-)
-
 // PurgeContentRequestPurgeSelectorType The kinds of content that can be purged from the CDN  - HEADER: Purge content based on an HTTP response header  - TAG: Purge content based on an X-TAG HTTP header value. Purging by tag can be useful when content on the origin is tagged.
 type PurgeContentRequestPurgeSelectorType string
 
@@ -21,45 +16,3 @@ const (
 	HEADER PurgeContentRequestPurgeSelectorType = "HEADER"
 	TAG PurgeContentRequestPurgeSelectorType = "TAG"
 )
-
-// Ptr returns reference to PurgeContentRequestPurgeSelectorType value
-func (v PurgeContentRequestPurgeSelectorType) Ptr() *PurgeContentRequestPurgeSelectorType {
-	return &v
-}
-
-
-type NullablePurgeContentRequestPurgeSelectorType struct {
-	value *PurgeContentRequestPurgeSelectorType
-	isSet bool
-}
-
-func (v NullablePurgeContentRequestPurgeSelectorType) Get() *PurgeContentRequestPurgeSelectorType {
-	return v.value
-}
-
-func (v *NullablePurgeContentRequestPurgeSelectorType) Set(val *PurgeContentRequestPurgeSelectorType) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullablePurgeContentRequestPurgeSelectorType) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullablePurgeContentRequestPurgeSelectorType) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullablePurgeContentRequestPurgeSelectorType(val *PurgeContentRequestPurgeSelectorType) *NullablePurgeContentRequestPurgeSelectorType {
-	return &NullablePurgeContentRequestPurgeSelectorType{value: val, isSet: true}
-}
-
-func (v NullablePurgeContentRequestPurgeSelectorType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullablePurgeContentRequestPurgeSelectorType) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

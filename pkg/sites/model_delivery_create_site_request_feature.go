@@ -8,11 +8,6 @@
  */
 
 package sites
-
-import (
-	"encoding/json"
-)
-
 // DeliveryCreateSiteRequestFeature the model 'DeliveryCreateSiteRequestFeature'
 type DeliveryCreateSiteRequestFeature string
 
@@ -22,45 +17,3 @@ const (
 	WAF DeliveryCreateSiteRequestFeature = "WAF"
 	SERVERLESS_EDGE_ENGINE DeliveryCreateSiteRequestFeature = "SERVERLESS_EDGE_ENGINE"
 )
-
-// Ptr returns reference to deliveryCreateSiteRequestFeature value
-func (v DeliveryCreateSiteRequestFeature) Ptr() *DeliveryCreateSiteRequestFeature {
-	return &v
-}
-
-
-type NullableDeliveryCreateSiteRequestFeature struct {
-	value *DeliveryCreateSiteRequestFeature
-	isSet bool
-}
-
-func (v NullableDeliveryCreateSiteRequestFeature) Get() *DeliveryCreateSiteRequestFeature {
-	return v.value
-}
-
-func (v *NullableDeliveryCreateSiteRequestFeature) Set(val *DeliveryCreateSiteRequestFeature) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableDeliveryCreateSiteRequestFeature) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableDeliveryCreateSiteRequestFeature) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableDeliveryCreateSiteRequestFeature(val *DeliveryCreateSiteRequestFeature) *NullableDeliveryCreateSiteRequestFeature {
-	return &NullableDeliveryCreateSiteRequestFeature{value: val, isSet: true}
-}
-
-func (v NullableDeliveryCreateSiteRequestFeature) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableDeliveryCreateSiteRequestFeature) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

@@ -10,56 +10,20 @@ Method | HTTP request | Description
 
 ## RecheckCertificateVerification
 
-> RecheckCertificateVerification(ctx, stackId, certificateId).Execute()
+> RecheckCertificateVerification(ctx, stackId, certificateId)
 
 Re-check certificate verification
 
+Re-check a certificate's verification details while it's being issued. This applies to Stackpath's free certificates.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    certificateId := "certificateId_example" // string | A certificate ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.SSLApi.RecheckCertificateVerification(context.Background(), stackId, certificateId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.RecheckCertificateVerification``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**certificateId** | **string** | A certificate ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiRecheckCertificateVerificationRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
+**stackId** | **string**| A stack ID or slug | 
+**certificateId** | **string**| A certificate ID | 
 
 ### Return type
 

@@ -25,35 +25,14 @@ var (
 // PurgeContentApiService PurgeContentApi service
 type PurgeContentApiService service
 
-type apiGetPurgeStatusRequest struct {
-	ctx _context.Context
-	apiService *PurgeContentApiService
-	stackId string
-	purgeId string
-}
-
-
 /*
 GetPurgeStatus Get purge status
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param purgeId A CDN purge ID
-@return apiGetPurgeStatusRequest
+@return CdnGetPurgeStatusResponse
 */
-func (a *PurgeContentApiService) GetPurgeStatus(ctx _context.Context, stackId string, purgeId string) apiGetPurgeStatusRequest {
-	return apiGetPurgeStatusRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		purgeId: purgeId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnGetPurgeStatusResponse
-*/
-func (r apiGetPurgeStatusRequest) Execute() (CdnGetPurgeStatusResponse, *_nethttp.Response, error) {
+func (a *PurgeContentApiService) GetPurgeStatus(ctx _context.Context, stackId string, purgeId string) (CdnGetPurgeStatusResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -63,20 +42,15 @@ func (r apiGetPurgeStatusRequest) Execute() (CdnGetPurgeStatusResponse, *_nethtt
 		localVarReturnValue  CdnGetPurgeStatusResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PurgeContentApiService.GetPurgeStatus")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/purge/{purge_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/purge/{purge_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"purge_id"+"}", _neturl.QueryEscape(parameterToString(r.purgeId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"purge_id"+"}", _neturl.QueryEscape(parameterToString(purgeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -95,12 +69,12 @@ func (r apiGetPurgeStatusRequest) Execute() (CdnGetPurgeStatusResponse, *_nethtt
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -118,7 +92,7 @@ func (r apiGetPurgeStatusRequest) Execute() (CdnGetPurgeStatusResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -128,7 +102,7 @@ func (r apiGetPurgeStatusRequest) Execute() (CdnGetPurgeStatusResponse, *_nethtt
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -137,7 +111,7 @@ func (r apiGetPurgeStatusRequest) Execute() (CdnGetPurgeStatusResponse, *_nethtt
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -146,7 +120,7 @@ func (r apiGetPurgeStatusRequest) Execute() (CdnGetPurgeStatusResponse, *_nethtt
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -157,39 +131,16 @@ func (r apiGetPurgeStatusRequest) Execute() (CdnGetPurgeStatusResponse, *_nethtt
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiPurgeContentRequest struct {
-	ctx _context.Context
-	apiService *PurgeContentApiService
-	stackId string
-	cdnPurgeContentRequest *CdnPurgeContentRequest
-}
-
-
-func (r apiPurgeContentRequest) CdnPurgeContentRequest(cdnPurgeContentRequest CdnPurgeContentRequest) apiPurgeContentRequest {
-	r.cdnPurgeContentRequest = &cdnPurgeContentRequest
-	return r
-}
 
 /*
 PurgeContent Purge content
 Purge cached content for all CDN sites on a stack. Content is re-cached on the CDN the next time it is requested. Use the returned purge ID to see the status of a purge request.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiPurgeContentRequest
+ * @param cdnPurgeContentRequest
+@return CdnPurgeContentResponse
 */
-func (a *PurgeContentApiService) PurgeContent(ctx _context.Context, stackId string) apiPurgeContentRequest {
-	return apiPurgeContentRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return CdnPurgeContentResponse
-*/
-func (r apiPurgeContentRequest) Execute() (CdnPurgeContentResponse, *_nethttp.Response, error) {
+func (a *PurgeContentApiService) PurgeContent(ctx _context.Context, stackId string, cdnPurgeContentRequest CdnPurgeContentRequest) (CdnPurgeContentResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -199,22 +150,13 @@ func (r apiPurgeContentRequest) Execute() (CdnPurgeContentResponse, *_nethttp.Re
 		localVarReturnValue  CdnPurgeContentResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PurgeContentApiService.PurgeContent")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/purge"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/purge"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
-	if r.cdnPurgeContentRequest == nil {
-		return localVarReturnValue, nil, reportError("cdnPurgeContentRequest is required and must be specified")
-	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -234,13 +176,13 @@ func (r apiPurgeContentRequest) Execute() (CdnPurgeContentResponse, *_nethttp.Re
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.cdnPurgeContentRequest
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = &cdnPurgeContentRequest
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -258,7 +200,7 @@ func (r apiPurgeContentRequest) Execute() (CdnPurgeContentResponse, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -268,7 +210,7 @@ func (r apiPurgeContentRequest) Execute() (CdnPurgeContentResponse, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -277,7 +219,7 @@ func (r apiPurgeContentRequest) Execute() (CdnPurgeContentResponse, *_nethttp.Re
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -286,7 +228,7 @@ func (r apiPurgeContentRequest) Execute() (CdnPurgeContentResponse, *_nethttp.Re
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

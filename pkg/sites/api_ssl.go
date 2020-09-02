@@ -25,59 +25,31 @@ var (
 // SSLApiService SSLApi service
 type SSLApiService service
 
-type apiRecheckCertificateVerificationRequest struct {
-	ctx _context.Context
-	apiService *SSLApiService
-	stackId string
-	certificateId string
-}
-
-
 /*
 RecheckCertificateVerification Re-check certificate verification
-Re-check a certificate's verification details while it's being issued. This applies to Stackpath's free certificates.
+Re-check a certificate&#39;s verification details while it&#39;s being issued. This applies to Stackpath&#39;s free certificates.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param certificateId A certificate ID
-@return apiRecheckCertificateVerificationRequest
 */
-func (a *SSLApiService) RecheckCertificateVerification(ctx _context.Context, stackId string, certificateId string) apiRecheckCertificateVerificationRequest {
-	return apiRecheckCertificateVerificationRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-		certificateId: certificateId,
-	}
-}
-
-/*
-Execute executes the request
-
-*/
-func (r apiRecheckCertificateVerificationRequest) Execute() (*_nethttp.Response, error) {
+func (a *SSLApiService) RecheckCertificateVerification(ctx _context.Context, stackId string, certificateId string) (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "SSLApiService.RecheckCertificateVerification")
-	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
-	}
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/certificates/{certificate_id}/recheck"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
-	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/certificates/{certificate_id}/recheck"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(r.certificateId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"certificate_id"+"}", _neturl.QueryEscape(parameterToString(certificateId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -96,12 +68,12 @@ func (r apiRecheckCertificateVerificationRequest) Execute() (*_nethttp.Response,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -119,7 +91,7 @@ func (r apiRecheckCertificateVerificationRequest) Execute() (*_nethttp.Response,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -129,7 +101,7 @@ func (r apiRecheckCertificateVerificationRequest) Execute() (*_nethttp.Response,
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -138,7 +110,7 @@ func (r apiRecheckCertificateVerificationRequest) Execute() (*_nethttp.Response,
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr

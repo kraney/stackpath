@@ -8,11 +8,6 @@
  */
 
 package monitoring
-
-import (
-	"encoding/json"
-)
-
 // V2MonitorStatus The status of a monitor  - UNKNOWN: Unable to determine the status of the service being monitored. This is likely due to a new monitor that has not been checked yet.  - UP: The status of the service being monitored is up.  - DOWN: The status of the service being monitored is down.  - SLOW: The status of the service being monitored is slow. A service with a slow status means the service is up but responses are taking longer than 500 milliseconds.
 type V2MonitorStatus string
 
@@ -23,45 +18,3 @@ const (
 	DOWN V2MonitorStatus = "DOWN"
 	SLOW V2MonitorStatus = "SLOW"
 )
-
-// Ptr returns reference to v2MonitorStatus value
-func (v V2MonitorStatus) Ptr() *V2MonitorStatus {
-	return &v
-}
-
-
-type NullableV2MonitorStatus struct {
-	value *V2MonitorStatus
-	isSet bool
-}
-
-func (v NullableV2MonitorStatus) Get() *V2MonitorStatus {
-	return v.value
-}
-
-func (v *NullableV2MonitorStatus) Set(val *V2MonitorStatus) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableV2MonitorStatus) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableV2MonitorStatus) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableV2MonitorStatus(val *V2MonitorStatus) *NullableV2MonitorStatus {
-	return &NullableV2MonitorStatus{value: val, isSet: true}
-}
-
-func (v NullableV2MonitorStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableV2MonitorStatus) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

@@ -8,59 +8,12 @@
  */
 
 package cdn
-
-import (
-	"encoding/json"
-)
-
-// AuthACLClientIPSrcEnumWrapperValue the model 'AuthACLClientIPSrcEnumWrapperValue'
-type AuthACLClientIPSrcEnumWrapperValue string
+// AuthAclClientIpSrcEnumWrapperValue the model 'AuthAclClientIpSrcEnumWrapperValue'
+type AuthAclClientIpSrcEnumWrapperValue string
 
 // List of AuthACLClientIPSrcEnumWrapperValue
 const (
-	UNKNOWN AuthACLClientIPSrcEnumWrapperValue = "UNKNOWN"
-	SOCKET AuthACLClientIPSrcEnumWrapperValue = "socket"
-	HEADER AuthACLClientIPSrcEnumWrapperValue = "header"
+	UNKNOWN AuthAclClientIpSrcEnumWrapperValue = "UNKNOWN"
+	SOCKET AuthAclClientIpSrcEnumWrapperValue = "socket"
+	HEADER AuthAclClientIpSrcEnumWrapperValue = "header"
 )
-
-// Ptr returns reference to AuthACLClientIPSrcEnumWrapperValue value
-func (v AuthACLClientIPSrcEnumWrapperValue) Ptr() *AuthACLClientIPSrcEnumWrapperValue {
-	return &v
-}
-
-
-type NullableAuthACLClientIPSrcEnumWrapperValue struct {
-	value *AuthACLClientIPSrcEnumWrapperValue
-	isSet bool
-}
-
-func (v NullableAuthACLClientIPSrcEnumWrapperValue) Get() *AuthACLClientIPSrcEnumWrapperValue {
-	return v.value
-}
-
-func (v *NullableAuthACLClientIPSrcEnumWrapperValue) Set(val *AuthACLClientIPSrcEnumWrapperValue) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableAuthACLClientIPSrcEnumWrapperValue) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableAuthACLClientIPSrcEnumWrapperValue) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableAuthACLClientIPSrcEnumWrapperValue(val *AuthACLClientIPSrcEnumWrapperValue) *NullableAuthACLClientIPSrcEnumWrapperValue {
-	return &NullableAuthACLClientIPSrcEnumWrapperValue{value: val, isSet: true}
-}
-
-func (v NullableAuthACLClientIPSrcEnumWrapperValue) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableAuthACLClientIPSrcEnumWrapperValue) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

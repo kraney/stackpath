@@ -15,7 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"time"
+	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,59 +26,27 @@ var (
 // TrafficApiService TrafficApi service
 type TrafficApiService service
 
-type apiGetTrafficRequest struct {
-	ctx _context.Context
-	apiService *TrafficApiService
-	stackId string
-	siteId *string
-	startDate *time.Time
-	endDate *time.Time
-	resolution *string
-}
-
-
-func (r apiGetTrafficRequest) SiteId(siteId string) apiGetTrafficRequest {
-	r.siteId = &siteId
-	return r
-}
-
-func (r apiGetTrafficRequest) StartDate(startDate time.Time) apiGetTrafficRequest {
-	r.startDate = &startDate
-	return r
-}
-
-func (r apiGetTrafficRequest) EndDate(endDate time.Time) apiGetTrafficRequest {
-	r.endDate = &endDate
-	return r
-}
-
-func (r apiGetTrafficRequest) Resolution(resolution string) apiGetTrafficRequest {
-	r.resolution = &resolution
-	return r
+// GetTrafficOpts Optional parameters for the method 'GetTraffic'
+type GetTrafficOpts struct {
+    SiteId optional.String
+    StartDate optional.Time
+    EndDate optional.Time
+    Resolution optional.String
 }
 
 /*
 GetTraffic LEGACY: Get traffic
-Retrieve a report of a stack or site's WAF traffic.
-
-**Note:** This endpoint is deprecated and will be removed in the future. Please use the [v2 get traffic call](ref:gettrafficv2) to retrieve WAF site traffic.
+Retrieve a report of a stack or site&#39;s WAF traffic.  **Note:** This endpoint is deprecated and will be removed in the future. Please use the [v2 get traffic call](ref:gettrafficv2) to retrieve WAF site traffic.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiGetTrafficRequest
+ * @param optional nil or *GetTrafficOpts - Optional Parameters:
+ * @param "SiteId" (optional.String) -  A site ID
+ * @param "StartDate" (optional.Time) -  A lower bound date to search traffic for.
+ * @param "EndDate" (optional.Time) -  An upper bound date to search traffic for.
+ * @param "Resolution" (optional.String) -   - HOURLY: All data points represent one hour of traffic  - MINUTELY: All data points represent one minute of traffic
+@return WafGetTrafficResponse
 */
-func (a *TrafficApiService) GetTraffic(ctx _context.Context, stackId string) apiGetTrafficRequest {
-	return apiGetTrafficRequest{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return WafGetTrafficResponse
-*/
-func (r apiGetTrafficRequest) Execute() (WafGetTrafficResponse, *_nethttp.Response, error) {
+func (a *TrafficApiService) GetTraffic(ctx _context.Context, stackId string, localVarOptionals *GetTrafficOpts) (WafGetTrafficResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -88,30 +56,25 @@ func (r apiGetTrafficRequest) Execute() (WafGetTrafficResponse, *_nethttp.Respon
 		localVarReturnValue  WafGetTrafficResponse
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "TrafficApiService.GetTraffic")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/traffic"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/traffic"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-				
-	if r.siteId != nil {
-		localVarQueryParams.Add("site_id", parameterToString(*r.siteId, ""))
+
+	if localVarOptionals != nil && localVarOptionals.SiteId.IsSet() {
+		localVarQueryParams.Add("site_id", parameterToString(localVarOptionals.SiteId.Value(), ""))
 	}
-	if r.startDate != nil {
-		localVarQueryParams.Add("start_date", parameterToString(*r.startDate, ""))
+	if localVarOptionals != nil && localVarOptionals.StartDate.IsSet() {
+		localVarQueryParams.Add("start_date", parameterToString(localVarOptionals.StartDate.Value(), ""))
 	}
-	if r.endDate != nil {
-		localVarQueryParams.Add("end_date", parameterToString(*r.endDate, ""))
+	if localVarOptionals != nil && localVarOptionals.EndDate.IsSet() {
+		localVarQueryParams.Add("end_date", parameterToString(localVarOptionals.EndDate.Value(), ""))
 	}
-	if r.resolution != nil {
-		localVarQueryParams.Add("resolution", parameterToString(*r.resolution, ""))
+	if localVarOptionals != nil && localVarOptionals.Resolution.IsSet() {
+		localVarQueryParams.Add("resolution", parameterToString(localVarOptionals.Resolution.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -130,12 +93,12 @@ func (r apiGetTrafficRequest) Execute() (WafGetTrafficResponse, *_nethttp.Respon
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -153,7 +116,7 @@ func (r apiGetTrafficRequest) Execute() (WafGetTrafficResponse, *_nethttp.Respon
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -163,7 +126,7 @@ func (r apiGetTrafficRequest) Execute() (WafGetTrafficResponse, *_nethttp.Respon
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -172,7 +135,7 @@ func (r apiGetTrafficRequest) Execute() (WafGetTrafficResponse, *_nethttp.Respon
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -181,7 +144,7 @@ func (r apiGetTrafficRequest) Execute() (WafGetTrafficResponse, *_nethttp.Respon
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -192,57 +155,28 @@ func (r apiGetTrafficRequest) Execute() (WafGetTrafficResponse, *_nethttp.Respon
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
-type apiGetTrafficV2Request struct {
-	ctx _context.Context
-	apiService *TrafficApiService
-	stackId string
-	siteId *string
-	startDate *time.Time
-	endDate *time.Time
-	resolution *string
-}
 
-
-func (r apiGetTrafficV2Request) SiteId(siteId string) apiGetTrafficV2Request {
-	r.siteId = &siteId
-	return r
-}
-
-func (r apiGetTrafficV2Request) StartDate(startDate time.Time) apiGetTrafficV2Request {
-	r.startDate = &startDate
-	return r
-}
-
-func (r apiGetTrafficV2Request) EndDate(endDate time.Time) apiGetTrafficV2Request {
-	r.endDate = &endDate
-	return r
-}
-
-func (r apiGetTrafficV2Request) Resolution(resolution string) apiGetTrafficV2Request {
-	r.resolution = &resolution
-	return r
+// GetTrafficV2Opts Optional parameters for the method 'GetTrafficV2'
+type GetTrafficV2Opts struct {
+    SiteId optional.String
+    StartDate optional.Time
+    EndDate optional.Time
+    Resolution optional.String
 }
 
 /*
 GetTrafficV2 Get traffic
-Retreive a report of a stack or site's WAF traffic
+Retreive a report of a stack or site&#39;s WAF traffic
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return apiGetTrafficV2Request
+ * @param optional nil or *GetTrafficV2Opts - Optional Parameters:
+ * @param "SiteId" (optional.String) -  A site ID
+ * @param "StartDate" (optional.Time) -  A lower bound date to search traffic for.
+ * @param "EndDate" (optional.Time) -  An upper bound date to search traffic for.
+ * @param "Resolution" (optional.String) -   - DAILY: All data points represent one day of traffic  - HOURLY: All data points represent one hour of traffic  - MINUTELY: All data points represent one minute of traffic
+@return WafGetTrafficV2Response
 */
-func (a *TrafficApiService) GetTrafficV2(ctx _context.Context, stackId string) apiGetTrafficV2Request {
-	return apiGetTrafficV2Request{
-		apiService: a,
-		ctx: ctx,
-		stackId: stackId,
-	}
-}
-
-/*
-Execute executes the request
- @return WafGetTrafficV2Response
-*/
-func (r apiGetTrafficV2Request) Execute() (WafGetTrafficV2Response, *_nethttp.Response, error) {
+func (a *TrafficApiService) GetTrafficV2(ctx _context.Context, stackId string, localVarOptionals *GetTrafficV2Opts) (WafGetTrafficV2Response, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -252,30 +186,25 @@ func (r apiGetTrafficV2Request) Execute() (WafGetTrafficV2Response, *_nethttp.Re
 		localVarReturnValue  WafGetTrafficV2Response
 	)
 
-	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "TrafficApiService.GetTrafficV2")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/waf/v2/stacks/{stack_id}/traffic"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/waf/v2/stacks/{stack_id}/traffic"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-	
-				
-	if r.siteId != nil {
-		localVarQueryParams.Add("site_id", parameterToString(*r.siteId, ""))
+
+	if localVarOptionals != nil && localVarOptionals.SiteId.IsSet() {
+		localVarQueryParams.Add("site_id", parameterToString(localVarOptionals.SiteId.Value(), ""))
 	}
-	if r.startDate != nil {
-		localVarQueryParams.Add("start_date", parameterToString(*r.startDate, ""))
+	if localVarOptionals != nil && localVarOptionals.StartDate.IsSet() {
+		localVarQueryParams.Add("start_date", parameterToString(localVarOptionals.StartDate.Value(), ""))
 	}
-	if r.endDate != nil {
-		localVarQueryParams.Add("end_date", parameterToString(*r.endDate, ""))
+	if localVarOptionals != nil && localVarOptionals.EndDate.IsSet() {
+		localVarQueryParams.Add("end_date", parameterToString(localVarOptionals.EndDate.Value(), ""))
 	}
-	if r.resolution != nil {
-		localVarQueryParams.Add("resolution", parameterToString(*r.resolution, ""))
+	if localVarOptionals != nil && localVarOptionals.Resolution.IsSet() {
+		localVarQueryParams.Add("resolution", parameterToString(localVarOptionals.Resolution.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -294,12 +223,12 @@ func (r apiGetTrafficV2Request) Execute() (WafGetTrafficV2Response, *_nethttp.Re
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
+	localVarHTTPResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -317,7 +246,7 @@ func (r apiGetTrafficV2Request) Execute() (WafGetTrafficV2Response, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -327,7 +256,7 @@ func (r apiGetTrafficV2Request) Execute() (WafGetTrafficV2Response, *_nethttp.Re
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -336,7 +265,7 @@ func (r apiGetTrafficV2Request) Execute() (WafGetTrafficV2Response, *_nethttp.Re
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -345,7 +274,7 @@ func (r apiGetTrafficV2Request) Execute() (WafGetTrafficV2Response, *_nethttp.Re
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

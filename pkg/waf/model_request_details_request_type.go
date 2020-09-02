@@ -8,11 +8,6 @@
  */
 
 package waf
-
-import (
-	"encoding/json"
-)
-
 // RequestDetailsRequestType The types of a WAF request  - API: A WAF request to a URL designated by WAF as an API URL  - AJAX: An AJAX WAF request  - STATIC: A WAF request to a static resource
 type RequestDetailsRequestType string
 
@@ -22,45 +17,3 @@ const (
 	AJAX RequestDetailsRequestType = "AJAX"
 	STATIC RequestDetailsRequestType = "STATIC"
 )
-
-// Ptr returns reference to RequestDetailsRequestType value
-func (v RequestDetailsRequestType) Ptr() *RequestDetailsRequestType {
-	return &v
-}
-
-
-type NullableRequestDetailsRequestType struct {
-	value *RequestDetailsRequestType
-	isSet bool
-}
-
-func (v NullableRequestDetailsRequestType) Get() *RequestDetailsRequestType {
-	return v.value
-}
-
-func (v *NullableRequestDetailsRequestType) Set(val *RequestDetailsRequestType) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableRequestDetailsRequestType) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableRequestDetailsRequestType) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableRequestDetailsRequestType(val *RequestDetailsRequestType) *NullableRequestDetailsRequestType {
-	return &NullableRequestDetailsRequestType{value: val, isSet: true}
-}
-
-func (v NullableRequestDetailsRequestType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableRequestDetailsRequestType) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

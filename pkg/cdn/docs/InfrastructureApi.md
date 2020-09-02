@@ -13,57 +13,33 @@ Method | HTTP request | Description
 
 ## GetCDNIPs
 
-> CdnGetCDNIPsResponse GetCDNIPs(ctx).Filter(filter).ResponseType(responseType).Execute()
+> CdnGetCdniPsResponse GetCDNIPs(ctx, optional)
 
 Get IP addresses
 
+Retrieve all IP addresses used by the StackPath CDN
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    filter := "filter_example" // string | Whether to search for IPv4, IPv6, or all IP addresses (optional) (default to "ALL")
-    responseType := "responseType_example" // string | The format to return the result in (optional) (default to "JSON")
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.InfrastructureApi.GetCDNIPs(context.Background(), ).Filter(filter).ResponseType(responseType).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `InfrastructureApi.GetCDNIPs``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetCDNIPs`: CdnGetCDNIPsResponse
-    fmt.Fprintf(os.Stdout, "Response from `InfrastructureApi.GetCDNIPs`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetCDNIPsRequest struct via the builder pattern
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **filter** | **string** | Whether to search for IPv4, IPv6, or all IP addresses | [default to &quot;ALL&quot;]
- **responseType** | **string** | The format to return the result in | [default to &quot;JSON&quot;]
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***GetCDNIPsOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetCDNIPsOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **filter** | **optional.String**| Whether to search for IPv4, IPv6, or all IP addresses | [default to ALL]
+ **responseType** | **optional.String**| The format to return the result in | [default to JSON]
 
 ### Return type
 
-[**CdnGetCDNIPsResponse**](cdnGetCDNIPsResponse.md)
+[**CdnGetCdniPsResponse**](cdnGetCDNIPsResponse.md)
 
 ### Authorization
 
@@ -81,51 +57,28 @@ Name | Type | Description  | Notes
 
 ## GetClosestPops
 
-> CdnGetClosestPopsResponse GetClosestPops(ctx).Url(url).Execute()
+> CdnGetClosestPopsResponse GetClosestPops(ctx, optional)
 
 Get POP performance
 
+Scan a URL from the StackPath edge network and return a performance report. Results are ordered with the fastest POP response first.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    url := "url_example" // string | The URL to scan. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.InfrastructureApi.GetClosestPops(context.Background(), ).Url(url).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `InfrastructureApi.GetClosestPops``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetClosestPops`: CdnGetClosestPopsResponse
-    fmt.Fprintf(os.Stdout, "Response from `InfrastructureApi.GetClosestPops`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetClosestPopsRequest struct via the builder pattern
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **url** | **string** | The URL to scan. | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+ **optional** | ***GetClosestPopsOpts** | optional parameters | nil if no parameters
+
+### Optional Parameters
+
+Optional parameters are passed through a pointer to a GetClosestPopsOpts struct
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **url** | **optional.String**| The URL to scan. | 
 
 ### Return type
 
@@ -147,46 +100,15 @@ Name | Type | Description  | Notes
 
 ## GetPops
 
-> CdnGetPopsResponse GetPops(ctx).Execute()
+> CdnGetPopsResponse GetPops(ctx, )
 
 Get points of presence
 
+Get the StackPath CDN's points of presence
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.InfrastructureApi.GetPops(context.Background(), ).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `InfrastructureApi.GetPops``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetPops`: CdnGetPopsResponse
-    fmt.Fprintf(os.Stdout, "Response from `InfrastructureApi.GetPops`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 This endpoint does not need any parameter.
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetPopsRequest struct via the builder pattern
-
 
 ### Return type
 
@@ -208,51 +130,19 @@ Other parameters are passed through a pointer to a apiGetPopsRequest struct via 
 
 ## ScanOrigin
 
-> CdnScanOriginResponse ScanOrigin(ctx).CdnScanOriginRequest(cdnScanOriginRequest).Execute()
+> CdnScanOriginResponse ScanOrigin(ctx, cdnScanOriginRequest)
 
 Scan an origin
 
+Scan an origin from StackPath's CDN. Retrieve information regarding the origin, such as its IP address and whether or not it supports SSL.
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    cdnScanOriginRequest := openapiclient.cdnScanOriginRequest{Domain: "Domain_example"} // CdnScanOriginRequest | 
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.InfrastructureApi.ScanOrigin(context.Background(), cdnScanOriginRequest).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `InfrastructureApi.ScanOrigin``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `ScanOrigin`: CdnScanOriginResponse
-    fmt.Fprintf(os.Stdout, "Response from `InfrastructureApi.ScanOrigin`: %v\n", resp)
-}
-```
-
-### Path Parameters
-
-
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiScanOriginRequest struct via the builder pattern
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **cdnScanOriginRequest** | [**CdnScanOriginRequest**](CdnScanOriginRequest.md) |  | 
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**cdnScanOriginRequest** | [**CdnScanOriginRequest**](CdnScanOriginRequest.md)|  | 
 
 ### Return type
 

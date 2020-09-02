@@ -8,11 +8,6 @@
  */
 
 package waf
-
-import (
-	"encoding/json"
-)
-
 // WafCertificateVerificationMethod The Certificate Verification Method  Verification method used to validate a requested certificate on a site   - DNS: Verify a certificate using DNS records  - HTTP: Verify a certificate by using HTTP validation. This will require that all hosts on the certificate point to the site hash or IP
 type WafCertificateVerificationMethod string
 
@@ -21,45 +16,3 @@ const (
 	DNS WafCertificateVerificationMethod = "DNS"
 	HTTP WafCertificateVerificationMethod = "HTTP"
 )
-
-// Ptr returns reference to wafCertificateVerificationMethod value
-func (v WafCertificateVerificationMethod) Ptr() *WafCertificateVerificationMethod {
-	return &v
-}
-
-
-type NullableWafCertificateVerificationMethod struct {
-	value *WafCertificateVerificationMethod
-	isSet bool
-}
-
-func (v NullableWafCertificateVerificationMethod) Get() *WafCertificateVerificationMethod {
-	return v.value
-}
-
-func (v *NullableWafCertificateVerificationMethod) Set(val *WafCertificateVerificationMethod) {
-	v.value = val
-	v.isSet = true
-}
-
-func (v NullableWafCertificateVerificationMethod) IsSet() bool {
-	return v.isSet
-}
-
-func (v *NullableWafCertificateVerificationMethod) Unset() {
-	v.value = nil
-	v.isSet = false
-}
-
-func NewNullableWafCertificateVerificationMethod(val *WafCertificateVerificationMethod) *NullableWafCertificateVerificationMethod {
-	return &NullableWafCertificateVerificationMethod{value: val, isSet: true}
-}
-
-func (v NullableWafCertificateVerificationMethod) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.value)
-}
-
-func (v *NullableWafCertificateVerificationMethod) UnmarshalJSON(src []byte) error {
-	v.isSet = true
-	return json.Unmarshal(src, &v.value)
-}

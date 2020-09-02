@@ -12,59 +12,19 @@ Method | HTTP request | Description
 
 ## GetRequest
 
-> WafGetRequestResponse GetRequest(ctx, stackId, siteId, requestId).Execute()
+> WafGetRequestResponse GetRequest(ctx, stackId, siteId, requestId)
 
 Get a request
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-    requestId := "requestId_example" // string | A WAF request ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.RequestsApi.GetRequest(context.Background(), stackId, siteId, requestId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `RequestsApi.GetRequest``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetRequest`: WafGetRequestResponse
-    fmt.Fprintf(os.Stdout, "Response from `RequestsApi.GetRequest`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-**requestId** | **string** | A WAF request ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetRequestRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
+**requestId** | **string**| A WAF request ID | 
 
 ### Return type
 
@@ -86,61 +46,21 @@ Name | Type | Description  | Notes
 
 ## GetRequestDetails
 
-> WafGetRequestDetailsResponse GetRequestDetails(ctx, stackId, siteId, requestId).Execute()
+> WafGetRequestDetailsResponse GetRequestDetails(ctx, stackId, siteId, requestId)
 
 Get a request's details
 
+Retrieve more detailed information about a WAF request
 
-
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-    requestId := "requestId_example" // string | A WAF request ID
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.RequestsApi.GetRequestDetails(context.Background(), stackId, siteId, requestId).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `RequestsApi.GetRequestDetails``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetRequestDetails`: WafGetRequestDetailsResponse
-    fmt.Fprintf(os.Stdout, "Response from `RequestsApi.GetRequestDetails`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
-**requestId** | **string** | A WAF request ID | 
-
-### Other Parameters
-
-Other parameters are passed through a pointer to a apiGetRequestDetailsRequest struct via the builder pattern
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
-
-
-
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
+**requestId** | **string**| A WAF request ID | 
 
 ### Return type
 
@@ -162,68 +82,35 @@ Name | Type | Description  | Notes
 
 ## GetRequests
 
-> WafGetRequestsResponse GetRequests(ctx, stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).StartDate(startDate).EndDate(endDate).Execute()
+> WafGetRequestsResponse GetRequests(ctx, stackId, siteId, optional)
 
 Get all requests
 
-### Example
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "os"
-    openapiclient "./openapi"
-)
-
-func main() {
-    stackId := "stackId_example" // string | A stack ID or slug
-    siteId := "siteId_example" // string | A site ID
-    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
-    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
-    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
-    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
-    startDate := Get-Date // time.Time | A lower bound date to search requests for. (optional)
-    endDate := Get-Date // time.Time | An upper bound date to search requests for. (optional)
-
-    configuration := openapiclient.NewConfiguration()
-    api_client := openapiclient.NewAPIClient(configuration)
-    resp, r, err := api_client.RequestsApi.GetRequests(context.Background(), stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).StartDate(startDate).EndDate(endDate).Execute()
-    if err != nil {
-        fmt.Fprintf(os.Stderr, "Error when calling `RequestsApi.GetRequests``: %v\n", err)
-        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
-    }
-    // response from `GetRequests`: WafGetRequestsResponse
-    fmt.Fprintf(os.Stdout, "Response from `RequestsApi.GetRequests`: %v\n", resp)
-}
-```
-
-### Path Parameters
+### Required Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string** | A stack ID or slug | 
-**siteId** | **string** | A site ID | 
+**stackId** | **string**| A stack ID or slug | 
+**siteId** | **string**| A site ID | 
+ **optional** | ***GetRequestsOpts** | optional parameters | nil if no parameters
 
-### Other Parameters
+### Optional Parameters
 
-Other parameters are passed through a pointer to a apiGetRequestsRequest struct via the builder pattern
+Optional parameters are passed through a pointer to a GetRequestsOpts struct
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **pageRequestFirst** | **string** | The number of items desired. | 
- **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
- **pageRequestFilter** | **string** | SQL-style constraint filters. | 
- **pageRequestSortBy** | **string** | Sort the response by the given field. | 
- **startDate** | **time.Time** | A lower bound date to search requests for. | 
- **endDate** | **time.Time** | An upper bound date to search requests for. | 
+ **pageRequestFirst** | **optional.String**| The number of items desired. | 
+ **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
+ **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
+ **startDate** | **optional.Time**| A lower bound date to search requests for. | 
+ **endDate** | **optional.Time**| An upper bound date to search requests for. | 
 
 ### Return type
 
