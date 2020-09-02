@@ -42,16 +42,35 @@ Detailed instructions for the APIs are in the generated output:
 
 Note that the automatically generated documentation doesn't really mention authorization on the individual APIs, but for most of the APIs you will need to set the request header `Authorization: Bearer <token>` as described in [StackPath's documentation](https://stackpath.dev/docs/stackpath-api-authentication).
 
-You can set this in the context as described in the generated doc, exerpted here.
+The generated documentation on how to do this is a bit misleading. A golang.org/x/oauth2.TokenSource implementation has been provided to make it easier.
 
-Or via OAuth2 module to automatically refresh tokens and perform user authentication.
+Here's an example usage:
 
 ```golang
-import "golang.org/x/oauth2"
+package main
 
-/* Perform OAuth2 round trip request and obtain a token */
+import (
+	"context"
+	"flag"
+	"log"
 
-tokenSource := oauth2cfg.TokenSource(createContext(httpClient), &token)
-auth := context.WithValue(oauth2.NoContext, sw.ContextOAuth2, tokenSource)
-r, err := client.Service.Operation(auth, args)
+	spauth "github.com/kraney/stackpath/pkg/oauth2"
+	"github.com/kraney/stackpath/pkg/stacks"
+	"golang.org/x/oauth2"
+)
+
+func main() {
+	clientid := flag.String("clientid", "", "client ID.")
+	clientsecret := flag.String("secret", "", "client secret.")
+	flag.Parse()
+
+	var ts oauth2.TokenSource = spauth.NewTokenSource(*clientid, *clientsecret)
+	auth := context.WithValue(context.Background(), stacks.ContextOAuth2, ts)
+	stackclient := stacks.NewAPIClient(stacks.NewConfiguration())
+	stacksresp, _, err := stackclient.StacksApi.GetStacks(auth, nil)
+	if err != nil {
+		log.Fatalf("Error getting stacks list: %v", err)
+	}
+	log.Printf("%v", stacksresp.Results)
+}
 ```
