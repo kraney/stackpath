@@ -42,7 +42,9 @@ Detailed instructions for the APIs are in the generated output:
 
 Note that the automatically generated documentation doesn't really mention authorization on the individual APIs, but for most of the APIs you will need to set the request header `Authorization: Bearer <token>` as described in [StackPath's documentation](https://stackpath.dev/docs/stackpath-api-authentication).
 
-The generated documentation on how to do this is a bit misleading. A golang.org/x/oauth2.TokenSource implementation has been provided to make it easier.
+The generated documentation on how to do this is a bit misleading. A
+golang.org/x/oauth2.TokenSource implementation has been provided to make it
+easier. This will automatically refresh the token when it expires.
 
 Here's an example usage:
 
