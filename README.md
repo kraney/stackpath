@@ -27,16 +27,16 @@ go get gitlab.com/kraney/stackpath/pkg/cdn
 
 Detailed instructions for the APIs are in the generated output:
 
-- [Accounts and Users](tree/master/pkg/accounts_and_users/README.md)
-- [Sites](tree/master/pkg/sites/README.md)
-- [SDN](tree/master/pkg/cdn/README.md)
-- [WAF](tree/master/pkg/waf/README.md)
-- [DNS](tree/master/pkg/dns/README.md)
-- [Edge Compute](tree/master/pkg/edge_compute/README.md)
-- [Edge Compute Networking](tree/master/pkg/edge_compute_networking/README.md)
-- [SSL](tree/master/pkg/ssl/README.md)
-- [Monitoring](tree/master/pkg/monitoring/README.md)
-- [Object Storage](tree/master/pkg/object_storage/README.md)
+- [Accounts and Users](pkg/accounts_and_users/README.md)
+- [Sites](pkg/sites/README.md)
+- [SDN](pkg/cdn/README.md)
+- [WAF](pkg/waf/README.md)
+- [DNS](pkg/dns/README.md)
+- [Edge Compute](pkg/edge_compute/README.md)
+- [Edge Compute Networking](pkg/edge_compute_networking/README.md)
+- [SSL](pkg/ssl/README.md)
+- [Monitoring](pkg/monitoring/README.md)
+- [Object Storage](pkg/object_storage/README.md)
 
 ## Authentication
 
