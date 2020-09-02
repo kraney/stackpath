@@ -17,4 +17,6 @@ pkg/%: oas/%.json
 	rm -f $@/go.{mod,sum}
 
 clean:
-	rm -rf pkg/*
+	for api in ${APIS}; do \
+		rm -rf pkg/$${api}; \
+	done
