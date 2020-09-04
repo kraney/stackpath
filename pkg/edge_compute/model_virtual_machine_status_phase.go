@@ -8,6 +8,11 @@
  */
 
 package edge_compute
+
+import (
+	"encoding/json"
+)
+
 // VirtualMachineStatusPhase the model 'VirtualMachineStatusPhase'
 type VirtualMachineStatusPhase string
 
@@ -21,3 +26,45 @@ const (
 	VIRTUALMACHINESTATUSPHASE_STOPPED VirtualMachineStatusPhase = "STOPPED"
 	VIRTUALMACHINESTATUSPHASE_FAILED VirtualMachineStatusPhase = "FAILED"
 )
+
+// Ptr returns reference to VirtualMachineStatusPhase value
+func (v VirtualMachineStatusPhase) Ptr() *VirtualMachineStatusPhase {
+	return &v
+}
+
+
+type NullableVirtualMachineStatusPhase struct {
+	value *VirtualMachineStatusPhase
+	isSet bool
+}
+
+func (v NullableVirtualMachineStatusPhase) Get() *VirtualMachineStatusPhase {
+	return v.value
+}
+
+func (v *NullableVirtualMachineStatusPhase) Set(val *VirtualMachineStatusPhase) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableVirtualMachineStatusPhase) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableVirtualMachineStatusPhase) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableVirtualMachineStatusPhase(val *VirtualMachineStatusPhase) *NullableVirtualMachineStatusPhase {
+	return &NullableVirtualMachineStatusPhase{value: val, isSet: true}
+}
+
+func (v NullableVirtualMachineStatusPhase) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableVirtualMachineStatusPhase) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

@@ -8,17 +8,325 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CustconfOriginPullHost struct for CustconfOriginPullHost
 type CustconfOriginPullHost struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
-	OriginUrl string `json:"originUrl,omitempty"`
-	UserName string `json:"userName,omitempty"`
-	Password string `json:"password,omitempty"`
+	Id *string `json:"id,omitempty"`
+	OriginUrl *string `json:"originUrl,omitempty"`
+	UserName *string `json:"userName,omitempty"`
+	Password *string `json:"password,omitempty"`
 	// String of values delimited by a ',' character.
-	MethodFilter string `json:"methodFilter,omitempty"`
+	MethodFilter *string `json:"methodFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	PathFilter string `json:"pathFilter,omitempty"`
+	PathFilter *string `json:"pathFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	HeaderFilter string `json:"headerFilter,omitempty"`
+	HeaderFilter *string `json:"headerFilter,omitempty"`
+}
+
+// NewCustconfOriginPullHost instantiates a new CustconfOriginPullHost object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfOriginPullHost() *CustconfOriginPullHost {
+	this := CustconfOriginPullHost{}
+	return &this
+}
+
+// NewCustconfOriginPullHostWithDefaults instantiates a new CustconfOriginPullHost object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfOriginPullHostWithDefaults() *CustconfOriginPullHost {
+	this := CustconfOriginPullHost{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfOriginPullHost) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullHost) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfOriginPullHost) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfOriginPullHost) SetId(v string) {
+	o.Id = &v
+}
+
+// GetOriginUrl returns the OriginUrl field value if set, zero value otherwise.
+func (o *CustconfOriginPullHost) GetOriginUrl() string {
+	if o == nil || o.OriginUrl == nil {
+		var ret string
+		return ret
+	}
+	return *o.OriginUrl
+}
+
+// GetOriginUrlOk returns a tuple with the OriginUrl field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullHost) GetOriginUrlOk() (*string, bool) {
+	if o == nil || o.OriginUrl == nil {
+		return nil, false
+	}
+	return o.OriginUrl, true
+}
+
+// HasOriginUrl returns a boolean if a field has been set.
+func (o *CustconfOriginPullHost) HasOriginUrl() bool {
+	if o != nil && o.OriginUrl != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetOriginUrl gets a reference to the given string and assigns it to the OriginUrl field.
+func (o *CustconfOriginPullHost) SetOriginUrl(v string) {
+	o.OriginUrl = &v
+}
+
+// GetUserName returns the UserName field value if set, zero value otherwise.
+func (o *CustconfOriginPullHost) GetUserName() string {
+	if o == nil || o.UserName == nil {
+		var ret string
+		return ret
+	}
+	return *o.UserName
+}
+
+// GetUserNameOk returns a tuple with the UserName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullHost) GetUserNameOk() (*string, bool) {
+	if o == nil || o.UserName == nil {
+		return nil, false
+	}
+	return o.UserName, true
+}
+
+// HasUserName returns a boolean if a field has been set.
+func (o *CustconfOriginPullHost) HasUserName() bool {
+	if o != nil && o.UserName != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUserName gets a reference to the given string and assigns it to the UserName field.
+func (o *CustconfOriginPullHost) SetUserName(v string) {
+	o.UserName = &v
+}
+
+// GetPassword returns the Password field value if set, zero value otherwise.
+func (o *CustconfOriginPullHost) GetPassword() string {
+	if o == nil || o.Password == nil {
+		var ret string
+		return ret
+	}
+	return *o.Password
+}
+
+// GetPasswordOk returns a tuple with the Password field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullHost) GetPasswordOk() (*string, bool) {
+	if o == nil || o.Password == nil {
+		return nil, false
+	}
+	return o.Password, true
+}
+
+// HasPassword returns a boolean if a field has been set.
+func (o *CustconfOriginPullHost) HasPassword() bool {
+	if o != nil && o.Password != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPassword gets a reference to the given string and assigns it to the Password field.
+func (o *CustconfOriginPullHost) SetPassword(v string) {
+	o.Password = &v
+}
+
+// GetMethodFilter returns the MethodFilter field value if set, zero value otherwise.
+func (o *CustconfOriginPullHost) GetMethodFilter() string {
+	if o == nil || o.MethodFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.MethodFilter
+}
+
+// GetMethodFilterOk returns a tuple with the MethodFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullHost) GetMethodFilterOk() (*string, bool) {
+	if o == nil || o.MethodFilter == nil {
+		return nil, false
+	}
+	return o.MethodFilter, true
+}
+
+// HasMethodFilter returns a boolean if a field has been set.
+func (o *CustconfOriginPullHost) HasMethodFilter() bool {
+	if o != nil && o.MethodFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMethodFilter gets a reference to the given string and assigns it to the MethodFilter field.
+func (o *CustconfOriginPullHost) SetMethodFilter(v string) {
+	o.MethodFilter = &v
+}
+
+// GetPathFilter returns the PathFilter field value if set, zero value otherwise.
+func (o *CustconfOriginPullHost) GetPathFilter() string {
+	if o == nil || o.PathFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.PathFilter
+}
+
+// GetPathFilterOk returns a tuple with the PathFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullHost) GetPathFilterOk() (*string, bool) {
+	if o == nil || o.PathFilter == nil {
+		return nil, false
+	}
+	return o.PathFilter, true
+}
+
+// HasPathFilter returns a boolean if a field has been set.
+func (o *CustconfOriginPullHost) HasPathFilter() bool {
+	if o != nil && o.PathFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPathFilter gets a reference to the given string and assigns it to the PathFilter field.
+func (o *CustconfOriginPullHost) SetPathFilter(v string) {
+	o.PathFilter = &v
+}
+
+// GetHeaderFilter returns the HeaderFilter field value if set, zero value otherwise.
+func (o *CustconfOriginPullHost) GetHeaderFilter() string {
+	if o == nil || o.HeaderFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.HeaderFilter
+}
+
+// GetHeaderFilterOk returns a tuple with the HeaderFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullHost) GetHeaderFilterOk() (*string, bool) {
+	if o == nil || o.HeaderFilter == nil {
+		return nil, false
+	}
+	return o.HeaderFilter, true
+}
+
+// HasHeaderFilter returns a boolean if a field has been set.
+func (o *CustconfOriginPullHost) HasHeaderFilter() bool {
+	if o != nil && o.HeaderFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHeaderFilter gets a reference to the given string and assigns it to the HeaderFilter field.
+func (o *CustconfOriginPullHost) SetHeaderFilter(v string) {
+	o.HeaderFilter = &v
+}
+
+func (o CustconfOriginPullHost) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.OriginUrl != nil {
+		toSerialize["originUrl"] = o.OriginUrl
+	}
+	if o.UserName != nil {
+		toSerialize["userName"] = o.UserName
+	}
+	if o.Password != nil {
+		toSerialize["password"] = o.Password
+	}
+	if o.MethodFilter != nil {
+		toSerialize["methodFilter"] = o.MethodFilter
+	}
+	if o.PathFilter != nil {
+		toSerialize["pathFilter"] = o.PathFilter
+	}
+	if o.HeaderFilter != nil {
+		toSerialize["headerFilter"] = o.HeaderFilter
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfOriginPullHost struct {
+	value *CustconfOriginPullHost
+	isSet bool
+}
+
+func (v NullableCustconfOriginPullHost) Get() *CustconfOriginPullHost {
+	return v.value
+}
+
+func (v *NullableCustconfOriginPullHost) Set(val *CustconfOriginPullHost) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfOriginPullHost) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfOriginPullHost) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfOriginPullHost(val *CustconfOriginPullHost) *NullableCustconfOriginPullHost {
+	return &NullableCustconfOriginPullHost{value: val, isSet: true}
+}
+
+func (v NullableCustconfOriginPullHost) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfOriginPullHost) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

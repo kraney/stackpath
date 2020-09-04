@@ -8,8 +8,106 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // DeliveryGoogleStorageOrigin A Google storage bucket origin
 type DeliveryGoogleStorageOrigin struct {
 	// The origin bucket's name
-	BucketName string `json:"bucketName,omitempty"`
+	BucketName *string `json:"bucketName,omitempty"`
+}
+
+// NewDeliveryGoogleStorageOrigin instantiates a new DeliveryGoogleStorageOrigin object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewDeliveryGoogleStorageOrigin() *DeliveryGoogleStorageOrigin {
+	this := DeliveryGoogleStorageOrigin{}
+	return &this
+}
+
+// NewDeliveryGoogleStorageOriginWithDefaults instantiates a new DeliveryGoogleStorageOrigin object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewDeliveryGoogleStorageOriginWithDefaults() *DeliveryGoogleStorageOrigin {
+	this := DeliveryGoogleStorageOrigin{}
+	return &this
+}
+
+// GetBucketName returns the BucketName field value if set, zero value otherwise.
+func (o *DeliveryGoogleStorageOrigin) GetBucketName() string {
+	if o == nil || o.BucketName == nil {
+		var ret string
+		return ret
+	}
+	return *o.BucketName
+}
+
+// GetBucketNameOk returns a tuple with the BucketName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryGoogleStorageOrigin) GetBucketNameOk() (*string, bool) {
+	if o == nil || o.BucketName == nil {
+		return nil, false
+	}
+	return o.BucketName, true
+}
+
+// HasBucketName returns a boolean if a field has been set.
+func (o *DeliveryGoogleStorageOrigin) HasBucketName() bool {
+	if o != nil && o.BucketName != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBucketName gets a reference to the given string and assigns it to the BucketName field.
+func (o *DeliveryGoogleStorageOrigin) SetBucketName(v string) {
+	o.BucketName = &v
+}
+
+func (o DeliveryGoogleStorageOrigin) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.BucketName != nil {
+		toSerialize["bucketName"] = o.BucketName
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableDeliveryGoogleStorageOrigin struct {
+	value *DeliveryGoogleStorageOrigin
+	isSet bool
+}
+
+func (v NullableDeliveryGoogleStorageOrigin) Get() *DeliveryGoogleStorageOrigin {
+	return v.value
+}
+
+func (v *NullableDeliveryGoogleStorageOrigin) Set(val *DeliveryGoogleStorageOrigin) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliveryGoogleStorageOrigin) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliveryGoogleStorageOrigin) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliveryGoogleStorageOrigin(val *DeliveryGoogleStorageOrigin) *NullableDeliveryGoogleStorageOrigin {
+	return &NullableDeliveryGoogleStorageOrigin{value: val, isSet: true}
+}
+
+func (v NullableDeliveryGoogleStorageOrigin) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliveryGoogleStorageOrigin) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

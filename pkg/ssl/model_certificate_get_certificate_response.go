@@ -8,7 +8,105 @@
  */
 
 package ssl
+
+import (
+	"encoding/json"
+)
+
 // CertificateGetCertificateResponse struct for CertificateGetCertificateResponse
 type CertificateGetCertificateResponse struct {
-	Certificate CertificateCertificate `json:"certificate,omitempty"`
+	Certificate *CertificateCertificate `json:"certificate,omitempty"`
+}
+
+// NewCertificateGetCertificateResponse instantiates a new CertificateGetCertificateResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCertificateGetCertificateResponse() *CertificateGetCertificateResponse {
+	this := CertificateGetCertificateResponse{}
+	return &this
+}
+
+// NewCertificateGetCertificateResponseWithDefaults instantiates a new CertificateGetCertificateResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCertificateGetCertificateResponseWithDefaults() *CertificateGetCertificateResponse {
+	this := CertificateGetCertificateResponse{}
+	return &this
+}
+
+// GetCertificate returns the Certificate field value if set, zero value otherwise.
+func (o *CertificateGetCertificateResponse) GetCertificate() CertificateCertificate {
+	if o == nil || o.Certificate == nil {
+		var ret CertificateCertificate
+		return ret
+	}
+	return *o.Certificate
+}
+
+// GetCertificateOk returns a tuple with the Certificate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateGetCertificateResponse) GetCertificateOk() (*CertificateCertificate, bool) {
+	if o == nil || o.Certificate == nil {
+		return nil, false
+	}
+	return o.Certificate, true
+}
+
+// HasCertificate returns a boolean if a field has been set.
+func (o *CertificateGetCertificateResponse) HasCertificate() bool {
+	if o != nil && o.Certificate != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCertificate gets a reference to the given CertificateCertificate and assigns it to the Certificate field.
+func (o *CertificateGetCertificateResponse) SetCertificate(v CertificateCertificate) {
+	o.Certificate = &v
+}
+
+func (o CertificateGetCertificateResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Certificate != nil {
+		toSerialize["certificate"] = o.Certificate
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCertificateGetCertificateResponse struct {
+	value *CertificateGetCertificateResponse
+	isSet bool
+}
+
+func (v NullableCertificateGetCertificateResponse) Get() *CertificateGetCertificateResponse {
+	return v.value
+}
+
+func (v *NullableCertificateGetCertificateResponse) Set(val *CertificateGetCertificateResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCertificateGetCertificateResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCertificateGetCertificateResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCertificateGetCertificateResponse(val *CertificateGetCertificateResponse) *NullableCertificateGetCertificateResponse {
+	return &NullableCertificateGetCertificateResponse{value: val, isSet: true}
+}
+
+func (v NullableCertificateGetCertificateResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCertificateGetCertificateResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

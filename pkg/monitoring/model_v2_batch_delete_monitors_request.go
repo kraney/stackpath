@@ -8,8 +8,106 @@
  */
 
 package monitoring
+
+import (
+	"encoding/json"
+)
+
 // V2BatchDeleteMonitorsRequest struct for V2BatchDeleteMonitorsRequest
 type V2BatchDeleteMonitorsRequest struct {
 	// The list of monitor IDs to delete.
-	MonitorIds []string `json:"monitorIds,omitempty"`
+	MonitorIds *[]string `json:"monitorIds,omitempty"`
+}
+
+// NewV2BatchDeleteMonitorsRequest instantiates a new V2BatchDeleteMonitorsRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV2BatchDeleteMonitorsRequest() *V2BatchDeleteMonitorsRequest {
+	this := V2BatchDeleteMonitorsRequest{}
+	return &this
+}
+
+// NewV2BatchDeleteMonitorsRequestWithDefaults instantiates a new V2BatchDeleteMonitorsRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV2BatchDeleteMonitorsRequestWithDefaults() *V2BatchDeleteMonitorsRequest {
+	this := V2BatchDeleteMonitorsRequest{}
+	return &this
+}
+
+// GetMonitorIds returns the MonitorIds field value if set, zero value otherwise.
+func (o *V2BatchDeleteMonitorsRequest) GetMonitorIds() []string {
+	if o == nil || o.MonitorIds == nil {
+		var ret []string
+		return ret
+	}
+	return *o.MonitorIds
+}
+
+// GetMonitorIdsOk returns a tuple with the MonitorIds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V2BatchDeleteMonitorsRequest) GetMonitorIdsOk() (*[]string, bool) {
+	if o == nil || o.MonitorIds == nil {
+		return nil, false
+	}
+	return o.MonitorIds, true
+}
+
+// HasMonitorIds returns a boolean if a field has been set.
+func (o *V2BatchDeleteMonitorsRequest) HasMonitorIds() bool {
+	if o != nil && o.MonitorIds != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMonitorIds gets a reference to the given []string and assigns it to the MonitorIds field.
+func (o *V2BatchDeleteMonitorsRequest) SetMonitorIds(v []string) {
+	o.MonitorIds = &v
+}
+
+func (o V2BatchDeleteMonitorsRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.MonitorIds != nil {
+		toSerialize["monitorIds"] = o.MonitorIds
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV2BatchDeleteMonitorsRequest struct {
+	value *V2BatchDeleteMonitorsRequest
+	isSet bool
+}
+
+func (v NullableV2BatchDeleteMonitorsRequest) Get() *V2BatchDeleteMonitorsRequest {
+	return v.value
+}
+
+func (v *NullableV2BatchDeleteMonitorsRequest) Set(val *V2BatchDeleteMonitorsRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV2BatchDeleteMonitorsRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV2BatchDeleteMonitorsRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV2BatchDeleteMonitorsRequest(val *V2BatchDeleteMonitorsRequest) *NullableV2BatchDeleteMonitorsRequest {
+	return &NullableV2BatchDeleteMonitorsRequest{value: val, isSet: true}
+}
+
+func (v NullableV2BatchDeleteMonitorsRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV2BatchDeleteMonitorsRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,11 +8,179 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // DeliveryConnectScopeToOriginRequest struct for DeliveryConnectScopeToOriginRequest
 type DeliveryConnectScopeToOriginRequest struct {
-	Origin DeliveryConnectScopeToOriginRequestOrigin `json:"origin,omitempty"`
+	Origin *DeliveryConnectScopeToOriginRequestOrigin `json:"origin,omitempty"`
 	// The origin's priority to the scope  If more than one origin powers a CDN scope, then the one with the lower priority number takes higher precedence. When there is an origin already in place, the following rules are followed:  - If an origin ID is provided, then the current origin at that priority is disconnected in favor of the new one. - If an origin is provided and the current origin at the given priority is dedicated, then the origin is updated in place. - If an origin is provided and no dedicated origin exists, the origin is created and connected to the scope.
-	Priority int32 `json:"priority,omitempty"`
+	Priority *int32 `json:"priority,omitempty"`
 	// The ID of an existing origin to associate with a scope  This is useful for connecting to a shared origin.
-	OriginId string `json:"originId,omitempty"`
+	OriginId *string `json:"originId,omitempty"`
+}
+
+// NewDeliveryConnectScopeToOriginRequest instantiates a new DeliveryConnectScopeToOriginRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewDeliveryConnectScopeToOriginRequest() *DeliveryConnectScopeToOriginRequest {
+	this := DeliveryConnectScopeToOriginRequest{}
+	return &this
+}
+
+// NewDeliveryConnectScopeToOriginRequestWithDefaults instantiates a new DeliveryConnectScopeToOriginRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewDeliveryConnectScopeToOriginRequestWithDefaults() *DeliveryConnectScopeToOriginRequest {
+	this := DeliveryConnectScopeToOriginRequest{}
+	return &this
+}
+
+// GetOrigin returns the Origin field value if set, zero value otherwise.
+func (o *DeliveryConnectScopeToOriginRequest) GetOrigin() DeliveryConnectScopeToOriginRequestOrigin {
+	if o == nil || o.Origin == nil {
+		var ret DeliveryConnectScopeToOriginRequestOrigin
+		return ret
+	}
+	return *o.Origin
+}
+
+// GetOriginOk returns a tuple with the Origin field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryConnectScopeToOriginRequest) GetOriginOk() (*DeliveryConnectScopeToOriginRequestOrigin, bool) {
+	if o == nil || o.Origin == nil {
+		return nil, false
+	}
+	return o.Origin, true
+}
+
+// HasOrigin returns a boolean if a field has been set.
+func (o *DeliveryConnectScopeToOriginRequest) HasOrigin() bool {
+	if o != nil && o.Origin != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetOrigin gets a reference to the given DeliveryConnectScopeToOriginRequestOrigin and assigns it to the Origin field.
+func (o *DeliveryConnectScopeToOriginRequest) SetOrigin(v DeliveryConnectScopeToOriginRequestOrigin) {
+	o.Origin = &v
+}
+
+// GetPriority returns the Priority field value if set, zero value otherwise.
+func (o *DeliveryConnectScopeToOriginRequest) GetPriority() int32 {
+	if o == nil || o.Priority == nil {
+		var ret int32
+		return ret
+	}
+	return *o.Priority
+}
+
+// GetPriorityOk returns a tuple with the Priority field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryConnectScopeToOriginRequest) GetPriorityOk() (*int32, bool) {
+	if o == nil || o.Priority == nil {
+		return nil, false
+	}
+	return o.Priority, true
+}
+
+// HasPriority returns a boolean if a field has been set.
+func (o *DeliveryConnectScopeToOriginRequest) HasPriority() bool {
+	if o != nil && o.Priority != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPriority gets a reference to the given int32 and assigns it to the Priority field.
+func (o *DeliveryConnectScopeToOriginRequest) SetPriority(v int32) {
+	o.Priority = &v
+}
+
+// GetOriginId returns the OriginId field value if set, zero value otherwise.
+func (o *DeliveryConnectScopeToOriginRequest) GetOriginId() string {
+	if o == nil || o.OriginId == nil {
+		var ret string
+		return ret
+	}
+	return *o.OriginId
+}
+
+// GetOriginIdOk returns a tuple with the OriginId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryConnectScopeToOriginRequest) GetOriginIdOk() (*string, bool) {
+	if o == nil || o.OriginId == nil {
+		return nil, false
+	}
+	return o.OriginId, true
+}
+
+// HasOriginId returns a boolean if a field has been set.
+func (o *DeliveryConnectScopeToOriginRequest) HasOriginId() bool {
+	if o != nil && o.OriginId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetOriginId gets a reference to the given string and assigns it to the OriginId field.
+func (o *DeliveryConnectScopeToOriginRequest) SetOriginId(v string) {
+	o.OriginId = &v
+}
+
+func (o DeliveryConnectScopeToOriginRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Origin != nil {
+		toSerialize["origin"] = o.Origin
+	}
+	if o.Priority != nil {
+		toSerialize["priority"] = o.Priority
+	}
+	if o.OriginId != nil {
+		toSerialize["originId"] = o.OriginId
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableDeliveryConnectScopeToOriginRequest struct {
+	value *DeliveryConnectScopeToOriginRequest
+	isSet bool
+}
+
+func (v NullableDeliveryConnectScopeToOriginRequest) Get() *DeliveryConnectScopeToOriginRequest {
+	return v.value
+}
+
+func (v *NullableDeliveryConnectScopeToOriginRequest) Set(val *DeliveryConnectScopeToOriginRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliveryConnectScopeToOriginRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliveryConnectScopeToOriginRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliveryConnectScopeToOriginRequest(val *DeliveryConnectScopeToOriginRequest) *NullableDeliveryConnectScopeToOriginRequest {
+	return &NullableDeliveryConnectScopeToOriginRequest{value: val, isSet: true}
+}
+
+func (v NullableDeliveryConnectScopeToOriginRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliveryConnectScopeToOriginRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

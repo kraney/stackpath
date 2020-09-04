@@ -8,32 +8,517 @@
  */
 
 package waf
+
 import (
+	"encoding/json"
 	"time"
 )
+
 // WafCertificate An SSL certificate
 type WafCertificate struct {
 	// A certificate's unique ID
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// A unique hash of a certificate's contents
-	Fingerprint string `json:"fingerprint,omitempty"`
+	Fingerprint *string `json:"fingerprint,omitempty"`
 	// A certificate's common name, or the primary domain name the certificate is used for
-	CommonName string `json:"commonName,omitempty"`
+	CommonName *string `json:"commonName,omitempty"`
 	// The name of the certificate's issuing certificate authority
-	Issuer string `json:"issuer,omitempty"`
+	Issuer *string `json:"issuer,omitempty"`
 	// A PEM PKCS #7 formatted certificate authority bundle
-	CaBundle string `json:"caBundle,omitempty"`
+	CaBundle *string `json:"caBundle,omitempty"`
 	// Whether or not the certificate's authority is trusted by a web browser
-	Trusted bool `json:"trusted,omitempty"`
+	Trusted *bool `json:"trusted,omitempty"`
 	// The date an SSL certificate will expire
-	ExpirationDate time.Time `json:"expirationDate,omitempty"`
+	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
 	// The date an SSL certificate was created
-	CreateDate time.Time `json:"createDate,omitempty"`
+	CreateDate *time.Time `json:"createDate,omitempty"`
 	// The date an SSL certificate was last updated
-	UpdateDate time.Time `json:"updateDate,omitempty"`
+	UpdateDate *time.Time `json:"updateDate,omitempty"`
 	// A list of Subject Alternative Names in the certificate  Certificates for multiple domains define their domains in certificate's SAN list.
-	SubjectAlternativeNames []string `json:"subjectAlternativeNames,omitempty"`
-	Status WafCertificateStatus `json:"status,omitempty"`
+	SubjectAlternativeNames *[]string `json:"subjectAlternativeNames,omitempty"`
+	Status *WafCertificateStatus `json:"status,omitempty"`
 	// Whether a certificate is managed by StackPath or the end user
-	ProviderManaged bool `json:"providerManaged,omitempty"`
+	ProviderManaged *bool `json:"providerManaged,omitempty"`
+}
+
+// NewWafCertificate instantiates a new WafCertificate object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafCertificate() *WafCertificate {
+	this := WafCertificate{}
+	var status WafCertificateStatus = "UNKNOWN"
+	this.Status = &status
+	return &this
+}
+
+// NewWafCertificateWithDefaults instantiates a new WafCertificate object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafCertificateWithDefaults() *WafCertificate {
+	this := WafCertificate{}
+	var status WafCertificateStatus = "UNKNOWN"
+	this.Status = &status
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *WafCertificate) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *WafCertificate) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *WafCertificate) SetId(v string) {
+	o.Id = &v
+}
+
+// GetFingerprint returns the Fingerprint field value if set, zero value otherwise.
+func (o *WafCertificate) GetFingerprint() string {
+	if o == nil || o.Fingerprint == nil {
+		var ret string
+		return ret
+	}
+	return *o.Fingerprint
+}
+
+// GetFingerprintOk returns a tuple with the Fingerprint field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetFingerprintOk() (*string, bool) {
+	if o == nil || o.Fingerprint == nil {
+		return nil, false
+	}
+	return o.Fingerprint, true
+}
+
+// HasFingerprint returns a boolean if a field has been set.
+func (o *WafCertificate) HasFingerprint() bool {
+	if o != nil && o.Fingerprint != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetFingerprint gets a reference to the given string and assigns it to the Fingerprint field.
+func (o *WafCertificate) SetFingerprint(v string) {
+	o.Fingerprint = &v
+}
+
+// GetCommonName returns the CommonName field value if set, zero value otherwise.
+func (o *WafCertificate) GetCommonName() string {
+	if o == nil || o.CommonName == nil {
+		var ret string
+		return ret
+	}
+	return *o.CommonName
+}
+
+// GetCommonNameOk returns a tuple with the CommonName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetCommonNameOk() (*string, bool) {
+	if o == nil || o.CommonName == nil {
+		return nil, false
+	}
+	return o.CommonName, true
+}
+
+// HasCommonName returns a boolean if a field has been set.
+func (o *WafCertificate) HasCommonName() bool {
+	if o != nil && o.CommonName != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCommonName gets a reference to the given string and assigns it to the CommonName field.
+func (o *WafCertificate) SetCommonName(v string) {
+	o.CommonName = &v
+}
+
+// GetIssuer returns the Issuer field value if set, zero value otherwise.
+func (o *WafCertificate) GetIssuer() string {
+	if o == nil || o.Issuer == nil {
+		var ret string
+		return ret
+	}
+	return *o.Issuer
+}
+
+// GetIssuerOk returns a tuple with the Issuer field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetIssuerOk() (*string, bool) {
+	if o == nil || o.Issuer == nil {
+		return nil, false
+	}
+	return o.Issuer, true
+}
+
+// HasIssuer returns a boolean if a field has been set.
+func (o *WafCertificate) HasIssuer() bool {
+	if o != nil && o.Issuer != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetIssuer gets a reference to the given string and assigns it to the Issuer field.
+func (o *WafCertificate) SetIssuer(v string) {
+	o.Issuer = &v
+}
+
+// GetCaBundle returns the CaBundle field value if set, zero value otherwise.
+func (o *WafCertificate) GetCaBundle() string {
+	if o == nil || o.CaBundle == nil {
+		var ret string
+		return ret
+	}
+	return *o.CaBundle
+}
+
+// GetCaBundleOk returns a tuple with the CaBundle field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetCaBundleOk() (*string, bool) {
+	if o == nil || o.CaBundle == nil {
+		return nil, false
+	}
+	return o.CaBundle, true
+}
+
+// HasCaBundle returns a boolean if a field has been set.
+func (o *WafCertificate) HasCaBundle() bool {
+	if o != nil && o.CaBundle != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCaBundle gets a reference to the given string and assigns it to the CaBundle field.
+func (o *WafCertificate) SetCaBundle(v string) {
+	o.CaBundle = &v
+}
+
+// GetTrusted returns the Trusted field value if set, zero value otherwise.
+func (o *WafCertificate) GetTrusted() bool {
+	if o == nil || o.Trusted == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Trusted
+}
+
+// GetTrustedOk returns a tuple with the Trusted field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetTrustedOk() (*bool, bool) {
+	if o == nil || o.Trusted == nil {
+		return nil, false
+	}
+	return o.Trusted, true
+}
+
+// HasTrusted returns a boolean if a field has been set.
+func (o *WafCertificate) HasTrusted() bool {
+	if o != nil && o.Trusted != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetTrusted gets a reference to the given bool and assigns it to the Trusted field.
+func (o *WafCertificate) SetTrusted(v bool) {
+	o.Trusted = &v
+}
+
+// GetExpirationDate returns the ExpirationDate field value if set, zero value otherwise.
+func (o *WafCertificate) GetExpirationDate() time.Time {
+	if o == nil || o.ExpirationDate == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.ExpirationDate
+}
+
+// GetExpirationDateOk returns a tuple with the ExpirationDate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetExpirationDateOk() (*time.Time, bool) {
+	if o == nil || o.ExpirationDate == nil {
+		return nil, false
+	}
+	return o.ExpirationDate, true
+}
+
+// HasExpirationDate returns a boolean if a field has been set.
+func (o *WafCertificate) HasExpirationDate() bool {
+	if o != nil && o.ExpirationDate != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetExpirationDate gets a reference to the given time.Time and assigns it to the ExpirationDate field.
+func (o *WafCertificate) SetExpirationDate(v time.Time) {
+	o.ExpirationDate = &v
+}
+
+// GetCreateDate returns the CreateDate field value if set, zero value otherwise.
+func (o *WafCertificate) GetCreateDate() time.Time {
+	if o == nil || o.CreateDate == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.CreateDate
+}
+
+// GetCreateDateOk returns a tuple with the CreateDate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetCreateDateOk() (*time.Time, bool) {
+	if o == nil || o.CreateDate == nil {
+		return nil, false
+	}
+	return o.CreateDate, true
+}
+
+// HasCreateDate returns a boolean if a field has been set.
+func (o *WafCertificate) HasCreateDate() bool {
+	if o != nil && o.CreateDate != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCreateDate gets a reference to the given time.Time and assigns it to the CreateDate field.
+func (o *WafCertificate) SetCreateDate(v time.Time) {
+	o.CreateDate = &v
+}
+
+// GetUpdateDate returns the UpdateDate field value if set, zero value otherwise.
+func (o *WafCertificate) GetUpdateDate() time.Time {
+	if o == nil || o.UpdateDate == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.UpdateDate
+}
+
+// GetUpdateDateOk returns a tuple with the UpdateDate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetUpdateDateOk() (*time.Time, bool) {
+	if o == nil || o.UpdateDate == nil {
+		return nil, false
+	}
+	return o.UpdateDate, true
+}
+
+// HasUpdateDate returns a boolean if a field has been set.
+func (o *WafCertificate) HasUpdateDate() bool {
+	if o != nil && o.UpdateDate != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUpdateDate gets a reference to the given time.Time and assigns it to the UpdateDate field.
+func (o *WafCertificate) SetUpdateDate(v time.Time) {
+	o.UpdateDate = &v
+}
+
+// GetSubjectAlternativeNames returns the SubjectAlternativeNames field value if set, zero value otherwise.
+func (o *WafCertificate) GetSubjectAlternativeNames() []string {
+	if o == nil || o.SubjectAlternativeNames == nil {
+		var ret []string
+		return ret
+	}
+	return *o.SubjectAlternativeNames
+}
+
+// GetSubjectAlternativeNamesOk returns a tuple with the SubjectAlternativeNames field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetSubjectAlternativeNamesOk() (*[]string, bool) {
+	if o == nil || o.SubjectAlternativeNames == nil {
+		return nil, false
+	}
+	return o.SubjectAlternativeNames, true
+}
+
+// HasSubjectAlternativeNames returns a boolean if a field has been set.
+func (o *WafCertificate) HasSubjectAlternativeNames() bool {
+	if o != nil && o.SubjectAlternativeNames != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSubjectAlternativeNames gets a reference to the given []string and assigns it to the SubjectAlternativeNames field.
+func (o *WafCertificate) SetSubjectAlternativeNames(v []string) {
+	o.SubjectAlternativeNames = &v
+}
+
+// GetStatus returns the Status field value if set, zero value otherwise.
+func (o *WafCertificate) GetStatus() WafCertificateStatus {
+	if o == nil || o.Status == nil {
+		var ret WafCertificateStatus
+		return ret
+	}
+	return *o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetStatusOk() (*WafCertificateStatus, bool) {
+	if o == nil || o.Status == nil {
+		return nil, false
+	}
+	return o.Status, true
+}
+
+// HasStatus returns a boolean if a field has been set.
+func (o *WafCertificate) HasStatus() bool {
+	if o != nil && o.Status != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatus gets a reference to the given WafCertificateStatus and assigns it to the Status field.
+func (o *WafCertificate) SetStatus(v WafCertificateStatus) {
+	o.Status = &v
+}
+
+// GetProviderManaged returns the ProviderManaged field value if set, zero value otherwise.
+func (o *WafCertificate) GetProviderManaged() bool {
+	if o == nil || o.ProviderManaged == nil {
+		var ret bool
+		return ret
+	}
+	return *o.ProviderManaged
+}
+
+// GetProviderManagedOk returns a tuple with the ProviderManaged field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafCertificate) GetProviderManagedOk() (*bool, bool) {
+	if o == nil || o.ProviderManaged == nil {
+		return nil, false
+	}
+	return o.ProviderManaged, true
+}
+
+// HasProviderManaged returns a boolean if a field has been set.
+func (o *WafCertificate) HasProviderManaged() bool {
+	if o != nil && o.ProviderManaged != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetProviderManaged gets a reference to the given bool and assigns it to the ProviderManaged field.
+func (o *WafCertificate) SetProviderManaged(v bool) {
+	o.ProviderManaged = &v
+}
+
+func (o WafCertificate) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Fingerprint != nil {
+		toSerialize["fingerprint"] = o.Fingerprint
+	}
+	if o.CommonName != nil {
+		toSerialize["commonName"] = o.CommonName
+	}
+	if o.Issuer != nil {
+		toSerialize["issuer"] = o.Issuer
+	}
+	if o.CaBundle != nil {
+		toSerialize["caBundle"] = o.CaBundle
+	}
+	if o.Trusted != nil {
+		toSerialize["trusted"] = o.Trusted
+	}
+	if o.ExpirationDate != nil {
+		toSerialize["expirationDate"] = o.ExpirationDate
+	}
+	if o.CreateDate != nil {
+		toSerialize["createDate"] = o.CreateDate
+	}
+	if o.UpdateDate != nil {
+		toSerialize["updateDate"] = o.UpdateDate
+	}
+	if o.SubjectAlternativeNames != nil {
+		toSerialize["subjectAlternativeNames"] = o.SubjectAlternativeNames
+	}
+	if o.Status != nil {
+		toSerialize["status"] = o.Status
+	}
+	if o.ProviderManaged != nil {
+		toSerialize["providerManaged"] = o.ProviderManaged
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafCertificate struct {
+	value *WafCertificate
+	isSet bool
+}
+
+func (v NullableWafCertificate) Get() *WafCertificate {
+	return v.value
+}
+
+func (v *NullableWafCertificate) Set(val *WafCertificate) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafCertificate) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafCertificate) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafCertificate(val *WafCertificate) *NullableWafCertificate {
+	return &NullableWafCertificate{value: val, isSet: true}
+}
+
+func (v NullableWafCertificate) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafCertificate) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

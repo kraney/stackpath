@@ -13,9 +13,9 @@ APIS=accounts_and_users \
 all: $(APIS:%=pkg/%)
 
 pkg/%: oas/%.json
-	openapi-generator generate -g go --api-package $@ -i $< -o $@ \
+	openapi-generator generate -g go-experimental --api-package $@ -i $< -o $@ \
 	               --package-name $(@:pkg/%=%) \
-				   --additional-properties enumClassPrefix=true
+				   --additional-properties enumClassPrefix=true,isGoSubmodule=true
 	rm -f $@/go.{mod,sum}
 
 clean:

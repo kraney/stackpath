@@ -12,19 +12,58 @@ Method | HTTP request | Description
 
 ## CreateSiteDeliveryDomain
 
-> DeliveryCreateSiteDeliveryDomainResponse CreateSiteDeliveryDomain(ctx, stackId, siteId, deliveryCreateSiteDeliveryDomainRequest)
+> DeliveryCreateSiteDeliveryDomainResponse CreateSiteDeliveryDomain(ctx, stackId, siteId).DeliveryCreateSiteDeliveryDomainRequest(deliveryCreateSiteDeliveryDomainRequest).Execute()
 
 Add a delivery domain to a site
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    deliveryCreateSiteDeliveryDomainRequest := openapiclient.deliveryCreateSiteDeliveryDomainRequest{Domain: "Domain_example"} // DeliveryCreateSiteDeliveryDomainRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.DeliveryDomainsApi.CreateSiteDeliveryDomain(context.Background(), stackId, siteId, deliveryCreateSiteDeliveryDomainRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `DeliveryDomainsApi.CreateSiteDeliveryDomain``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `CreateSiteDeliveryDomain`: DeliveryCreateSiteDeliveryDomainResponse
+    fmt.Fprintf(os.Stdout, "Response from `DeliveryDomainsApi.CreateSiteDeliveryDomain`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**deliveryCreateSiteDeliveryDomainRequest** | [**DeliveryCreateSiteDeliveryDomainRequest**](DeliveryCreateSiteDeliveryDomainRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateSiteDeliveryDomainRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **deliveryCreateSiteDeliveryDomainRequest** | [**DeliveryCreateSiteDeliveryDomainRequest**](DeliveryCreateSiteDeliveryDomainRequest.md) |  | 
 
 ### Return type
 
@@ -46,19 +85,57 @@ Name | Type | Description  | Notes
 
 ## DeleteSiteDeliveryDomain
 
-> DeleteSiteDeliveryDomain(ctx, stackId, siteId, domain)
+> DeleteSiteDeliveryDomain(ctx, stackId, siteId, domain).Execute()
 
 Remove a delivery domain from a site
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    domain := "domain_example" // string | The delivery domain to remove from a site
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.DeliveryDomainsApi.DeleteSiteDeliveryDomain(context.Background(), stackId, siteId, domain).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `DeliveryDomainsApi.DeleteSiteDeliveryDomain``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**domain** | **string**| The delivery domain to remove from a site | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**domain** | **string** | The delivery domain to remove from a site | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteSiteDeliveryDomainRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -80,35 +157,66 @@ Name | Type | Description  | Notes
 
 ## GetSiteDeliveryDomains2
 
-> DeliveryGetSiteDeliveryDomainsResponse GetSiteDeliveryDomains2(ctx, stackId, siteId, optional)
+> DeliveryGetSiteDeliveryDomainsResponse GetSiteDeliveryDomains2(ctx, stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
 
 Retrieve the delivery domains configured on a site
 
-Delivery domains allow the CDN to recognize an HTTP request and associate it with a site.
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
+    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
+    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
+    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.DeliveryDomainsApi.GetSiteDeliveryDomains2(context.Background(), stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `DeliveryDomainsApi.GetSiteDeliveryDomains2``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetSiteDeliveryDomains2`: DeliveryGetSiteDeliveryDomainsResponse
+    fmt.Fprintf(os.Stdout, "Response from `DeliveryDomainsApi.GetSiteDeliveryDomains2`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
- **optional** | ***GetSiteDeliveryDomains2Opts** | optional parameters | nil if no parameters
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetSiteDeliveryDomains2Opts struct
+Other parameters are passed through a pointer to a apiGetSiteDeliveryDomains2Request struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **pageRequestFirst** | **optional.String**| The number of items desired. | 
- **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
- **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
- **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
+ **pageRequestFirst** | **string** | The number of items desired. | 
+ **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **string** | SQL-style constraint filters. | 
+ **pageRequestSortBy** | **string** | Sort the response by the given field. | 
 
 ### Return type
 

@@ -10,20 +10,58 @@ Method | HTTP request | Description
 
 ## GetSiteDnsTargets
 
-> WafGetSiteDnsTargetsResponse GetSiteDnsTargets(ctx, stackId, siteId)
+> WafGetSiteDnsTargetsResponse GetSiteDnsTargets(ctx, stackId, siteId).Execute()
 
 Get CNAME targets
 
-A site's hostname should point to these CNAME targets in order for traffic to be sent through StackPath's edge nodes.
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.ConfigurationApi.GetSiteDnsTargets(context.Background(), stackId, siteId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ConfigurationApi.GetSiteDnsTargets``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetSiteDnsTargets`: WafGetSiteDnsTargetsResponse
+    fmt.Fprintf(os.Stdout, "Response from `ConfigurationApi.GetSiteDnsTargets`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetSiteDnsTargetsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 

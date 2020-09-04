@@ -8,14 +8,252 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfCompression The compression policy allows you to provide a list of file extensions you want the CDN caching servers to automatically compress before delivering content to end users. This policy is typically used when your origin server does not support compression or you are unable to configure your origin to compress your files. If your origin is configured to already compress files, you should consider adding the Compressed Origin Pull policy to your host, which will enable the CDN caching server to request compressed (gzip) version of your assets. The compressed origin pull policy can be found in the Origin Pull policies list. Please note that our caching servers schedule the compression of files, and typically you do not see the compressed delivery until the file has been requested several times. Typically, this list is comprised of text files like javascript, html and CSS files. You should not include file extensions that match media files (images, videos, or audio files) or any other file format that includes a built in compression algorithm. Attempting to further compress these types of files usually results in a larger file being delivered to end users.
 type CustconfCompression struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// String of values delimited by a ',' character. The list of file extensions you want the caching servers to use to identify the content you want compressed before delivering it to end users
-	Gzip string `json:"gzip,omitempty"`
+	Gzip *string `json:"gzip,omitempty"`
 	// String of values delimited by a ',' character. A list of rules based on MIME types you want the caching servers to use to identify content you want compressed before delivering it to end users.
-	Mime string `json:"mime,omitempty"`
-	Level string `json:"level,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Mime *string `json:"mime,omitempty"`
+	Level *string `json:"level,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfCompression instantiates a new CustconfCompression object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfCompression() *CustconfCompression {
+	this := CustconfCompression{}
+	return &this
+}
+
+// NewCustconfCompressionWithDefaults instantiates a new CustconfCompression object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfCompressionWithDefaults() *CustconfCompression {
+	this := CustconfCompression{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfCompression) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfCompression) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfCompression) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfCompression) SetId(v string) {
+	o.Id = &v
+}
+
+// GetGzip returns the Gzip field value if set, zero value otherwise.
+func (o *CustconfCompression) GetGzip() string {
+	if o == nil || o.Gzip == nil {
+		var ret string
+		return ret
+	}
+	return *o.Gzip
+}
+
+// GetGzipOk returns a tuple with the Gzip field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfCompression) GetGzipOk() (*string, bool) {
+	if o == nil || o.Gzip == nil {
+		return nil, false
+	}
+	return o.Gzip, true
+}
+
+// HasGzip returns a boolean if a field has been set.
+func (o *CustconfCompression) HasGzip() bool {
+	if o != nil && o.Gzip != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetGzip gets a reference to the given string and assigns it to the Gzip field.
+func (o *CustconfCompression) SetGzip(v string) {
+	o.Gzip = &v
+}
+
+// GetMime returns the Mime field value if set, zero value otherwise.
+func (o *CustconfCompression) GetMime() string {
+	if o == nil || o.Mime == nil {
+		var ret string
+		return ret
+	}
+	return *o.Mime
+}
+
+// GetMimeOk returns a tuple with the Mime field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfCompression) GetMimeOk() (*string, bool) {
+	if o == nil || o.Mime == nil {
+		return nil, false
+	}
+	return o.Mime, true
+}
+
+// HasMime returns a boolean if a field has been set.
+func (o *CustconfCompression) HasMime() bool {
+	if o != nil && o.Mime != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMime gets a reference to the given string and assigns it to the Mime field.
+func (o *CustconfCompression) SetMime(v string) {
+	o.Mime = &v
+}
+
+// GetLevel returns the Level field value if set, zero value otherwise.
+func (o *CustconfCompression) GetLevel() string {
+	if o == nil || o.Level == nil {
+		var ret string
+		return ret
+	}
+	return *o.Level
+}
+
+// GetLevelOk returns a tuple with the Level field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfCompression) GetLevelOk() (*string, bool) {
+	if o == nil || o.Level == nil {
+		return nil, false
+	}
+	return o.Level, true
+}
+
+// HasLevel returns a boolean if a field has been set.
+func (o *CustconfCompression) HasLevel() bool {
+	if o != nil && o.Level != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLevel gets a reference to the given string and assigns it to the Level field.
+func (o *CustconfCompression) SetLevel(v string) {
+	o.Level = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfCompression) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfCompression) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfCompression) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfCompression) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfCompression) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Gzip != nil {
+		toSerialize["gzip"] = o.Gzip
+	}
+	if o.Mime != nil {
+		toSerialize["mime"] = o.Mime
+	}
+	if o.Level != nil {
+		toSerialize["level"] = o.Level
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfCompression struct {
+	value *CustconfCompression
+	isSet bool
+}
+
+func (v NullableCustconfCompression) Get() *CustconfCompression {
+	return v.value
+}
+
+func (v *NullableCustconfCompression) Set(val *CustconfCompression) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfCompression) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfCompression) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfCompression(val *CustconfCompression) *NullableCustconfCompression {
+	return &NullableCustconfCompression{value: val, isSet: true}
+}
+
+func (v NullableCustconfCompression) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfCompression) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -25,6 +25,16 @@ var (
 // PoliciesApiService PoliciesApi service
 type PoliciesApiService service
 
+type apiDisablePolicyRequest struct {
+	ctx _context.Context
+	apiService *PoliciesApiService
+	stackId string
+	siteId string
+	policyGroupId string
+	policyId string
+}
+
+
 /*
 DisablePolicy Disable a policy
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
@@ -32,29 +42,51 @@ DisablePolicy Disable a policy
  * @param siteId A site ID
  * @param policyGroupId A WAF policy group ID
  * @param policyId A WAF policy ID
+@return apiDisablePolicyRequest
 */
-func (a *PoliciesApiService) DisablePolicy(ctx _context.Context, stackId string, siteId string, policyGroupId string, policyId string) (*_nethttp.Response, error) {
+func (a *PoliciesApiService) DisablePolicy(ctx _context.Context, stackId string, siteId string, policyGroupId string, policyId string) apiDisablePolicyRequest {
+	return apiDisablePolicyRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		policyGroupId: policyGroupId,
+		policyId: policyId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDisablePolicyRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies/{policy_id}/disable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PoliciesApiService.DisablePolicy")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(policyGroupId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_id"+"}", _neturl.QueryEscape(parameterToString(policyId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies/{policy_id}/disable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(r.policyGroupId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_id"+"}", _neturl.QueryEscape(parameterToString(r.policyId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -73,12 +105,12 @@ func (a *PoliciesApiService) DisablePolicy(ctx _context.Context, stackId string,
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -96,7 +128,7 @@ func (a *PoliciesApiService) DisablePolicy(ctx _context.Context, stackId string,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -106,7 +138,7 @@ func (a *PoliciesApiService) DisablePolicy(ctx _context.Context, stackId string,
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -115,7 +147,7 @@ func (a *PoliciesApiService) DisablePolicy(ctx _context.Context, stackId string,
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -126,6 +158,14 @@ func (a *PoliciesApiService) DisablePolicy(ctx _context.Context, stackId string,
 
 	return localVarHTTPResponse, nil
 }
+type apiDisablePolicyGroupRequest struct {
+	ctx _context.Context
+	apiService *PoliciesApiService
+	stackId string
+	siteId string
+	policyGroupId string
+}
+
 
 /*
 DisablePolicyGroup Disable all policies in a group
@@ -133,27 +173,48 @@ DisablePolicyGroup Disable all policies in a group
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param policyGroupId A WAF policy group ID
+@return apiDisablePolicyGroupRequest
 */
-func (a *PoliciesApiService) DisablePolicyGroup(ctx _context.Context, stackId string, siteId string, policyGroupId string) (*_nethttp.Response, error) {
+func (a *PoliciesApiService) DisablePolicyGroup(ctx _context.Context, stackId string, siteId string, policyGroupId string) apiDisablePolicyGroupRequest {
+	return apiDisablePolicyGroupRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		policyGroupId: policyGroupId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDisablePolicyGroupRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/disable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PoliciesApiService.DisablePolicyGroup")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(policyGroupId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/disable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(r.policyGroupId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -172,12 +233,12 @@ func (a *PoliciesApiService) DisablePolicyGroup(ctx _context.Context, stackId st
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -195,7 +256,7 @@ func (a *PoliciesApiService) DisablePolicyGroup(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -205,7 +266,7 @@ func (a *PoliciesApiService) DisablePolicyGroup(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -214,7 +275,7 @@ func (a *PoliciesApiService) DisablePolicyGroup(ctx _context.Context, stackId st
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -225,6 +286,15 @@ func (a *PoliciesApiService) DisablePolicyGroup(ctx _context.Context, stackId st
 
 	return localVarHTTPResponse, nil
 }
+type apiEnablePolicyRequest struct {
+	ctx _context.Context
+	apiService *PoliciesApiService
+	stackId string
+	siteId string
+	policyGroupId string
+	policyId string
+}
+
 
 /*
 EnablePolicy Enable a policy
@@ -233,29 +303,51 @@ EnablePolicy Enable a policy
  * @param siteId A site ID
  * @param policyGroupId A WAF policy group ID
  * @param policyId A WAF policy ID
+@return apiEnablePolicyRequest
 */
-func (a *PoliciesApiService) EnablePolicy(ctx _context.Context, stackId string, siteId string, policyGroupId string, policyId string) (*_nethttp.Response, error) {
+func (a *PoliciesApiService) EnablePolicy(ctx _context.Context, stackId string, siteId string, policyGroupId string, policyId string) apiEnablePolicyRequest {
+	return apiEnablePolicyRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		policyGroupId: policyGroupId,
+		policyId: policyId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiEnablePolicyRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies/{policy_id}/enable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PoliciesApiService.EnablePolicy")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(policyGroupId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_id"+"}", _neturl.QueryEscape(parameterToString(policyId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies/{policy_id}/enable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(r.policyGroupId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_id"+"}", _neturl.QueryEscape(parameterToString(r.policyId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -274,12 +366,12 @@ func (a *PoliciesApiService) EnablePolicy(ctx _context.Context, stackId string, 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -297,7 +389,7 @@ func (a *PoliciesApiService) EnablePolicy(ctx _context.Context, stackId string, 
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -307,7 +399,7 @@ func (a *PoliciesApiService) EnablePolicy(ctx _context.Context, stackId string, 
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -316,7 +408,7 @@ func (a *PoliciesApiService) EnablePolicy(ctx _context.Context, stackId string, 
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -327,6 +419,14 @@ func (a *PoliciesApiService) EnablePolicy(ctx _context.Context, stackId string, 
 
 	return localVarHTTPResponse, nil
 }
+type apiEnablePolicyGroupRequest struct {
+	ctx _context.Context
+	apiService *PoliciesApiService
+	stackId string
+	siteId string
+	policyGroupId string
+}
+
 
 /*
 EnablePolicyGroup Enable all policies in a group
@@ -334,27 +434,48 @@ EnablePolicyGroup Enable all policies in a group
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param policyGroupId A WAF policy group ID
+@return apiEnablePolicyGroupRequest
 */
-func (a *PoliciesApiService) EnablePolicyGroup(ctx _context.Context, stackId string, siteId string, policyGroupId string) (*_nethttp.Response, error) {
+func (a *PoliciesApiService) EnablePolicyGroup(ctx _context.Context, stackId string, siteId string, policyGroupId string) apiEnablePolicyGroupRequest {
+	return apiEnablePolicyGroupRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		policyGroupId: policyGroupId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiEnablePolicyGroupRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/enable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PoliciesApiService.EnablePolicyGroup")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(policyGroupId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/enable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(r.policyGroupId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -373,12 +494,12 @@ func (a *PoliciesApiService) EnablePolicyGroup(ctx _context.Context, stackId str
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -396,7 +517,7 @@ func (a *PoliciesApiService) EnablePolicyGroup(ctx _context.Context, stackId str
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -406,7 +527,7 @@ func (a *PoliciesApiService) EnablePolicyGroup(ctx _context.Context, stackId str
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -415,7 +536,7 @@ func (a *PoliciesApiService) EnablePolicyGroup(ctx _context.Context, stackId str
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -426,6 +547,14 @@ func (a *PoliciesApiService) EnablePolicyGroup(ctx _context.Context, stackId str
 
 	return localVarHTTPResponse, nil
 }
+type apiGetPoliciesRequest struct {
+	ctx _context.Context
+	apiService *PoliciesApiService
+	stackId string
+	siteId string
+	policyGroupId string
+}
+
 
 /*
 GetPolicies Get all policies in a group
@@ -433,9 +562,23 @@ GetPolicies Get all policies in a group
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param policyGroupId A WAF policy group ID
-@return WafGetPoliciesResponse
+@return apiGetPoliciesRequest
 */
-func (a *PoliciesApiService) GetPolicies(ctx _context.Context, stackId string, siteId string, policyGroupId string) (WafGetPoliciesResponse, *_nethttp.Response, error) {
+func (a *PoliciesApiService) GetPolicies(ctx _context.Context, stackId string, siteId string, policyGroupId string) apiGetPoliciesRequest {
+	return apiGetPoliciesRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		policyGroupId: policyGroupId,
+	}
+}
+
+/*
+Execute executes the request
+ @return WafGetPoliciesResponse
+*/
+func (r apiGetPoliciesRequest) Execute() (WafGetPoliciesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -445,17 +588,22 @@ func (a *PoliciesApiService) GetPolicies(ctx _context.Context, stackId string, s
 		localVarReturnValue  WafGetPoliciesResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PoliciesApiService.GetPolicies")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(policyGroupId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(r.policyGroupId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -474,12 +622,12 @@ func (a *PoliciesApiService) GetPolicies(ctx _context.Context, stackId string, s
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -497,7 +645,7 @@ func (a *PoliciesApiService) GetPolicies(ctx _context.Context, stackId string, s
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -507,7 +655,7 @@ func (a *PoliciesApiService) GetPolicies(ctx _context.Context, stackId string, s
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -516,7 +664,7 @@ func (a *PoliciesApiService) GetPolicies(ctx _context.Context, stackId string, s
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -525,7 +673,7 @@ func (a *PoliciesApiService) GetPolicies(ctx _context.Context, stackId string, s
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -536,6 +684,15 @@ func (a *PoliciesApiService) GetPolicies(ctx _context.Context, stackId string, s
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetPolicyRequest struct {
+	ctx _context.Context
+	apiService *PoliciesApiService
+	stackId string
+	siteId string
+	policyGroupId string
+	policyId string
+}
+
 
 /*
 GetPolicy Get a policy
@@ -544,9 +701,24 @@ GetPolicy Get a policy
  * @param siteId A site ID
  * @param policyGroupId A WAF policy group ID
  * @param policyId A WAF policy ID
-@return WafGetPolicyResponse
+@return apiGetPolicyRequest
 */
-func (a *PoliciesApiService) GetPolicy(ctx _context.Context, stackId string, siteId string, policyGroupId string, policyId string) (WafGetPolicyResponse, *_nethttp.Response, error) {
+func (a *PoliciesApiService) GetPolicy(ctx _context.Context, stackId string, siteId string, policyGroupId string, policyId string) apiGetPolicyRequest {
+	return apiGetPolicyRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		policyGroupId: policyGroupId,
+		policyId: policyId,
+	}
+}
+
+/*
+Execute executes the request
+ @return WafGetPolicyResponse
+*/
+func (r apiGetPolicyRequest) Execute() (WafGetPolicyResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -556,19 +728,24 @@ func (a *PoliciesApiService) GetPolicy(ctx _context.Context, stackId string, sit
 		localVarReturnValue  WafGetPolicyResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies/{policy_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PoliciesApiService.GetPolicy")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(policyGroupId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_id"+"}", _neturl.QueryEscape(parameterToString(policyId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}/policies/{policy_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(r.policyGroupId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_id"+"}", _neturl.QueryEscape(parameterToString(r.policyId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -587,12 +764,12 @@ func (a *PoliciesApiService) GetPolicy(ctx _context.Context, stackId string, sit
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -610,7 +787,7 @@ func (a *PoliciesApiService) GetPolicy(ctx _context.Context, stackId string, sit
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -620,7 +797,7 @@ func (a *PoliciesApiService) GetPolicy(ctx _context.Context, stackId string, sit
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -629,7 +806,7 @@ func (a *PoliciesApiService) GetPolicy(ctx _context.Context, stackId string, sit
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -638,7 +815,7 @@ func (a *PoliciesApiService) GetPolicy(ctx _context.Context, stackId string, sit
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -649,6 +826,14 @@ func (a *PoliciesApiService) GetPolicy(ctx _context.Context, stackId string, sit
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetPolicyGroupRequest struct {
+	ctx _context.Context
+	apiService *PoliciesApiService
+	stackId string
+	siteId string
+	policyGroupId string
+}
+
 
 /*
 GetPolicyGroup Get a policy group
@@ -656,9 +841,23 @@ GetPolicyGroup Get a policy group
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param policyGroupId A WAF policy group ID
-@return WafGetPolicyGroupResponse
+@return apiGetPolicyGroupRequest
 */
-func (a *PoliciesApiService) GetPolicyGroup(ctx _context.Context, stackId string, siteId string, policyGroupId string) (WafGetPolicyGroupResponse, *_nethttp.Response, error) {
+func (a *PoliciesApiService) GetPolicyGroup(ctx _context.Context, stackId string, siteId string, policyGroupId string) apiGetPolicyGroupRequest {
+	return apiGetPolicyGroupRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		policyGroupId: policyGroupId,
+	}
+}
+
+/*
+Execute executes the request
+ @return WafGetPolicyGroupResponse
+*/
+func (r apiGetPolicyGroupRequest) Execute() (WafGetPolicyGroupResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -668,17 +867,22 @@ func (a *PoliciesApiService) GetPolicyGroup(ctx _context.Context, stackId string
 		localVarReturnValue  WafGetPolicyGroupResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PoliciesApiService.GetPolicyGroup")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(policyGroupId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups/{policy_group_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"policy_group_id"+"}", _neturl.QueryEscape(parameterToString(r.policyGroupId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -697,12 +901,12 @@ func (a *PoliciesApiService) GetPolicyGroup(ctx _context.Context, stackId string
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -720,7 +924,7 @@ func (a *PoliciesApiService) GetPolicyGroup(ctx _context.Context, stackId string
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -730,7 +934,7 @@ func (a *PoliciesApiService) GetPolicyGroup(ctx _context.Context, stackId string
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -739,7 +943,7 @@ func (a *PoliciesApiService) GetPolicyGroup(ctx _context.Context, stackId string
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -748,7 +952,7 @@ func (a *PoliciesApiService) GetPolicyGroup(ctx _context.Context, stackId string
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -759,15 +963,35 @@ func (a *PoliciesApiService) GetPolicyGroup(ctx _context.Context, stackId string
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetPolicyGroupsRequest struct {
+	ctx _context.Context
+	apiService *PoliciesApiService
+	stackId string
+	siteId string
+}
+
 
 /*
 GetPolicyGroups Get all policy groups
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return WafGetPolicyGroupsResponse
+@return apiGetPolicyGroupsRequest
 */
-func (a *PoliciesApiService) GetPolicyGroups(ctx _context.Context, stackId string, siteId string) (WafGetPolicyGroupsResponse, *_nethttp.Response, error) {
+func (a *PoliciesApiService) GetPolicyGroups(ctx _context.Context, stackId string, siteId string) apiGetPolicyGroupsRequest {
+	return apiGetPolicyGroupsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+ @return WafGetPolicyGroupsResponse
+*/
+func (r apiGetPolicyGroupsRequest) Execute() (WafGetPolicyGroupsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -777,15 +1001,20 @@ func (a *PoliciesApiService) GetPolicyGroups(ctx _context.Context, stackId strin
 		localVarReturnValue  WafGetPolicyGroupsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PoliciesApiService.GetPolicyGroups")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -804,12 +1033,12 @@ func (a *PoliciesApiService) GetPolicyGroups(ctx _context.Context, stackId strin
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -827,7 +1056,7 @@ func (a *PoliciesApiService) GetPolicyGroups(ctx _context.Context, stackId strin
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -837,7 +1066,7 @@ func (a *PoliciesApiService) GetPolicyGroups(ctx _context.Context, stackId strin
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -846,7 +1075,7 @@ func (a *PoliciesApiService) GetPolicyGroups(ctx _context.Context, stackId strin
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -855,7 +1084,7 @@ func (a *PoliciesApiService) GetPolicyGroups(ctx _context.Context, stackId strin
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -866,6 +1095,19 @@ func (a *PoliciesApiService) GetPolicyGroups(ctx _context.Context, stackId strin
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiUpdatePolicyGroupsRequest struct {
+	ctx _context.Context
+	apiService *PoliciesApiService
+	stackId string
+	siteId string
+	wafUpdatePolicyGroupsRequest *WafUpdatePolicyGroupsRequest
+}
+
+
+func (r apiUpdatePolicyGroupsRequest) WafUpdatePolicyGroupsRequest(wafUpdatePolicyGroupsRequest WafUpdatePolicyGroupsRequest) apiUpdatePolicyGroupsRequest {
+	r.wafUpdatePolicyGroupsRequest = &wafUpdatePolicyGroupsRequest
+	return r
+}
 
 /*
 UpdatePolicyGroups Update policy groups
@@ -873,10 +1115,22 @@ Provide the IDs and enabled states of the policies in their policy groups that s
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
- * @param wafUpdatePolicyGroupsRequest
-@return WafGetPolicyGroupsResponse
+@return apiUpdatePolicyGroupsRequest
 */
-func (a *PoliciesApiService) UpdatePolicyGroups(ctx _context.Context, stackId string, siteId string, wafUpdatePolicyGroupsRequest WafUpdatePolicyGroupsRequest) (WafGetPolicyGroupsResponse, *_nethttp.Response, error) {
+func (a *PoliciesApiService) UpdatePolicyGroups(ctx _context.Context, stackId string, siteId string) apiUpdatePolicyGroupsRequest {
+	return apiUpdatePolicyGroupsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+ @return WafGetPolicyGroupsResponse
+*/
+func (r apiUpdatePolicyGroupsRequest) Execute() (WafGetPolicyGroupsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -886,15 +1140,24 @@ func (a *PoliciesApiService) UpdatePolicyGroups(ctx _context.Context, stackId st
 		localVarReturnValue  WafGetPolicyGroupsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "PoliciesApiService.UpdatePolicyGroups")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/policy_groups"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	if r.wafUpdatePolicyGroupsRequest == nil {
+		return localVarReturnValue, nil, reportError("wafUpdatePolicyGroupsRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -914,13 +1177,13 @@ func (a *PoliciesApiService) UpdatePolicyGroups(ctx _context.Context, stackId st
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &wafUpdatePolicyGroupsRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.wafUpdatePolicyGroupsRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -938,7 +1201,7 @@ func (a *PoliciesApiService) UpdatePolicyGroups(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -948,7 +1211,7 @@ func (a *PoliciesApiService) UpdatePolicyGroups(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -957,7 +1220,7 @@ func (a *PoliciesApiService) UpdatePolicyGroups(ctx _context.Context, stackId st
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -966,7 +1229,7 @@ func (a *PoliciesApiService) UpdatePolicyGroups(ctx _context.Context, stackId st
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

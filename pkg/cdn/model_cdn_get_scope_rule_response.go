@@ -8,7 +8,105 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnGetScopeRuleResponse The response from a request to retrieve an individual EdgeRule
 type CdnGetScopeRuleResponse struct {
-	Rule CdnScopeRule `json:"rule,omitempty"`
+	Rule *CdnScopeRule `json:"rule,omitempty"`
+}
+
+// NewCdnGetScopeRuleResponse instantiates a new CdnGetScopeRuleResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnGetScopeRuleResponse() *CdnGetScopeRuleResponse {
+	this := CdnGetScopeRuleResponse{}
+	return &this
+}
+
+// NewCdnGetScopeRuleResponseWithDefaults instantiates a new CdnGetScopeRuleResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnGetScopeRuleResponseWithDefaults() *CdnGetScopeRuleResponse {
+	this := CdnGetScopeRuleResponse{}
+	return &this
+}
+
+// GetRule returns the Rule field value if set, zero value otherwise.
+func (o *CdnGetScopeRuleResponse) GetRule() CdnScopeRule {
+	if o == nil || o.Rule == nil {
+		var ret CdnScopeRule
+		return ret
+	}
+	return *o.Rule
+}
+
+// GetRuleOk returns a tuple with the Rule field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnGetScopeRuleResponse) GetRuleOk() (*CdnScopeRule, bool) {
+	if o == nil || o.Rule == nil {
+		return nil, false
+	}
+	return o.Rule, true
+}
+
+// HasRule returns a boolean if a field has been set.
+func (o *CdnGetScopeRuleResponse) HasRule() bool {
+	if o != nil && o.Rule != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRule gets a reference to the given CdnScopeRule and assigns it to the Rule field.
+func (o *CdnGetScopeRuleResponse) SetRule(v CdnScopeRule) {
+	o.Rule = &v
+}
+
+func (o CdnGetScopeRuleResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Rule != nil {
+		toSerialize["rule"] = o.Rule
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnGetScopeRuleResponse struct {
+	value *CdnGetScopeRuleResponse
+	isSet bool
+}
+
+func (v NullableCdnGetScopeRuleResponse) Get() *CdnGetScopeRuleResponse {
+	return v.value
+}
+
+func (v *NullableCdnGetScopeRuleResponse) Set(val *CdnGetScopeRuleResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnGetScopeRuleResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnGetScopeRuleResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnGetScopeRuleResponse(val *CdnGetScopeRuleResponse) *NullableCdnGetScopeRuleResponse {
+	return &NullableCdnGetScopeRuleResponse{value: val, isSet: true}
+}
+
+func (v NullableCdnGetScopeRuleResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnGetScopeRuleResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

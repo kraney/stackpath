@@ -8,26 +8,439 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafRequestDetailsUserAgent A WAF event's network related aspects
 type WafRequestDetailsUserAgent struct {
 	// The full user agent string for the WAF request
-	FullString string `json:"fullString,omitempty"`
+	FullString *string `json:"fullString,omitempty"`
 	// The name of the requesting client, typically the name of the requesting web browser
-	Client string `json:"client,omitempty"`
+	Client *string `json:"client,omitempty"`
 	// The version of the requesting user agent's client, typically also the version of the requesting web browser
-	ClientVersion string `json:"clientVersion,omitempty"`
+	ClientVersion *string `json:"clientVersion,omitempty"`
 	// The name of the requesting user agent's browser
-	BaseBrowser string `json:"baseBrowser,omitempty"`
+	BaseBrowser *string `json:"baseBrowser,omitempty"`
 	// The version of the requesting user agent's browser
-	BaseBrowserVersion string `json:"baseBrowserVersion,omitempty"`
+	BaseBrowserVersion *string `json:"baseBrowserVersion,omitempty"`
 	// The name of the requesting user agent's operating system
-	Os string `json:"os,omitempty"`
+	Os *string `json:"os,omitempty"`
 	// The name of the requesting user agent's device
-	Device string `json:"device,omitempty"`
+	Device *string `json:"device,omitempty"`
 	// The type of the requesting user agent's device
-	DeviceType string `json:"deviceType,omitempty"`
+	DeviceType *string `json:"deviceType,omitempty"`
 	// The name of the requesting user agent's CPU
-	Cpu string `json:"cpu,omitempty"`
+	Cpu *string `json:"cpu,omitempty"`
 	// The name of the requesting user agent's engine
-	RenderingEngine string `json:"renderingEngine,omitempty"`
+	RenderingEngine *string `json:"renderingEngine,omitempty"`
+}
+
+// NewWafRequestDetailsUserAgent instantiates a new WafRequestDetailsUserAgent object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafRequestDetailsUserAgent() *WafRequestDetailsUserAgent {
+	this := WafRequestDetailsUserAgent{}
+	return &this
+}
+
+// NewWafRequestDetailsUserAgentWithDefaults instantiates a new WafRequestDetailsUserAgent object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafRequestDetailsUserAgentWithDefaults() *WafRequestDetailsUserAgent {
+	this := WafRequestDetailsUserAgent{}
+	return &this
+}
+
+// GetFullString returns the FullString field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetFullString() string {
+	if o == nil || o.FullString == nil {
+		var ret string
+		return ret
+	}
+	return *o.FullString
+}
+
+// GetFullStringOk returns a tuple with the FullString field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetFullStringOk() (*string, bool) {
+	if o == nil || o.FullString == nil {
+		return nil, false
+	}
+	return o.FullString, true
+}
+
+// HasFullString returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasFullString() bool {
+	if o != nil && o.FullString != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetFullString gets a reference to the given string and assigns it to the FullString field.
+func (o *WafRequestDetailsUserAgent) SetFullString(v string) {
+	o.FullString = &v
+}
+
+// GetClient returns the Client field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetClient() string {
+	if o == nil || o.Client == nil {
+		var ret string
+		return ret
+	}
+	return *o.Client
+}
+
+// GetClientOk returns a tuple with the Client field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetClientOk() (*string, bool) {
+	if o == nil || o.Client == nil {
+		return nil, false
+	}
+	return o.Client, true
+}
+
+// HasClient returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasClient() bool {
+	if o != nil && o.Client != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetClient gets a reference to the given string and assigns it to the Client field.
+func (o *WafRequestDetailsUserAgent) SetClient(v string) {
+	o.Client = &v
+}
+
+// GetClientVersion returns the ClientVersion field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetClientVersion() string {
+	if o == nil || o.ClientVersion == nil {
+		var ret string
+		return ret
+	}
+	return *o.ClientVersion
+}
+
+// GetClientVersionOk returns a tuple with the ClientVersion field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetClientVersionOk() (*string, bool) {
+	if o == nil || o.ClientVersion == nil {
+		return nil, false
+	}
+	return o.ClientVersion, true
+}
+
+// HasClientVersion returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasClientVersion() bool {
+	if o != nil && o.ClientVersion != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetClientVersion gets a reference to the given string and assigns it to the ClientVersion field.
+func (o *WafRequestDetailsUserAgent) SetClientVersion(v string) {
+	o.ClientVersion = &v
+}
+
+// GetBaseBrowser returns the BaseBrowser field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetBaseBrowser() string {
+	if o == nil || o.BaseBrowser == nil {
+		var ret string
+		return ret
+	}
+	return *o.BaseBrowser
+}
+
+// GetBaseBrowserOk returns a tuple with the BaseBrowser field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetBaseBrowserOk() (*string, bool) {
+	if o == nil || o.BaseBrowser == nil {
+		return nil, false
+	}
+	return o.BaseBrowser, true
+}
+
+// HasBaseBrowser returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasBaseBrowser() bool {
+	if o != nil && o.BaseBrowser != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBaseBrowser gets a reference to the given string and assigns it to the BaseBrowser field.
+func (o *WafRequestDetailsUserAgent) SetBaseBrowser(v string) {
+	o.BaseBrowser = &v
+}
+
+// GetBaseBrowserVersion returns the BaseBrowserVersion field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetBaseBrowserVersion() string {
+	if o == nil || o.BaseBrowserVersion == nil {
+		var ret string
+		return ret
+	}
+	return *o.BaseBrowserVersion
+}
+
+// GetBaseBrowserVersionOk returns a tuple with the BaseBrowserVersion field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetBaseBrowserVersionOk() (*string, bool) {
+	if o == nil || o.BaseBrowserVersion == nil {
+		return nil, false
+	}
+	return o.BaseBrowserVersion, true
+}
+
+// HasBaseBrowserVersion returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasBaseBrowserVersion() bool {
+	if o != nil && o.BaseBrowserVersion != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBaseBrowserVersion gets a reference to the given string and assigns it to the BaseBrowserVersion field.
+func (o *WafRequestDetailsUserAgent) SetBaseBrowserVersion(v string) {
+	o.BaseBrowserVersion = &v
+}
+
+// GetOs returns the Os field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetOs() string {
+	if o == nil || o.Os == nil {
+		var ret string
+		return ret
+	}
+	return *o.Os
+}
+
+// GetOsOk returns a tuple with the Os field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetOsOk() (*string, bool) {
+	if o == nil || o.Os == nil {
+		return nil, false
+	}
+	return o.Os, true
+}
+
+// HasOs returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasOs() bool {
+	if o != nil && o.Os != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetOs gets a reference to the given string and assigns it to the Os field.
+func (o *WafRequestDetailsUserAgent) SetOs(v string) {
+	o.Os = &v
+}
+
+// GetDevice returns the Device field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetDevice() string {
+	if o == nil || o.Device == nil {
+		var ret string
+		return ret
+	}
+	return *o.Device
+}
+
+// GetDeviceOk returns a tuple with the Device field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetDeviceOk() (*string, bool) {
+	if o == nil || o.Device == nil {
+		return nil, false
+	}
+	return o.Device, true
+}
+
+// HasDevice returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasDevice() bool {
+	if o != nil && o.Device != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDevice gets a reference to the given string and assigns it to the Device field.
+func (o *WafRequestDetailsUserAgent) SetDevice(v string) {
+	o.Device = &v
+}
+
+// GetDeviceType returns the DeviceType field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetDeviceType() string {
+	if o == nil || o.DeviceType == nil {
+		var ret string
+		return ret
+	}
+	return *o.DeviceType
+}
+
+// GetDeviceTypeOk returns a tuple with the DeviceType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetDeviceTypeOk() (*string, bool) {
+	if o == nil || o.DeviceType == nil {
+		return nil, false
+	}
+	return o.DeviceType, true
+}
+
+// HasDeviceType returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasDeviceType() bool {
+	if o != nil && o.DeviceType != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDeviceType gets a reference to the given string and assigns it to the DeviceType field.
+func (o *WafRequestDetailsUserAgent) SetDeviceType(v string) {
+	o.DeviceType = &v
+}
+
+// GetCpu returns the Cpu field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetCpu() string {
+	if o == nil || o.Cpu == nil {
+		var ret string
+		return ret
+	}
+	return *o.Cpu
+}
+
+// GetCpuOk returns a tuple with the Cpu field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetCpuOk() (*string, bool) {
+	if o == nil || o.Cpu == nil {
+		return nil, false
+	}
+	return o.Cpu, true
+}
+
+// HasCpu returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasCpu() bool {
+	if o != nil && o.Cpu != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCpu gets a reference to the given string and assigns it to the Cpu field.
+func (o *WafRequestDetailsUserAgent) SetCpu(v string) {
+	o.Cpu = &v
+}
+
+// GetRenderingEngine returns the RenderingEngine field value if set, zero value otherwise.
+func (o *WafRequestDetailsUserAgent) GetRenderingEngine() string {
+	if o == nil || o.RenderingEngine == nil {
+		var ret string
+		return ret
+	}
+	return *o.RenderingEngine
+}
+
+// GetRenderingEngineOk returns a tuple with the RenderingEngine field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsUserAgent) GetRenderingEngineOk() (*string, bool) {
+	if o == nil || o.RenderingEngine == nil {
+		return nil, false
+	}
+	return o.RenderingEngine, true
+}
+
+// HasRenderingEngine returns a boolean if a field has been set.
+func (o *WafRequestDetailsUserAgent) HasRenderingEngine() bool {
+	if o != nil && o.RenderingEngine != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRenderingEngine gets a reference to the given string and assigns it to the RenderingEngine field.
+func (o *WafRequestDetailsUserAgent) SetRenderingEngine(v string) {
+	o.RenderingEngine = &v
+}
+
+func (o WafRequestDetailsUserAgent) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.FullString != nil {
+		toSerialize["fullString"] = o.FullString
+	}
+	if o.Client != nil {
+		toSerialize["client"] = o.Client
+	}
+	if o.ClientVersion != nil {
+		toSerialize["clientVersion"] = o.ClientVersion
+	}
+	if o.BaseBrowser != nil {
+		toSerialize["baseBrowser"] = o.BaseBrowser
+	}
+	if o.BaseBrowserVersion != nil {
+		toSerialize["baseBrowserVersion"] = o.BaseBrowserVersion
+	}
+	if o.Os != nil {
+		toSerialize["os"] = o.Os
+	}
+	if o.Device != nil {
+		toSerialize["device"] = o.Device
+	}
+	if o.DeviceType != nil {
+		toSerialize["deviceType"] = o.DeviceType
+	}
+	if o.Cpu != nil {
+		toSerialize["cpu"] = o.Cpu
+	}
+	if o.RenderingEngine != nil {
+		toSerialize["renderingEngine"] = o.RenderingEngine
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafRequestDetailsUserAgent struct {
+	value *WafRequestDetailsUserAgent
+	isSet bool
+}
+
+func (v NullableWafRequestDetailsUserAgent) Get() *WafRequestDetailsUserAgent {
+	return v.value
+}
+
+func (v *NullableWafRequestDetailsUserAgent) Set(val *WafRequestDetailsUserAgent) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafRequestDetailsUserAgent) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafRequestDetailsUserAgent) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafRequestDetailsUserAgent(val *WafRequestDetailsUserAgent) *NullableWafRequestDetailsUserAgent {
+	return &NullableWafRequestDetailsUserAgent{value: val, isSet: true}
+}
+
+func (v NullableWafRequestDetailsUserAgent) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafRequestDetailsUserAgent) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

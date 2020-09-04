@@ -8,10 +8,143 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnCreateScopeHostnameRequest struct for CdnCreateScopeHostnameRequest
 type CdnCreateScopeHostnameRequest struct {
 	// The hostname to add to a scope
-	Domain string `json:"domain,omitempty"`
+	Domain *string `json:"domain,omitempty"`
 	// Whether or not to add the hostname to a CDN site's CDN scope or its WAF scope  When true, this call adds the hostname to a CDN site's scope instead of loading from a CDN site's WAF scope, if the site has WAF service.
-	DisableTransparentMode bool `json:"disableTransparentMode,omitempty"`
+	DisableTransparentMode *bool `json:"disableTransparentMode,omitempty"`
+}
+
+// NewCdnCreateScopeHostnameRequest instantiates a new CdnCreateScopeHostnameRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnCreateScopeHostnameRequest() *CdnCreateScopeHostnameRequest {
+	this := CdnCreateScopeHostnameRequest{}
+	return &this
+}
+
+// NewCdnCreateScopeHostnameRequestWithDefaults instantiates a new CdnCreateScopeHostnameRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnCreateScopeHostnameRequestWithDefaults() *CdnCreateScopeHostnameRequest {
+	this := CdnCreateScopeHostnameRequest{}
+	return &this
+}
+
+// GetDomain returns the Domain field value if set, zero value otherwise.
+func (o *CdnCreateScopeHostnameRequest) GetDomain() string {
+	if o == nil || o.Domain == nil {
+		var ret string
+		return ret
+	}
+	return *o.Domain
+}
+
+// GetDomainOk returns a tuple with the Domain field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnCreateScopeHostnameRequest) GetDomainOk() (*string, bool) {
+	if o == nil || o.Domain == nil {
+		return nil, false
+	}
+	return o.Domain, true
+}
+
+// HasDomain returns a boolean if a field has been set.
+func (o *CdnCreateScopeHostnameRequest) HasDomain() bool {
+	if o != nil && o.Domain != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDomain gets a reference to the given string and assigns it to the Domain field.
+func (o *CdnCreateScopeHostnameRequest) SetDomain(v string) {
+	o.Domain = &v
+}
+
+// GetDisableTransparentMode returns the DisableTransparentMode field value if set, zero value otherwise.
+func (o *CdnCreateScopeHostnameRequest) GetDisableTransparentMode() bool {
+	if o == nil || o.DisableTransparentMode == nil {
+		var ret bool
+		return ret
+	}
+	return *o.DisableTransparentMode
+}
+
+// GetDisableTransparentModeOk returns a tuple with the DisableTransparentMode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnCreateScopeHostnameRequest) GetDisableTransparentModeOk() (*bool, bool) {
+	if o == nil || o.DisableTransparentMode == nil {
+		return nil, false
+	}
+	return o.DisableTransparentMode, true
+}
+
+// HasDisableTransparentMode returns a boolean if a field has been set.
+func (o *CdnCreateScopeHostnameRequest) HasDisableTransparentMode() bool {
+	if o != nil && o.DisableTransparentMode != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDisableTransparentMode gets a reference to the given bool and assigns it to the DisableTransparentMode field.
+func (o *CdnCreateScopeHostnameRequest) SetDisableTransparentMode(v bool) {
+	o.DisableTransparentMode = &v
+}
+
+func (o CdnCreateScopeHostnameRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Domain != nil {
+		toSerialize["domain"] = o.Domain
+	}
+	if o.DisableTransparentMode != nil {
+		toSerialize["disableTransparentMode"] = o.DisableTransparentMode
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnCreateScopeHostnameRequest struct {
+	value *CdnCreateScopeHostnameRequest
+	isSet bool
+}
+
+func (v NullableCdnCreateScopeHostnameRequest) Get() *CdnCreateScopeHostnameRequest {
+	return v.value
+}
+
+func (v *NullableCdnCreateScopeHostnameRequest) Set(val *CdnCreateScopeHostnameRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnCreateScopeHostnameRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnCreateScopeHostnameRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnCreateScopeHostnameRequest(val *CdnCreateScopeHostnameRequest) *NullableCdnCreateScopeHostnameRequest {
+	return &NullableCdnCreateScopeHostnameRequest{value: val, isSet: true}
+}
+
+func (v NullableCdnCreateScopeHostnameRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnCreateScopeHostnameRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

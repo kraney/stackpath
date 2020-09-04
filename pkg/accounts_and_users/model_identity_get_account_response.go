@@ -8,7 +8,105 @@
  */
 
 package accounts_and_users
+
+import (
+	"encoding/json"
+)
+
 // IdentityGetAccountResponse A response from a request to retrieve a StackPath account
 type IdentityGetAccountResponse struct {
-	Account IdentityAccount `json:"account,omitempty"`
+	Account *IdentityAccount `json:"account,omitempty"`
+}
+
+// NewIdentityGetAccountResponse instantiates a new IdentityGetAccountResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewIdentityGetAccountResponse() *IdentityGetAccountResponse {
+	this := IdentityGetAccountResponse{}
+	return &this
+}
+
+// NewIdentityGetAccountResponseWithDefaults instantiates a new IdentityGetAccountResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewIdentityGetAccountResponseWithDefaults() *IdentityGetAccountResponse {
+	this := IdentityGetAccountResponse{}
+	return &this
+}
+
+// GetAccount returns the Account field value if set, zero value otherwise.
+func (o *IdentityGetAccountResponse) GetAccount() IdentityAccount {
+	if o == nil || o.Account == nil {
+		var ret IdentityAccount
+		return ret
+	}
+	return *o.Account
+}
+
+// GetAccountOk returns a tuple with the Account field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityGetAccountResponse) GetAccountOk() (*IdentityAccount, bool) {
+	if o == nil || o.Account == nil {
+		return nil, false
+	}
+	return o.Account, true
+}
+
+// HasAccount returns a boolean if a field has been set.
+func (o *IdentityGetAccountResponse) HasAccount() bool {
+	if o != nil && o.Account != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAccount gets a reference to the given IdentityAccount and assigns it to the Account field.
+func (o *IdentityGetAccountResponse) SetAccount(v IdentityAccount) {
+	o.Account = &v
+}
+
+func (o IdentityGetAccountResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Account != nil {
+		toSerialize["account"] = o.Account
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableIdentityGetAccountResponse struct {
+	value *IdentityGetAccountResponse
+	isSet bool
+}
+
+func (v NullableIdentityGetAccountResponse) Get() *IdentityGetAccountResponse {
+	return v.value
+}
+
+func (v *NullableIdentityGetAccountResponse) Set(val *IdentityGetAccountResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableIdentityGetAccountResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableIdentityGetAccountResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableIdentityGetAccountResponse(val *IdentityGetAccountResponse) *NullableIdentityGetAccountResponse {
+	return &NullableIdentityGetAccountResponse{value: val, isSet: true}
+}
+
+func (v NullableIdentityGetAccountResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableIdentityGetAccountResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

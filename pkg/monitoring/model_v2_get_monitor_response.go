@@ -8,7 +8,105 @@
  */
 
 package monitoring
+
+import (
+	"encoding/json"
+)
+
 // V2GetMonitorResponse A response from a request to retrieve a monitor.
 type V2GetMonitorResponse struct {
-	Record V2Monitor `json:"record,omitempty"`
+	Record *V2Monitor `json:"record,omitempty"`
+}
+
+// NewV2GetMonitorResponse instantiates a new V2GetMonitorResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV2GetMonitorResponse() *V2GetMonitorResponse {
+	this := V2GetMonitorResponse{}
+	return &this
+}
+
+// NewV2GetMonitorResponseWithDefaults instantiates a new V2GetMonitorResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV2GetMonitorResponseWithDefaults() *V2GetMonitorResponse {
+	this := V2GetMonitorResponse{}
+	return &this
+}
+
+// GetRecord returns the Record field value if set, zero value otherwise.
+func (o *V2GetMonitorResponse) GetRecord() V2Monitor {
+	if o == nil || o.Record == nil {
+		var ret V2Monitor
+		return ret
+	}
+	return *o.Record
+}
+
+// GetRecordOk returns a tuple with the Record field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V2GetMonitorResponse) GetRecordOk() (*V2Monitor, bool) {
+	if o == nil || o.Record == nil {
+		return nil, false
+	}
+	return o.Record, true
+}
+
+// HasRecord returns a boolean if a field has been set.
+func (o *V2GetMonitorResponse) HasRecord() bool {
+	if o != nil && o.Record != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRecord gets a reference to the given V2Monitor and assigns it to the Record field.
+func (o *V2GetMonitorResponse) SetRecord(v V2Monitor) {
+	o.Record = &v
+}
+
+func (o V2GetMonitorResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Record != nil {
+		toSerialize["record"] = o.Record
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV2GetMonitorResponse struct {
+	value *V2GetMonitorResponse
+	isSet bool
+}
+
+func (v NullableV2GetMonitorResponse) Get() *V2GetMonitorResponse {
+	return v.value
+}
+
+func (v *NullableV2GetMonitorResponse) Set(val *V2GetMonitorResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV2GetMonitorResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV2GetMonitorResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV2GetMonitorResponse(val *V2GetMonitorResponse) *NullableV2GetMonitorResponse {
+	return &NullableV2GetMonitorResponse{value: val, isSet: true}
+}
+
+func (v NullableV2GetMonitorResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV2GetMonitorResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

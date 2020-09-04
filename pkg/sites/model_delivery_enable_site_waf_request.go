@@ -8,8 +8,106 @@
  */
 
 package sites
-// DeliveryEnableSiteWafRequest struct for DeliveryEnableSiteWafRequest
-type DeliveryEnableSiteWafRequest struct {
+
+import (
+	"encoding/json"
+)
+
+// DeliveryEnableSiteWAFRequest struct for DeliveryEnableSiteWAFRequest
+type DeliveryEnableSiteWAFRequest struct {
 	// A list of API URLs which receive different processing through the WAF than website requests
-	ApiUrls []string `json:"apiUrls,omitempty"`
+	ApiUrls *[]string `json:"apiUrls,omitempty"`
+}
+
+// NewDeliveryEnableSiteWAFRequest instantiates a new DeliveryEnableSiteWAFRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewDeliveryEnableSiteWAFRequest() *DeliveryEnableSiteWAFRequest {
+	this := DeliveryEnableSiteWAFRequest{}
+	return &this
+}
+
+// NewDeliveryEnableSiteWAFRequestWithDefaults instantiates a new DeliveryEnableSiteWAFRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewDeliveryEnableSiteWAFRequestWithDefaults() *DeliveryEnableSiteWAFRequest {
+	this := DeliveryEnableSiteWAFRequest{}
+	return &this
+}
+
+// GetApiUrls returns the ApiUrls field value if set, zero value otherwise.
+func (o *DeliveryEnableSiteWAFRequest) GetApiUrls() []string {
+	if o == nil || o.ApiUrls == nil {
+		var ret []string
+		return ret
+	}
+	return *o.ApiUrls
+}
+
+// GetApiUrlsOk returns a tuple with the ApiUrls field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryEnableSiteWAFRequest) GetApiUrlsOk() (*[]string, bool) {
+	if o == nil || o.ApiUrls == nil {
+		return nil, false
+	}
+	return o.ApiUrls, true
+}
+
+// HasApiUrls returns a boolean if a field has been set.
+func (o *DeliveryEnableSiteWAFRequest) HasApiUrls() bool {
+	if o != nil && o.ApiUrls != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetApiUrls gets a reference to the given []string and assigns it to the ApiUrls field.
+func (o *DeliveryEnableSiteWAFRequest) SetApiUrls(v []string) {
+	o.ApiUrls = &v
+}
+
+func (o DeliveryEnableSiteWAFRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.ApiUrls != nil {
+		toSerialize["apiUrls"] = o.ApiUrls
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableDeliveryEnableSiteWAFRequest struct {
+	value *DeliveryEnableSiteWAFRequest
+	isSet bool
+}
+
+func (v NullableDeliveryEnableSiteWAFRequest) Get() *DeliveryEnableSiteWAFRequest {
+	return v.value
+}
+
+func (v *NullableDeliveryEnableSiteWAFRequest) Set(val *DeliveryEnableSiteWAFRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliveryEnableSiteWAFRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliveryEnableSiteWAFRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliveryEnableSiteWAFRequest(val *DeliveryEnableSiteWAFRequest) *NullableDeliveryEnableSiteWAFRequest {
+	return &NullableDeliveryEnableSiteWAFRequest{value: val, isSet: true}
+}
+
+func (v NullableDeliveryEnableSiteWAFRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliveryEnableSiteWAFRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,6 +8,11 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // DeliverySiteFeature A site feature  A site's feature determines how StackPath delivers content to incoming HTTP(S) requests   - UNKNOWN: StackPath is unable to determine a site's feature  - CDN: A site has CDN caching  - WAF: A site has WAF protection  - API: A site has API-specific protections  - SERVERLESS_EDGE_ENGINE: A site can serve EdgeEngine serverless scripts
 type DeliverySiteFeature string
 
@@ -18,3 +23,45 @@ const (
 	DELIVERYSITEFEATURE_WAF DeliverySiteFeature = "WAF"
 	DELIVERYSITEFEATURE_SERVERLESS_EDGE_ENGINE DeliverySiteFeature = "SERVERLESS_EDGE_ENGINE"
 )
+
+// Ptr returns reference to deliverySiteFeature value
+func (v DeliverySiteFeature) Ptr() *DeliverySiteFeature {
+	return &v
+}
+
+
+type NullableDeliverySiteFeature struct {
+	value *DeliverySiteFeature
+	isSet bool
+}
+
+func (v NullableDeliverySiteFeature) Get() *DeliverySiteFeature {
+	return v.value
+}
+
+func (v *NullableDeliverySiteFeature) Set(val *DeliverySiteFeature) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliverySiteFeature) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliverySiteFeature) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliverySiteFeature(val *DeliverySiteFeature) *NullableDeliverySiteFeature {
+	return &NullableDeliverySiteFeature{value: val, isSet: true}
+}
+
+func (v NullableDeliverySiteFeature) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliverySiteFeature) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

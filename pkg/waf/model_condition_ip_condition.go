@@ -8,8 +8,106 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // ConditionIpCondition Match the incoming request against a single IP address
 type ConditionIpCondition struct {
 	// A single IPv4 address
-	IpAddress string `json:"ipAddress,omitempty"`
+	IpAddress *string `json:"ipAddress,omitempty"`
+}
+
+// NewConditionIpCondition instantiates a new ConditionIpCondition object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewConditionIpCondition() *ConditionIpCondition {
+	this := ConditionIpCondition{}
+	return &this
+}
+
+// NewConditionIpConditionWithDefaults instantiates a new ConditionIpCondition object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewConditionIpConditionWithDefaults() *ConditionIpCondition {
+	this := ConditionIpCondition{}
+	return &this
+}
+
+// GetIpAddress returns the IpAddress field value if set, zero value otherwise.
+func (o *ConditionIpCondition) GetIpAddress() string {
+	if o == nil || o.IpAddress == nil {
+		var ret string
+		return ret
+	}
+	return *o.IpAddress
+}
+
+// GetIpAddressOk returns a tuple with the IpAddress field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ConditionIpCondition) GetIpAddressOk() (*string, bool) {
+	if o == nil || o.IpAddress == nil {
+		return nil, false
+	}
+	return o.IpAddress, true
+}
+
+// HasIpAddress returns a boolean if a field has been set.
+func (o *ConditionIpCondition) HasIpAddress() bool {
+	if o != nil && o.IpAddress != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetIpAddress gets a reference to the given string and assigns it to the IpAddress field.
+func (o *ConditionIpCondition) SetIpAddress(v string) {
+	o.IpAddress = &v
+}
+
+func (o ConditionIpCondition) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.IpAddress != nil {
+		toSerialize["ipAddress"] = o.IpAddress
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableConditionIpCondition struct {
+	value *ConditionIpCondition
+	isSet bool
+}
+
+func (v NullableConditionIpCondition) Get() *ConditionIpCondition {
+	return v.value
+}
+
+func (v *NullableConditionIpCondition) Set(val *ConditionIpCondition) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableConditionIpCondition) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableConditionIpCondition) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableConditionIpCondition(val *ConditionIpCondition) *NullableConditionIpCondition {
+	return &NullableConditionIpCondition{value: val, isSet: true}
+}
+
+func (v NullableConditionIpCondition) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableConditionIpCondition) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

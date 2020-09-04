@@ -8,12 +8,180 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnHttpVerificationDetails HTTP-based domain ownership verification details
 type CdnHttpVerificationDetails struct {
 	// Path to the verification file
-	Path string `json:"path,omitempty"`
+	Path *string `json:"path,omitempty"`
 	// Response content type
-	ContentType string `json:"contentType,omitempty"`
+	ContentType *string `json:"contentType,omitempty"`
 	// Body content of response
-	Body string `json:"body,omitempty"`
+	Body *string `json:"body,omitempty"`
+}
+
+// NewCdnHttpVerificationDetails instantiates a new CdnHttpVerificationDetails object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnHttpVerificationDetails() *CdnHttpVerificationDetails {
+	this := CdnHttpVerificationDetails{}
+	return &this
+}
+
+// NewCdnHttpVerificationDetailsWithDefaults instantiates a new CdnHttpVerificationDetails object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnHttpVerificationDetailsWithDefaults() *CdnHttpVerificationDetails {
+	this := CdnHttpVerificationDetails{}
+	return &this
+}
+
+// GetPath returns the Path field value if set, zero value otherwise.
+func (o *CdnHttpVerificationDetails) GetPath() string {
+	if o == nil || o.Path == nil {
+		var ret string
+		return ret
+	}
+	return *o.Path
+}
+
+// GetPathOk returns a tuple with the Path field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnHttpVerificationDetails) GetPathOk() (*string, bool) {
+	if o == nil || o.Path == nil {
+		return nil, false
+	}
+	return o.Path, true
+}
+
+// HasPath returns a boolean if a field has been set.
+func (o *CdnHttpVerificationDetails) HasPath() bool {
+	if o != nil && o.Path != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPath gets a reference to the given string and assigns it to the Path field.
+func (o *CdnHttpVerificationDetails) SetPath(v string) {
+	o.Path = &v
+}
+
+// GetContentType returns the ContentType field value if set, zero value otherwise.
+func (o *CdnHttpVerificationDetails) GetContentType() string {
+	if o == nil || o.ContentType == nil {
+		var ret string
+		return ret
+	}
+	return *o.ContentType
+}
+
+// GetContentTypeOk returns a tuple with the ContentType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnHttpVerificationDetails) GetContentTypeOk() (*string, bool) {
+	if o == nil || o.ContentType == nil {
+		return nil, false
+	}
+	return o.ContentType, true
+}
+
+// HasContentType returns a boolean if a field has been set.
+func (o *CdnHttpVerificationDetails) HasContentType() bool {
+	if o != nil && o.ContentType != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetContentType gets a reference to the given string and assigns it to the ContentType field.
+func (o *CdnHttpVerificationDetails) SetContentType(v string) {
+	o.ContentType = &v
+}
+
+// GetBody returns the Body field value if set, zero value otherwise.
+func (o *CdnHttpVerificationDetails) GetBody() string {
+	if o == nil || o.Body == nil {
+		var ret string
+		return ret
+	}
+	return *o.Body
+}
+
+// GetBodyOk returns a tuple with the Body field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnHttpVerificationDetails) GetBodyOk() (*string, bool) {
+	if o == nil || o.Body == nil {
+		return nil, false
+	}
+	return o.Body, true
+}
+
+// HasBody returns a boolean if a field has been set.
+func (o *CdnHttpVerificationDetails) HasBody() bool {
+	if o != nil && o.Body != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBody gets a reference to the given string and assigns it to the Body field.
+func (o *CdnHttpVerificationDetails) SetBody(v string) {
+	o.Body = &v
+}
+
+func (o CdnHttpVerificationDetails) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Path != nil {
+		toSerialize["path"] = o.Path
+	}
+	if o.ContentType != nil {
+		toSerialize["contentType"] = o.ContentType
+	}
+	if o.Body != nil {
+		toSerialize["body"] = o.Body
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnHttpVerificationDetails struct {
+	value *CdnHttpVerificationDetails
+	isSet bool
+}
+
+func (v NullableCdnHttpVerificationDetails) Get() *CdnHttpVerificationDetails {
+	return v.value
+}
+
+func (v *NullableCdnHttpVerificationDetails) Set(val *CdnHttpVerificationDetails) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnHttpVerificationDetails) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnHttpVerificationDetails) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnHttpVerificationDetails(val *CdnHttpVerificationDetails) *NullableCdnHttpVerificationDetails {
+	return &NullableCdnHttpVerificationDetails{value: val, isSet: true}
+}
+
+func (v NullableCdnHttpVerificationDetails) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnHttpVerificationDetails) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,21 +8,292 @@
  */
 
 package accounts_and_users
+
 import (
+	"encoding/json"
 	"time"
 )
+
 // IdentityAccount A StackPath account  An account is the top-most entity in the StackPath ecosystem. Accounts are associated with users and stacks (which in turn are associated with purchased products and services).
 type IdentityAccount struct {
 	// A StackPath account's unique identifier
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// The ID of an account that a StackPath account may belong to
-	ParentId string `json:"parentId,omitempty"`
+	ParentId *string `json:"parentId,omitempty"`
 	// A StackPath account's name
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// The ID of a StackPath account's primary user
-	RootUserId string `json:"rootUserId,omitempty"`
+	RootUserId *string `json:"rootUserId,omitempty"`
 	// The date a StackPath account was created
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// The date a StackPath account was last updated
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+}
+
+// NewIdentityAccount instantiates a new IdentityAccount object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewIdentityAccount() *IdentityAccount {
+	this := IdentityAccount{}
+	return &this
+}
+
+// NewIdentityAccountWithDefaults instantiates a new IdentityAccount object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewIdentityAccountWithDefaults() *IdentityAccount {
+	this := IdentityAccount{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *IdentityAccount) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityAccount) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *IdentityAccount) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *IdentityAccount) SetId(v string) {
+	o.Id = &v
+}
+
+// GetParentId returns the ParentId field value if set, zero value otherwise.
+func (o *IdentityAccount) GetParentId() string {
+	if o == nil || o.ParentId == nil {
+		var ret string
+		return ret
+	}
+	return *o.ParentId
+}
+
+// GetParentIdOk returns a tuple with the ParentId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityAccount) GetParentIdOk() (*string, bool) {
+	if o == nil || o.ParentId == nil {
+		return nil, false
+	}
+	return o.ParentId, true
+}
+
+// HasParentId returns a boolean if a field has been set.
+func (o *IdentityAccount) HasParentId() bool {
+	if o != nil && o.ParentId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetParentId gets a reference to the given string and assigns it to the ParentId field.
+func (o *IdentityAccount) SetParentId(v string) {
+	o.ParentId = &v
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *IdentityAccount) GetName() string {
+	if o == nil || o.Name == nil {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityAccount) GetNameOk() (*string, bool) {
+	if o == nil || o.Name == nil {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *IdentityAccount) HasName() bool {
+	if o != nil && o.Name != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *IdentityAccount) SetName(v string) {
+	o.Name = &v
+}
+
+// GetRootUserId returns the RootUserId field value if set, zero value otherwise.
+func (o *IdentityAccount) GetRootUserId() string {
+	if o == nil || o.RootUserId == nil {
+		var ret string
+		return ret
+	}
+	return *o.RootUserId
+}
+
+// GetRootUserIdOk returns a tuple with the RootUserId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityAccount) GetRootUserIdOk() (*string, bool) {
+	if o == nil || o.RootUserId == nil {
+		return nil, false
+	}
+	return o.RootUserId, true
+}
+
+// HasRootUserId returns a boolean if a field has been set.
+func (o *IdentityAccount) HasRootUserId() bool {
+	if o != nil && o.RootUserId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRootUserId gets a reference to the given string and assigns it to the RootUserId field.
+func (o *IdentityAccount) SetRootUserId(v string) {
+	o.RootUserId = &v
+}
+
+// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+func (o *IdentityAccount) GetCreatedAt() time.Time {
+	if o == nil || o.CreatedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityAccount) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil || o.CreatedAt == nil {
+		return nil, false
+	}
+	return o.CreatedAt, true
+}
+
+// HasCreatedAt returns a boolean if a field has been set.
+func (o *IdentityAccount) HasCreatedAt() bool {
+	if o != nil && o.CreatedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
+func (o *IdentityAccount) SetCreatedAt(v time.Time) {
+	o.CreatedAt = &v
+}
+
+// GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
+func (o *IdentityAccount) GetUpdatedAt() time.Time {
+	if o == nil || o.UpdatedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.UpdatedAt
+}
+
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityAccount) GetUpdatedAtOk() (*time.Time, bool) {
+	if o == nil || o.UpdatedAt == nil {
+		return nil, false
+	}
+	return o.UpdatedAt, true
+}
+
+// HasUpdatedAt returns a boolean if a field has been set.
+func (o *IdentityAccount) HasUpdatedAt() bool {
+	if o != nil && o.UpdatedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUpdatedAt gets a reference to the given time.Time and assigns it to the UpdatedAt field.
+func (o *IdentityAccount) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = &v
+}
+
+func (o IdentityAccount) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.ParentId != nil {
+		toSerialize["parentId"] = o.ParentId
+	}
+	if o.Name != nil {
+		toSerialize["name"] = o.Name
+	}
+	if o.RootUserId != nil {
+		toSerialize["rootUserId"] = o.RootUserId
+	}
+	if o.CreatedAt != nil {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if o.UpdatedAt != nil {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableIdentityAccount struct {
+	value *IdentityAccount
+	isSet bool
+}
+
+func (v NullableIdentityAccount) Get() *IdentityAccount {
+	return v.value
+}
+
+func (v *NullableIdentityAccount) Set(val *IdentityAccount) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableIdentityAccount) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableIdentityAccount) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableIdentityAccount(val *IdentityAccount) *NullableIdentityAccount {
+	return &NullableIdentityAccount{value: val, isSet: true}
+}
+
+func (v NullableIdentityAccount) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableIdentityAccount) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

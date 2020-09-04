@@ -8,19 +8,362 @@
  */
 
 package edge_compute
+
+import (
+	"encoding/json"
+)
+
 // V1ContainerSpec The specification for the desired state of a container in a workload
 type V1ContainerSpec struct {
 	// The location of a Docker image to run as a container
-	Image string `json:"image,omitempty"`
+	Image *string `json:"image,omitempty"`
 	// The commands that start a container
-	Command []string `json:"command,omitempty"`
+	Command *[]string `json:"command,omitempty"`
 	// A string to environment variable key/value pair
-	Env map[string]V1EnvironmentVariable `json:"env,omitempty"`
+	Env *map[string]V1EnvironmentVariable `json:"env,omitempty"`
 	// A string to network port key/value pair
-	Ports map[string]V1InstancePort `json:"ports,omitempty"`
-	LivenessProbe V1Probe `json:"livenessProbe,omitempty"`
-	ReadinessProbe V1Probe `json:"readinessProbe,omitempty"`
-	Resources V1ResourceRequirements `json:"resources,omitempty"`
+	Ports *map[string]V1InstancePort `json:"ports,omitempty"`
+	LivenessProbe *V1Probe `json:"livenessProbe,omitempty"`
+	ReadinessProbe *V1Probe `json:"readinessProbe,omitempty"`
+	Resources *V1ResourceRequirements `json:"resources,omitempty"`
 	// Volumes to mount in the container
-	VolumeMounts []V1InstanceVolumeMount `json:"volumeMounts,omitempty"`
+	VolumeMounts *[]V1InstanceVolumeMount `json:"volumeMounts,omitempty"`
+}
+
+// NewV1ContainerSpec instantiates a new V1ContainerSpec object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV1ContainerSpec() *V1ContainerSpec {
+	this := V1ContainerSpec{}
+	return &this
+}
+
+// NewV1ContainerSpecWithDefaults instantiates a new V1ContainerSpec object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV1ContainerSpecWithDefaults() *V1ContainerSpec {
+	this := V1ContainerSpec{}
+	return &this
+}
+
+// GetImage returns the Image field value if set, zero value otherwise.
+func (o *V1ContainerSpec) GetImage() string {
+	if o == nil || o.Image == nil {
+		var ret string
+		return ret
+	}
+	return *o.Image
+}
+
+// GetImageOk returns a tuple with the Image field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ContainerSpec) GetImageOk() (*string, bool) {
+	if o == nil || o.Image == nil {
+		return nil, false
+	}
+	return o.Image, true
+}
+
+// HasImage returns a boolean if a field has been set.
+func (o *V1ContainerSpec) HasImage() bool {
+	if o != nil && o.Image != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetImage gets a reference to the given string and assigns it to the Image field.
+func (o *V1ContainerSpec) SetImage(v string) {
+	o.Image = &v
+}
+
+// GetCommand returns the Command field value if set, zero value otherwise.
+func (o *V1ContainerSpec) GetCommand() []string {
+	if o == nil || o.Command == nil {
+		var ret []string
+		return ret
+	}
+	return *o.Command
+}
+
+// GetCommandOk returns a tuple with the Command field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ContainerSpec) GetCommandOk() (*[]string, bool) {
+	if o == nil || o.Command == nil {
+		return nil, false
+	}
+	return o.Command, true
+}
+
+// HasCommand returns a boolean if a field has been set.
+func (o *V1ContainerSpec) HasCommand() bool {
+	if o != nil && o.Command != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCommand gets a reference to the given []string and assigns it to the Command field.
+func (o *V1ContainerSpec) SetCommand(v []string) {
+	o.Command = &v
+}
+
+// GetEnv returns the Env field value if set, zero value otherwise.
+func (o *V1ContainerSpec) GetEnv() map[string]V1EnvironmentVariable {
+	if o == nil || o.Env == nil {
+		var ret map[string]V1EnvironmentVariable
+		return ret
+	}
+	return *o.Env
+}
+
+// GetEnvOk returns a tuple with the Env field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ContainerSpec) GetEnvOk() (*map[string]V1EnvironmentVariable, bool) {
+	if o == nil || o.Env == nil {
+		return nil, false
+	}
+	return o.Env, true
+}
+
+// HasEnv returns a boolean if a field has been set.
+func (o *V1ContainerSpec) HasEnv() bool {
+	if o != nil && o.Env != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnv gets a reference to the given map[string]V1EnvironmentVariable and assigns it to the Env field.
+func (o *V1ContainerSpec) SetEnv(v map[string]V1EnvironmentVariable) {
+	o.Env = &v
+}
+
+// GetPorts returns the Ports field value if set, zero value otherwise.
+func (o *V1ContainerSpec) GetPorts() map[string]V1InstancePort {
+	if o == nil || o.Ports == nil {
+		var ret map[string]V1InstancePort
+		return ret
+	}
+	return *o.Ports
+}
+
+// GetPortsOk returns a tuple with the Ports field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ContainerSpec) GetPortsOk() (*map[string]V1InstancePort, bool) {
+	if o == nil || o.Ports == nil {
+		return nil, false
+	}
+	return o.Ports, true
+}
+
+// HasPorts returns a boolean if a field has been set.
+func (o *V1ContainerSpec) HasPorts() bool {
+	if o != nil && o.Ports != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPorts gets a reference to the given map[string]V1InstancePort and assigns it to the Ports field.
+func (o *V1ContainerSpec) SetPorts(v map[string]V1InstancePort) {
+	o.Ports = &v
+}
+
+// GetLivenessProbe returns the LivenessProbe field value if set, zero value otherwise.
+func (o *V1ContainerSpec) GetLivenessProbe() V1Probe {
+	if o == nil || o.LivenessProbe == nil {
+		var ret V1Probe
+		return ret
+	}
+	return *o.LivenessProbe
+}
+
+// GetLivenessProbeOk returns a tuple with the LivenessProbe field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ContainerSpec) GetLivenessProbeOk() (*V1Probe, bool) {
+	if o == nil || o.LivenessProbe == nil {
+		return nil, false
+	}
+	return o.LivenessProbe, true
+}
+
+// HasLivenessProbe returns a boolean if a field has been set.
+func (o *V1ContainerSpec) HasLivenessProbe() bool {
+	if o != nil && o.LivenessProbe != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLivenessProbe gets a reference to the given V1Probe and assigns it to the LivenessProbe field.
+func (o *V1ContainerSpec) SetLivenessProbe(v V1Probe) {
+	o.LivenessProbe = &v
+}
+
+// GetReadinessProbe returns the ReadinessProbe field value if set, zero value otherwise.
+func (o *V1ContainerSpec) GetReadinessProbe() V1Probe {
+	if o == nil || o.ReadinessProbe == nil {
+		var ret V1Probe
+		return ret
+	}
+	return *o.ReadinessProbe
+}
+
+// GetReadinessProbeOk returns a tuple with the ReadinessProbe field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ContainerSpec) GetReadinessProbeOk() (*V1Probe, bool) {
+	if o == nil || o.ReadinessProbe == nil {
+		return nil, false
+	}
+	return o.ReadinessProbe, true
+}
+
+// HasReadinessProbe returns a boolean if a field has been set.
+func (o *V1ContainerSpec) HasReadinessProbe() bool {
+	if o != nil && o.ReadinessProbe != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetReadinessProbe gets a reference to the given V1Probe and assigns it to the ReadinessProbe field.
+func (o *V1ContainerSpec) SetReadinessProbe(v V1Probe) {
+	o.ReadinessProbe = &v
+}
+
+// GetResources returns the Resources field value if set, zero value otherwise.
+func (o *V1ContainerSpec) GetResources() V1ResourceRequirements {
+	if o == nil || o.Resources == nil {
+		var ret V1ResourceRequirements
+		return ret
+	}
+	return *o.Resources
+}
+
+// GetResourcesOk returns a tuple with the Resources field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ContainerSpec) GetResourcesOk() (*V1ResourceRequirements, bool) {
+	if o == nil || o.Resources == nil {
+		return nil, false
+	}
+	return o.Resources, true
+}
+
+// HasResources returns a boolean if a field has been set.
+func (o *V1ContainerSpec) HasResources() bool {
+	if o != nil && o.Resources != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetResources gets a reference to the given V1ResourceRequirements and assigns it to the Resources field.
+func (o *V1ContainerSpec) SetResources(v V1ResourceRequirements) {
+	o.Resources = &v
+}
+
+// GetVolumeMounts returns the VolumeMounts field value if set, zero value otherwise.
+func (o *V1ContainerSpec) GetVolumeMounts() []V1InstanceVolumeMount {
+	if o == nil || o.VolumeMounts == nil {
+		var ret []V1InstanceVolumeMount
+		return ret
+	}
+	return *o.VolumeMounts
+}
+
+// GetVolumeMountsOk returns a tuple with the VolumeMounts field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ContainerSpec) GetVolumeMountsOk() (*[]V1InstanceVolumeMount, bool) {
+	if o == nil || o.VolumeMounts == nil {
+		return nil, false
+	}
+	return o.VolumeMounts, true
+}
+
+// HasVolumeMounts returns a boolean if a field has been set.
+func (o *V1ContainerSpec) HasVolumeMounts() bool {
+	if o != nil && o.VolumeMounts != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetVolumeMounts gets a reference to the given []V1InstanceVolumeMount and assigns it to the VolumeMounts field.
+func (o *V1ContainerSpec) SetVolumeMounts(v []V1InstanceVolumeMount) {
+	o.VolumeMounts = &v
+}
+
+func (o V1ContainerSpec) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Image != nil {
+		toSerialize["image"] = o.Image
+	}
+	if o.Command != nil {
+		toSerialize["command"] = o.Command
+	}
+	if o.Env != nil {
+		toSerialize["env"] = o.Env
+	}
+	if o.Ports != nil {
+		toSerialize["ports"] = o.Ports
+	}
+	if o.LivenessProbe != nil {
+		toSerialize["livenessProbe"] = o.LivenessProbe
+	}
+	if o.ReadinessProbe != nil {
+		toSerialize["readinessProbe"] = o.ReadinessProbe
+	}
+	if o.Resources != nil {
+		toSerialize["resources"] = o.Resources
+	}
+	if o.VolumeMounts != nil {
+		toSerialize["volumeMounts"] = o.VolumeMounts
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV1ContainerSpec struct {
+	value *V1ContainerSpec
+	isSet bool
+}
+
+func (v NullableV1ContainerSpec) Get() *V1ContainerSpec {
+	return v.value
+}
+
+func (v *NullableV1ContainerSpec) Set(val *V1ContainerSpec) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV1ContainerSpec) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV1ContainerSpec) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV1ContainerSpec(val *V1ContainerSpec) *NullableV1ContainerSpec {
+	return &NullableV1ContainerSpec{value: val, isSet: true}
+}
+
+func (v NullableV1ContainerSpec) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV1ContainerSpec) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

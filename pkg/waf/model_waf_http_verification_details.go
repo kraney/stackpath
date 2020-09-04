@@ -8,12 +8,180 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafHttpVerificationDetails HTTP-based domain ownership verification details
 type WafHttpVerificationDetails struct {
 	// Path to the verification file
-	Path string `json:"path,omitempty"`
+	Path *string `json:"path,omitempty"`
 	// Response content type
-	ContentType string `json:"contentType,omitempty"`
+	ContentType *string `json:"contentType,omitempty"`
 	// Body content of response
-	Body string `json:"body,omitempty"`
+	Body *string `json:"body,omitempty"`
+}
+
+// NewWafHttpVerificationDetails instantiates a new WafHttpVerificationDetails object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafHttpVerificationDetails() *WafHttpVerificationDetails {
+	this := WafHttpVerificationDetails{}
+	return &this
+}
+
+// NewWafHttpVerificationDetailsWithDefaults instantiates a new WafHttpVerificationDetails object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafHttpVerificationDetailsWithDefaults() *WafHttpVerificationDetails {
+	this := WafHttpVerificationDetails{}
+	return &this
+}
+
+// GetPath returns the Path field value if set, zero value otherwise.
+func (o *WafHttpVerificationDetails) GetPath() string {
+	if o == nil || o.Path == nil {
+		var ret string
+		return ret
+	}
+	return *o.Path
+}
+
+// GetPathOk returns a tuple with the Path field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafHttpVerificationDetails) GetPathOk() (*string, bool) {
+	if o == nil || o.Path == nil {
+		return nil, false
+	}
+	return o.Path, true
+}
+
+// HasPath returns a boolean if a field has been set.
+func (o *WafHttpVerificationDetails) HasPath() bool {
+	if o != nil && o.Path != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPath gets a reference to the given string and assigns it to the Path field.
+func (o *WafHttpVerificationDetails) SetPath(v string) {
+	o.Path = &v
+}
+
+// GetContentType returns the ContentType field value if set, zero value otherwise.
+func (o *WafHttpVerificationDetails) GetContentType() string {
+	if o == nil || o.ContentType == nil {
+		var ret string
+		return ret
+	}
+	return *o.ContentType
+}
+
+// GetContentTypeOk returns a tuple with the ContentType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafHttpVerificationDetails) GetContentTypeOk() (*string, bool) {
+	if o == nil || o.ContentType == nil {
+		return nil, false
+	}
+	return o.ContentType, true
+}
+
+// HasContentType returns a boolean if a field has been set.
+func (o *WafHttpVerificationDetails) HasContentType() bool {
+	if o != nil && o.ContentType != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetContentType gets a reference to the given string and assigns it to the ContentType field.
+func (o *WafHttpVerificationDetails) SetContentType(v string) {
+	o.ContentType = &v
+}
+
+// GetBody returns the Body field value if set, zero value otherwise.
+func (o *WafHttpVerificationDetails) GetBody() string {
+	if o == nil || o.Body == nil {
+		var ret string
+		return ret
+	}
+	return *o.Body
+}
+
+// GetBodyOk returns a tuple with the Body field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafHttpVerificationDetails) GetBodyOk() (*string, bool) {
+	if o == nil || o.Body == nil {
+		return nil, false
+	}
+	return o.Body, true
+}
+
+// HasBody returns a boolean if a field has been set.
+func (o *WafHttpVerificationDetails) HasBody() bool {
+	if o != nil && o.Body != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBody gets a reference to the given string and assigns it to the Body field.
+func (o *WafHttpVerificationDetails) SetBody(v string) {
+	o.Body = &v
+}
+
+func (o WafHttpVerificationDetails) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Path != nil {
+		toSerialize["path"] = o.Path
+	}
+	if o.ContentType != nil {
+		toSerialize["contentType"] = o.ContentType
+	}
+	if o.Body != nil {
+		toSerialize["body"] = o.Body
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafHttpVerificationDetails struct {
+	value *WafHttpVerificationDetails
+	isSet bool
+}
+
+func (v NullableWafHttpVerificationDetails) Get() *WafHttpVerificationDetails {
+	return v.value
+}
+
+func (v *NullableWafHttpVerificationDetails) Set(val *WafHttpVerificationDetails) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafHttpVerificationDetails) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafHttpVerificationDetails) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafHttpVerificationDetails(val *WafHttpVerificationDetails) *NullableWafHttpVerificationDetails {
+	return &NullableWafHttpVerificationDetails{value: val, isSet: true}
+}
+
+func (v NullableWafHttpVerificationDetails) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafHttpVerificationDetails) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

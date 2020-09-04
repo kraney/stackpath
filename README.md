@@ -69,7 +69,7 @@ func main() {
 	var ts oauth2.TokenSource = spauth.NewTokenSource(*clientid, *clientsecret)
 	auth := context.WithValue(context.Background(), stacks.ContextOAuth2, ts)
 	stackclient := stacks.NewAPIClient(stacks.NewConfiguration())
-	stacksresp, _, err := stackclient.StacksApi.GetStacks(auth, nil)
+    stacksresp, _, err := stackclient.StacksApi.GetStacks(auth).Execute()
 	if err != nil {
 		log.Fatalf("Error getting stacks list: %v", err)
 	}

@@ -15,7 +15,6 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,13 +25,35 @@ var (
 // StacksApiService StacksApi service
 type StacksApiService service
 
+type apiCreateStackRequest struct {
+	ctx _context.Context
+	apiService *StacksApiService
+	stackCreateStackRequest *StackCreateStackRequest
+}
+
+
+func (r apiCreateStackRequest) StackCreateStackRequest(stackCreateStackRequest StackCreateStackRequest) apiCreateStackRequest {
+	r.stackCreateStackRequest = &stackCreateStackRequest
+	return r
+}
+
 /*
 CreateStack Create a stack
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param stackCreateStackRequest
-@return StackCreateStackResponse
+@return apiCreateStackRequest
 */
-func (a *StacksApiService) CreateStack(ctx _context.Context, stackCreateStackRequest StackCreateStackRequest) (StackCreateStackResponse, *_nethttp.Response, error) {
+func (a *StacksApiService) CreateStack(ctx _context.Context) apiCreateStackRequest {
+	return apiCreateStackRequest{
+		apiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return StackCreateStackResponse
+*/
+func (r apiCreateStackRequest) Execute() (StackCreateStackResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -42,11 +63,20 @@ func (a *StacksApiService) CreateStack(ctx _context.Context, stackCreateStackReq
 		localVarReturnValue  StackCreateStackResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/stack/v1/stacks"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "StacksApiService.CreateStack")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/stack/v1/stacks"
+
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	if r.stackCreateStackRequest == nil {
+		return localVarReturnValue, nil, reportError("stackCreateStackRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -66,13 +96,13 @@ func (a *StacksApiService) CreateStack(ctx _context.Context, stackCreateStackReq
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &stackCreateStackRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.stackCreateStackRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -90,7 +120,7 @@ func (a *StacksApiService) CreateStack(ctx _context.Context, stackCreateStackReq
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -100,7 +130,7 @@ func (a *StacksApiService) CreateStack(ctx _context.Context, stackCreateStackReq
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -109,7 +139,7 @@ func (a *StacksApiService) CreateStack(ctx _context.Context, stackCreateStackReq
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -118,7 +148,7 @@ func (a *StacksApiService) CreateStack(ctx _context.Context, stackCreateStackReq
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -129,14 +159,32 @@ func (a *StacksApiService) CreateStack(ctx _context.Context, stackCreateStackReq
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetStackRequest struct {
+	ctx _context.Context
+	apiService *StacksApiService
+	stackId string
+}
+
 
 /*
 GetStack Get a stack
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
-@return StackStack
+@return apiGetStackRequest
 */
-func (a *StacksApiService) GetStack(ctx _context.Context, stackId string) (StackStack, *_nethttp.Response, error) {
+func (a *StacksApiService) GetStack(ctx _context.Context, stackId string) apiGetStackRequest {
+	return apiGetStackRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+	}
+}
+
+/*
+Execute executes the request
+ @return StackStack
+*/
+func (r apiGetStackRequest) Execute() (StackStack, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -146,13 +194,18 @@ func (a *StacksApiService) GetStack(ctx _context.Context, stackId string) (Stack
 		localVarReturnValue  StackStack
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/stack/v1/stacks/{stack_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "StacksApiService.GetStack")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/stack/v1/stacks/{stack_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -171,12 +224,12 @@ func (a *StacksApiService) GetStack(ctx _context.Context, stackId string) (Stack
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -194,7 +247,7 @@ func (a *StacksApiService) GetStack(ctx _context.Context, stackId string) (Stack
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -204,7 +257,7 @@ func (a *StacksApiService) GetStack(ctx _context.Context, stackId string) (Stack
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -213,7 +266,7 @@ func (a *StacksApiService) GetStack(ctx _context.Context, stackId string) (Stack
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -222,7 +275,7 @@ func (a *StacksApiService) GetStack(ctx _context.Context, stackId string) (Stack
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -233,28 +286,59 @@ func (a *StacksApiService) GetStack(ctx _context.Context, stackId string) (Stack
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetStacksRequest struct {
+	ctx _context.Context
+	apiService *StacksApiService
+	pageRequestFirst *string
+	pageRequestAfter *string
+	pageRequestFilter *string
+	pageRequestSortBy *string
+	accountId *string
+}
 
-// GetStacksOpts Optional parameters for the method 'GetStacks'
-type GetStacksOpts struct {
-    PageRequestFirst optional.String
-    PageRequestAfter optional.String
-    PageRequestFilter optional.String
-    PageRequestSortBy optional.String
-    AccountId optional.String
+
+func (r apiGetStacksRequest) PageRequestFirst(pageRequestFirst string) apiGetStacksRequest {
+	r.pageRequestFirst = &pageRequestFirst
+	return r
+}
+
+func (r apiGetStacksRequest) PageRequestAfter(pageRequestAfter string) apiGetStacksRequest {
+	r.pageRequestAfter = &pageRequestAfter
+	return r
+}
+
+func (r apiGetStacksRequest) PageRequestFilter(pageRequestFilter string) apiGetStacksRequest {
+	r.pageRequestFilter = &pageRequestFilter
+	return r
+}
+
+func (r apiGetStacksRequest) PageRequestSortBy(pageRequestSortBy string) apiGetStacksRequest {
+	r.pageRequestSortBy = &pageRequestSortBy
+	return r
+}
+
+func (r apiGetStacksRequest) AccountId(accountId string) apiGetStacksRequest {
+	r.accountId = &accountId
+	return r
 }
 
 /*
 GetStacks Get all stacks
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *GetStacksOpts - Optional Parameters:
- * @param "PageRequestFirst" (optional.String) -  The number of items desired.
- * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
- * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
- * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
- * @param "AccountId" (optional.String) -  An account ID
-@return StackGetStacksResponse
+@return apiGetStacksRequest
 */
-func (a *StacksApiService) GetStacks(ctx _context.Context, localVarOptionals *GetStacksOpts) (StackGetStacksResponse, *_nethttp.Response, error) {
+func (a *StacksApiService) GetStacks(ctx _context.Context) apiGetStacksRequest {
+	return apiGetStacksRequest{
+		apiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return StackGetStacksResponse
+*/
+func (r apiGetStacksRequest) Execute() (StackGetStacksResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -264,26 +348,31 @@ func (a *StacksApiService) GetStacks(ctx _context.Context, localVarOptionals *Ge
 		localVarReturnValue  StackGetStacksResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/stack/v1/stacks"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "StacksApiService.GetStacks")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/stack/v1/stacks"
+
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
-		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
+					
+	if r.pageRequestFirst != nil {
+		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
-		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
+	if r.pageRequestAfter != nil {
+		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
-		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
+	if r.pageRequestFilter != nil {
+		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
+	if r.pageRequestSortBy != nil {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.AccountId.IsSet() {
-		localVarQueryParams.Add("account_id", parameterToString(localVarOptionals.AccountId.Value(), ""))
+	if r.accountId != nil {
+		localVarQueryParams.Add("account_id", parameterToString(*r.accountId, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -302,12 +391,12 @@ func (a *StacksApiService) GetStacks(ctx _context.Context, localVarOptionals *Ge
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -325,7 +414,7 @@ func (a *StacksApiService) GetStacks(ctx _context.Context, localVarOptionals *Ge
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -335,7 +424,7 @@ func (a *StacksApiService) GetStacks(ctx _context.Context, localVarOptionals *Ge
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -344,7 +433,7 @@ func (a *StacksApiService) GetStacks(ctx _context.Context, localVarOptionals *Ge
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -353,7 +442,7 @@ func (a *StacksApiService) GetStacks(ctx _context.Context, localVarOptionals *Ge
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -364,15 +453,38 @@ func (a *StacksApiService) GetStacks(ctx _context.Context, localVarOptionals *Ge
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiUpdateStack2Request struct {
+	ctx _context.Context
+	apiService *StacksApiService
+	stackId string
+	stackUpdateStackRequest2 *StackUpdateStackRequest2
+}
+
+
+func (r apiUpdateStack2Request) StackUpdateStackRequest2(stackUpdateStackRequest2 StackUpdateStackRequest2) apiUpdateStack2Request {
+	r.stackUpdateStackRequest2 = &stackUpdateStackRequest2
+	return r
+}
 
 /*
 UpdateStack2 Update a stack
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
- * @param stackUpdateStackRequest2
-@return StackUpdateStackResponse
+@return apiUpdateStack2Request
 */
-func (a *StacksApiService) UpdateStack2(ctx _context.Context, stackId string, stackUpdateStackRequest2 StackUpdateStackRequest2) (StackUpdateStackResponse, *_nethttp.Response, error) {
+func (a *StacksApiService) UpdateStack2(ctx _context.Context, stackId string) apiUpdateStack2Request {
+	return apiUpdateStack2Request{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+	}
+}
+
+/*
+Execute executes the request
+ @return StackUpdateStackResponse
+*/
+func (r apiUpdateStack2Request) Execute() (StackUpdateStackResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -382,13 +494,22 @@ func (a *StacksApiService) UpdateStack2(ctx _context.Context, stackId string, st
 		localVarReturnValue  StackUpdateStackResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/stack/v1/stacks/{stack_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "StacksApiService.UpdateStack2")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/stack/v1/stacks/{stack_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	if r.stackUpdateStackRequest2 == nil {
+		return localVarReturnValue, nil, reportError("stackUpdateStackRequest2 is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -408,13 +529,13 @@ func (a *StacksApiService) UpdateStack2(ctx _context.Context, stackId string, st
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &stackUpdateStackRequest2
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.stackUpdateStackRequest2
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -432,7 +553,7 @@ func (a *StacksApiService) UpdateStack2(ctx _context.Context, stackId string, st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -442,7 +563,7 @@ func (a *StacksApiService) UpdateStack2(ctx _context.Context, stackId string, st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -451,7 +572,7 @@ func (a *StacksApiService) UpdateStack2(ctx _context.Context, stackId string, st
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -460,7 +581,7 @@ func (a *StacksApiService) UpdateStack2(ctx _context.Context, stackId string, st
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

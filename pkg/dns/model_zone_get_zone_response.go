@@ -8,7 +8,105 @@
  */
 
 package dns
+
+import (
+	"encoding/json"
+)
+
 // ZoneGetZoneResponse A response from a request to retrieve a DNS zone
 type ZoneGetZoneResponse struct {
-	Zone ZoneZone `json:"zone,omitempty"`
+	Zone *ZoneZone `json:"zone,omitempty"`
+}
+
+// NewZoneGetZoneResponse instantiates a new ZoneGetZoneResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewZoneGetZoneResponse() *ZoneGetZoneResponse {
+	this := ZoneGetZoneResponse{}
+	return &this
+}
+
+// NewZoneGetZoneResponseWithDefaults instantiates a new ZoneGetZoneResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewZoneGetZoneResponseWithDefaults() *ZoneGetZoneResponse {
+	this := ZoneGetZoneResponse{}
+	return &this
+}
+
+// GetZone returns the Zone field value if set, zero value otherwise.
+func (o *ZoneGetZoneResponse) GetZone() ZoneZone {
+	if o == nil || o.Zone == nil {
+		var ret ZoneZone
+		return ret
+	}
+	return *o.Zone
+}
+
+// GetZoneOk returns a tuple with the Zone field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ZoneGetZoneResponse) GetZoneOk() (*ZoneZone, bool) {
+	if o == nil || o.Zone == nil {
+		return nil, false
+	}
+	return o.Zone, true
+}
+
+// HasZone returns a boolean if a field has been set.
+func (o *ZoneGetZoneResponse) HasZone() bool {
+	if o != nil && o.Zone != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetZone gets a reference to the given ZoneZone and assigns it to the Zone field.
+func (o *ZoneGetZoneResponse) SetZone(v ZoneZone) {
+	o.Zone = &v
+}
+
+func (o ZoneGetZoneResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Zone != nil {
+		toSerialize["zone"] = o.Zone
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableZoneGetZoneResponse struct {
+	value *ZoneGetZoneResponse
+	isSet bool
+}
+
+func (v NullableZoneGetZoneResponse) Get() *ZoneGetZoneResponse {
+	return v.value
+}
+
+func (v *NullableZoneGetZoneResponse) Set(val *ZoneGetZoneResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableZoneGetZoneResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableZoneGetZoneResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableZoneGetZoneResponse(val *ZoneGetZoneResponse) *NullableZoneGetZoneResponse {
+	return &NullableZoneGetZoneResponse{value: val, isSet: true}
+}
+
+func (v NullableZoneGetZoneResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableZoneGetZoneResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

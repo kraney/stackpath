@@ -8,11 +8,179 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfAuthReferer HTTP Referrer restriction policies allow you to limit access to your published CDN URLs based on the HTTP Referrer header submitted by the browser. This restriction policy prevents your content from being easily distributed on unauthorized websites (also known as hot linking or deep linking). Once this policy is applied to your CDN container, websites that are not listed in this policy will be denied access to the content cached at this location.
 type CustconfAuthReferer struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// String of values delimited by a '|' character. This is a list of domains authorized to access content from this path in the container. You may use wildcards to specify multiple websites hosted on the same domain.
-	Referer string `json:"referer,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Referer *string `json:"referer,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfAuthReferer instantiates a new CustconfAuthReferer object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfAuthReferer() *CustconfAuthReferer {
+	this := CustconfAuthReferer{}
+	return &this
+}
+
+// NewCustconfAuthRefererWithDefaults instantiates a new CustconfAuthReferer object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfAuthRefererWithDefaults() *CustconfAuthReferer {
+	this := CustconfAuthReferer{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfAuthReferer) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthReferer) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfAuthReferer) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfAuthReferer) SetId(v string) {
+	o.Id = &v
+}
+
+// GetReferer returns the Referer field value if set, zero value otherwise.
+func (o *CustconfAuthReferer) GetReferer() string {
+	if o == nil || o.Referer == nil {
+		var ret string
+		return ret
+	}
+	return *o.Referer
+}
+
+// GetRefererOk returns a tuple with the Referer field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthReferer) GetRefererOk() (*string, bool) {
+	if o == nil || o.Referer == nil {
+		return nil, false
+	}
+	return o.Referer, true
+}
+
+// HasReferer returns a boolean if a field has been set.
+func (o *CustconfAuthReferer) HasReferer() bool {
+	if o != nil && o.Referer != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetReferer gets a reference to the given string and assigns it to the Referer field.
+func (o *CustconfAuthReferer) SetReferer(v string) {
+	o.Referer = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfAuthReferer) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthReferer) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfAuthReferer) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfAuthReferer) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfAuthReferer) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Referer != nil {
+		toSerialize["referer"] = o.Referer
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfAuthReferer struct {
+	value *CustconfAuthReferer
+	isSet bool
+}
+
+func (v NullableCustconfAuthReferer) Get() *CustconfAuthReferer {
+	return v.value
+}
+
+func (v *NullableCustconfAuthReferer) Set(val *CustconfAuthReferer) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfAuthReferer) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfAuthReferer) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfAuthReferer(val *CustconfAuthReferer) *NullableCustconfAuthReferer {
+	return &NullableCustconfAuthReferer{value: val, isSet: true}
+}
+
+func (v NullableCustconfAuthReferer) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfAuthReferer) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

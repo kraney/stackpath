@@ -8,19 +8,255 @@
  */
 
 package edge_compute
+
 import (
+	"encoding/json"
 	"time"
 )
+
 // ContainerStatusTerminated Properties related to terminated containers
 type ContainerStatusTerminated struct {
 	// The exit code of the command that started the container
-	ExitCode int32 `json:"exitCode,omitempty"`
+	ExitCode *int32 `json:"exitCode,omitempty"`
 	// The reason a container terminated
-	Reason string `json:"reason,omitempty"`
+	Reason *string `json:"reason,omitempty"`
 	// A more detailed explanation of a container's termination
-	Message string `json:"message,omitempty"`
+	Message *string `json:"message,omitempty"`
 	// The date a container started
-	StartedAt time.Time `json:"startedAt,omitempty"`
+	StartedAt *time.Time `json:"startedAt,omitempty"`
 	// The date a container terminated
-	FinishedAt time.Time `json:"finishedAt,omitempty"`
+	FinishedAt *time.Time `json:"finishedAt,omitempty"`
+}
+
+// NewContainerStatusTerminated instantiates a new ContainerStatusTerminated object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewContainerStatusTerminated() *ContainerStatusTerminated {
+	this := ContainerStatusTerminated{}
+	return &this
+}
+
+// NewContainerStatusTerminatedWithDefaults instantiates a new ContainerStatusTerminated object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewContainerStatusTerminatedWithDefaults() *ContainerStatusTerminated {
+	this := ContainerStatusTerminated{}
+	return &this
+}
+
+// GetExitCode returns the ExitCode field value if set, zero value otherwise.
+func (o *ContainerStatusTerminated) GetExitCode() int32 {
+	if o == nil || o.ExitCode == nil {
+		var ret int32
+		return ret
+	}
+	return *o.ExitCode
+}
+
+// GetExitCodeOk returns a tuple with the ExitCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ContainerStatusTerminated) GetExitCodeOk() (*int32, bool) {
+	if o == nil || o.ExitCode == nil {
+		return nil, false
+	}
+	return o.ExitCode, true
+}
+
+// HasExitCode returns a boolean if a field has been set.
+func (o *ContainerStatusTerminated) HasExitCode() bool {
+	if o != nil && o.ExitCode != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetExitCode gets a reference to the given int32 and assigns it to the ExitCode field.
+func (o *ContainerStatusTerminated) SetExitCode(v int32) {
+	o.ExitCode = &v
+}
+
+// GetReason returns the Reason field value if set, zero value otherwise.
+func (o *ContainerStatusTerminated) GetReason() string {
+	if o == nil || o.Reason == nil {
+		var ret string
+		return ret
+	}
+	return *o.Reason
+}
+
+// GetReasonOk returns a tuple with the Reason field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ContainerStatusTerminated) GetReasonOk() (*string, bool) {
+	if o == nil || o.Reason == nil {
+		return nil, false
+	}
+	return o.Reason, true
+}
+
+// HasReason returns a boolean if a field has been set.
+func (o *ContainerStatusTerminated) HasReason() bool {
+	if o != nil && o.Reason != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetReason gets a reference to the given string and assigns it to the Reason field.
+func (o *ContainerStatusTerminated) SetReason(v string) {
+	o.Reason = &v
+}
+
+// GetMessage returns the Message field value if set, zero value otherwise.
+func (o *ContainerStatusTerminated) GetMessage() string {
+	if o == nil || o.Message == nil {
+		var ret string
+		return ret
+	}
+	return *o.Message
+}
+
+// GetMessageOk returns a tuple with the Message field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ContainerStatusTerminated) GetMessageOk() (*string, bool) {
+	if o == nil || o.Message == nil {
+		return nil, false
+	}
+	return o.Message, true
+}
+
+// HasMessage returns a boolean if a field has been set.
+func (o *ContainerStatusTerminated) HasMessage() bool {
+	if o != nil && o.Message != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMessage gets a reference to the given string and assigns it to the Message field.
+func (o *ContainerStatusTerminated) SetMessage(v string) {
+	o.Message = &v
+}
+
+// GetStartedAt returns the StartedAt field value if set, zero value otherwise.
+func (o *ContainerStatusTerminated) GetStartedAt() time.Time {
+	if o == nil || o.StartedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.StartedAt
+}
+
+// GetStartedAtOk returns a tuple with the StartedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ContainerStatusTerminated) GetStartedAtOk() (*time.Time, bool) {
+	if o == nil || o.StartedAt == nil {
+		return nil, false
+	}
+	return o.StartedAt, true
+}
+
+// HasStartedAt returns a boolean if a field has been set.
+func (o *ContainerStatusTerminated) HasStartedAt() bool {
+	if o != nil && o.StartedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStartedAt gets a reference to the given time.Time and assigns it to the StartedAt field.
+func (o *ContainerStatusTerminated) SetStartedAt(v time.Time) {
+	o.StartedAt = &v
+}
+
+// GetFinishedAt returns the FinishedAt field value if set, zero value otherwise.
+func (o *ContainerStatusTerminated) GetFinishedAt() time.Time {
+	if o == nil || o.FinishedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.FinishedAt
+}
+
+// GetFinishedAtOk returns a tuple with the FinishedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ContainerStatusTerminated) GetFinishedAtOk() (*time.Time, bool) {
+	if o == nil || o.FinishedAt == nil {
+		return nil, false
+	}
+	return o.FinishedAt, true
+}
+
+// HasFinishedAt returns a boolean if a field has been set.
+func (o *ContainerStatusTerminated) HasFinishedAt() bool {
+	if o != nil && o.FinishedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetFinishedAt gets a reference to the given time.Time and assigns it to the FinishedAt field.
+func (o *ContainerStatusTerminated) SetFinishedAt(v time.Time) {
+	o.FinishedAt = &v
+}
+
+func (o ContainerStatusTerminated) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.ExitCode != nil {
+		toSerialize["exitCode"] = o.ExitCode
+	}
+	if o.Reason != nil {
+		toSerialize["reason"] = o.Reason
+	}
+	if o.Message != nil {
+		toSerialize["message"] = o.Message
+	}
+	if o.StartedAt != nil {
+		toSerialize["startedAt"] = o.StartedAt
+	}
+	if o.FinishedAt != nil {
+		toSerialize["finishedAt"] = o.FinishedAt
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableContainerStatusTerminated struct {
+	value *ContainerStatusTerminated
+	isSet bool
+}
+
+func (v NullableContainerStatusTerminated) Get() *ContainerStatusTerminated {
+	return v.value
+}
+
+func (v *NullableContainerStatusTerminated) Set(val *ContainerStatusTerminated) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableContainerStatusTerminated) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableContainerStatusTerminated) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableContainerStatusTerminated(val *ContainerStatusTerminated) *NullableContainerStatusTerminated {
+	return &NullableContainerStatusTerminated{value: val, isSet: true}
+}
+
+func (v NullableContainerStatusTerminated) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableContainerStatusTerminated) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

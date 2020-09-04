@@ -16,11 +16,12 @@ type TokenSource struct {
 
 // NewTokenSource returns a new token source for stackpath
 func NewTokenSource(clientid string, clientsecret string) *TokenSource {
+	creds := "client_credentials"
 	return &TokenSource{
 		req: user.IdentityGetAccessTokenRequest{
-			ClientId:     clientid,
-			ClientSecret: clientsecret,
-			GrantType:    "client_credentials",
+			ClientId:     &clientid,
+			ClientSecret: &clientsecret,
+			GrantType:    &creds,
 		},
 	}
 }
@@ -29,13 +30,13 @@ func NewTokenSource(clientid string, clientsecret string) *TokenSource {
 func (sps *TokenSource) Token() (*oauth2.Token, error) {
 	usercfg := user.NewConfiguration()
 	userclient := user.NewAPIClient(usercfg)
-	idresp, _, err := userclient.AuthenticationApi.GetAccessToken(context.Background(), sps.req)
+	idresp, _, err := userclient.AuthenticationApi.GetAccessToken(context.Background()).IdentityGetAccessTokenRequest(sps.req).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("Error obtaining oauth2 token: %v", err)
 	}
 	return &oauth2.Token{
-		AccessToken: idresp.AccessToken,
-		TokenType:   idresp.TokenType,
-		Expiry:      time.Now().Add(time.Second * time.Duration(idresp.ExpiresIn-30)),
+		AccessToken: *idresp.AccessToken,
+		TokenType:   *idresp.TokenType,
+		Expiry:      time.Now().Add(time.Second * time.Duration(*idresp.ExpiresIn-30)),
 	}, nil
 }

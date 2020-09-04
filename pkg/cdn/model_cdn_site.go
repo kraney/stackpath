@@ -8,26 +8,406 @@
  */
 
 package cdn
+
 import (
+	"encoding/json"
 	"time"
 )
+
 // CdnSite A CDN site
 type CdnSite struct {
 	// A CDN site's unique identifier
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// The ID of the stack to which a CDN site belongs
-	StackId string `json:"stackId,omitempty"`
+	StackId *string `json:"stackId,omitempty"`
 	// A CDN site's name  Site names correspond to their fully-qualified domain name.
-	Label string `json:"label,omitempty"`
+	Label *string `json:"label,omitempty"`
 	// A CDN site's internal state  Site status is controlled by StackPath as sites are provisioned and managed by StackPath's accounting and security teams.
-	Status string `json:"status,omitempty"`
+	Status *string `json:"status,omitempty"`
 	// The date that a CDN site was created
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// The date that a CDN site was last updated
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 	// A CDN site's associated features  Features control how StackPath provisions and configures a site.
-	Features []CdnSiteFeature `json:"features,omitempty"`
+	Features *[]CdnSiteFeature `json:"features,omitempty"`
 	// Whether or not a site's CDN service is enabled
-	Enabled bool `json:"enabled,omitempty"`
-	Type SiteTypeValue `json:"type,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	Type *SiteTypeValue `json:"type,omitempty"`
+}
+
+// NewCdnSite instantiates a new CdnSite object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnSite() *CdnSite {
+	this := CdnSite{}
+	var type_ SiteTypeValue = "UNKNOWN"
+	this.Type = &type_
+	return &this
+}
+
+// NewCdnSiteWithDefaults instantiates a new CdnSite object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnSiteWithDefaults() *CdnSite {
+	this := CdnSite{}
+	var type_ SiteTypeValue = "UNKNOWN"
+	this.Type = &type_
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CdnSite) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnSite) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CdnSite) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CdnSite) SetId(v string) {
+	o.Id = &v
+}
+
+// GetStackId returns the StackId field value if set, zero value otherwise.
+func (o *CdnSite) GetStackId() string {
+	if o == nil || o.StackId == nil {
+		var ret string
+		return ret
+	}
+	return *o.StackId
+}
+
+// GetStackIdOk returns a tuple with the StackId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnSite) GetStackIdOk() (*string, bool) {
+	if o == nil || o.StackId == nil {
+		return nil, false
+	}
+	return o.StackId, true
+}
+
+// HasStackId returns a boolean if a field has been set.
+func (o *CdnSite) HasStackId() bool {
+	if o != nil && o.StackId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStackId gets a reference to the given string and assigns it to the StackId field.
+func (o *CdnSite) SetStackId(v string) {
+	o.StackId = &v
+}
+
+// GetLabel returns the Label field value if set, zero value otherwise.
+func (o *CdnSite) GetLabel() string {
+	if o == nil || o.Label == nil {
+		var ret string
+		return ret
+	}
+	return *o.Label
+}
+
+// GetLabelOk returns a tuple with the Label field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnSite) GetLabelOk() (*string, bool) {
+	if o == nil || o.Label == nil {
+		return nil, false
+	}
+	return o.Label, true
+}
+
+// HasLabel returns a boolean if a field has been set.
+func (o *CdnSite) HasLabel() bool {
+	if o != nil && o.Label != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLabel gets a reference to the given string and assigns it to the Label field.
+func (o *CdnSite) SetLabel(v string) {
+	o.Label = &v
+}
+
+// GetStatus returns the Status field value if set, zero value otherwise.
+func (o *CdnSite) GetStatus() string {
+	if o == nil || o.Status == nil {
+		var ret string
+		return ret
+	}
+	return *o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnSite) GetStatusOk() (*string, bool) {
+	if o == nil || o.Status == nil {
+		return nil, false
+	}
+	return o.Status, true
+}
+
+// HasStatus returns a boolean if a field has been set.
+func (o *CdnSite) HasStatus() bool {
+	if o != nil && o.Status != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatus gets a reference to the given string and assigns it to the Status field.
+func (o *CdnSite) SetStatus(v string) {
+	o.Status = &v
+}
+
+// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+func (o *CdnSite) GetCreatedAt() time.Time {
+	if o == nil || o.CreatedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnSite) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil || o.CreatedAt == nil {
+		return nil, false
+	}
+	return o.CreatedAt, true
+}
+
+// HasCreatedAt returns a boolean if a field has been set.
+func (o *CdnSite) HasCreatedAt() bool {
+	if o != nil && o.CreatedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
+func (o *CdnSite) SetCreatedAt(v time.Time) {
+	o.CreatedAt = &v
+}
+
+// GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
+func (o *CdnSite) GetUpdatedAt() time.Time {
+	if o == nil || o.UpdatedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.UpdatedAt
+}
+
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnSite) GetUpdatedAtOk() (*time.Time, bool) {
+	if o == nil || o.UpdatedAt == nil {
+		return nil, false
+	}
+	return o.UpdatedAt, true
+}
+
+// HasUpdatedAt returns a boolean if a field has been set.
+func (o *CdnSite) HasUpdatedAt() bool {
+	if o != nil && o.UpdatedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUpdatedAt gets a reference to the given time.Time and assigns it to the UpdatedAt field.
+func (o *CdnSite) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = &v
+}
+
+// GetFeatures returns the Features field value if set, zero value otherwise.
+func (o *CdnSite) GetFeatures() []CdnSiteFeature {
+	if o == nil || o.Features == nil {
+		var ret []CdnSiteFeature
+		return ret
+	}
+	return *o.Features
+}
+
+// GetFeaturesOk returns a tuple with the Features field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnSite) GetFeaturesOk() (*[]CdnSiteFeature, bool) {
+	if o == nil || o.Features == nil {
+		return nil, false
+	}
+	return o.Features, true
+}
+
+// HasFeatures returns a boolean if a field has been set.
+func (o *CdnSite) HasFeatures() bool {
+	if o != nil && o.Features != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetFeatures gets a reference to the given []CdnSiteFeature and assigns it to the Features field.
+func (o *CdnSite) SetFeatures(v []CdnSiteFeature) {
+	o.Features = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CdnSite) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnSite) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CdnSite) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CdnSite) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+// GetType returns the Type field value if set, zero value otherwise.
+func (o *CdnSite) GetType() SiteTypeValue {
+	if o == nil || o.Type == nil {
+		var ret SiteTypeValue
+		return ret
+	}
+	return *o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnSite) GetTypeOk() (*SiteTypeValue, bool) {
+	if o == nil || o.Type == nil {
+		return nil, false
+	}
+	return o.Type, true
+}
+
+// HasType returns a boolean if a field has been set.
+func (o *CdnSite) HasType() bool {
+	if o != nil && o.Type != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given SiteTypeValue and assigns it to the Type field.
+func (o *CdnSite) SetType(v SiteTypeValue) {
+	o.Type = &v
+}
+
+func (o CdnSite) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.StackId != nil {
+		toSerialize["stackId"] = o.StackId
+	}
+	if o.Label != nil {
+		toSerialize["label"] = o.Label
+	}
+	if o.Status != nil {
+		toSerialize["status"] = o.Status
+	}
+	if o.CreatedAt != nil {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if o.UpdatedAt != nil {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	if o.Features != nil {
+		toSerialize["features"] = o.Features
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	if o.Type != nil {
+		toSerialize["type"] = o.Type
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnSite struct {
+	value *CdnSite
+	isSet bool
+}
+
+func (v NullableCdnSite) Get() *CdnSite {
+	return v.value
+}
+
+func (v *NullableCdnSite) Set(val *CdnSite) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnSite) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnSite) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnSite(val *CdnSite) *NullableCdnSite {
+	return &NullableCdnSite{value: val, isSet: true}
+}
+
+func (v NullableCdnSite) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnSite) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

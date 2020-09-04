@@ -8,16 +8,254 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // EventRequestUserAgent Parsed user agent information  Incoming user agents are parsed by StackPath into categories to help describe the type of device and HTTP client or browser that made a request that triggered a WAF event. Parsed user agent properties have the value \"NA\" if StackPath is unable to parse the incoming user agent.
 type EventRequestUserAgent struct {
 	// The name of the requesting client, typically the name of the requesting web browser
-	ClientName string `json:"clientName,omitempty"`
+	ClientName *string `json:"clientName,omitempty"`
 	// The requesting client's type, such as \"major browser\" or \"mobile app\"
-	ClientType string `json:"clientType,omitempty"`
+	ClientType *string `json:"clientType,omitempty"`
 	// The brand name of the device making the request, such as \"iphone\" or \"playstation\"
-	Device string `json:"device,omitempty"`
+	Device *string `json:"device,omitempty"`
 	// The operating system of the device making the request
-	Os string `json:"os,omitempty"`
+	Os *string `json:"os,omitempty"`
 	// The full user agent string
-	Raw string `json:"raw,omitempty"`
+	Raw *string `json:"raw,omitempty"`
+}
+
+// NewEventRequestUserAgent instantiates a new EventRequestUserAgent object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewEventRequestUserAgent() *EventRequestUserAgent {
+	this := EventRequestUserAgent{}
+	return &this
+}
+
+// NewEventRequestUserAgentWithDefaults instantiates a new EventRequestUserAgent object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewEventRequestUserAgentWithDefaults() *EventRequestUserAgent {
+	this := EventRequestUserAgent{}
+	return &this
+}
+
+// GetClientName returns the ClientName field value if set, zero value otherwise.
+func (o *EventRequestUserAgent) GetClientName() string {
+	if o == nil || o.ClientName == nil {
+		var ret string
+		return ret
+	}
+	return *o.ClientName
+}
+
+// GetClientNameOk returns a tuple with the ClientName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EventRequestUserAgent) GetClientNameOk() (*string, bool) {
+	if o == nil || o.ClientName == nil {
+		return nil, false
+	}
+	return o.ClientName, true
+}
+
+// HasClientName returns a boolean if a field has been set.
+func (o *EventRequestUserAgent) HasClientName() bool {
+	if o != nil && o.ClientName != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetClientName gets a reference to the given string and assigns it to the ClientName field.
+func (o *EventRequestUserAgent) SetClientName(v string) {
+	o.ClientName = &v
+}
+
+// GetClientType returns the ClientType field value if set, zero value otherwise.
+func (o *EventRequestUserAgent) GetClientType() string {
+	if o == nil || o.ClientType == nil {
+		var ret string
+		return ret
+	}
+	return *o.ClientType
+}
+
+// GetClientTypeOk returns a tuple with the ClientType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EventRequestUserAgent) GetClientTypeOk() (*string, bool) {
+	if o == nil || o.ClientType == nil {
+		return nil, false
+	}
+	return o.ClientType, true
+}
+
+// HasClientType returns a boolean if a field has been set.
+func (o *EventRequestUserAgent) HasClientType() bool {
+	if o != nil && o.ClientType != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetClientType gets a reference to the given string and assigns it to the ClientType field.
+func (o *EventRequestUserAgent) SetClientType(v string) {
+	o.ClientType = &v
+}
+
+// GetDevice returns the Device field value if set, zero value otherwise.
+func (o *EventRequestUserAgent) GetDevice() string {
+	if o == nil || o.Device == nil {
+		var ret string
+		return ret
+	}
+	return *o.Device
+}
+
+// GetDeviceOk returns a tuple with the Device field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EventRequestUserAgent) GetDeviceOk() (*string, bool) {
+	if o == nil || o.Device == nil {
+		return nil, false
+	}
+	return o.Device, true
+}
+
+// HasDevice returns a boolean if a field has been set.
+func (o *EventRequestUserAgent) HasDevice() bool {
+	if o != nil && o.Device != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDevice gets a reference to the given string and assigns it to the Device field.
+func (o *EventRequestUserAgent) SetDevice(v string) {
+	o.Device = &v
+}
+
+// GetOs returns the Os field value if set, zero value otherwise.
+func (o *EventRequestUserAgent) GetOs() string {
+	if o == nil || o.Os == nil {
+		var ret string
+		return ret
+	}
+	return *o.Os
+}
+
+// GetOsOk returns a tuple with the Os field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EventRequestUserAgent) GetOsOk() (*string, bool) {
+	if o == nil || o.Os == nil {
+		return nil, false
+	}
+	return o.Os, true
+}
+
+// HasOs returns a boolean if a field has been set.
+func (o *EventRequestUserAgent) HasOs() bool {
+	if o != nil && o.Os != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetOs gets a reference to the given string and assigns it to the Os field.
+func (o *EventRequestUserAgent) SetOs(v string) {
+	o.Os = &v
+}
+
+// GetRaw returns the Raw field value if set, zero value otherwise.
+func (o *EventRequestUserAgent) GetRaw() string {
+	if o == nil || o.Raw == nil {
+		var ret string
+		return ret
+	}
+	return *o.Raw
+}
+
+// GetRawOk returns a tuple with the Raw field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *EventRequestUserAgent) GetRawOk() (*string, bool) {
+	if o == nil || o.Raw == nil {
+		return nil, false
+	}
+	return o.Raw, true
+}
+
+// HasRaw returns a boolean if a field has been set.
+func (o *EventRequestUserAgent) HasRaw() bool {
+	if o != nil && o.Raw != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRaw gets a reference to the given string and assigns it to the Raw field.
+func (o *EventRequestUserAgent) SetRaw(v string) {
+	o.Raw = &v
+}
+
+func (o EventRequestUserAgent) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.ClientName != nil {
+		toSerialize["clientName"] = o.ClientName
+	}
+	if o.ClientType != nil {
+		toSerialize["clientType"] = o.ClientType
+	}
+	if o.Device != nil {
+		toSerialize["device"] = o.Device
+	}
+	if o.Os != nil {
+		toSerialize["os"] = o.Os
+	}
+	if o.Raw != nil {
+		toSerialize["raw"] = o.Raw
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableEventRequestUserAgent struct {
+	value *EventRequestUserAgent
+	isSet bool
+}
+
+func (v NullableEventRequestUserAgent) Get() *EventRequestUserAgent {
+	return v.value
+}
+
+func (v *NullableEventRequestUserAgent) Set(val *EventRequestUserAgent) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableEventRequestUserAgent) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableEventRequestUserAgent) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableEventRequestUserAgent(val *EventRequestUserAgent) *NullableEventRequestUserAgent {
+	return &NullableEventRequestUserAgent{value: val, isSet: true}
+}
+
+func (v NullableEventRequestUserAgent) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableEventRequestUserAgent) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

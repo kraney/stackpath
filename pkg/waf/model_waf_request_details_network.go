@@ -8,11 +8,179 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafRequestDetailsNetwork A WAF request's network related aspects
 type WafRequestDetailsNetwork struct {
 	// The originating IP address
-	ClientIp string `json:"clientIp,omitempty"`
+	ClientIp *string `json:"clientIp,omitempty"`
 	// The ISO 3166-1 alpha-2 code of the country where the request originated from
-	Country string `json:"country,omitempty"`
-	Organization NetworkOrganization `json:"organization,omitempty"`
+	Country *string `json:"country,omitempty"`
+	Organization *NetworkOrganization `json:"organization,omitempty"`
+}
+
+// NewWafRequestDetailsNetwork instantiates a new WafRequestDetailsNetwork object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafRequestDetailsNetwork() *WafRequestDetailsNetwork {
+	this := WafRequestDetailsNetwork{}
+	return &this
+}
+
+// NewWafRequestDetailsNetworkWithDefaults instantiates a new WafRequestDetailsNetwork object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafRequestDetailsNetworkWithDefaults() *WafRequestDetailsNetwork {
+	this := WafRequestDetailsNetwork{}
+	return &this
+}
+
+// GetClientIp returns the ClientIp field value if set, zero value otherwise.
+func (o *WafRequestDetailsNetwork) GetClientIp() string {
+	if o == nil || o.ClientIp == nil {
+		var ret string
+		return ret
+	}
+	return *o.ClientIp
+}
+
+// GetClientIpOk returns a tuple with the ClientIp field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsNetwork) GetClientIpOk() (*string, bool) {
+	if o == nil || o.ClientIp == nil {
+		return nil, false
+	}
+	return o.ClientIp, true
+}
+
+// HasClientIp returns a boolean if a field has been set.
+func (o *WafRequestDetailsNetwork) HasClientIp() bool {
+	if o != nil && o.ClientIp != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetClientIp gets a reference to the given string and assigns it to the ClientIp field.
+func (o *WafRequestDetailsNetwork) SetClientIp(v string) {
+	o.ClientIp = &v
+}
+
+// GetCountry returns the Country field value if set, zero value otherwise.
+func (o *WafRequestDetailsNetwork) GetCountry() string {
+	if o == nil || o.Country == nil {
+		var ret string
+		return ret
+	}
+	return *o.Country
+}
+
+// GetCountryOk returns a tuple with the Country field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsNetwork) GetCountryOk() (*string, bool) {
+	if o == nil || o.Country == nil {
+		return nil, false
+	}
+	return o.Country, true
+}
+
+// HasCountry returns a boolean if a field has been set.
+func (o *WafRequestDetailsNetwork) HasCountry() bool {
+	if o != nil && o.Country != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCountry gets a reference to the given string and assigns it to the Country field.
+func (o *WafRequestDetailsNetwork) SetCountry(v string) {
+	o.Country = &v
+}
+
+// GetOrganization returns the Organization field value if set, zero value otherwise.
+func (o *WafRequestDetailsNetwork) GetOrganization() NetworkOrganization {
+	if o == nil || o.Organization == nil {
+		var ret NetworkOrganization
+		return ret
+	}
+	return *o.Organization
+}
+
+// GetOrganizationOk returns a tuple with the Organization field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestDetailsNetwork) GetOrganizationOk() (*NetworkOrganization, bool) {
+	if o == nil || o.Organization == nil {
+		return nil, false
+	}
+	return o.Organization, true
+}
+
+// HasOrganization returns a boolean if a field has been set.
+func (o *WafRequestDetailsNetwork) HasOrganization() bool {
+	if o != nil && o.Organization != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetOrganization gets a reference to the given NetworkOrganization and assigns it to the Organization field.
+func (o *WafRequestDetailsNetwork) SetOrganization(v NetworkOrganization) {
+	o.Organization = &v
+}
+
+func (o WafRequestDetailsNetwork) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.ClientIp != nil {
+		toSerialize["clientIp"] = o.ClientIp
+	}
+	if o.Country != nil {
+		toSerialize["country"] = o.Country
+	}
+	if o.Organization != nil {
+		toSerialize["organization"] = o.Organization
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafRequestDetailsNetwork struct {
+	value *WafRequestDetailsNetwork
+	isSet bool
+}
+
+func (v NullableWafRequestDetailsNetwork) Get() *WafRequestDetailsNetwork {
+	return v.value
+}
+
+func (v *NullableWafRequestDetailsNetwork) Set(val *WafRequestDetailsNetwork) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafRequestDetailsNetwork) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafRequestDetailsNetwork) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafRequestDetailsNetwork(val *WafRequestDetailsNetwork) *NullableWafRequestDetailsNetwork {
+	return &NullableWafRequestDetailsNetwork{value: val, isSet: true}
+}
+
+func (v NullableWafRequestDetailsNetwork) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafRequestDetailsNetwork) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

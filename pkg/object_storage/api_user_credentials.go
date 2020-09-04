@@ -25,33 +25,63 @@ var (
 // UserCredentialsApiService UserCredentialsApi service
 type UserCredentialsApiService service
 
+type apiDeleteCredentialRequest struct {
+	ctx _context.Context
+	apiService *UserCredentialsApiService
+	stackId string
+	userId string
+	accessKey string
+}
+
+
 /*
 DeleteCredential Delete credentials
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param userId A user ID
  * @param accessKey A user's access key
+@return apiDeleteCredentialRequest
 */
-func (a *UserCredentialsApiService) DeleteCredential(ctx _context.Context, stackId string, userId string, accessKey string) (*_nethttp.Response, error) {
+func (a *UserCredentialsApiService) DeleteCredential(ctx _context.Context, stackId string, userId string, accessKey string) apiDeleteCredentialRequest {
+	return apiDeleteCredentialRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		userId: userId,
+		accessKey: accessKey,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDeleteCredentialRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/users/{user_id}/credentials/{access_key}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "UserCredentialsApiService.DeleteCredential")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(userId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"access_key"+"}", _neturl.QueryEscape(parameterToString(accessKey, "")) , -1)
+	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/users/{user_id}/credentials/{access_key}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(r.userId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"access_key"+"}", _neturl.QueryEscape(parameterToString(r.accessKey, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -70,12 +100,12 @@ func (a *UserCredentialsApiService) DeleteCredential(ctx _context.Context, stack
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -93,7 +123,7 @@ func (a *UserCredentialsApiService) DeleteCredential(ctx _context.Context, stack
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -103,7 +133,7 @@ func (a *UserCredentialsApiService) DeleteCredential(ctx _context.Context, stack
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -112,7 +142,7 @@ func (a *UserCredentialsApiService) DeleteCredential(ctx _context.Context, stack
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -123,6 +153,13 @@ func (a *UserCredentialsApiService) DeleteCredential(ctx _context.Context, stack
 
 	return localVarHTTPResponse, nil
 }
+type apiGenerateCredentialsRequest struct {
+	ctx _context.Context
+	apiService *UserCredentialsApiService
+	stackId string
+	userId string
+}
+
 
 /*
 GenerateCredentials Create credentials
@@ -130,9 +167,22 @@ Generate storage credentials for the given user. Users can only have one set of 
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param userId A user ID
-@return StorageGenerateCredentialsResponse
+@return apiGenerateCredentialsRequest
 */
-func (a *UserCredentialsApiService) GenerateCredentials(ctx _context.Context, stackId string, userId string) (StorageGenerateCredentialsResponse, *_nethttp.Response, error) {
+func (a *UserCredentialsApiService) GenerateCredentials(ctx _context.Context, stackId string, userId string) apiGenerateCredentialsRequest {
+	return apiGenerateCredentialsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		userId: userId,
+	}
+}
+
+/*
+Execute executes the request
+ @return StorageGenerateCredentialsResponse
+*/
+func (r apiGenerateCredentialsRequest) Execute() (StorageGenerateCredentialsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -142,15 +192,20 @@ func (a *UserCredentialsApiService) GenerateCredentials(ctx _context.Context, st
 		localVarReturnValue  StorageGenerateCredentialsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/users/{user_id}/credentials/generate"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "UserCredentialsApiService.GenerateCredentials")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(userId, "")) , -1)
+	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/users/{user_id}/credentials/generate"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(r.userId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -169,12 +224,12 @@ func (a *UserCredentialsApiService) GenerateCredentials(ctx _context.Context, st
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -192,7 +247,7 @@ func (a *UserCredentialsApiService) GenerateCredentials(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -202,7 +257,7 @@ func (a *UserCredentialsApiService) GenerateCredentials(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -211,7 +266,7 @@ func (a *UserCredentialsApiService) GenerateCredentials(ctx _context.Context, st
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -220,7 +275,7 @@ func (a *UserCredentialsApiService) GenerateCredentials(ctx _context.Context, st
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -231,15 +286,35 @@ func (a *UserCredentialsApiService) GenerateCredentials(ctx _context.Context, st
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetCredentialsRequest struct {
+	ctx _context.Context
+	apiService *UserCredentialsApiService
+	stackId string
+	userId string
+}
+
 
 /*
 GetCredentials Get credentials
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param userId A user ID
-@return StorageGetCredentialsResponse
+@return apiGetCredentialsRequest
 */
-func (a *UserCredentialsApiService) GetCredentials(ctx _context.Context, stackId string, userId string) (StorageGetCredentialsResponse, *_nethttp.Response, error) {
+func (a *UserCredentialsApiService) GetCredentials(ctx _context.Context, stackId string, userId string) apiGetCredentialsRequest {
+	return apiGetCredentialsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		userId: userId,
+	}
+}
+
+/*
+Execute executes the request
+ @return StorageGetCredentialsResponse
+*/
+func (r apiGetCredentialsRequest) Execute() (StorageGetCredentialsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -249,15 +324,20 @@ func (a *UserCredentialsApiService) GetCredentials(ctx _context.Context, stackId
 		localVarReturnValue  StorageGetCredentialsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/storage/v1/stacks/{stack_id}/users/{user_id}/credentials"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "UserCredentialsApiService.GetCredentials")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(userId, "")) , -1)
+	localVarPath := localBasePath + "/storage/v1/stacks/{stack_id}/users/{user_id}/credentials"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(r.userId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -276,12 +356,12 @@ func (a *UserCredentialsApiService) GetCredentials(ctx _context.Context, stackId
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -299,7 +379,7 @@ func (a *UserCredentialsApiService) GetCredentials(ctx _context.Context, stackId
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -309,7 +389,7 @@ func (a *UserCredentialsApiService) GetCredentials(ctx _context.Context, stackId
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -318,7 +398,7 @@ func (a *UserCredentialsApiService) GetCredentials(ctx _context.Context, stackId
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -327,7 +407,7 @@ func (a *UserCredentialsApiService) GetCredentials(ctx _context.Context, stackId
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

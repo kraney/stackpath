@@ -8,7 +8,105 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafConnectSiteToCertificateResponse A response to a request to associate an SSL certificate with a WAF site
 type WafConnectSiteToCertificateResponse struct {
-	SiteCertificate WafSiteCertificate `json:"siteCertificate,omitempty"`
+	SiteCertificate *WafSiteCertificate `json:"siteCertificate,omitempty"`
+}
+
+// NewWafConnectSiteToCertificateResponse instantiates a new WafConnectSiteToCertificateResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafConnectSiteToCertificateResponse() *WafConnectSiteToCertificateResponse {
+	this := WafConnectSiteToCertificateResponse{}
+	return &this
+}
+
+// NewWafConnectSiteToCertificateResponseWithDefaults instantiates a new WafConnectSiteToCertificateResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafConnectSiteToCertificateResponseWithDefaults() *WafConnectSiteToCertificateResponse {
+	this := WafConnectSiteToCertificateResponse{}
+	return &this
+}
+
+// GetSiteCertificate returns the SiteCertificate field value if set, zero value otherwise.
+func (o *WafConnectSiteToCertificateResponse) GetSiteCertificate() WafSiteCertificate {
+	if o == nil || o.SiteCertificate == nil {
+		var ret WafSiteCertificate
+		return ret
+	}
+	return *o.SiteCertificate
+}
+
+// GetSiteCertificateOk returns a tuple with the SiteCertificate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafConnectSiteToCertificateResponse) GetSiteCertificateOk() (*WafSiteCertificate, bool) {
+	if o == nil || o.SiteCertificate == nil {
+		return nil, false
+	}
+	return o.SiteCertificate, true
+}
+
+// HasSiteCertificate returns a boolean if a field has been set.
+func (o *WafConnectSiteToCertificateResponse) HasSiteCertificate() bool {
+	if o != nil && o.SiteCertificate != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSiteCertificate gets a reference to the given WafSiteCertificate and assigns it to the SiteCertificate field.
+func (o *WafConnectSiteToCertificateResponse) SetSiteCertificate(v WafSiteCertificate) {
+	o.SiteCertificate = &v
+}
+
+func (o WafConnectSiteToCertificateResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.SiteCertificate != nil {
+		toSerialize["siteCertificate"] = o.SiteCertificate
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafConnectSiteToCertificateResponse struct {
+	value *WafConnectSiteToCertificateResponse
+	isSet bool
+}
+
+func (v NullableWafConnectSiteToCertificateResponse) Get() *WafConnectSiteToCertificateResponse {
+	return v.value
+}
+
+func (v *NullableWafConnectSiteToCertificateResponse) Set(val *WafConnectSiteToCertificateResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafConnectSiteToCertificateResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafConnectSiteToCertificateResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafConnectSiteToCertificateResponse(val *WafConnectSiteToCertificateResponse) *NullableWafConnectSiteToCertificateResponse {
+	return &NullableWafConnectSiteToCertificateResponse{value: val, isSet: true}
+}
+
+func (v NullableWafConnectSiteToCertificateResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafConnectSiteToCertificateResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

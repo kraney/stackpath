@@ -15,7 +15,6 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,14 +25,35 @@ var (
 // WAFFeaturesApiService WAFFeaturesApi service
 type WAFFeaturesApiService service
 
+type apiGetDdosSettingsRequest struct {
+	ctx _context.Context
+	apiService *WAFFeaturesApiService
+	stackId string
+	siteId string
+}
+
+
 /*
 GetDdosSettings Get DDOS settings
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return WafGetDdosSettingsResponse
+@return apiGetDdosSettingsRequest
 */
-func (a *WAFFeaturesApiService) GetDdosSettings(ctx _context.Context, stackId string, siteId string) (WafGetDdosSettingsResponse, *_nethttp.Response, error) {
+func (a *WAFFeaturesApiService) GetDdosSettings(ctx _context.Context, stackId string, siteId string) apiGetDdosSettingsRequest {
+	return apiGetDdosSettingsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+ @return WafGetDdosSettingsResponse
+*/
+func (r apiGetDdosSettingsRequest) Execute() (WafGetDdosSettingsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -43,15 +63,20 @@ func (a *WAFFeaturesApiService) GetDdosSettings(ctx _context.Context, stackId st
 		localVarReturnValue  WafGetDdosSettingsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/ddos"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "WAFFeaturesApiService.GetDdosSettings")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/ddos"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -70,12 +95,12 @@ func (a *WAFFeaturesApiService) GetDdosSettings(ctx _context.Context, stackId st
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -93,7 +118,7 @@ func (a *WAFFeaturesApiService) GetDdosSettings(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -103,7 +128,7 @@ func (a *WAFFeaturesApiService) GetDdosSettings(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -112,7 +137,7 @@ func (a *WAFFeaturesApiService) GetDdosSettings(ctx _context.Context, stackId st
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -121,7 +146,7 @@ func (a *WAFFeaturesApiService) GetDdosSettings(ctx _context.Context, stackId st
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -132,27 +157,54 @@ func (a *WAFFeaturesApiService) GetDdosSettings(ctx _context.Context, stackId st
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetTagsRequest struct {
+	ctx _context.Context
+	apiService *WAFFeaturesApiService
+	pageRequestFirst *string
+	pageRequestAfter *string
+	pageRequestFilter *string
+	pageRequestSortBy *string
+}
 
-// GetTagsOpts Optional parameters for the method 'GetTags'
-type GetTagsOpts struct {
-    PageRequestFirst optional.String
-    PageRequestAfter optional.String
-    PageRequestFilter optional.String
-    PageRequestSortBy optional.String
+
+func (r apiGetTagsRequest) PageRequestFirst(pageRequestFirst string) apiGetTagsRequest {
+	r.pageRequestFirst = &pageRequestFirst
+	return r
+}
+
+func (r apiGetTagsRequest) PageRequestAfter(pageRequestAfter string) apiGetTagsRequest {
+	r.pageRequestAfter = &pageRequestAfter
+	return r
+}
+
+func (r apiGetTagsRequest) PageRequestFilter(pageRequestFilter string) apiGetTagsRequest {
+	r.pageRequestFilter = &pageRequestFilter
+	return r
+}
+
+func (r apiGetTagsRequest) PageRequestSortBy(pageRequestSortBy string) apiGetTagsRequest {
+	r.pageRequestSortBy = &pageRequestSortBy
+	return r
 }
 
 /*
 GetTags Get all tags
 Get tags available for use in WAF rule conditons. Tags describe aspects of an incoming web request and acn be used to create complex application-level custom rules.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *GetTagsOpts - Optional Parameters:
- * @param "PageRequestFirst" (optional.String) -  The number of items desired.
- * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
- * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
- * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
-@return WafGetTagsResponse
+@return apiGetTagsRequest
 */
-func (a *WAFFeaturesApiService) GetTags(ctx _context.Context, localVarOptionals *GetTagsOpts) (WafGetTagsResponse, *_nethttp.Response, error) {
+func (a *WAFFeaturesApiService) GetTags(ctx _context.Context) apiGetTagsRequest {
+	return apiGetTagsRequest{
+		apiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return WafGetTagsResponse
+*/
+func (r apiGetTagsRequest) Execute() (WafGetTagsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -162,23 +214,28 @@ func (a *WAFFeaturesApiService) GetTags(ctx _context.Context, localVarOptionals 
 		localVarReturnValue  WafGetTagsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/tags"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "WAFFeaturesApiService.GetTags")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/waf/v1/tags"
+
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
-		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
+				
+	if r.pageRequestFirst != nil {
+		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
-		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
+	if r.pageRequestAfter != nil {
+		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
-		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
+	if r.pageRequestFilter != nil {
+		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
+	if r.pageRequestSortBy != nil {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -197,12 +254,12 @@ func (a *WAFFeaturesApiService) GetTags(ctx _context.Context, localVarOptionals 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -220,7 +277,7 @@ func (a *WAFFeaturesApiService) GetTags(ctx _context.Context, localVarOptionals 
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -230,7 +287,7 @@ func (a *WAFFeaturesApiService) GetTags(ctx _context.Context, localVarOptionals 
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -239,7 +296,7 @@ func (a *WAFFeaturesApiService) GetTags(ctx _context.Context, localVarOptionals 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -248,7 +305,7 @@ func (a *WAFFeaturesApiService) GetTags(ctx _context.Context, localVarOptionals 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -259,32 +316,59 @@ func (a *WAFFeaturesApiService) GetTags(ctx _context.Context, localVarOptionals 
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiMonitorSiteRequest struct {
+	ctx _context.Context
+	apiService *WAFFeaturesApiService
+	stackId string
+	siteId string
+}
+
 
 /*
 MonitorSite Enable monitoring mode
-Sites in monitoring mode accept incoming requests and log but take no action on policy and rule violations. A sitge&#39;s WAF feature must be enabled for monitoring mode to apply. Otherwise, monitoring mode will take effect the next time the WAF feature is enabled.
+Sites in monitoring mode accept incoming requests and log but take no action on policy and rule violations. A sitge's WAF feature must be enabled for monitoring mode to apply. Otherwise, monitoring mode will take effect the next time the WAF feature is enabled.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
+@return apiMonitorSiteRequest
 */
-func (a *WAFFeaturesApiService) MonitorSite(ctx _context.Context, stackId string, siteId string) (*_nethttp.Response, error) {
+func (a *WAFFeaturesApiService) MonitorSite(ctx _context.Context, stackId string, siteId string) apiMonitorSiteRequest {
+	return apiMonitorSiteRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiMonitorSiteRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/monitoring"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "WAFFeaturesApiService.MonitorSite")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/monitoring"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -303,12 +387,12 @@ func (a *WAFFeaturesApiService) MonitorSite(ctx _context.Context, stackId string
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -326,7 +410,7 @@ func (a *WAFFeaturesApiService) MonitorSite(ctx _context.Context, stackId string
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -336,7 +420,7 @@ func (a *WAFFeaturesApiService) MonitorSite(ctx _context.Context, stackId string
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -345,7 +429,7 @@ func (a *WAFFeaturesApiService) MonitorSite(ctx _context.Context, stackId string
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -356,32 +440,59 @@ func (a *WAFFeaturesApiService) MonitorSite(ctx _context.Context, stackId string
 
 	return localVarHTTPResponse, nil
 }
+type apiUnMonitorSiteRequest struct {
+	ctx _context.Context
+	apiService *WAFFeaturesApiService
+	stackId string
+	siteId string
+}
+
 
 /*
 UnMonitorSite Disable monitoring mode
-Restore the WAF feature&#39;s original enabled or disabled state.
+Restore the WAF feature's original enabled or disabled state.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
+@return apiUnMonitorSiteRequest
 */
-func (a *WAFFeaturesApiService) UnMonitorSite(ctx _context.Context, stackId string, siteId string) (*_nethttp.Response, error) {
+func (a *WAFFeaturesApiService) UnMonitorSite(ctx _context.Context, stackId string, siteId string) apiUnMonitorSiteRequest {
+	return apiUnMonitorSiteRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiUnMonitorSiteRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/monitoring"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "WAFFeaturesApiService.UnMonitorSite")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/monitoring"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -400,12 +511,12 @@ func (a *WAFFeaturesApiService) UnMonitorSite(ctx _context.Context, stackId stri
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -423,7 +534,7 @@ func (a *WAFFeaturesApiService) UnMonitorSite(ctx _context.Context, stackId stri
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -433,7 +544,7 @@ func (a *WAFFeaturesApiService) UnMonitorSite(ctx _context.Context, stackId stri
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -442,7 +553,7 @@ func (a *WAFFeaturesApiService) UnMonitorSite(ctx _context.Context, stackId stri
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -452,6 +563,19 @@ func (a *WAFFeaturesApiService) UnMonitorSite(ctx _context.Context, stackId stri
 	}
 
 	return localVarHTTPResponse, nil
+}
+type apiUpdateDdosSettingsRequest struct {
+	ctx _context.Context
+	apiService *WAFFeaturesApiService
+	stackId string
+	siteId string
+	wafUpdateDdosSettingsRequest *WafUpdateDdosSettingsRequest
+}
+
+
+func (r apiUpdateDdosSettingsRequest) WafUpdateDdosSettingsRequest(wafUpdateDdosSettingsRequest WafUpdateDdosSettingsRequest) apiUpdateDdosSettingsRequest {
+	r.wafUpdateDdosSettingsRequest = &wafUpdateDdosSettingsRequest
+	return r
 }
 
 /*
@@ -459,10 +583,22 @@ UpdateDdosSettings Update DDOS settings
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
- * @param wafUpdateDdosSettingsRequest
-@return WafUpdateDdosSettingsResponse
+@return apiUpdateDdosSettingsRequest
 */
-func (a *WAFFeaturesApiService) UpdateDdosSettings(ctx _context.Context, stackId string, siteId string, wafUpdateDdosSettingsRequest WafUpdateDdosSettingsRequest) (WafUpdateDdosSettingsResponse, *_nethttp.Response, error) {
+func (a *WAFFeaturesApiService) UpdateDdosSettings(ctx _context.Context, stackId string, siteId string) apiUpdateDdosSettingsRequest {
+	return apiUpdateDdosSettingsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+ @return WafUpdateDdosSettingsResponse
+*/
+func (r apiUpdateDdosSettingsRequest) Execute() (WafUpdateDdosSettingsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -472,15 +608,24 @@ func (a *WAFFeaturesApiService) UpdateDdosSettings(ctx _context.Context, stackId
 		localVarReturnValue  WafUpdateDdosSettingsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/ddos"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "WAFFeaturesApiService.UpdateDdosSettings")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/ddos"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	if r.wafUpdateDdosSettingsRequest == nil {
+		return localVarReturnValue, nil, reportError("wafUpdateDdosSettingsRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -500,13 +645,13 @@ func (a *WAFFeaturesApiService) UpdateDdosSettings(ctx _context.Context, stackId
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &wafUpdateDdosSettingsRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.wafUpdateDdosSettingsRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -524,7 +669,7 @@ func (a *WAFFeaturesApiService) UpdateDdosSettings(ctx _context.Context, stackId
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -534,7 +679,7 @@ func (a *WAFFeaturesApiService) UpdateDdosSettings(ctx _context.Context, stackId
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -543,7 +688,7 @@ func (a *WAFFeaturesApiService) UpdateDdosSettings(ctx _context.Context, stackId
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -552,7 +697,7 @@ func (a *WAFFeaturesApiService) UpdateDdosSettings(ctx _context.Context, stackId
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -563,16 +708,41 @@ func (a *WAFFeaturesApiService) UpdateDdosSettings(ctx _context.Context, stackId
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiUpdateSiteApiUrlsRequest struct {
+	ctx _context.Context
+	apiService *WAFFeaturesApiService
+	stackId string
+	siteId string
+	wafUpdateSiteApiUrlsRequest *WafUpdateSiteApiUrlsRequest
+}
+
+
+func (r apiUpdateSiteApiUrlsRequest) WafUpdateSiteApiUrlsRequest(wafUpdateSiteApiUrlsRequest WafUpdateSiteApiUrlsRequest) apiUpdateSiteApiUrlsRequest {
+	r.wafUpdateSiteApiUrlsRequest = &wafUpdateSiteApiUrlsRequest
+	return r
+}
 
 /*
 UpdateSiteApiUrls Update API URLs
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
- * @param wafUpdateSiteApiUrlsRequest
-@return WafUpdateSiteApiUrlsResponse
+@return apiUpdateSiteApiUrlsRequest
 */
-func (a *WAFFeaturesApiService) UpdateSiteApiUrls(ctx _context.Context, stackId string, siteId string, wafUpdateSiteApiUrlsRequest WafUpdateSiteApiUrlsRequest) (WafUpdateSiteApiUrlsResponse, *_nethttp.Response, error) {
+func (a *WAFFeaturesApiService) UpdateSiteApiUrls(ctx _context.Context, stackId string, siteId string) apiUpdateSiteApiUrlsRequest {
+	return apiUpdateSiteApiUrlsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+ @return WafUpdateSiteApiUrlsResponse
+*/
+func (r apiUpdateSiteApiUrlsRequest) Execute() (WafUpdateSiteApiUrlsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -582,15 +752,24 @@ func (a *WAFFeaturesApiService) UpdateSiteApiUrls(ctx _context.Context, stackId 
 		localVarReturnValue  WafUpdateSiteApiUrlsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/api_urls"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "WAFFeaturesApiService.UpdateSiteApiUrls")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/waf/v1/stacks/{stack_id}/sites/{site_id}/api_urls"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	if r.wafUpdateSiteApiUrlsRequest == nil {
+		return localVarReturnValue, nil, reportError("wafUpdateSiteApiUrlsRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -610,13 +789,13 @@ func (a *WAFFeaturesApiService) UpdateSiteApiUrls(ctx _context.Context, stackId 
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &wafUpdateSiteApiUrlsRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.wafUpdateSiteApiUrlsRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -634,7 +813,7 @@ func (a *WAFFeaturesApiService) UpdateSiteApiUrls(ctx _context.Context, stackId 
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -644,7 +823,7 @@ func (a *WAFFeaturesApiService) UpdateSiteApiUrls(ctx _context.Context, stackId 
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -653,7 +832,7 @@ func (a *WAFFeaturesApiService) UpdateSiteApiUrls(ctx _context.Context, stackId 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -662,7 +841,7 @@ func (a *WAFFeaturesApiService) UpdateSiteApiUrls(ctx _context.Context, stackId 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

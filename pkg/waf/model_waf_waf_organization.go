@@ -8,8 +8,106 @@
  */
 
 package waf
-// WafWafOrganization A WHOIS organization
-type WafWafOrganization struct {
+
+import (
+	"encoding/json"
+)
+
+// WafWAFOrganization A WHOIS organization
+type WafWAFOrganization struct {
 	// An organization's name
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
+}
+
+// NewWafWAFOrganization instantiates a new WafWAFOrganization object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafWAFOrganization() *WafWAFOrganization {
+	this := WafWAFOrganization{}
+	return &this
+}
+
+// NewWafWAFOrganizationWithDefaults instantiates a new WafWAFOrganization object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafWAFOrganizationWithDefaults() *WafWAFOrganization {
+	this := WafWAFOrganization{}
+	return &this
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *WafWAFOrganization) GetName() string {
+	if o == nil || o.Name == nil {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafWAFOrganization) GetNameOk() (*string, bool) {
+	if o == nil || o.Name == nil {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *WafWAFOrganization) HasName() bool {
+	if o != nil && o.Name != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *WafWAFOrganization) SetName(v string) {
+	o.Name = &v
+}
+
+func (o WafWAFOrganization) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Name != nil {
+		toSerialize["name"] = o.Name
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafWAFOrganization struct {
+	value *WafWAFOrganization
+	isSet bool
+}
+
+func (v NullableWafWAFOrganization) Get() *WafWAFOrganization {
+	return v.value
+}
+
+func (v *NullableWafWAFOrganization) Set(val *WafWAFOrganization) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafWAFOrganization) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafWAFOrganization) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafWAFOrganization(val *WafWAFOrganization) *NullableWafWAFOrganization {
+	return &NullableWafWAFOrganization{value: val, isSet: true}
+}
+
+func (v NullableWafWAFOrganization) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafWAFOrganization) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

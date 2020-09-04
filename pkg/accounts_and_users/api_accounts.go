@@ -25,13 +25,32 @@ var (
 // AccountsApiService AccountsApi service
 type AccountsApiService service
 
+type apiGetAccountRequest struct {
+	ctx _context.Context
+	apiService *AccountsApiService
+	accountId string
+}
+
+
 /*
 GetAccount Get an account
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param accountId An account ID
-@return IdentityGetAccountResponse
+@return apiGetAccountRequest
 */
-func (a *AccountsApiService) GetAccount(ctx _context.Context, accountId string) (IdentityGetAccountResponse, *_nethttp.Response, error) {
+func (a *AccountsApiService) GetAccount(ctx _context.Context, accountId string) apiGetAccountRequest {
+	return apiGetAccountRequest{
+		apiService: a,
+		ctx: ctx,
+		accountId: accountId,
+	}
+}
+
+/*
+Execute executes the request
+ @return IdentityGetAccountResponse
+*/
+func (r apiGetAccountRequest) Execute() (IdentityGetAccountResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -41,13 +60,18 @@ func (a *AccountsApiService) GetAccount(ctx _context.Context, accountId string) 
 		localVarReturnValue  IdentityGetAccountResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/identity/v1/accounts/{account_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"account_id"+"}", _neturl.QueryEscape(parameterToString(accountId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AccountsApiService.GetAccount")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/identity/v1/accounts/{account_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"account_id"+"}", _neturl.QueryEscape(parameterToString(r.accountId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -66,12 +90,12 @@ func (a *AccountsApiService) GetAccount(ctx _context.Context, accountId string) 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -89,7 +113,7 @@ func (a *AccountsApiService) GetAccount(ctx _context.Context, accountId string) 
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -99,7 +123,7 @@ func (a *AccountsApiService) GetAccount(ctx _context.Context, accountId string) 
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -108,7 +132,7 @@ func (a *AccountsApiService) GetAccount(ctx _context.Context, accountId string) 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -117,7 +141,7 @@ func (a *AccountsApiService) GetAccount(ctx _context.Context, accountId string) 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

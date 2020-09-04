@@ -8,7 +8,105 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // DeliveryCreateSiteDeliveryDomainResponse The response from a request to add a hostname to a CDN site scope
 type DeliveryCreateSiteDeliveryDomainResponse struct {
-	Domain SchemadeliveryDeliveryDomain `json:"domain,omitempty"`
+	Domain *SchemadeliveryDeliveryDomain `json:"domain,omitempty"`
+}
+
+// NewDeliveryCreateSiteDeliveryDomainResponse instantiates a new DeliveryCreateSiteDeliveryDomainResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewDeliveryCreateSiteDeliveryDomainResponse() *DeliveryCreateSiteDeliveryDomainResponse {
+	this := DeliveryCreateSiteDeliveryDomainResponse{}
+	return &this
+}
+
+// NewDeliveryCreateSiteDeliveryDomainResponseWithDefaults instantiates a new DeliveryCreateSiteDeliveryDomainResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewDeliveryCreateSiteDeliveryDomainResponseWithDefaults() *DeliveryCreateSiteDeliveryDomainResponse {
+	this := DeliveryCreateSiteDeliveryDomainResponse{}
+	return &this
+}
+
+// GetDomain returns the Domain field value if set, zero value otherwise.
+func (o *DeliveryCreateSiteDeliveryDomainResponse) GetDomain() SchemadeliveryDeliveryDomain {
+	if o == nil || o.Domain == nil {
+		var ret SchemadeliveryDeliveryDomain
+		return ret
+	}
+	return *o.Domain
+}
+
+// GetDomainOk returns a tuple with the Domain field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryCreateSiteDeliveryDomainResponse) GetDomainOk() (*SchemadeliveryDeliveryDomain, bool) {
+	if o == nil || o.Domain == nil {
+		return nil, false
+	}
+	return o.Domain, true
+}
+
+// HasDomain returns a boolean if a field has been set.
+func (o *DeliveryCreateSiteDeliveryDomainResponse) HasDomain() bool {
+	if o != nil && o.Domain != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDomain gets a reference to the given SchemadeliveryDeliveryDomain and assigns it to the Domain field.
+func (o *DeliveryCreateSiteDeliveryDomainResponse) SetDomain(v SchemadeliveryDeliveryDomain) {
+	o.Domain = &v
+}
+
+func (o DeliveryCreateSiteDeliveryDomainResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Domain != nil {
+		toSerialize["domain"] = o.Domain
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableDeliveryCreateSiteDeliveryDomainResponse struct {
+	value *DeliveryCreateSiteDeliveryDomainResponse
+	isSet bool
+}
+
+func (v NullableDeliveryCreateSiteDeliveryDomainResponse) Get() *DeliveryCreateSiteDeliveryDomainResponse {
+	return v.value
+}
+
+func (v *NullableDeliveryCreateSiteDeliveryDomainResponse) Set(val *DeliveryCreateSiteDeliveryDomainResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliveryCreateSiteDeliveryDomainResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliveryCreateSiteDeliveryDomainResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliveryCreateSiteDeliveryDomainResponse(val *DeliveryCreateSiteDeliveryDomainResponse) *NullableDeliveryCreateSiteDeliveryDomainResponse {
+	return &NullableDeliveryCreateSiteDeliveryDomainResponse{value: val, isSet: true}
+}
+
+func (v NullableDeliveryCreateSiteDeliveryDomainResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliveryCreateSiteDeliveryDomainResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

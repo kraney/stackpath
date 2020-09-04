@@ -14,7 +14,6 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -25,26 +24,54 @@ var (
 // InfrastructureApiService InfrastructureApi service
 type InfrastructureApiService service
 
-// GetLocationsOpts Optional parameters for the method 'GetLocations'
-type GetLocationsOpts struct {
-    PageRequestFirst optional.String
-    PageRequestAfter optional.String
-    PageRequestFilter optional.String
-    PageRequestSortBy optional.String
+type apiGetLocationsRequest struct {
+	ctx _context.Context
+	apiService *InfrastructureApiService
+	pageRequestFirst *string
+	pageRequestAfter *string
+	pageRequestFilter *string
+	pageRequestSortBy *string
+}
+
+
+func (r apiGetLocationsRequest) PageRequestFirst(pageRequestFirst string) apiGetLocationsRequest {
+	r.pageRequestFirst = &pageRequestFirst
+	return r
+}
+
+func (r apiGetLocationsRequest) PageRequestAfter(pageRequestAfter string) apiGetLocationsRequest {
+	r.pageRequestAfter = &pageRequestAfter
+	return r
+}
+
+func (r apiGetLocationsRequest) PageRequestFilter(pageRequestFilter string) apiGetLocationsRequest {
+	r.pageRequestFilter = &pageRequestFilter
+	return r
+}
+
+func (r apiGetLocationsRequest) PageRequestSortBy(pageRequestSortBy string) apiGetLocationsRequest {
+	r.pageRequestSortBy = &pageRequestSortBy
+	return r
 }
 
 /*
 GetLocations Get compute locations
 Retrieve information about the StackPath edge network that can host a compute workload
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *GetLocationsOpts - Optional Parameters:
- * @param "PageRequestFirst" (optional.String) -  The number of items desired.
- * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
- * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
- * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
-@return V1GetLocationsResponse
+@return apiGetLocationsRequest
 */
-func (a *InfrastructureApiService) GetLocations(ctx _context.Context, localVarOptionals *GetLocationsOpts) (V1GetLocationsResponse, *_nethttp.Response, error) {
+func (a *InfrastructureApiService) GetLocations(ctx _context.Context) apiGetLocationsRequest {
+	return apiGetLocationsRequest{
+		apiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return V1GetLocationsResponse
+*/
+func (r apiGetLocationsRequest) Execute() (V1GetLocationsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -54,23 +81,28 @@ func (a *InfrastructureApiService) GetLocations(ctx _context.Context, localVarOp
 		localVarReturnValue  V1GetLocationsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/workload/v1/locations"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "InfrastructureApiService.GetLocations")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/workload/v1/locations"
+
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
-		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
+				
+	if r.pageRequestFirst != nil {
+		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
-		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
+	if r.pageRequestAfter != nil {
+		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
-		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
+	if r.pageRequestFilter != nil {
+		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
+	if r.pageRequestSortBy != nil {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -89,12 +121,12 @@ func (a *InfrastructureApiService) GetLocations(ctx _context.Context, localVarOp
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -112,7 +144,7 @@ func (a *InfrastructureApiService) GetLocations(ctx _context.Context, localVarOp
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -122,7 +154,7 @@ func (a *InfrastructureApiService) GetLocations(ctx _context.Context, localVarOp
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -131,7 +163,7 @@ func (a *InfrastructureApiService) GetLocations(ctx _context.Context, localVarOp
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -140,7 +172,7 @@ func (a *InfrastructureApiService) GetLocations(ctx _context.Context, localVarOp
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

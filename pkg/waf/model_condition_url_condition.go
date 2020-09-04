@@ -8,10 +8,143 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // ConditionUrlCondition Match the incoming request URL
 type ConditionUrlCondition struct {
 	// The URL to match
-	Url string `json:"url,omitempty"`
+	Url *string `json:"url,omitempty"`
 	// Whether to perform an exact match or a string contains match of the URL
-	ExactMatch bool `json:"exactMatch,omitempty"`
+	ExactMatch *bool `json:"exactMatch,omitempty"`
+}
+
+// NewConditionUrlCondition instantiates a new ConditionUrlCondition object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewConditionUrlCondition() *ConditionUrlCondition {
+	this := ConditionUrlCondition{}
+	return &this
+}
+
+// NewConditionUrlConditionWithDefaults instantiates a new ConditionUrlCondition object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewConditionUrlConditionWithDefaults() *ConditionUrlCondition {
+	this := ConditionUrlCondition{}
+	return &this
+}
+
+// GetUrl returns the Url field value if set, zero value otherwise.
+func (o *ConditionUrlCondition) GetUrl() string {
+	if o == nil || o.Url == nil {
+		var ret string
+		return ret
+	}
+	return *o.Url
+}
+
+// GetUrlOk returns a tuple with the Url field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ConditionUrlCondition) GetUrlOk() (*string, bool) {
+	if o == nil || o.Url == nil {
+		return nil, false
+	}
+	return o.Url, true
+}
+
+// HasUrl returns a boolean if a field has been set.
+func (o *ConditionUrlCondition) HasUrl() bool {
+	if o != nil && o.Url != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUrl gets a reference to the given string and assigns it to the Url field.
+func (o *ConditionUrlCondition) SetUrl(v string) {
+	o.Url = &v
+}
+
+// GetExactMatch returns the ExactMatch field value if set, zero value otherwise.
+func (o *ConditionUrlCondition) GetExactMatch() bool {
+	if o == nil || o.ExactMatch == nil {
+		var ret bool
+		return ret
+	}
+	return *o.ExactMatch
+}
+
+// GetExactMatchOk returns a tuple with the ExactMatch field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ConditionUrlCondition) GetExactMatchOk() (*bool, bool) {
+	if o == nil || o.ExactMatch == nil {
+		return nil, false
+	}
+	return o.ExactMatch, true
+}
+
+// HasExactMatch returns a boolean if a field has been set.
+func (o *ConditionUrlCondition) HasExactMatch() bool {
+	if o != nil && o.ExactMatch != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetExactMatch gets a reference to the given bool and assigns it to the ExactMatch field.
+func (o *ConditionUrlCondition) SetExactMatch(v bool) {
+	o.ExactMatch = &v
+}
+
+func (o ConditionUrlCondition) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Url != nil {
+		toSerialize["url"] = o.Url
+	}
+	if o.ExactMatch != nil {
+		toSerialize["exactMatch"] = o.ExactMatch
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableConditionUrlCondition struct {
+	value *ConditionUrlCondition
+	isSet bool
+}
+
+func (v NullableConditionUrlCondition) Get() *ConditionUrlCondition {
+	return v.value
+}
+
+func (v *NullableConditionUrlCondition) Set(val *ConditionUrlCondition) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableConditionUrlCondition) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableConditionUrlCondition) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableConditionUrlCondition(val *ConditionUrlCondition) *NullableConditionUrlCondition {
+	return &NullableConditionUrlCondition{value: val, isSet: true}
+}
+
+func (v NullableConditionUrlCondition) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableConditionUrlCondition) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,14 +8,217 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CustconfCustomer struct for CustconfCustomer
 type CustconfCustomer struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// String of values delimited by a ',' character.
-	AccessLogFields string `json:"accessLogFields,omitempty"`
+	AccessLogFields *string `json:"accessLogFields,omitempty"`
 	// String of values delimited by a ',' character.
-	OpLogFields string `json:"opLogFields,omitempty"`
+	OpLogFields *string `json:"opLogFields,omitempty"`
 	// String of values delimited by a ',' character.
-	ReceiptLogFields string `json:"receiptLogFields,omitempty"`
+	ReceiptLogFields *string `json:"receiptLogFields,omitempty"`
+}
+
+// NewCustconfCustomer instantiates a new CustconfCustomer object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfCustomer() *CustconfCustomer {
+	this := CustconfCustomer{}
+	return &this
+}
+
+// NewCustconfCustomerWithDefaults instantiates a new CustconfCustomer object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfCustomerWithDefaults() *CustconfCustomer {
+	this := CustconfCustomer{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfCustomer) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfCustomer) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfCustomer) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfCustomer) SetId(v string) {
+	o.Id = &v
+}
+
+// GetAccessLogFields returns the AccessLogFields field value if set, zero value otherwise.
+func (o *CustconfCustomer) GetAccessLogFields() string {
+	if o == nil || o.AccessLogFields == nil {
+		var ret string
+		return ret
+	}
+	return *o.AccessLogFields
+}
+
+// GetAccessLogFieldsOk returns a tuple with the AccessLogFields field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfCustomer) GetAccessLogFieldsOk() (*string, bool) {
+	if o == nil || o.AccessLogFields == nil {
+		return nil, false
+	}
+	return o.AccessLogFields, true
+}
+
+// HasAccessLogFields returns a boolean if a field has been set.
+func (o *CustconfCustomer) HasAccessLogFields() bool {
+	if o != nil && o.AccessLogFields != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAccessLogFields gets a reference to the given string and assigns it to the AccessLogFields field.
+func (o *CustconfCustomer) SetAccessLogFields(v string) {
+	o.AccessLogFields = &v
+}
+
+// GetOpLogFields returns the OpLogFields field value if set, zero value otherwise.
+func (o *CustconfCustomer) GetOpLogFields() string {
+	if o == nil || o.OpLogFields == nil {
+		var ret string
+		return ret
+	}
+	return *o.OpLogFields
+}
+
+// GetOpLogFieldsOk returns a tuple with the OpLogFields field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfCustomer) GetOpLogFieldsOk() (*string, bool) {
+	if o == nil || o.OpLogFields == nil {
+		return nil, false
+	}
+	return o.OpLogFields, true
+}
+
+// HasOpLogFields returns a boolean if a field has been set.
+func (o *CustconfCustomer) HasOpLogFields() bool {
+	if o != nil && o.OpLogFields != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetOpLogFields gets a reference to the given string and assigns it to the OpLogFields field.
+func (o *CustconfCustomer) SetOpLogFields(v string) {
+	o.OpLogFields = &v
+}
+
+// GetReceiptLogFields returns the ReceiptLogFields field value if set, zero value otherwise.
+func (o *CustconfCustomer) GetReceiptLogFields() string {
+	if o == nil || o.ReceiptLogFields == nil {
+		var ret string
+		return ret
+	}
+	return *o.ReceiptLogFields
+}
+
+// GetReceiptLogFieldsOk returns a tuple with the ReceiptLogFields field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfCustomer) GetReceiptLogFieldsOk() (*string, bool) {
+	if o == nil || o.ReceiptLogFields == nil {
+		return nil, false
+	}
+	return o.ReceiptLogFields, true
+}
+
+// HasReceiptLogFields returns a boolean if a field has been set.
+func (o *CustconfCustomer) HasReceiptLogFields() bool {
+	if o != nil && o.ReceiptLogFields != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetReceiptLogFields gets a reference to the given string and assigns it to the ReceiptLogFields field.
+func (o *CustconfCustomer) SetReceiptLogFields(v string) {
+	o.ReceiptLogFields = &v
+}
+
+func (o CustconfCustomer) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.AccessLogFields != nil {
+		toSerialize["accessLogFields"] = o.AccessLogFields
+	}
+	if o.OpLogFields != nil {
+		toSerialize["opLogFields"] = o.OpLogFields
+	}
+	if o.ReceiptLogFields != nil {
+		toSerialize["receiptLogFields"] = o.ReceiptLogFields
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfCustomer struct {
+	value *CustconfCustomer
+	isSet bool
+}
+
+func (v NullableCustconfCustomer) Get() *CustconfCustomer {
+	return v.value
+}
+
+func (v *NullableCustconfCustomer) Set(val *CustconfCustomer) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfCustomer) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfCustomer) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfCustomer(val *CustconfCustomer) *NullableCustconfCustomer {
+	return &NullableCustconfCustomer{value: val, isSet: true}
+}
+
+func (v NullableCustconfCustomer) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfCustomer) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

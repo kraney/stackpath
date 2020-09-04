@@ -8,9 +8,142 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafGetRequestsResponse The requested WAF requests
 type WafGetRequestsResponse struct {
-	PageInfo PaginationPageInfo `json:"pageInfo,omitempty"`
+	PageInfo *PaginationPageInfo `json:"pageInfo,omitempty"`
 	// The requested information about a WAF site's requests
-	Results []SchemawafRequest `json:"results,omitempty"`
+	Results *[]SchemawafRequest `json:"results,omitempty"`
+}
+
+// NewWafGetRequestsResponse instantiates a new WafGetRequestsResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafGetRequestsResponse() *WafGetRequestsResponse {
+	this := WafGetRequestsResponse{}
+	return &this
+}
+
+// NewWafGetRequestsResponseWithDefaults instantiates a new WafGetRequestsResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafGetRequestsResponseWithDefaults() *WafGetRequestsResponse {
+	this := WafGetRequestsResponse{}
+	return &this
+}
+
+// GetPageInfo returns the PageInfo field value if set, zero value otherwise.
+func (o *WafGetRequestsResponse) GetPageInfo() PaginationPageInfo {
+	if o == nil || o.PageInfo == nil {
+		var ret PaginationPageInfo
+		return ret
+	}
+	return *o.PageInfo
+}
+
+// GetPageInfoOk returns a tuple with the PageInfo field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafGetRequestsResponse) GetPageInfoOk() (*PaginationPageInfo, bool) {
+	if o == nil || o.PageInfo == nil {
+		return nil, false
+	}
+	return o.PageInfo, true
+}
+
+// HasPageInfo returns a boolean if a field has been set.
+func (o *WafGetRequestsResponse) HasPageInfo() bool {
+	if o != nil && o.PageInfo != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPageInfo gets a reference to the given PaginationPageInfo and assigns it to the PageInfo field.
+func (o *WafGetRequestsResponse) SetPageInfo(v PaginationPageInfo) {
+	o.PageInfo = &v
+}
+
+// GetResults returns the Results field value if set, zero value otherwise.
+func (o *WafGetRequestsResponse) GetResults() []SchemawafRequest {
+	if o == nil || o.Results == nil {
+		var ret []SchemawafRequest
+		return ret
+	}
+	return *o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafGetRequestsResponse) GetResultsOk() (*[]SchemawafRequest, bool) {
+	if o == nil || o.Results == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// HasResults returns a boolean if a field has been set.
+func (o *WafGetRequestsResponse) HasResults() bool {
+	if o != nil && o.Results != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetResults gets a reference to the given []SchemawafRequest and assigns it to the Results field.
+func (o *WafGetRequestsResponse) SetResults(v []SchemawafRequest) {
+	o.Results = &v
+}
+
+func (o WafGetRequestsResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.PageInfo != nil {
+		toSerialize["pageInfo"] = o.PageInfo
+	}
+	if o.Results != nil {
+		toSerialize["results"] = o.Results
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafGetRequestsResponse struct {
+	value *WafGetRequestsResponse
+	isSet bool
+}
+
+func (v NullableWafGetRequestsResponse) Get() *WafGetRequestsResponse {
+	return v.value
+}
+
+func (v *NullableWafGetRequestsResponse) Set(val *WafGetRequestsResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafGetRequestsResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafGetRequestsResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafGetRequestsResponse(val *WafGetRequestsResponse) *NullableWafGetRequestsResponse {
+	return &NullableWafGetRequestsResponse{value: val, isSet: true}
+}
+
+func (v NullableWafGetRequestsResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafGetRequestsResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

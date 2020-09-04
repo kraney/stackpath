@@ -8,11 +8,179 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CustconfHttpMethods The HTTP methods policy allows you to selectively enable additional HTTP methods you want your CDN container to process. A container automatically is set up to process HTTP GET and HEAD commands, so they should not be explicitly defined in this policy. HTTP methods included in this policy are proxied directly to your origin and not cached by the CDN.
 type CustconfHttpMethods struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// String of values delimited by a ',' character. This is a comma separated list of HTTP methods you want the CDN to proxy to your origin. A wildcard can be entered to include all methods (excluding HEAD and GET).
-	PassThru string `json:"passThru,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	PassThru *string `json:"passThru,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfHttpMethods instantiates a new CustconfHttpMethods object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfHttpMethods() *CustconfHttpMethods {
+	this := CustconfHttpMethods{}
+	return &this
+}
+
+// NewCustconfHttpMethodsWithDefaults instantiates a new CustconfHttpMethods object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfHttpMethodsWithDefaults() *CustconfHttpMethods {
+	this := CustconfHttpMethods{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfHttpMethods) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfHttpMethods) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfHttpMethods) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfHttpMethods) SetId(v string) {
+	o.Id = &v
+}
+
+// GetPassThru returns the PassThru field value if set, zero value otherwise.
+func (o *CustconfHttpMethods) GetPassThru() string {
+	if o == nil || o.PassThru == nil {
+		var ret string
+		return ret
+	}
+	return *o.PassThru
+}
+
+// GetPassThruOk returns a tuple with the PassThru field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfHttpMethods) GetPassThruOk() (*string, bool) {
+	if o == nil || o.PassThru == nil {
+		return nil, false
+	}
+	return o.PassThru, true
+}
+
+// HasPassThru returns a boolean if a field has been set.
+func (o *CustconfHttpMethods) HasPassThru() bool {
+	if o != nil && o.PassThru != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPassThru gets a reference to the given string and assigns it to the PassThru field.
+func (o *CustconfHttpMethods) SetPassThru(v string) {
+	o.PassThru = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfHttpMethods) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfHttpMethods) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfHttpMethods) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfHttpMethods) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfHttpMethods) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.PassThru != nil {
+		toSerialize["passThru"] = o.PassThru
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfHttpMethods struct {
+	value *CustconfHttpMethods
+	isSet bool
+}
+
+func (v NullableCustconfHttpMethods) Get() *CustconfHttpMethods {
+	return v.value
+}
+
+func (v *NullableCustconfHttpMethods) Set(val *CustconfHttpMethods) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfHttpMethods) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfHttpMethods) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfHttpMethods(val *CustconfHttpMethods) *NullableCustconfHttpMethods {
+	return &NullableCustconfHttpMethods{value: val, isSet: true}
+}
+
+func (v NullableCustconfHttpMethods) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfHttpMethods) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,6 +8,11 @@
  */
 
 package stacks
+
+import (
+	"encoding/json"
+)
+
 // StackStackStatus A stack's status
 type StackStackStatus string
 
@@ -21,3 +26,45 @@ const (
 	STACKSTACKSTATUS_CANCELLED StackStackStatus = "CANCELLED"
 	STACKSTACKSTATUS_DELETED StackStackStatus = "DELETED"
 )
+
+// Ptr returns reference to stackStackStatus value
+func (v StackStackStatus) Ptr() *StackStackStatus {
+	return &v
+}
+
+
+type NullableStackStackStatus struct {
+	value *StackStackStatus
+	isSet bool
+}
+
+func (v NullableStackStackStatus) Get() *StackStackStatus {
+	return v.value
+}
+
+func (v *NullableStackStackStatus) Set(val *StackStackStatus) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableStackStackStatus) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableStackStackStatus) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableStackStackStatus(val *StackStackStatus) *NullableStackStackStatus {
+	return &NullableStackStackStatus{value: val, isSet: true}
+}
+
+func (v NullableStackStackStatus) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableStackStackStatus) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

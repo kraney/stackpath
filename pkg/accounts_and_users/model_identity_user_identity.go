@@ -8,10 +8,213 @@
  */
 
 package accounts_and_users
+
+import (
+	"encoding/json"
+)
+
 // IdentityUserIdentity struct for IdentityUserIdentity
 type IdentityUserIdentity struct {
-	Id string `json:"id,omitempty"`
-	IdentityId string `json:"identityId,omitempty"`
-	Email string `json:"email,omitempty"`
-	Provider IdentityProvider `json:"provider,omitempty"`
+	Id *string `json:"id,omitempty"`
+	IdentityId *string `json:"identityId,omitempty"`
+	Email *string `json:"email,omitempty"`
+	Provider *IdentityProvider `json:"provider,omitempty"`
+}
+
+// NewIdentityUserIdentity instantiates a new IdentityUserIdentity object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewIdentityUserIdentity() *IdentityUserIdentity {
+	this := IdentityUserIdentity{}
+	return &this
+}
+
+// NewIdentityUserIdentityWithDefaults instantiates a new IdentityUserIdentity object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewIdentityUserIdentityWithDefaults() *IdentityUserIdentity {
+	this := IdentityUserIdentity{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *IdentityUserIdentity) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUserIdentity) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *IdentityUserIdentity) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *IdentityUserIdentity) SetId(v string) {
+	o.Id = &v
+}
+
+// GetIdentityId returns the IdentityId field value if set, zero value otherwise.
+func (o *IdentityUserIdentity) GetIdentityId() string {
+	if o == nil || o.IdentityId == nil {
+		var ret string
+		return ret
+	}
+	return *o.IdentityId
+}
+
+// GetIdentityIdOk returns a tuple with the IdentityId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUserIdentity) GetIdentityIdOk() (*string, bool) {
+	if o == nil || o.IdentityId == nil {
+		return nil, false
+	}
+	return o.IdentityId, true
+}
+
+// HasIdentityId returns a boolean if a field has been set.
+func (o *IdentityUserIdentity) HasIdentityId() bool {
+	if o != nil && o.IdentityId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetIdentityId gets a reference to the given string and assigns it to the IdentityId field.
+func (o *IdentityUserIdentity) SetIdentityId(v string) {
+	o.IdentityId = &v
+}
+
+// GetEmail returns the Email field value if set, zero value otherwise.
+func (o *IdentityUserIdentity) GetEmail() string {
+	if o == nil || o.Email == nil {
+		var ret string
+		return ret
+	}
+	return *o.Email
+}
+
+// GetEmailOk returns a tuple with the Email field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUserIdentity) GetEmailOk() (*string, bool) {
+	if o == nil || o.Email == nil {
+		return nil, false
+	}
+	return o.Email, true
+}
+
+// HasEmail returns a boolean if a field has been set.
+func (o *IdentityUserIdentity) HasEmail() bool {
+	if o != nil && o.Email != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEmail gets a reference to the given string and assigns it to the Email field.
+func (o *IdentityUserIdentity) SetEmail(v string) {
+	o.Email = &v
+}
+
+// GetProvider returns the Provider field value if set, zero value otherwise.
+func (o *IdentityUserIdentity) GetProvider() IdentityProvider {
+	if o == nil || o.Provider == nil {
+		var ret IdentityProvider
+		return ret
+	}
+	return *o.Provider
+}
+
+// GetProviderOk returns a tuple with the Provider field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUserIdentity) GetProviderOk() (*IdentityProvider, bool) {
+	if o == nil || o.Provider == nil {
+		return nil, false
+	}
+	return o.Provider, true
+}
+
+// HasProvider returns a boolean if a field has been set.
+func (o *IdentityUserIdentity) HasProvider() bool {
+	if o != nil && o.Provider != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetProvider gets a reference to the given IdentityProvider and assigns it to the Provider field.
+func (o *IdentityUserIdentity) SetProvider(v IdentityProvider) {
+	o.Provider = &v
+}
+
+func (o IdentityUserIdentity) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.IdentityId != nil {
+		toSerialize["identityId"] = o.IdentityId
+	}
+	if o.Email != nil {
+		toSerialize["email"] = o.Email
+	}
+	if o.Provider != nil {
+		toSerialize["provider"] = o.Provider
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableIdentityUserIdentity struct {
+	value *IdentityUserIdentity
+	isSet bool
+}
+
+func (v NullableIdentityUserIdentity) Get() *IdentityUserIdentity {
+	return v.value
+}
+
+func (v *NullableIdentityUserIdentity) Set(val *IdentityUserIdentity) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableIdentityUserIdentity) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableIdentityUserIdentity) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableIdentityUserIdentity(val *IdentityUserIdentity) *NullableIdentityUserIdentity {
+	return &NullableIdentityUserIdentity{value: val, isSet: true}
+}
+
+func (v NullableIdentityUserIdentity) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableIdentityUserIdentity) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

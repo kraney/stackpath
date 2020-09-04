@@ -8,7 +8,105 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // DeliveryCreateSiteResponse The response from a request to create a new site
 type DeliveryCreateSiteResponse struct {
-	Site DeliverySite `json:"site,omitempty"`
+	Site *DeliverySite `json:"site,omitempty"`
+}
+
+// NewDeliveryCreateSiteResponse instantiates a new DeliveryCreateSiteResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewDeliveryCreateSiteResponse() *DeliveryCreateSiteResponse {
+	this := DeliveryCreateSiteResponse{}
+	return &this
+}
+
+// NewDeliveryCreateSiteResponseWithDefaults instantiates a new DeliveryCreateSiteResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewDeliveryCreateSiteResponseWithDefaults() *DeliveryCreateSiteResponse {
+	this := DeliveryCreateSiteResponse{}
+	return &this
+}
+
+// GetSite returns the Site field value if set, zero value otherwise.
+func (o *DeliveryCreateSiteResponse) GetSite() DeliverySite {
+	if o == nil || o.Site == nil {
+		var ret DeliverySite
+		return ret
+	}
+	return *o.Site
+}
+
+// GetSiteOk returns a tuple with the Site field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryCreateSiteResponse) GetSiteOk() (*DeliverySite, bool) {
+	if o == nil || o.Site == nil {
+		return nil, false
+	}
+	return o.Site, true
+}
+
+// HasSite returns a boolean if a field has been set.
+func (o *DeliveryCreateSiteResponse) HasSite() bool {
+	if o != nil && o.Site != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSite gets a reference to the given DeliverySite and assigns it to the Site field.
+func (o *DeliveryCreateSiteResponse) SetSite(v DeliverySite) {
+	o.Site = &v
+}
+
+func (o DeliveryCreateSiteResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Site != nil {
+		toSerialize["site"] = o.Site
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableDeliveryCreateSiteResponse struct {
+	value *DeliveryCreateSiteResponse
+	isSet bool
+}
+
+func (v NullableDeliveryCreateSiteResponse) Get() *DeliveryCreateSiteResponse {
+	return v.value
+}
+
+func (v *NullableDeliveryCreateSiteResponse) Set(val *DeliveryCreateSiteResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliveryCreateSiteResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliveryCreateSiteResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliveryCreateSiteResponse(val *DeliveryCreateSiteResponse) *NullableDeliveryCreateSiteResponse {
+	return &NullableDeliveryCreateSiteResponse{value: val, isSet: true}
+}
+
+func (v NullableDeliveryCreateSiteResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliveryCreateSiteResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

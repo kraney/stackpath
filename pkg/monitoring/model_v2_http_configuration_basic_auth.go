@@ -8,10 +8,143 @@
  */
 
 package monitoring
+
+import (
+	"encoding/json"
+)
+
 // V2HttpConfigurationBasicAuth HTTP basic authentication configutation
 type V2HttpConfigurationBasicAuth struct {
 	// The username used for basic authentication by a monitor.
-	Username string `json:"username,omitempty"`
+	Username *string `json:"username,omitempty"`
 	// The password used for basic authentication by a monitor.
-	Password string `json:"password,omitempty"`
+	Password *string `json:"password,omitempty"`
+}
+
+// NewV2HttpConfigurationBasicAuth instantiates a new V2HttpConfigurationBasicAuth object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV2HttpConfigurationBasicAuth() *V2HttpConfigurationBasicAuth {
+	this := V2HttpConfigurationBasicAuth{}
+	return &this
+}
+
+// NewV2HttpConfigurationBasicAuthWithDefaults instantiates a new V2HttpConfigurationBasicAuth object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV2HttpConfigurationBasicAuthWithDefaults() *V2HttpConfigurationBasicAuth {
+	this := V2HttpConfigurationBasicAuth{}
+	return &this
+}
+
+// GetUsername returns the Username field value if set, zero value otherwise.
+func (o *V2HttpConfigurationBasicAuth) GetUsername() string {
+	if o == nil || o.Username == nil {
+		var ret string
+		return ret
+	}
+	return *o.Username
+}
+
+// GetUsernameOk returns a tuple with the Username field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V2HttpConfigurationBasicAuth) GetUsernameOk() (*string, bool) {
+	if o == nil || o.Username == nil {
+		return nil, false
+	}
+	return o.Username, true
+}
+
+// HasUsername returns a boolean if a field has been set.
+func (o *V2HttpConfigurationBasicAuth) HasUsername() bool {
+	if o != nil && o.Username != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUsername gets a reference to the given string and assigns it to the Username field.
+func (o *V2HttpConfigurationBasicAuth) SetUsername(v string) {
+	o.Username = &v
+}
+
+// GetPassword returns the Password field value if set, zero value otherwise.
+func (o *V2HttpConfigurationBasicAuth) GetPassword() string {
+	if o == nil || o.Password == nil {
+		var ret string
+		return ret
+	}
+	return *o.Password
+}
+
+// GetPasswordOk returns a tuple with the Password field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V2HttpConfigurationBasicAuth) GetPasswordOk() (*string, bool) {
+	if o == nil || o.Password == nil {
+		return nil, false
+	}
+	return o.Password, true
+}
+
+// HasPassword returns a boolean if a field has been set.
+func (o *V2HttpConfigurationBasicAuth) HasPassword() bool {
+	if o != nil && o.Password != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPassword gets a reference to the given string and assigns it to the Password field.
+func (o *V2HttpConfigurationBasicAuth) SetPassword(v string) {
+	o.Password = &v
+}
+
+func (o V2HttpConfigurationBasicAuth) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Username != nil {
+		toSerialize["username"] = o.Username
+	}
+	if o.Password != nil {
+		toSerialize["password"] = o.Password
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV2HttpConfigurationBasicAuth struct {
+	value *V2HttpConfigurationBasicAuth
+	isSet bool
+}
+
+func (v NullableV2HttpConfigurationBasicAuth) Get() *V2HttpConfigurationBasicAuth {
+	return v.value
+}
+
+func (v *NullableV2HttpConfigurationBasicAuth) Set(val *V2HttpConfigurationBasicAuth) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV2HttpConfigurationBasicAuth) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV2HttpConfigurationBasicAuth) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV2HttpConfigurationBasicAuth(val *V2HttpConfigurationBasicAuth) *NullableV2HttpConfigurationBasicAuth {
+	return &NullableV2HttpConfigurationBasicAuth{value: val, isSet: true}
+}
+
+func (v NullableV2HttpConfigurationBasicAuth) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV2HttpConfigurationBasicAuth) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

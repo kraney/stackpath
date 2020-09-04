@@ -8,27 +8,403 @@
  */
 
 package sites
+
 import (
+	"encoding/json"
 	"time"
 )
+
 // DeliverySite struct for DeliverySite
 type DeliverySite struct {
 	// A site's unique identifier
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// The ID of the stack to which a site belongs
-	StackId string `json:"stackId,omitempty"`
+	StackId *string `json:"stackId,omitempty"`
 	// The site's name
-	Label string `json:"label,omitempty"`
+	Label *string `json:"label,omitempty"`
 	// The site's status
-	Status string `json:"status,omitempty"`
+	Status *string `json:"status,omitempty"`
 	// A site's features  Site features control how its content is delivered to end users.
-	Features []DeliverySiteFeature `json:"features,omitempty"`
+	Features *[]DeliverySiteFeature `json:"features,omitempty"`
 	// The date a site was created
-	CreatedAt time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
 	// The date a site was last updated
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
 	// A list of API URLs which receive different processing through the WAF than website requests
-	ApiUrls []string `json:"apiUrls,omitempty"`
+	ApiUrls *[]string `json:"apiUrls,omitempty"`
 	// Whether or not a site's WAF service is in a monitor state  Sites in WAF monitoring mode accept incoming requests and log but take no action on policy and rule violations.
-	Monitoring bool `json:"monitoring,omitempty"`
+	Monitoring *bool `json:"monitoring,omitempty"`
+}
+
+// NewDeliverySite instantiates a new DeliverySite object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewDeliverySite() *DeliverySite {
+	this := DeliverySite{}
+	return &this
+}
+
+// NewDeliverySiteWithDefaults instantiates a new DeliverySite object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewDeliverySiteWithDefaults() *DeliverySite {
+	this := DeliverySite{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *DeliverySite) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliverySite) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *DeliverySite) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *DeliverySite) SetId(v string) {
+	o.Id = &v
+}
+
+// GetStackId returns the StackId field value if set, zero value otherwise.
+func (o *DeliverySite) GetStackId() string {
+	if o == nil || o.StackId == nil {
+		var ret string
+		return ret
+	}
+	return *o.StackId
+}
+
+// GetStackIdOk returns a tuple with the StackId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliverySite) GetStackIdOk() (*string, bool) {
+	if o == nil || o.StackId == nil {
+		return nil, false
+	}
+	return o.StackId, true
+}
+
+// HasStackId returns a boolean if a field has been set.
+func (o *DeliverySite) HasStackId() bool {
+	if o != nil && o.StackId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStackId gets a reference to the given string and assigns it to the StackId field.
+func (o *DeliverySite) SetStackId(v string) {
+	o.StackId = &v
+}
+
+// GetLabel returns the Label field value if set, zero value otherwise.
+func (o *DeliverySite) GetLabel() string {
+	if o == nil || o.Label == nil {
+		var ret string
+		return ret
+	}
+	return *o.Label
+}
+
+// GetLabelOk returns a tuple with the Label field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliverySite) GetLabelOk() (*string, bool) {
+	if o == nil || o.Label == nil {
+		return nil, false
+	}
+	return o.Label, true
+}
+
+// HasLabel returns a boolean if a field has been set.
+func (o *DeliverySite) HasLabel() bool {
+	if o != nil && o.Label != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLabel gets a reference to the given string and assigns it to the Label field.
+func (o *DeliverySite) SetLabel(v string) {
+	o.Label = &v
+}
+
+// GetStatus returns the Status field value if set, zero value otherwise.
+func (o *DeliverySite) GetStatus() string {
+	if o == nil || o.Status == nil {
+		var ret string
+		return ret
+	}
+	return *o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliverySite) GetStatusOk() (*string, bool) {
+	if o == nil || o.Status == nil {
+		return nil, false
+	}
+	return o.Status, true
+}
+
+// HasStatus returns a boolean if a field has been set.
+func (o *DeliverySite) HasStatus() bool {
+	if o != nil && o.Status != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatus gets a reference to the given string and assigns it to the Status field.
+func (o *DeliverySite) SetStatus(v string) {
+	o.Status = &v
+}
+
+// GetFeatures returns the Features field value if set, zero value otherwise.
+func (o *DeliverySite) GetFeatures() []DeliverySiteFeature {
+	if o == nil || o.Features == nil {
+		var ret []DeliverySiteFeature
+		return ret
+	}
+	return *o.Features
+}
+
+// GetFeaturesOk returns a tuple with the Features field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliverySite) GetFeaturesOk() (*[]DeliverySiteFeature, bool) {
+	if o == nil || o.Features == nil {
+		return nil, false
+	}
+	return o.Features, true
+}
+
+// HasFeatures returns a boolean if a field has been set.
+func (o *DeliverySite) HasFeatures() bool {
+	if o != nil && o.Features != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetFeatures gets a reference to the given []DeliverySiteFeature and assigns it to the Features field.
+func (o *DeliverySite) SetFeatures(v []DeliverySiteFeature) {
+	o.Features = &v
+}
+
+// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+func (o *DeliverySite) GetCreatedAt() time.Time {
+	if o == nil || o.CreatedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliverySite) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil || o.CreatedAt == nil {
+		return nil, false
+	}
+	return o.CreatedAt, true
+}
+
+// HasCreatedAt returns a boolean if a field has been set.
+func (o *DeliverySite) HasCreatedAt() bool {
+	if o != nil && o.CreatedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
+func (o *DeliverySite) SetCreatedAt(v time.Time) {
+	o.CreatedAt = &v
+}
+
+// GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
+func (o *DeliverySite) GetUpdatedAt() time.Time {
+	if o == nil || o.UpdatedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.UpdatedAt
+}
+
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliverySite) GetUpdatedAtOk() (*time.Time, bool) {
+	if o == nil || o.UpdatedAt == nil {
+		return nil, false
+	}
+	return o.UpdatedAt, true
+}
+
+// HasUpdatedAt returns a boolean if a field has been set.
+func (o *DeliverySite) HasUpdatedAt() bool {
+	if o != nil && o.UpdatedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUpdatedAt gets a reference to the given time.Time and assigns it to the UpdatedAt field.
+func (o *DeliverySite) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = &v
+}
+
+// GetApiUrls returns the ApiUrls field value if set, zero value otherwise.
+func (o *DeliverySite) GetApiUrls() []string {
+	if o == nil || o.ApiUrls == nil {
+		var ret []string
+		return ret
+	}
+	return *o.ApiUrls
+}
+
+// GetApiUrlsOk returns a tuple with the ApiUrls field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliverySite) GetApiUrlsOk() (*[]string, bool) {
+	if o == nil || o.ApiUrls == nil {
+		return nil, false
+	}
+	return o.ApiUrls, true
+}
+
+// HasApiUrls returns a boolean if a field has been set.
+func (o *DeliverySite) HasApiUrls() bool {
+	if o != nil && o.ApiUrls != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetApiUrls gets a reference to the given []string and assigns it to the ApiUrls field.
+func (o *DeliverySite) SetApiUrls(v []string) {
+	o.ApiUrls = &v
+}
+
+// GetMonitoring returns the Monitoring field value if set, zero value otherwise.
+func (o *DeliverySite) GetMonitoring() bool {
+	if o == nil || o.Monitoring == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Monitoring
+}
+
+// GetMonitoringOk returns a tuple with the Monitoring field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliverySite) GetMonitoringOk() (*bool, bool) {
+	if o == nil || o.Monitoring == nil {
+		return nil, false
+	}
+	return o.Monitoring, true
+}
+
+// HasMonitoring returns a boolean if a field has been set.
+func (o *DeliverySite) HasMonitoring() bool {
+	if o != nil && o.Monitoring != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMonitoring gets a reference to the given bool and assigns it to the Monitoring field.
+func (o *DeliverySite) SetMonitoring(v bool) {
+	o.Monitoring = &v
+}
+
+func (o DeliverySite) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.StackId != nil {
+		toSerialize["stackId"] = o.StackId
+	}
+	if o.Label != nil {
+		toSerialize["label"] = o.Label
+	}
+	if o.Status != nil {
+		toSerialize["status"] = o.Status
+	}
+	if o.Features != nil {
+		toSerialize["features"] = o.Features
+	}
+	if o.CreatedAt != nil {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if o.UpdatedAt != nil {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	if o.ApiUrls != nil {
+		toSerialize["apiUrls"] = o.ApiUrls
+	}
+	if o.Monitoring != nil {
+		toSerialize["monitoring"] = o.Monitoring
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableDeliverySite struct {
+	value *DeliverySite
+	isSet bool
+}
+
+func (v NullableDeliverySite) Get() *DeliverySite {
+	return v.value
+}
+
+func (v *NullableDeliverySite) Set(val *DeliverySite) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliverySite) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliverySite) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliverySite(val *DeliverySite) *NullableDeliverySite {
+	return &NullableDeliverySite{value: val, isSet: true}
+}
+
+func (v NullableDeliverySite) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliverySite) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,14 +8,217 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // SchemawafOrigin A WAF site's origin
 type SchemawafOrigin struct {
 	// An origin's path
-	Path string `json:"path,omitempty"`
+	Path *string `json:"path,omitempty"`
 	// An origin's fully-qualified domain name
-	Hostname string `json:"hostname,omitempty"`
+	Hostname *string `json:"hostname,omitempty"`
 	// The http port to connect to the origin
-	Port int32 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 	// The https port to connect to the origin
-	SecurePort int32 `json:"securePort,omitempty"`
+	SecurePort *int32 `json:"securePort,omitempty"`
+}
+
+// NewSchemawafOrigin instantiates a new SchemawafOrigin object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewSchemawafOrigin() *SchemawafOrigin {
+	this := SchemawafOrigin{}
+	return &this
+}
+
+// NewSchemawafOriginWithDefaults instantiates a new SchemawafOrigin object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewSchemawafOriginWithDefaults() *SchemawafOrigin {
+	this := SchemawafOrigin{}
+	return &this
+}
+
+// GetPath returns the Path field value if set, zero value otherwise.
+func (o *SchemawafOrigin) GetPath() string {
+	if o == nil || o.Path == nil {
+		var ret string
+		return ret
+	}
+	return *o.Path
+}
+
+// GetPathOk returns a tuple with the Path field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemawafOrigin) GetPathOk() (*string, bool) {
+	if o == nil || o.Path == nil {
+		return nil, false
+	}
+	return o.Path, true
+}
+
+// HasPath returns a boolean if a field has been set.
+func (o *SchemawafOrigin) HasPath() bool {
+	if o != nil && o.Path != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPath gets a reference to the given string and assigns it to the Path field.
+func (o *SchemawafOrigin) SetPath(v string) {
+	o.Path = &v
+}
+
+// GetHostname returns the Hostname field value if set, zero value otherwise.
+func (o *SchemawafOrigin) GetHostname() string {
+	if o == nil || o.Hostname == nil {
+		var ret string
+		return ret
+	}
+	return *o.Hostname
+}
+
+// GetHostnameOk returns a tuple with the Hostname field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemawafOrigin) GetHostnameOk() (*string, bool) {
+	if o == nil || o.Hostname == nil {
+		return nil, false
+	}
+	return o.Hostname, true
+}
+
+// HasHostname returns a boolean if a field has been set.
+func (o *SchemawafOrigin) HasHostname() bool {
+	if o != nil && o.Hostname != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHostname gets a reference to the given string and assigns it to the Hostname field.
+func (o *SchemawafOrigin) SetHostname(v string) {
+	o.Hostname = &v
+}
+
+// GetPort returns the Port field value if set, zero value otherwise.
+func (o *SchemawafOrigin) GetPort() int32 {
+	if o == nil || o.Port == nil {
+		var ret int32
+		return ret
+	}
+	return *o.Port
+}
+
+// GetPortOk returns a tuple with the Port field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemawafOrigin) GetPortOk() (*int32, bool) {
+	if o == nil || o.Port == nil {
+		return nil, false
+	}
+	return o.Port, true
+}
+
+// HasPort returns a boolean if a field has been set.
+func (o *SchemawafOrigin) HasPort() bool {
+	if o != nil && o.Port != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPort gets a reference to the given int32 and assigns it to the Port field.
+func (o *SchemawafOrigin) SetPort(v int32) {
+	o.Port = &v
+}
+
+// GetSecurePort returns the SecurePort field value if set, zero value otherwise.
+func (o *SchemawafOrigin) GetSecurePort() int32 {
+	if o == nil || o.SecurePort == nil {
+		var ret int32
+		return ret
+	}
+	return *o.SecurePort
+}
+
+// GetSecurePortOk returns a tuple with the SecurePort field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemawafOrigin) GetSecurePortOk() (*int32, bool) {
+	if o == nil || o.SecurePort == nil {
+		return nil, false
+	}
+	return o.SecurePort, true
+}
+
+// HasSecurePort returns a boolean if a field has been set.
+func (o *SchemawafOrigin) HasSecurePort() bool {
+	if o != nil && o.SecurePort != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSecurePort gets a reference to the given int32 and assigns it to the SecurePort field.
+func (o *SchemawafOrigin) SetSecurePort(v int32) {
+	o.SecurePort = &v
+}
+
+func (o SchemawafOrigin) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Path != nil {
+		toSerialize["path"] = o.Path
+	}
+	if o.Hostname != nil {
+		toSerialize["hostname"] = o.Hostname
+	}
+	if o.Port != nil {
+		toSerialize["port"] = o.Port
+	}
+	if o.SecurePort != nil {
+		toSerialize["securePort"] = o.SecurePort
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableSchemawafOrigin struct {
+	value *SchemawafOrigin
+	isSet bool
+}
+
+func (v NullableSchemawafOrigin) Get() *SchemawafOrigin {
+	return v.value
+}
+
+func (v *NullableSchemawafOrigin) Set(val *SchemawafOrigin) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableSchemawafOrigin) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableSchemawafOrigin) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableSchemawafOrigin(val *SchemawafOrigin) *NullableSchemawafOrigin {
+	return &NullableSchemawafOrigin{value: val, isSet: true}
+}
+
+func (v NullableSchemawafOrigin) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableSchemawafOrigin) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

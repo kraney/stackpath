@@ -15,7 +15,7 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
+	"time"
 	"reflect"
 )
 
@@ -27,20 +27,83 @@ var (
 // MetricsApiService MetricsApi service
 type MetricsApiService service
 
-// GetMetricsOpts Optional parameters for the method 'GetMetrics'
-type GetMetricsOpts struct {
-    StartDate optional.Time
-    EndDate optional.Time
-    Granularity optional.String
-    StatusCategories optional.Interface
-    StatusCodes optional.Interface
-    Sites optional.Interface
-    GroupBy optional.String
-    BillingRegions optional.Interface
-    Pops optional.Interface
-    Platforms optional.Interface
-    SiteTypeFilter optional.Interface
-    MetricType optional.String
+type apiGetMetricsRequest struct {
+	ctx _context.Context
+	apiService *MetricsApiService
+	stackId string
+	startDate *time.Time
+	endDate *time.Time
+	granularity *string
+	statusCategories *[]string
+	statusCodes *[]string
+	sites *[]string
+	groupBy *string
+	billingRegions *[]string
+	pops *[]string
+	platforms *[]string
+	siteTypeFilter *[]string
+	metricType *string
+}
+
+
+func (r apiGetMetricsRequest) StartDate(startDate time.Time) apiGetMetricsRequest {
+	r.startDate = &startDate
+	return r
+}
+
+func (r apiGetMetricsRequest) EndDate(endDate time.Time) apiGetMetricsRequest {
+	r.endDate = &endDate
+	return r
+}
+
+func (r apiGetMetricsRequest) Granularity(granularity string) apiGetMetricsRequest {
+	r.granularity = &granularity
+	return r
+}
+
+func (r apiGetMetricsRequest) StatusCategories(statusCategories []string) apiGetMetricsRequest {
+	r.statusCategories = &statusCategories
+	return r
+}
+
+func (r apiGetMetricsRequest) StatusCodes(statusCodes []string) apiGetMetricsRequest {
+	r.statusCodes = &statusCodes
+	return r
+}
+
+func (r apiGetMetricsRequest) Sites(sites []string) apiGetMetricsRequest {
+	r.sites = &sites
+	return r
+}
+
+func (r apiGetMetricsRequest) GroupBy(groupBy string) apiGetMetricsRequest {
+	r.groupBy = &groupBy
+	return r
+}
+
+func (r apiGetMetricsRequest) BillingRegions(billingRegions []string) apiGetMetricsRequest {
+	r.billingRegions = &billingRegions
+	return r
+}
+
+func (r apiGetMetricsRequest) Pops(pops []string) apiGetMetricsRequest {
+	r.pops = &pops
+	return r
+}
+
+func (r apiGetMetricsRequest) Platforms(platforms []string) apiGetMetricsRequest {
+	r.platforms = &platforms
+	return r
+}
+
+func (r apiGetMetricsRequest) SiteTypeFilter(siteTypeFilter []string) apiGetMetricsRequest {
+	r.siteTypeFilter = &siteTypeFilter
+	return r
+}
+
+func (r apiGetMetricsRequest) MetricType(metricType string) apiGetMetricsRequest {
+	r.metricType = &metricType
+	return r
 }
 
 /*
@@ -48,22 +111,21 @@ GetMetrics Get metrics
 The last 24 hours of metrics are retrieved if the start and end dates are not provided
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
- * @param optional nil or *GetMetricsOpts - Optional Parameters:
- * @param "StartDate" (optional.Time) -  The starting date to retrieve metrics for.
- * @param "EndDate" (optional.Time) -  The ending date to retrieve metrics for.
- * @param "Granularity" (optional.String) - 
- * @param "StatusCategories" (optional.Interface of []string) -  A comma-separated list of 1 digit http status codes categories to filter by.
- * @param "StatusCodes" (optional.Interface of []string) -  A comma-separated list of 3 digit http status codes to filter by.
- * @param "Sites" (optional.Interface of []string) -  A comma-separated list of site IDs to filter metrics for.
- * @param "GroupBy" (optional.String) - 
- * @param "BillingRegions" (optional.Interface of []string) -  A comma-separated list of billing regions to filter metrics for.
- * @param "Pops" (optional.Interface of []string) -  A comma-separated list of StackPath point of presence location codes to filter metrics for.
- * @param "Platforms" (optional.Interface of []string) -  A comma-separated list of billing platforms to filter metrics for.
- * @param "SiteTypeFilter" (optional.Interface of []string) -  A filter to retrieve metrics by site type.
- * @param "MetricType" (optional.String) - 
-@return PrometheusMetrics
+@return apiGetMetricsRequest
 */
-func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, localVarOptionals *GetMetricsOpts) (PrometheusMetrics, *_nethttp.Response, error) {
+func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string) apiGetMetricsRequest {
+	return apiGetMetricsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+	}
+}
+
+/*
+Execute executes the request
+ @return PrometheusMetrics
+*/
+func (r apiGetMetricsRequest) Execute() (PrometheusMetrics, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -73,25 +135,30 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 		localVarReturnValue  PrometheusMetrics
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/delivery/v1/stacks/{stack_id}/metrics"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "MetricsApiService.GetMetrics")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/delivery/v1/stacks/{stack_id}/metrics"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.StartDate.IsSet() {
-		localVarQueryParams.Add("start_date", parameterToString(localVarOptionals.StartDate.Value(), ""))
+	
+												
+	if r.startDate != nil {
+		localVarQueryParams.Add("start_date", parameterToString(*r.startDate, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.EndDate.IsSet() {
-		localVarQueryParams.Add("end_date", parameterToString(localVarOptionals.EndDate.Value(), ""))
+	if r.endDate != nil {
+		localVarQueryParams.Add("end_date", parameterToString(*r.endDate, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Granularity.IsSet() {
-		localVarQueryParams.Add("granularity", parameterToString(localVarOptionals.Granularity.Value(), ""))
+	if r.granularity != nil {
+		localVarQueryParams.Add("granularity", parameterToString(*r.granularity, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.StatusCategories.IsSet() {
-		t:=localVarOptionals.StatusCategories.Value()
+	if r.statusCategories != nil {
+		t := *r.statusCategories
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -101,8 +168,8 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 			localVarQueryParams.Add("status_categories", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.StatusCodes.IsSet() {
-		t:=localVarOptionals.StatusCodes.Value()
+	if r.statusCodes != nil {
+		t := *r.statusCodes
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -112,8 +179,8 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 			localVarQueryParams.Add("status_codes", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.Sites.IsSet() {
-		t:=localVarOptionals.Sites.Value()
+	if r.sites != nil {
+		t := *r.sites
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -123,11 +190,11 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 			localVarQueryParams.Add("sites", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.GroupBy.IsSet() {
-		localVarQueryParams.Add("group_by", parameterToString(localVarOptionals.GroupBy.Value(), ""))
+	if r.groupBy != nil {
+		localVarQueryParams.Add("group_by", parameterToString(*r.groupBy, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.BillingRegions.IsSet() {
-		t:=localVarOptionals.BillingRegions.Value()
+	if r.billingRegions != nil {
+		t := *r.billingRegions
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -137,8 +204,8 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 			localVarQueryParams.Add("billing_regions", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.Pops.IsSet() {
-		t:=localVarOptionals.Pops.Value()
+	if r.pops != nil {
+		t := *r.pops
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -148,8 +215,8 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 			localVarQueryParams.Add("pops", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.Platforms.IsSet() {
-		t:=localVarOptionals.Platforms.Value()
+	if r.platforms != nil {
+		t := *r.platforms
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -159,8 +226,8 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 			localVarQueryParams.Add("platforms", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.SiteTypeFilter.IsSet() {
-		t:=localVarOptionals.SiteTypeFilter.Value()
+	if r.siteTypeFilter != nil {
+		t := *r.siteTypeFilter
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -170,8 +237,8 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 			localVarQueryParams.Add("site_type_filter", parameterToString(t, "multi"))
 		}
 	}
-	if localVarOptionals != nil && localVarOptionals.MetricType.IsSet() {
-		localVarQueryParams.Add("metric_type", parameterToString(localVarOptionals.MetricType.Value(), ""))
+	if r.metricType != nil {
+		localVarQueryParams.Add("metric_type", parameterToString(*r.metricType, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -190,12 +257,12 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -213,7 +280,7 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -223,7 +290,7 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -232,7 +299,7 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -241,7 +308,7 @@ func (a *MetricsApiService) GetMetrics(ctx _context.Context, stackId string, loc
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

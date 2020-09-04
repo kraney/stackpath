@@ -8,12 +8,180 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // RequestDetailsTags Aspects of a WAF request  Tags describe aspects of an incoming web request and can be used to create complex application-level custom rules
 type RequestDetailsTags struct {
 	// The tags associated with the request
-	Tags []string `json:"tags,omitempty"`
+	Tags *[]string `json:"tags,omitempty"`
 	// The tag's hash
-	Hash string `json:"hash,omitempty"`
+	Hash *string `json:"hash,omitempty"`
 	// Whether or not the tag was cached
-	Cached bool `json:"cached,omitempty"`
+	Cached *bool `json:"cached,omitempty"`
+}
+
+// NewRequestDetailsTags instantiates a new RequestDetailsTags object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewRequestDetailsTags() *RequestDetailsTags {
+	this := RequestDetailsTags{}
+	return &this
+}
+
+// NewRequestDetailsTagsWithDefaults instantiates a new RequestDetailsTags object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewRequestDetailsTagsWithDefaults() *RequestDetailsTags {
+	this := RequestDetailsTags{}
+	return &this
+}
+
+// GetTags returns the Tags field value if set, zero value otherwise.
+func (o *RequestDetailsTags) GetTags() []string {
+	if o == nil || o.Tags == nil {
+		var ret []string
+		return ret
+	}
+	return *o.Tags
+}
+
+// GetTagsOk returns a tuple with the Tags field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RequestDetailsTags) GetTagsOk() (*[]string, bool) {
+	if o == nil || o.Tags == nil {
+		return nil, false
+	}
+	return o.Tags, true
+}
+
+// HasTags returns a boolean if a field has been set.
+func (o *RequestDetailsTags) HasTags() bool {
+	if o != nil && o.Tags != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetTags gets a reference to the given []string and assigns it to the Tags field.
+func (o *RequestDetailsTags) SetTags(v []string) {
+	o.Tags = &v
+}
+
+// GetHash returns the Hash field value if set, zero value otherwise.
+func (o *RequestDetailsTags) GetHash() string {
+	if o == nil || o.Hash == nil {
+		var ret string
+		return ret
+	}
+	return *o.Hash
+}
+
+// GetHashOk returns a tuple with the Hash field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RequestDetailsTags) GetHashOk() (*string, bool) {
+	if o == nil || o.Hash == nil {
+		return nil, false
+	}
+	return o.Hash, true
+}
+
+// HasHash returns a boolean if a field has been set.
+func (o *RequestDetailsTags) HasHash() bool {
+	if o != nil && o.Hash != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHash gets a reference to the given string and assigns it to the Hash field.
+func (o *RequestDetailsTags) SetHash(v string) {
+	o.Hash = &v
+}
+
+// GetCached returns the Cached field value if set, zero value otherwise.
+func (o *RequestDetailsTags) GetCached() bool {
+	if o == nil || o.Cached == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Cached
+}
+
+// GetCachedOk returns a tuple with the Cached field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *RequestDetailsTags) GetCachedOk() (*bool, bool) {
+	if o == nil || o.Cached == nil {
+		return nil, false
+	}
+	return o.Cached, true
+}
+
+// HasCached returns a boolean if a field has been set.
+func (o *RequestDetailsTags) HasCached() bool {
+	if o != nil && o.Cached != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCached gets a reference to the given bool and assigns it to the Cached field.
+func (o *RequestDetailsTags) SetCached(v bool) {
+	o.Cached = &v
+}
+
+func (o RequestDetailsTags) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Tags != nil {
+		toSerialize["tags"] = o.Tags
+	}
+	if o.Hash != nil {
+		toSerialize["hash"] = o.Hash
+	}
+	if o.Cached != nil {
+		toSerialize["cached"] = o.Cached
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableRequestDetailsTags struct {
+	value *RequestDetailsTags
+	isSet bool
+}
+
+func (v NullableRequestDetailsTags) Get() *RequestDetailsTags {
+	return v.value
+}
+
+func (v *NullableRequestDetailsTags) Set(val *RequestDetailsTags) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableRequestDetailsTags) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableRequestDetailsTags) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableRequestDetailsTags(val *RequestDetailsTags) *NullableRequestDetailsTags {
+	return &NullableRequestDetailsTags{value: val, isSet: true}
+}
+
+func (v NullableRequestDetailsTags) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableRequestDetailsTags) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,13 +8,220 @@
  */
 
 package edge_compute
+
+import (
+	"encoding/json"
+)
+
 // V1VirtualMachineStatus The status of a Virtual Machine
 type V1VirtualMachineStatus struct {
 	// The name of the virtual machine the status applies to
-	Name string `json:"name,omitempty"`
-	Phase VirtualMachineStatusPhase `json:"phase,omitempty"`
+	Name *string `json:"name,omitempty"`
+	Phase *VirtualMachineStatusPhase `json:"phase,omitempty"`
 	// A short reason why the virtual machine is in its current phase
-	Reason string `json:"reason,omitempty"`
+	Reason *string `json:"reason,omitempty"`
 	// A longer message with details about why the virtual machine is in its current phase
-	Message string `json:"message,omitempty"`
+	Message *string `json:"message,omitempty"`
+}
+
+// NewV1VirtualMachineStatus instantiates a new V1VirtualMachineStatus object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV1VirtualMachineStatus() *V1VirtualMachineStatus {
+	this := V1VirtualMachineStatus{}
+	var phase VirtualMachineStatusPhase = "UNKNOWN"
+	this.Phase = &phase
+	return &this
+}
+
+// NewV1VirtualMachineStatusWithDefaults instantiates a new V1VirtualMachineStatus object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV1VirtualMachineStatusWithDefaults() *V1VirtualMachineStatus {
+	this := V1VirtualMachineStatus{}
+	var phase VirtualMachineStatusPhase = "UNKNOWN"
+	this.Phase = &phase
+	return &this
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *V1VirtualMachineStatus) GetName() string {
+	if o == nil || o.Name == nil {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1VirtualMachineStatus) GetNameOk() (*string, bool) {
+	if o == nil || o.Name == nil {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *V1VirtualMachineStatus) HasName() bool {
+	if o != nil && o.Name != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *V1VirtualMachineStatus) SetName(v string) {
+	o.Name = &v
+}
+
+// GetPhase returns the Phase field value if set, zero value otherwise.
+func (o *V1VirtualMachineStatus) GetPhase() VirtualMachineStatusPhase {
+	if o == nil || o.Phase == nil {
+		var ret VirtualMachineStatusPhase
+		return ret
+	}
+	return *o.Phase
+}
+
+// GetPhaseOk returns a tuple with the Phase field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1VirtualMachineStatus) GetPhaseOk() (*VirtualMachineStatusPhase, bool) {
+	if o == nil || o.Phase == nil {
+		return nil, false
+	}
+	return o.Phase, true
+}
+
+// HasPhase returns a boolean if a field has been set.
+func (o *V1VirtualMachineStatus) HasPhase() bool {
+	if o != nil && o.Phase != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPhase gets a reference to the given VirtualMachineStatusPhase and assigns it to the Phase field.
+func (o *V1VirtualMachineStatus) SetPhase(v VirtualMachineStatusPhase) {
+	o.Phase = &v
+}
+
+// GetReason returns the Reason field value if set, zero value otherwise.
+func (o *V1VirtualMachineStatus) GetReason() string {
+	if o == nil || o.Reason == nil {
+		var ret string
+		return ret
+	}
+	return *o.Reason
+}
+
+// GetReasonOk returns a tuple with the Reason field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1VirtualMachineStatus) GetReasonOk() (*string, bool) {
+	if o == nil || o.Reason == nil {
+		return nil, false
+	}
+	return o.Reason, true
+}
+
+// HasReason returns a boolean if a field has been set.
+func (o *V1VirtualMachineStatus) HasReason() bool {
+	if o != nil && o.Reason != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetReason gets a reference to the given string and assigns it to the Reason field.
+func (o *V1VirtualMachineStatus) SetReason(v string) {
+	o.Reason = &v
+}
+
+// GetMessage returns the Message field value if set, zero value otherwise.
+func (o *V1VirtualMachineStatus) GetMessage() string {
+	if o == nil || o.Message == nil {
+		var ret string
+		return ret
+	}
+	return *o.Message
+}
+
+// GetMessageOk returns a tuple with the Message field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1VirtualMachineStatus) GetMessageOk() (*string, bool) {
+	if o == nil || o.Message == nil {
+		return nil, false
+	}
+	return o.Message, true
+}
+
+// HasMessage returns a boolean if a field has been set.
+func (o *V1VirtualMachineStatus) HasMessage() bool {
+	if o != nil && o.Message != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMessage gets a reference to the given string and assigns it to the Message field.
+func (o *V1VirtualMachineStatus) SetMessage(v string) {
+	o.Message = &v
+}
+
+func (o V1VirtualMachineStatus) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Name != nil {
+		toSerialize["name"] = o.Name
+	}
+	if o.Phase != nil {
+		toSerialize["phase"] = o.Phase
+	}
+	if o.Reason != nil {
+		toSerialize["reason"] = o.Reason
+	}
+	if o.Message != nil {
+		toSerialize["message"] = o.Message
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV1VirtualMachineStatus struct {
+	value *V1VirtualMachineStatus
+	isSet bool
+}
+
+func (v NullableV1VirtualMachineStatus) Get() *V1VirtualMachineStatus {
+	return v.value
+}
+
+func (v *NullableV1VirtualMachineStatus) Set(val *V1VirtualMachineStatus) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV1VirtualMachineStatus) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV1VirtualMachineStatus) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV1VirtualMachineStatus(val *V1VirtualMachineStatus) *NullableV1VirtualMachineStatus {
+	return &NullableV1VirtualMachineStatus{value: val, isSet: true}
+}
+
+func (v NullableV1VirtualMachineStatus) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV1VirtualMachineStatus) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

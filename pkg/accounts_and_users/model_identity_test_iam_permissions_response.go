@@ -8,10 +8,143 @@
  */
 
 package accounts_and_users
-// IdentityTestIamPermissionsResponse A response from a request to test permissions on a StackPath account
-type IdentityTestIamPermissionsResponse struct {
+
+import (
+	"encoding/json"
+)
+
+// IdentityTestIAMPermissionsResponse A response from a request to test permissions on a StackPath account
+type IdentityTestIAMPermissionsResponse struct {
 	// The ID of the StackPath account the permissions were tested on
-	AccountId string `json:"accountId,omitempty"`
+	AccountId *string `json:"accountId,omitempty"`
 	// The set of permissions that the calling user does have on the account
-	Permissions []string `json:"permissions,omitempty"`
+	Permissions *[]string `json:"permissions,omitempty"`
+}
+
+// NewIdentityTestIAMPermissionsResponse instantiates a new IdentityTestIAMPermissionsResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewIdentityTestIAMPermissionsResponse() *IdentityTestIAMPermissionsResponse {
+	this := IdentityTestIAMPermissionsResponse{}
+	return &this
+}
+
+// NewIdentityTestIAMPermissionsResponseWithDefaults instantiates a new IdentityTestIAMPermissionsResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewIdentityTestIAMPermissionsResponseWithDefaults() *IdentityTestIAMPermissionsResponse {
+	this := IdentityTestIAMPermissionsResponse{}
+	return &this
+}
+
+// GetAccountId returns the AccountId field value if set, zero value otherwise.
+func (o *IdentityTestIAMPermissionsResponse) GetAccountId() string {
+	if o == nil || o.AccountId == nil {
+		var ret string
+		return ret
+	}
+	return *o.AccountId
+}
+
+// GetAccountIdOk returns a tuple with the AccountId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityTestIAMPermissionsResponse) GetAccountIdOk() (*string, bool) {
+	if o == nil || o.AccountId == nil {
+		return nil, false
+	}
+	return o.AccountId, true
+}
+
+// HasAccountId returns a boolean if a field has been set.
+func (o *IdentityTestIAMPermissionsResponse) HasAccountId() bool {
+	if o != nil && o.AccountId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAccountId gets a reference to the given string and assigns it to the AccountId field.
+func (o *IdentityTestIAMPermissionsResponse) SetAccountId(v string) {
+	o.AccountId = &v
+}
+
+// GetPermissions returns the Permissions field value if set, zero value otherwise.
+func (o *IdentityTestIAMPermissionsResponse) GetPermissions() []string {
+	if o == nil || o.Permissions == nil {
+		var ret []string
+		return ret
+	}
+	return *o.Permissions
+}
+
+// GetPermissionsOk returns a tuple with the Permissions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityTestIAMPermissionsResponse) GetPermissionsOk() (*[]string, bool) {
+	if o == nil || o.Permissions == nil {
+		return nil, false
+	}
+	return o.Permissions, true
+}
+
+// HasPermissions returns a boolean if a field has been set.
+func (o *IdentityTestIAMPermissionsResponse) HasPermissions() bool {
+	if o != nil && o.Permissions != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPermissions gets a reference to the given []string and assigns it to the Permissions field.
+func (o *IdentityTestIAMPermissionsResponse) SetPermissions(v []string) {
+	o.Permissions = &v
+}
+
+func (o IdentityTestIAMPermissionsResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.AccountId != nil {
+		toSerialize["accountId"] = o.AccountId
+	}
+	if o.Permissions != nil {
+		toSerialize["permissions"] = o.Permissions
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableIdentityTestIAMPermissionsResponse struct {
+	value *IdentityTestIAMPermissionsResponse
+	isSet bool
+}
+
+func (v NullableIdentityTestIAMPermissionsResponse) Get() *IdentityTestIAMPermissionsResponse {
+	return v.value
+}
+
+func (v *NullableIdentityTestIAMPermissionsResponse) Set(val *IdentityTestIAMPermissionsResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableIdentityTestIAMPermissionsResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableIdentityTestIAMPermissionsResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableIdentityTestIAMPermissionsResponse(val *IdentityTestIAMPermissionsResponse) *NullableIdentityTestIAMPermissionsResponse {
+	return &NullableIdentityTestIAMPermissionsResponse{value: val, isSet: true}
+}
+
+func (v NullableIdentityTestIAMPermissionsResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableIdentityTestIAMPermissionsResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

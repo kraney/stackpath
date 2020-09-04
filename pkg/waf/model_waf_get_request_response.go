@@ -8,7 +8,105 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafGetRequestResponse A response from a request to retrieve information about a request to a WAF site
 type WafGetRequestResponse struct {
-	Request SchemawafRequest `json:"request,omitempty"`
+	Request *SchemawafRequest `json:"request,omitempty"`
+}
+
+// NewWafGetRequestResponse instantiates a new WafGetRequestResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafGetRequestResponse() *WafGetRequestResponse {
+	this := WafGetRequestResponse{}
+	return &this
+}
+
+// NewWafGetRequestResponseWithDefaults instantiates a new WafGetRequestResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafGetRequestResponseWithDefaults() *WafGetRequestResponse {
+	this := WafGetRequestResponse{}
+	return &this
+}
+
+// GetRequest returns the Request field value if set, zero value otherwise.
+func (o *WafGetRequestResponse) GetRequest() SchemawafRequest {
+	if o == nil || o.Request == nil {
+		var ret SchemawafRequest
+		return ret
+	}
+	return *o.Request
+}
+
+// GetRequestOk returns a tuple with the Request field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafGetRequestResponse) GetRequestOk() (*SchemawafRequest, bool) {
+	if o == nil || o.Request == nil {
+		return nil, false
+	}
+	return o.Request, true
+}
+
+// HasRequest returns a boolean if a field has been set.
+func (o *WafGetRequestResponse) HasRequest() bool {
+	if o != nil && o.Request != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRequest gets a reference to the given SchemawafRequest and assigns it to the Request field.
+func (o *WafGetRequestResponse) SetRequest(v SchemawafRequest) {
+	o.Request = &v
+}
+
+func (o WafGetRequestResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Request != nil {
+		toSerialize["request"] = o.Request
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafGetRequestResponse struct {
+	value *WafGetRequestResponse
+	isSet bool
+}
+
+func (v NullableWafGetRequestResponse) Get() *WafGetRequestResponse {
+	return v.value
+}
+
+func (v *NullableWafGetRequestResponse) Set(val *WafGetRequestResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafGetRequestResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafGetRequestResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafGetRequestResponse(val *WafGetRequestResponse) *NullableWafGetRequestResponse {
+	return &NullableWafGetRequestResponse{value: val, isSet: true}
+}
+
+func (v NullableWafGetRequestResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafGetRequestResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

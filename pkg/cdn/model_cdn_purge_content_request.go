@@ -8,8 +8,106 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnPurgeContentRequest struct for CdnPurgeContentRequest
 type CdnPurgeContentRequest struct {
 	// The items to purge from the CDN
-	Items []PurgeContentRequestItem `json:"items,omitempty"`
+	Items *[]PurgeContentRequestItem `json:"items,omitempty"`
+}
+
+// NewCdnPurgeContentRequest instantiates a new CdnPurgeContentRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnPurgeContentRequest() *CdnPurgeContentRequest {
+	this := CdnPurgeContentRequest{}
+	return &this
+}
+
+// NewCdnPurgeContentRequestWithDefaults instantiates a new CdnPurgeContentRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnPurgeContentRequestWithDefaults() *CdnPurgeContentRequest {
+	this := CdnPurgeContentRequest{}
+	return &this
+}
+
+// GetItems returns the Items field value if set, zero value otherwise.
+func (o *CdnPurgeContentRequest) GetItems() []PurgeContentRequestItem {
+	if o == nil || o.Items == nil {
+		var ret []PurgeContentRequestItem
+		return ret
+	}
+	return *o.Items
+}
+
+// GetItemsOk returns a tuple with the Items field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnPurgeContentRequest) GetItemsOk() (*[]PurgeContentRequestItem, bool) {
+	if o == nil || o.Items == nil {
+		return nil, false
+	}
+	return o.Items, true
+}
+
+// HasItems returns a boolean if a field has been set.
+func (o *CdnPurgeContentRequest) HasItems() bool {
+	if o != nil && o.Items != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetItems gets a reference to the given []PurgeContentRequestItem and assigns it to the Items field.
+func (o *CdnPurgeContentRequest) SetItems(v []PurgeContentRequestItem) {
+	o.Items = &v
+}
+
+func (o CdnPurgeContentRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Items != nil {
+		toSerialize["items"] = o.Items
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnPurgeContentRequest struct {
+	value *CdnPurgeContentRequest
+	isSet bool
+}
+
+func (v NullableCdnPurgeContentRequest) Get() *CdnPurgeContentRequest {
+	return v.value
+}
+
+func (v *NullableCdnPurgeContentRequest) Set(val *CdnPurgeContentRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnPurgeContentRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnPurgeContentRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnPurgeContentRequest(val *CdnPurgeContentRequest) *NullableCdnPurgeContentRequest {
+	return &NullableCdnPurgeContentRequest{value: val, isSet: true}
+}
+
+func (v NullableCdnPurgeContentRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnPurgeContentRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

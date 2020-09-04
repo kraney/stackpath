@@ -8,6 +8,11 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnCertificateVerificationMethod The Certificate Verification Method  Verification method used to validate a requested certificate on a site   - DNS: Verify a certificate using DNS records  - HTTP: Verify a certificate by using HTTP validation. This will require all hosts in the certificate point to the site's stackpathcdn.com delivery domain or IP address
 type CdnCertificateVerificationMethod string
 
@@ -16,3 +21,45 @@ const (
 	CDNCERTIFICATEVERIFICATIONMETHOD_DNS CdnCertificateVerificationMethod = "DNS"
 	CDNCERTIFICATEVERIFICATIONMETHOD_HTTP CdnCertificateVerificationMethod = "HTTP"
 )
+
+// Ptr returns reference to cdnCertificateVerificationMethod value
+func (v CdnCertificateVerificationMethod) Ptr() *CdnCertificateVerificationMethod {
+	return &v
+}
+
+
+type NullableCdnCertificateVerificationMethod struct {
+	value *CdnCertificateVerificationMethod
+	isSet bool
+}
+
+func (v NullableCdnCertificateVerificationMethod) Get() *CdnCertificateVerificationMethod {
+	return v.value
+}
+
+func (v *NullableCdnCertificateVerificationMethod) Set(val *CdnCertificateVerificationMethod) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnCertificateVerificationMethod) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnCertificateVerificationMethod) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnCertificateVerificationMethod(val *CdnCertificateVerificationMethod) *NullableCdnCertificateVerificationMethod {
+	return &NullableCdnCertificateVerificationMethod{value: val, isSet: true}
+}
+
+func (v NullableCdnCertificateVerificationMethod) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnCertificateVerificationMethod) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

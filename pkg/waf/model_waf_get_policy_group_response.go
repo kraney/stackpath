@@ -8,7 +8,105 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafGetPolicyGroupResponse A response from a request to retrieve a WAF policy group
 type WafGetPolicyGroupResponse struct {
-	PolicyGroup WafPolicyGroup `json:"policyGroup,omitempty"`
+	PolicyGroup *WafPolicyGroup `json:"policyGroup,omitempty"`
+}
+
+// NewWafGetPolicyGroupResponse instantiates a new WafGetPolicyGroupResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafGetPolicyGroupResponse() *WafGetPolicyGroupResponse {
+	this := WafGetPolicyGroupResponse{}
+	return &this
+}
+
+// NewWafGetPolicyGroupResponseWithDefaults instantiates a new WafGetPolicyGroupResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafGetPolicyGroupResponseWithDefaults() *WafGetPolicyGroupResponse {
+	this := WafGetPolicyGroupResponse{}
+	return &this
+}
+
+// GetPolicyGroup returns the PolicyGroup field value if set, zero value otherwise.
+func (o *WafGetPolicyGroupResponse) GetPolicyGroup() WafPolicyGroup {
+	if o == nil || o.PolicyGroup == nil {
+		var ret WafPolicyGroup
+		return ret
+	}
+	return *o.PolicyGroup
+}
+
+// GetPolicyGroupOk returns a tuple with the PolicyGroup field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafGetPolicyGroupResponse) GetPolicyGroupOk() (*WafPolicyGroup, bool) {
+	if o == nil || o.PolicyGroup == nil {
+		return nil, false
+	}
+	return o.PolicyGroup, true
+}
+
+// HasPolicyGroup returns a boolean if a field has been set.
+func (o *WafGetPolicyGroupResponse) HasPolicyGroup() bool {
+	if o != nil && o.PolicyGroup != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPolicyGroup gets a reference to the given WafPolicyGroup and assigns it to the PolicyGroup field.
+func (o *WafGetPolicyGroupResponse) SetPolicyGroup(v WafPolicyGroup) {
+	o.PolicyGroup = &v
+}
+
+func (o WafGetPolicyGroupResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.PolicyGroup != nil {
+		toSerialize["policyGroup"] = o.PolicyGroup
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafGetPolicyGroupResponse struct {
+	value *WafGetPolicyGroupResponse
+	isSet bool
+}
+
+func (v NullableWafGetPolicyGroupResponse) Get() *WafGetPolicyGroupResponse {
+	return v.value
+}
+
+func (v *NullableWafGetPolicyGroupResponse) Set(val *WafGetPolicyGroupResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafGetPolicyGroupResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafGetPolicyGroupResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafGetPolicyGroupResponse(val *WafGetPolicyGroupResponse) *NullableWafGetPolicyGroupResponse {
+	return &NullableWafGetPolicyGroupResponse{value: val, isSet: true}
+}
+
+func (v NullableWafGetPolicyGroupResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafGetPolicyGroupResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

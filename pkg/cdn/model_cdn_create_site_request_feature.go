@@ -8,6 +8,11 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnCreateSiteRequestFeature The features available to the new CDN site  Multiple products can served on a single CDN site. Features control how those products are managed on the StackPath backend.   - CDN: The site will have CDN caching abilities  - WAF: The site is protected by the StackPath Web Application Firewall
 type CdnCreateSiteRequestFeature string
 
@@ -16,3 +21,45 @@ const (
 	CDNCREATESITEREQUESTFEATURE_CDN CdnCreateSiteRequestFeature = "CDN"
 	CDNCREATESITEREQUESTFEATURE_WAF CdnCreateSiteRequestFeature = "WAF"
 )
+
+// Ptr returns reference to cdnCreateSiteRequestFeature value
+func (v CdnCreateSiteRequestFeature) Ptr() *CdnCreateSiteRequestFeature {
+	return &v
+}
+
+
+type NullableCdnCreateSiteRequestFeature struct {
+	value *CdnCreateSiteRequestFeature
+	isSet bool
+}
+
+func (v NullableCdnCreateSiteRequestFeature) Get() *CdnCreateSiteRequestFeature {
+	return v.value
+}
+
+func (v *NullableCdnCreateSiteRequestFeature) Set(val *CdnCreateSiteRequestFeature) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnCreateSiteRequestFeature) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnCreateSiteRequestFeature) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnCreateSiteRequestFeature(val *CdnCreateSiteRequestFeature) *NullableCdnCreateSiteRequestFeature {
+	return &NullableCdnCreateSiteRequestFeature{value: val, isSet: true}
+}
+
+func (v NullableCdnCreateSiteRequestFeature) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnCreateSiteRequestFeature) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

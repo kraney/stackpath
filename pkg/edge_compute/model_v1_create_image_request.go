@@ -8,8 +8,141 @@
  */
 
 package edge_compute
+
+import (
+	"encoding/json"
+)
+
 // V1CreateImageRequest struct for V1CreateImageRequest
 type V1CreateImageRequest struct {
-	Image V1Image `json:"image,omitempty"`
-	InstanceVolumeSource V1ImageSourceInstanceVolume `json:"instanceVolumeSource,omitempty"`
+	Image *V1Image `json:"image,omitempty"`
+	InstanceVolumeSource *V1ImageSourceInstanceVolume `json:"instanceVolumeSource,omitempty"`
+}
+
+// NewV1CreateImageRequest instantiates a new V1CreateImageRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV1CreateImageRequest() *V1CreateImageRequest {
+	this := V1CreateImageRequest{}
+	return &this
+}
+
+// NewV1CreateImageRequestWithDefaults instantiates a new V1CreateImageRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV1CreateImageRequestWithDefaults() *V1CreateImageRequest {
+	this := V1CreateImageRequest{}
+	return &this
+}
+
+// GetImage returns the Image field value if set, zero value otherwise.
+func (o *V1CreateImageRequest) GetImage() V1Image {
+	if o == nil || o.Image == nil {
+		var ret V1Image
+		return ret
+	}
+	return *o.Image
+}
+
+// GetImageOk returns a tuple with the Image field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1CreateImageRequest) GetImageOk() (*V1Image, bool) {
+	if o == nil || o.Image == nil {
+		return nil, false
+	}
+	return o.Image, true
+}
+
+// HasImage returns a boolean if a field has been set.
+func (o *V1CreateImageRequest) HasImage() bool {
+	if o != nil && o.Image != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetImage gets a reference to the given V1Image and assigns it to the Image field.
+func (o *V1CreateImageRequest) SetImage(v V1Image) {
+	o.Image = &v
+}
+
+// GetInstanceVolumeSource returns the InstanceVolumeSource field value if set, zero value otherwise.
+func (o *V1CreateImageRequest) GetInstanceVolumeSource() V1ImageSourceInstanceVolume {
+	if o == nil || o.InstanceVolumeSource == nil {
+		var ret V1ImageSourceInstanceVolume
+		return ret
+	}
+	return *o.InstanceVolumeSource
+}
+
+// GetInstanceVolumeSourceOk returns a tuple with the InstanceVolumeSource field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1CreateImageRequest) GetInstanceVolumeSourceOk() (*V1ImageSourceInstanceVolume, bool) {
+	if o == nil || o.InstanceVolumeSource == nil {
+		return nil, false
+	}
+	return o.InstanceVolumeSource, true
+}
+
+// HasInstanceVolumeSource returns a boolean if a field has been set.
+func (o *V1CreateImageRequest) HasInstanceVolumeSource() bool {
+	if o != nil && o.InstanceVolumeSource != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetInstanceVolumeSource gets a reference to the given V1ImageSourceInstanceVolume and assigns it to the InstanceVolumeSource field.
+func (o *V1CreateImageRequest) SetInstanceVolumeSource(v V1ImageSourceInstanceVolume) {
+	o.InstanceVolumeSource = &v
+}
+
+func (o V1CreateImageRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Image != nil {
+		toSerialize["image"] = o.Image
+	}
+	if o.InstanceVolumeSource != nil {
+		toSerialize["instanceVolumeSource"] = o.InstanceVolumeSource
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV1CreateImageRequest struct {
+	value *V1CreateImageRequest
+	isSet bool
+}
+
+func (v NullableV1CreateImageRequest) Get() *V1CreateImageRequest {
+	return v.value
+}
+
+func (v *NullableV1CreateImageRequest) Set(val *V1CreateImageRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV1CreateImageRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV1CreateImageRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV1CreateImageRequest(val *V1CreateImageRequest) *NullableV1CreateImageRequest {
+	return &NullableV1CreateImageRequest{value: val, isSet: true}
+}
+
+func (v NullableV1CreateImageRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV1CreateImageRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

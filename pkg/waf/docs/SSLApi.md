@@ -19,21 +19,61 @@ Method | HTTP request | Description
 
 ## ConnectSiteToCertificate
 
-> WafConnectSiteToCertificateResponse ConnectSiteToCertificate(ctx, stackId, siteId, certificateId)
+> WafConnectSiteToCertificateResponse ConnectSiteToCertificate(ctx, stackId, siteId, certificateId).Execute()
 
 Update SAN hosts
 
-Association is performed without validating if the site has a hostname covered by the certificate. This is useful for preparation work required for getting a site ready for traffic.  If a certificate is uploaded which contains hostnames for sites, it will automatically be connected to those sites. If a hostname is added to a site which is covered by an SSL certificate, it will automatically be connected to the certificate.
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    certificateId := "certificateId_example" // string | A certificate ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.ConnectSiteToCertificate(context.Background(), stackId, siteId, certificateId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.ConnectSiteToCertificate``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ConnectSiteToCertificate`: WafConnectSiteToCertificateResponse
+    fmt.Fprintf(os.Stdout, "Response from `SSLApi.ConnectSiteToCertificate`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**certificateId** | **string**| A certificate ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**certificateId** | **string** | A certificate ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiConnectSiteToCertificateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -55,18 +95,55 @@ Name | Type | Description  | Notes
 
 ## CreateCertificate
 
-> WafCreateCertificateResponse CreateCertificate(ctx, stackId, wafCreateCertificateRequest)
+> WafCreateCertificateResponse CreateCertificate(ctx, stackId).WafCreateCertificateRequest(wafCreateCertificateRequest).Execute()
 
 Add a certificate
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    wafCreateCertificateRequest := openapiclient.wafCreateCertificateRequest{Certificate: "Certificate_example", Key: "Key_example", CaBundle: "CaBundle_example"} // WafCreateCertificateRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.CreateCertificate(context.Background(), stackId, wafCreateCertificateRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.CreateCertificate``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `CreateCertificate`: WafCreateCertificateResponse
+    fmt.Fprintf(os.Stdout, "Response from `SSLApi.CreateCertificate`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**wafCreateCertificateRequest** | [**WafCreateCertificateRequest**](WafCreateCertificateRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateCertificateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **wafCreateCertificateRequest** | [**WafCreateCertificateRequest**](WafCreateCertificateRequest.md) |  | 
 
 ### Return type
 
@@ -88,18 +165,54 @@ Name | Type | Description  | Notes
 
 ## DeleteCertificate
 
-> DeleteCertificate(ctx, stackId, certificateId)
+> DeleteCertificate(ctx, stackId, certificateId).Execute()
 
 Delete a certificate
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    certificateId := "certificateId_example" // string | A certificate ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.DeleteCertificate(context.Background(), stackId, certificateId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.DeleteCertificate``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**certificateId** | **string**| A certificate ID | 
+**stackId** | **string** | A stack ID or slug | 
+**certificateId** | **string** | A certificate ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteCertificateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -121,18 +234,56 @@ Name | Type | Description  | Notes
 
 ## GetCertificate
 
-> WafGetCertificateResponse GetCertificate(ctx, stackId, certificateId)
+> WafGetCertificateResponse GetCertificate(ctx, stackId, certificateId).Execute()
 
 Get a certificate
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    certificateId := "certificateId_example" // string | A certificate ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.GetCertificate(context.Background(), stackId, certificateId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.GetCertificate``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetCertificate`: WafGetCertificateResponse
+    fmt.Fprintf(os.Stdout, "Response from `SSLApi.GetCertificate`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**certificateId** | **string**| A certificate ID | 
+**stackId** | **string** | A stack ID or slug | 
+**certificateId** | **string** | A certificate ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetCertificateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -154,18 +305,56 @@ Name | Type | Description  | Notes
 
 ## GetCertificateVerificationDetails
 
-> WafGetCertificateVerificationDetailsResponse GetCertificateVerificationDetails(ctx, stackId, certificateId)
+> WafGetCertificateVerificationDetailsResponse GetCertificateVerificationDetails(ctx, stackId, certificateId).Execute()
 
 Get sites associated with a certificate
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    certificateId := "certificateId_example" // string | A certificate ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.GetCertificateVerificationDetails(context.Background(), stackId, certificateId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.GetCertificateVerificationDetails``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetCertificateVerificationDetails`: WafGetCertificateVerificationDetailsResponse
+    fmt.Fprintf(os.Stdout, "Response from `SSLApi.GetCertificateVerificationDetails`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**certificateId** | **string**| A certificate ID | 
+**stackId** | **string** | A stack ID or slug | 
+**certificateId** | **string** | A certificate ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetCertificateVerificationDetailsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -187,31 +376,61 @@ Name | Type | Description  | Notes
 
 ## GetCertificates
 
-> WafGetCertificatesResponse GetCertificates(ctx, stackId, optional)
+> WafGetCertificatesResponse GetCertificates(ctx, stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
 
 Get all certificates
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
+    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
+    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
+    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.GetCertificates(context.Background(), stackId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.GetCertificates``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetCertificates`: WafGetCertificatesResponse
+    fmt.Fprintf(os.Stdout, "Response from `SSLApi.GetCertificates`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
- **optional** | ***GetCertificatesOpts** | optional parameters | nil if no parameters
+**stackId** | **string** | A stack ID or slug | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetCertificatesOpts struct
+Other parameters are passed through a pointer to a apiGetCertificatesRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **pageRequestFirst** | **optional.String**| The number of items desired. | 
- **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
- **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
- **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
+ **pageRequestFirst** | **string** | The number of items desired. | 
+ **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **string** | SQL-style constraint filters. | 
+ **pageRequestSortBy** | **string** | Sort the response by the given field. | 
 
 ### Return type
 
@@ -233,33 +452,64 @@ Name | Type | Description  | Notes
 
 ## GetSiteCertificates
 
-> WafGetSiteCertificatesResponse GetSiteCertificates(ctx, stackId, siteId, optional)
+> WafGetSiteCertificatesResponse GetSiteCertificates(ctx, stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
 
 Get all site certificates
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
+    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
+    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
+    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.GetSiteCertificates(context.Background(), stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.GetSiteCertificates``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetSiteCertificates`: WafGetSiteCertificatesResponse
+    fmt.Fprintf(os.Stdout, "Response from `SSLApi.GetSiteCertificates`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
- **optional** | ***GetSiteCertificatesOpts** | optional parameters | nil if no parameters
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetSiteCertificatesOpts struct
+Other parameters are passed through a pointer to a apiGetSiteCertificatesRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **pageRequestFirst** | **optional.String**| The number of items desired. | 
- **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
- **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
- **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
+ **pageRequestFirst** | **string** | The number of items desired. | 
+ **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **string** | SQL-style constraint filters. | 
+ **pageRequestSortBy** | **string** | Sort the response by the given field. | 
 
 ### Return type
 
@@ -281,20 +531,56 @@ Name | Type | Description  | Notes
 
 ## RenewCertificate
 
-> RenewCertificate(ctx, stackId, certificateId)
+> RenewCertificate(ctx, stackId, certificateId).Execute()
 
 Renew a certificate
 
-StackPath automatically renews certificates that are 30 days from expiration. Call this to retry a renewal that previously failed.
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    certificateId := "certificateId_example" // string | A certificate ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.RenewCertificate(context.Background(), stackId, certificateId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.RenewCertificate``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**certificateId** | **string**| A certificate ID | 
+**stackId** | **string** | A stack ID or slug | 
+**certificateId** | **string** | A certificate ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRenewCertificateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -316,19 +602,58 @@ Name | Type | Description  | Notes
 
 ## RequestCertificate
 
-> WafRequestCertificateResponse RequestCertificate(ctx, stackId, siteId, wafRequestCertificateRequest)
+> WafRequestCertificateResponse RequestCertificate(ctx, stackId, siteId).WafRequestCertificateRequest(wafRequestCertificateRequest).Execute()
 
 Request a free certificate
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    wafRequestCertificateRequest := openapiclient.wafRequestCertificateRequest{Hosts: []string{"Hosts_example"), VerificationMethod: openapiclient.wafCertificateVerificationMethod{}} // WafRequestCertificateRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.RequestCertificate(context.Background(), stackId, siteId, wafRequestCertificateRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.RequestCertificate``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `RequestCertificate`: WafRequestCertificateResponse
+    fmt.Fprintf(os.Stdout, "Response from `SSLApi.RequestCertificate`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**wafRequestCertificateRequest** | [**WafRequestCertificateRequest**](WafRequestCertificateRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiRequestCertificateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **wafRequestCertificateRequest** | [**WafRequestCertificateRequest**](WafRequestCertificateRequest.md) |  | 
 
 ### Return type
 
@@ -350,19 +675,58 @@ Name | Type | Description  | Notes
 
 ## UpdateCertificate
 
-> WafUpdateCertificateResponse UpdateCertificate(ctx, stackId, certificateId, wafUpdateCertificateRequest)
+> WafUpdateCertificateResponse UpdateCertificate(ctx, stackId, certificateId).WafUpdateCertificateRequest(wafUpdateCertificateRequest).Execute()
 
 Update a certificate
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    certificateId := "certificateId_example" // string | A certificate ID
+    wafUpdateCertificateRequest := openapiclient.wafUpdateCertificateRequest{Certificate: "Certificate_example", Key: "Key_example", CaBundle: "CaBundle_example"} // WafUpdateCertificateRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.SSLApi.UpdateCertificate(context.Background(), stackId, certificateId, wafUpdateCertificateRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `SSLApi.UpdateCertificate``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `UpdateCertificate`: WafUpdateCertificateResponse
+    fmt.Fprintf(os.Stdout, "Response from `SSLApi.UpdateCertificate`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**certificateId** | **string**| A certificate ID | 
-**wafUpdateCertificateRequest** | [**WafUpdateCertificateRequest**](WafUpdateCertificateRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+**certificateId** | **string** | A certificate ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateCertificateRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **wafUpdateCertificateRequest** | [**WafUpdateCertificateRequest**](WafUpdateCertificateRequest.md) |  | 
 
 ### Return type
 

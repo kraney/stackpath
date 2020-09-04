@@ -8,13 +8,216 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfOriginPullCacheExtension The cache extension policy allows you to define cache revalidation exceptions on expired content. This policy is applied by the CDN caching servers when they are are unable to revalidate an expired asset with your origin due to network connectivity issues or unresponsiveness from your origin.
 type CustconfOriginPullCacheExtension struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// This is the number of seconds to extend an asset's TTL when the origin is unavailable. The CDN will continue to retry the origin up to the Origin Unavailable Max TTL.
-	ExpiredCacheExtension int32 `json:"expiredCacheExtension,omitempty"`
+	ExpiredCacheExtension *int32 `json:"expiredCacheExtension,omitempty"`
 	// The origin unavailable max TTL value is used by the caching server when your origin is unresponsive or the CDN cannot establish a connection to your origin. Under these conditions, the CDN can continue to serve expired assets from the cache. The value specified in this field establishes a maximum allowable TTL for your expired assets. If your origin connectivity or responsiveness is not corrected within your maximum allowable TTL, the CDN no longer serves your expired assets.
-	OriginUnreachableCacheExtension int32 `json:"originUnreachableCacheExtension,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	OriginUnreachableCacheExtension *int32 `json:"originUnreachableCacheExtension,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfOriginPullCacheExtension instantiates a new CustconfOriginPullCacheExtension object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfOriginPullCacheExtension() *CustconfOriginPullCacheExtension {
+	this := CustconfOriginPullCacheExtension{}
+	return &this
+}
+
+// NewCustconfOriginPullCacheExtensionWithDefaults instantiates a new CustconfOriginPullCacheExtension object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfOriginPullCacheExtensionWithDefaults() *CustconfOriginPullCacheExtension {
+	this := CustconfOriginPullCacheExtension{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfOriginPullCacheExtension) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullCacheExtension) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfOriginPullCacheExtension) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfOriginPullCacheExtension) SetId(v string) {
+	o.Id = &v
+}
+
+// GetExpiredCacheExtension returns the ExpiredCacheExtension field value if set, zero value otherwise.
+func (o *CustconfOriginPullCacheExtension) GetExpiredCacheExtension() int32 {
+	if o == nil || o.ExpiredCacheExtension == nil {
+		var ret int32
+		return ret
+	}
+	return *o.ExpiredCacheExtension
+}
+
+// GetExpiredCacheExtensionOk returns a tuple with the ExpiredCacheExtension field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullCacheExtension) GetExpiredCacheExtensionOk() (*int32, bool) {
+	if o == nil || o.ExpiredCacheExtension == nil {
+		return nil, false
+	}
+	return o.ExpiredCacheExtension, true
+}
+
+// HasExpiredCacheExtension returns a boolean if a field has been set.
+func (o *CustconfOriginPullCacheExtension) HasExpiredCacheExtension() bool {
+	if o != nil && o.ExpiredCacheExtension != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetExpiredCacheExtension gets a reference to the given int32 and assigns it to the ExpiredCacheExtension field.
+func (o *CustconfOriginPullCacheExtension) SetExpiredCacheExtension(v int32) {
+	o.ExpiredCacheExtension = &v
+}
+
+// GetOriginUnreachableCacheExtension returns the OriginUnreachableCacheExtension field value if set, zero value otherwise.
+func (o *CustconfOriginPullCacheExtension) GetOriginUnreachableCacheExtension() int32 {
+	if o == nil || o.OriginUnreachableCacheExtension == nil {
+		var ret int32
+		return ret
+	}
+	return *o.OriginUnreachableCacheExtension
+}
+
+// GetOriginUnreachableCacheExtensionOk returns a tuple with the OriginUnreachableCacheExtension field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullCacheExtension) GetOriginUnreachableCacheExtensionOk() (*int32, bool) {
+	if o == nil || o.OriginUnreachableCacheExtension == nil {
+		return nil, false
+	}
+	return o.OriginUnreachableCacheExtension, true
+}
+
+// HasOriginUnreachableCacheExtension returns a boolean if a field has been set.
+func (o *CustconfOriginPullCacheExtension) HasOriginUnreachableCacheExtension() bool {
+	if o != nil && o.OriginUnreachableCacheExtension != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetOriginUnreachableCacheExtension gets a reference to the given int32 and assigns it to the OriginUnreachableCacheExtension field.
+func (o *CustconfOriginPullCacheExtension) SetOriginUnreachableCacheExtension(v int32) {
+	o.OriginUnreachableCacheExtension = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfOriginPullCacheExtension) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullCacheExtension) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfOriginPullCacheExtension) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfOriginPullCacheExtension) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfOriginPullCacheExtension) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.ExpiredCacheExtension != nil {
+		toSerialize["expiredCacheExtension"] = o.ExpiredCacheExtension
+	}
+	if o.OriginUnreachableCacheExtension != nil {
+		toSerialize["originUnreachableCacheExtension"] = o.OriginUnreachableCacheExtension
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfOriginPullCacheExtension struct {
+	value *CustconfOriginPullCacheExtension
+	isSet bool
+}
+
+func (v NullableCustconfOriginPullCacheExtension) Get() *CustconfOriginPullCacheExtension {
+	return v.value
+}
+
+func (v *NullableCustconfOriginPullCacheExtension) Set(val *CustconfOriginPullCacheExtension) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfOriginPullCacheExtension) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfOriginPullCacheExtension) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfOriginPullCacheExtension(val *CustconfOriginPullCacheExtension) *NullableCustconfOriginPullCacheExtension {
+	return &NullableCustconfOriginPullCacheExtension{value: val, isSet: true}
+}
+
+func (v NullableCustconfOriginPullCacheExtension) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfOriginPullCacheExtension) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

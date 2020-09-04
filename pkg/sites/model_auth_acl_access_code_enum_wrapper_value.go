@@ -8,12 +8,59 @@
  */
 
 package sites
-// AuthAclAccessCodeEnumWrapperValue the model 'AuthAclAccessCodeEnumWrapperValue'
-type AuthAclAccessCodeEnumWrapperValue string
+
+import (
+	"encoding/json"
+)
+
+// AuthACLAccessCodeEnumWrapperValue the model 'AuthACLAccessCodeEnumWrapperValue'
+type AuthACLAccessCodeEnumWrapperValue string
 
 // List of AuthACLAccessCodeEnumWrapperValue
 const (
-	AUTHACLACCESSCODEENUMWRAPPERVALUE_UNKNOWN AuthAclAccessCodeEnumWrapperValue = "UNKNOWN"
-	AUTHACLACCESSCODEENUMWRAPPERVALUE_ALLOW AuthAclAccessCodeEnumWrapperValue = "allow"
-	AUTHACLACCESSCODEENUMWRAPPERVALUE_DENY AuthAclAccessCodeEnumWrapperValue = "deny"
+	AUTHACLACCESSCODEENUMWRAPPERVALUE_UNKNOWN AuthACLAccessCodeEnumWrapperValue = "UNKNOWN"
+	AUTHACLACCESSCODEENUMWRAPPERVALUE_ALLOW AuthACLAccessCodeEnumWrapperValue = "allow"
+	AUTHACLACCESSCODEENUMWRAPPERVALUE_DENY AuthACLAccessCodeEnumWrapperValue = "deny"
 )
+
+// Ptr returns reference to AuthACLAccessCodeEnumWrapperValue value
+func (v AuthACLAccessCodeEnumWrapperValue) Ptr() *AuthACLAccessCodeEnumWrapperValue {
+	return &v
+}
+
+
+type NullableAuthACLAccessCodeEnumWrapperValue struct {
+	value *AuthACLAccessCodeEnumWrapperValue
+	isSet bool
+}
+
+func (v NullableAuthACLAccessCodeEnumWrapperValue) Get() *AuthACLAccessCodeEnumWrapperValue {
+	return v.value
+}
+
+func (v *NullableAuthACLAccessCodeEnumWrapperValue) Set(val *AuthACLAccessCodeEnumWrapperValue) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableAuthACLAccessCodeEnumWrapperValue) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableAuthACLAccessCodeEnumWrapperValue) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableAuthACLAccessCodeEnumWrapperValue(val *AuthACLAccessCodeEnumWrapperValue) *NullableAuthACLAccessCodeEnumWrapperValue {
+	return &NullableAuthACLAccessCodeEnumWrapperValue{value: val, isSet: true}
+}
+
+func (v NullableAuthACLAccessCodeEnumWrapperValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableAuthACLAccessCodeEnumWrapperValue) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

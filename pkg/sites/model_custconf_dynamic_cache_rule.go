@@ -8,19 +8,327 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfDynamicCacheRule Client response based on Rules.
 type CustconfDynamicCacheRule struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// Status code to return
-	StatusCode float32 `json:"statusCode,omitempty"`
+	StatusCode *float32 `json:"statusCode,omitempty"`
 	// String of values delimited by a '|' character. Pipe delimited ('|') list of headers to add to response
-	Headers string `json:"headers,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Headers *string `json:"headers,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// String of values delimited by a ',' character.
-	MethodFilter string `json:"methodFilter,omitempty"`
+	MethodFilter *string `json:"methodFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	PathFilter string `json:"pathFilter,omitempty"`
+	PathFilter *string `json:"pathFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	HeaderFilter string `json:"headerFilter,omitempty"`
+	HeaderFilter *string `json:"headerFilter,omitempty"`
+}
+
+// NewCustconfDynamicCacheRule instantiates a new CustconfDynamicCacheRule object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfDynamicCacheRule() *CustconfDynamicCacheRule {
+	this := CustconfDynamicCacheRule{}
+	return &this
+}
+
+// NewCustconfDynamicCacheRuleWithDefaults instantiates a new CustconfDynamicCacheRule object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfDynamicCacheRuleWithDefaults() *CustconfDynamicCacheRule {
+	this := CustconfDynamicCacheRule{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfDynamicCacheRule) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfDynamicCacheRule) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfDynamicCacheRule) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfDynamicCacheRule) SetId(v string) {
+	o.Id = &v
+}
+
+// GetStatusCode returns the StatusCode field value if set, zero value otherwise.
+func (o *CustconfDynamicCacheRule) GetStatusCode() float32 {
+	if o == nil || o.StatusCode == nil {
+		var ret float32
+		return ret
+	}
+	return *o.StatusCode
+}
+
+// GetStatusCodeOk returns a tuple with the StatusCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfDynamicCacheRule) GetStatusCodeOk() (*float32, bool) {
+	if o == nil || o.StatusCode == nil {
+		return nil, false
+	}
+	return o.StatusCode, true
+}
+
+// HasStatusCode returns a boolean if a field has been set.
+func (o *CustconfDynamicCacheRule) HasStatusCode() bool {
+	if o != nil && o.StatusCode != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatusCode gets a reference to the given float32 and assigns it to the StatusCode field.
+func (o *CustconfDynamicCacheRule) SetStatusCode(v float32) {
+	o.StatusCode = &v
+}
+
+// GetHeaders returns the Headers field value if set, zero value otherwise.
+func (o *CustconfDynamicCacheRule) GetHeaders() string {
+	if o == nil || o.Headers == nil {
+		var ret string
+		return ret
+	}
+	return *o.Headers
+}
+
+// GetHeadersOk returns a tuple with the Headers field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfDynamicCacheRule) GetHeadersOk() (*string, bool) {
+	if o == nil || o.Headers == nil {
+		return nil, false
+	}
+	return o.Headers, true
+}
+
+// HasHeaders returns a boolean if a field has been set.
+func (o *CustconfDynamicCacheRule) HasHeaders() bool {
+	if o != nil && o.Headers != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHeaders gets a reference to the given string and assigns it to the Headers field.
+func (o *CustconfDynamicCacheRule) SetHeaders(v string) {
+	o.Headers = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfDynamicCacheRule) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfDynamicCacheRule) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfDynamicCacheRule) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfDynamicCacheRule) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+// GetMethodFilter returns the MethodFilter field value if set, zero value otherwise.
+func (o *CustconfDynamicCacheRule) GetMethodFilter() string {
+	if o == nil || o.MethodFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.MethodFilter
+}
+
+// GetMethodFilterOk returns a tuple with the MethodFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfDynamicCacheRule) GetMethodFilterOk() (*string, bool) {
+	if o == nil || o.MethodFilter == nil {
+		return nil, false
+	}
+	return o.MethodFilter, true
+}
+
+// HasMethodFilter returns a boolean if a field has been set.
+func (o *CustconfDynamicCacheRule) HasMethodFilter() bool {
+	if o != nil && o.MethodFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMethodFilter gets a reference to the given string and assigns it to the MethodFilter field.
+func (o *CustconfDynamicCacheRule) SetMethodFilter(v string) {
+	o.MethodFilter = &v
+}
+
+// GetPathFilter returns the PathFilter field value if set, zero value otherwise.
+func (o *CustconfDynamicCacheRule) GetPathFilter() string {
+	if o == nil || o.PathFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.PathFilter
+}
+
+// GetPathFilterOk returns a tuple with the PathFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfDynamicCacheRule) GetPathFilterOk() (*string, bool) {
+	if o == nil || o.PathFilter == nil {
+		return nil, false
+	}
+	return o.PathFilter, true
+}
+
+// HasPathFilter returns a boolean if a field has been set.
+func (o *CustconfDynamicCacheRule) HasPathFilter() bool {
+	if o != nil && o.PathFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPathFilter gets a reference to the given string and assigns it to the PathFilter field.
+func (o *CustconfDynamicCacheRule) SetPathFilter(v string) {
+	o.PathFilter = &v
+}
+
+// GetHeaderFilter returns the HeaderFilter field value if set, zero value otherwise.
+func (o *CustconfDynamicCacheRule) GetHeaderFilter() string {
+	if o == nil || o.HeaderFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.HeaderFilter
+}
+
+// GetHeaderFilterOk returns a tuple with the HeaderFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfDynamicCacheRule) GetHeaderFilterOk() (*string, bool) {
+	if o == nil || o.HeaderFilter == nil {
+		return nil, false
+	}
+	return o.HeaderFilter, true
+}
+
+// HasHeaderFilter returns a boolean if a field has been set.
+func (o *CustconfDynamicCacheRule) HasHeaderFilter() bool {
+	if o != nil && o.HeaderFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHeaderFilter gets a reference to the given string and assigns it to the HeaderFilter field.
+func (o *CustconfDynamicCacheRule) SetHeaderFilter(v string) {
+	o.HeaderFilter = &v
+}
+
+func (o CustconfDynamicCacheRule) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.StatusCode != nil {
+		toSerialize["statusCode"] = o.StatusCode
+	}
+	if o.Headers != nil {
+		toSerialize["headers"] = o.Headers
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	if o.MethodFilter != nil {
+		toSerialize["methodFilter"] = o.MethodFilter
+	}
+	if o.PathFilter != nil {
+		toSerialize["pathFilter"] = o.PathFilter
+	}
+	if o.HeaderFilter != nil {
+		toSerialize["headerFilter"] = o.HeaderFilter
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfDynamicCacheRule struct {
+	value *CustconfDynamicCacheRule
+	isSet bool
+}
+
+func (v NullableCustconfDynamicCacheRule) Get() *CustconfDynamicCacheRule {
+	return v.value
+}
+
+func (v *NullableCustconfDynamicCacheRule) Set(val *CustconfDynamicCacheRule) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfDynamicCacheRule) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfDynamicCacheRule) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfDynamicCacheRule(val *CustconfDynamicCacheRule) *NullableCustconfDynamicCacheRule {
+	return &NullableCustconfDynamicCacheRule{value: val, isSet: true}
+}
+
+func (v NullableCustconfDynamicCacheRule) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfDynamicCacheRule) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

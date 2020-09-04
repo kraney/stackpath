@@ -8,13 +8,216 @@
  */
 
 package edge_compute
+
+import (
+	"encoding/json"
+)
+
 // V1DeploymentSpec A deployment's specification
 type V1DeploymentSpec struct {
 	// The minimum number of instances in a deployment
-	MinReplicas int32 `json:"minReplicas,omitempty"`
+	MinReplicas *int32 `json:"minReplicas,omitempty"`
 	// The maximum number of instances in a deployment
-	MaxReplicas int32 `json:"maxReplicas,omitempty"`
-	ScaleSettings V1ScaleSettings `json:"scaleSettings,omitempty"`
+	MaxReplicas *int32 `json:"maxReplicas,omitempty"`
+	ScaleSettings *V1ScaleSettings `json:"scaleSettings,omitempty"`
 	// A collection of filters that match the deployment's scope
-	Selectors []V1MatchExpression `json:"selectors,omitempty"`
+	Selectors *[]V1MatchExpression `json:"selectors,omitempty"`
+}
+
+// NewV1DeploymentSpec instantiates a new V1DeploymentSpec object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV1DeploymentSpec() *V1DeploymentSpec {
+	this := V1DeploymentSpec{}
+	return &this
+}
+
+// NewV1DeploymentSpecWithDefaults instantiates a new V1DeploymentSpec object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV1DeploymentSpecWithDefaults() *V1DeploymentSpec {
+	this := V1DeploymentSpec{}
+	return &this
+}
+
+// GetMinReplicas returns the MinReplicas field value if set, zero value otherwise.
+func (o *V1DeploymentSpec) GetMinReplicas() int32 {
+	if o == nil || o.MinReplicas == nil {
+		var ret int32
+		return ret
+	}
+	return *o.MinReplicas
+}
+
+// GetMinReplicasOk returns a tuple with the MinReplicas field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1DeploymentSpec) GetMinReplicasOk() (*int32, bool) {
+	if o == nil || o.MinReplicas == nil {
+		return nil, false
+	}
+	return o.MinReplicas, true
+}
+
+// HasMinReplicas returns a boolean if a field has been set.
+func (o *V1DeploymentSpec) HasMinReplicas() bool {
+	if o != nil && o.MinReplicas != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMinReplicas gets a reference to the given int32 and assigns it to the MinReplicas field.
+func (o *V1DeploymentSpec) SetMinReplicas(v int32) {
+	o.MinReplicas = &v
+}
+
+// GetMaxReplicas returns the MaxReplicas field value if set, zero value otherwise.
+func (o *V1DeploymentSpec) GetMaxReplicas() int32 {
+	if o == nil || o.MaxReplicas == nil {
+		var ret int32
+		return ret
+	}
+	return *o.MaxReplicas
+}
+
+// GetMaxReplicasOk returns a tuple with the MaxReplicas field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1DeploymentSpec) GetMaxReplicasOk() (*int32, bool) {
+	if o == nil || o.MaxReplicas == nil {
+		return nil, false
+	}
+	return o.MaxReplicas, true
+}
+
+// HasMaxReplicas returns a boolean if a field has been set.
+func (o *V1DeploymentSpec) HasMaxReplicas() bool {
+	if o != nil && o.MaxReplicas != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMaxReplicas gets a reference to the given int32 and assigns it to the MaxReplicas field.
+func (o *V1DeploymentSpec) SetMaxReplicas(v int32) {
+	o.MaxReplicas = &v
+}
+
+// GetScaleSettings returns the ScaleSettings field value if set, zero value otherwise.
+func (o *V1DeploymentSpec) GetScaleSettings() V1ScaleSettings {
+	if o == nil || o.ScaleSettings == nil {
+		var ret V1ScaleSettings
+		return ret
+	}
+	return *o.ScaleSettings
+}
+
+// GetScaleSettingsOk returns a tuple with the ScaleSettings field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1DeploymentSpec) GetScaleSettingsOk() (*V1ScaleSettings, bool) {
+	if o == nil || o.ScaleSettings == nil {
+		return nil, false
+	}
+	return o.ScaleSettings, true
+}
+
+// HasScaleSettings returns a boolean if a field has been set.
+func (o *V1DeploymentSpec) HasScaleSettings() bool {
+	if o != nil && o.ScaleSettings != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetScaleSettings gets a reference to the given V1ScaleSettings and assigns it to the ScaleSettings field.
+func (o *V1DeploymentSpec) SetScaleSettings(v V1ScaleSettings) {
+	o.ScaleSettings = &v
+}
+
+// GetSelectors returns the Selectors field value if set, zero value otherwise.
+func (o *V1DeploymentSpec) GetSelectors() []V1MatchExpression {
+	if o == nil || o.Selectors == nil {
+		var ret []V1MatchExpression
+		return ret
+	}
+	return *o.Selectors
+}
+
+// GetSelectorsOk returns a tuple with the Selectors field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1DeploymentSpec) GetSelectorsOk() (*[]V1MatchExpression, bool) {
+	if o == nil || o.Selectors == nil {
+		return nil, false
+	}
+	return o.Selectors, true
+}
+
+// HasSelectors returns a boolean if a field has been set.
+func (o *V1DeploymentSpec) HasSelectors() bool {
+	if o != nil && o.Selectors != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSelectors gets a reference to the given []V1MatchExpression and assigns it to the Selectors field.
+func (o *V1DeploymentSpec) SetSelectors(v []V1MatchExpression) {
+	o.Selectors = &v
+}
+
+func (o V1DeploymentSpec) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.MinReplicas != nil {
+		toSerialize["minReplicas"] = o.MinReplicas
+	}
+	if o.MaxReplicas != nil {
+		toSerialize["maxReplicas"] = o.MaxReplicas
+	}
+	if o.ScaleSettings != nil {
+		toSerialize["scaleSettings"] = o.ScaleSettings
+	}
+	if o.Selectors != nil {
+		toSerialize["selectors"] = o.Selectors
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV1DeploymentSpec struct {
+	value *V1DeploymentSpec
+	isSet bool
+}
+
+func (v NullableV1DeploymentSpec) Get() *V1DeploymentSpec {
+	return v.value
+}
+
+func (v *NullableV1DeploymentSpec) Set(val *V1DeploymentSpec) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV1DeploymentSpec) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV1DeploymentSpec) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV1DeploymentSpec(val *V1DeploymentSpec) *NullableV1DeploymentSpec {
+	return &NullableV1DeploymentSpec{value: val, isSet: true}
+}
+
+func (v NullableV1DeploymentSpec) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV1DeploymentSpec) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

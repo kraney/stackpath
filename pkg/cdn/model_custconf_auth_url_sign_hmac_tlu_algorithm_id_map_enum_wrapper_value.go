@@ -8,6 +8,11 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue the model 'CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue'
 type CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue string
 
@@ -17,3 +22,45 @@ const (
 	CUSTCONFAUTHURLSIGNHMACTLUALGORITHMIDMAPENUMWRAPPERVALUE_HMACSHA1 CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue = "hmacsha1"
 	CUSTCONFAUTHURLSIGNHMACTLUALGORITHMIDMAPENUMWRAPPERVALUE_HMACSHA256 CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue = "hmacsha256"
 )
+
+// Ptr returns reference to custconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue value
+func (v CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue) Ptr() *CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue {
+	return &v
+}
+
+
+type NullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue struct {
+	value *CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue
+	isSet bool
+}
+
+func (v NullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue) Get() *CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue {
+	return v.value
+}
+
+func (v *NullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue) Set(val *CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue(val *CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue) *NullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue {
+	return &NullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue{value: val, isSet: true}
+}
+
+func (v NullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

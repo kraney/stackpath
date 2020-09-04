@@ -8,20 +8,328 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnPopScanReport The result of a network scan from a StackPath point of presence to a origin
 type CdnPopScanReport struct {
 	// The IATA formatted location code of the StackPath POP that produced a scan report
-	PopCode string `json:"popCode,omitempty"`
+	PopCode *string `json:"popCode,omitempty"`
 	// The amount of time in milliseconds that a POP scan took to perform an initial connection handshake
-	ConnectMs float32 `json:"connectMs,omitempty"`
+	ConnectMs *float32 `json:"connectMs,omitempty"`
 	// The amount of time in milliseconds that a POP scan took to resolve the target's DNS entry
-	DnsMs float32 `json:"dnsMs,omitempty"`
+	DnsMs *float32 `json:"dnsMs,omitempty"`
 	// The amount of time in milliseconds that a POP scan took to download the target's contents
-	DownloadMs float32 `json:"downloadMs,omitempty"`
+	DownloadMs *float32 `json:"downloadMs,omitempty"`
 	// The amount of time in milliseconds that a POP scan took from initial connection to starting to receive the target's contents
-	FirstByteMs float32 `json:"firstByteMs,omitempty"`
+	FirstByteMs *float32 `json:"firstByteMs,omitempty"`
 	// The amount of time in milliseconds that a POP scan took to perform an SSL handshake
-	SslMs float32 `json:"sslMs,omitempty"`
+	SslMs *float32 `json:"sslMs,omitempty"`
 	// The total amount of time in milliseconds that a POP scan took to complete
-	TotalMs float32 `json:"totalMs,omitempty"`
+	TotalMs *float32 `json:"totalMs,omitempty"`
+}
+
+// NewCdnPopScanReport instantiates a new CdnPopScanReport object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnPopScanReport() *CdnPopScanReport {
+	this := CdnPopScanReport{}
+	return &this
+}
+
+// NewCdnPopScanReportWithDefaults instantiates a new CdnPopScanReport object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnPopScanReportWithDefaults() *CdnPopScanReport {
+	this := CdnPopScanReport{}
+	return &this
+}
+
+// GetPopCode returns the PopCode field value if set, zero value otherwise.
+func (o *CdnPopScanReport) GetPopCode() string {
+	if o == nil || o.PopCode == nil {
+		var ret string
+		return ret
+	}
+	return *o.PopCode
+}
+
+// GetPopCodeOk returns a tuple with the PopCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnPopScanReport) GetPopCodeOk() (*string, bool) {
+	if o == nil || o.PopCode == nil {
+		return nil, false
+	}
+	return o.PopCode, true
+}
+
+// HasPopCode returns a boolean if a field has been set.
+func (o *CdnPopScanReport) HasPopCode() bool {
+	if o != nil && o.PopCode != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPopCode gets a reference to the given string and assigns it to the PopCode field.
+func (o *CdnPopScanReport) SetPopCode(v string) {
+	o.PopCode = &v
+}
+
+// GetConnectMs returns the ConnectMs field value if set, zero value otherwise.
+func (o *CdnPopScanReport) GetConnectMs() float32 {
+	if o == nil || o.ConnectMs == nil {
+		var ret float32
+		return ret
+	}
+	return *o.ConnectMs
+}
+
+// GetConnectMsOk returns a tuple with the ConnectMs field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnPopScanReport) GetConnectMsOk() (*float32, bool) {
+	if o == nil || o.ConnectMs == nil {
+		return nil, false
+	}
+	return o.ConnectMs, true
+}
+
+// HasConnectMs returns a boolean if a field has been set.
+func (o *CdnPopScanReport) HasConnectMs() bool {
+	if o != nil && o.ConnectMs != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetConnectMs gets a reference to the given float32 and assigns it to the ConnectMs field.
+func (o *CdnPopScanReport) SetConnectMs(v float32) {
+	o.ConnectMs = &v
+}
+
+// GetDnsMs returns the DnsMs field value if set, zero value otherwise.
+func (o *CdnPopScanReport) GetDnsMs() float32 {
+	if o == nil || o.DnsMs == nil {
+		var ret float32
+		return ret
+	}
+	return *o.DnsMs
+}
+
+// GetDnsMsOk returns a tuple with the DnsMs field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnPopScanReport) GetDnsMsOk() (*float32, bool) {
+	if o == nil || o.DnsMs == nil {
+		return nil, false
+	}
+	return o.DnsMs, true
+}
+
+// HasDnsMs returns a boolean if a field has been set.
+func (o *CdnPopScanReport) HasDnsMs() bool {
+	if o != nil && o.DnsMs != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDnsMs gets a reference to the given float32 and assigns it to the DnsMs field.
+func (o *CdnPopScanReport) SetDnsMs(v float32) {
+	o.DnsMs = &v
+}
+
+// GetDownloadMs returns the DownloadMs field value if set, zero value otherwise.
+func (o *CdnPopScanReport) GetDownloadMs() float32 {
+	if o == nil || o.DownloadMs == nil {
+		var ret float32
+		return ret
+	}
+	return *o.DownloadMs
+}
+
+// GetDownloadMsOk returns a tuple with the DownloadMs field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnPopScanReport) GetDownloadMsOk() (*float32, bool) {
+	if o == nil || o.DownloadMs == nil {
+		return nil, false
+	}
+	return o.DownloadMs, true
+}
+
+// HasDownloadMs returns a boolean if a field has been set.
+func (o *CdnPopScanReport) HasDownloadMs() bool {
+	if o != nil && o.DownloadMs != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDownloadMs gets a reference to the given float32 and assigns it to the DownloadMs field.
+func (o *CdnPopScanReport) SetDownloadMs(v float32) {
+	o.DownloadMs = &v
+}
+
+// GetFirstByteMs returns the FirstByteMs field value if set, zero value otherwise.
+func (o *CdnPopScanReport) GetFirstByteMs() float32 {
+	if o == nil || o.FirstByteMs == nil {
+		var ret float32
+		return ret
+	}
+	return *o.FirstByteMs
+}
+
+// GetFirstByteMsOk returns a tuple with the FirstByteMs field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnPopScanReport) GetFirstByteMsOk() (*float32, bool) {
+	if o == nil || o.FirstByteMs == nil {
+		return nil, false
+	}
+	return o.FirstByteMs, true
+}
+
+// HasFirstByteMs returns a boolean if a field has been set.
+func (o *CdnPopScanReport) HasFirstByteMs() bool {
+	if o != nil && o.FirstByteMs != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetFirstByteMs gets a reference to the given float32 and assigns it to the FirstByteMs field.
+func (o *CdnPopScanReport) SetFirstByteMs(v float32) {
+	o.FirstByteMs = &v
+}
+
+// GetSslMs returns the SslMs field value if set, zero value otherwise.
+func (o *CdnPopScanReport) GetSslMs() float32 {
+	if o == nil || o.SslMs == nil {
+		var ret float32
+		return ret
+	}
+	return *o.SslMs
+}
+
+// GetSslMsOk returns a tuple with the SslMs field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnPopScanReport) GetSslMsOk() (*float32, bool) {
+	if o == nil || o.SslMs == nil {
+		return nil, false
+	}
+	return o.SslMs, true
+}
+
+// HasSslMs returns a boolean if a field has been set.
+func (o *CdnPopScanReport) HasSslMs() bool {
+	if o != nil && o.SslMs != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSslMs gets a reference to the given float32 and assigns it to the SslMs field.
+func (o *CdnPopScanReport) SetSslMs(v float32) {
+	o.SslMs = &v
+}
+
+// GetTotalMs returns the TotalMs field value if set, zero value otherwise.
+func (o *CdnPopScanReport) GetTotalMs() float32 {
+	if o == nil || o.TotalMs == nil {
+		var ret float32
+		return ret
+	}
+	return *o.TotalMs
+}
+
+// GetTotalMsOk returns a tuple with the TotalMs field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnPopScanReport) GetTotalMsOk() (*float32, bool) {
+	if o == nil || o.TotalMs == nil {
+		return nil, false
+	}
+	return o.TotalMs, true
+}
+
+// HasTotalMs returns a boolean if a field has been set.
+func (o *CdnPopScanReport) HasTotalMs() bool {
+	if o != nil && o.TotalMs != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetTotalMs gets a reference to the given float32 and assigns it to the TotalMs field.
+func (o *CdnPopScanReport) SetTotalMs(v float32) {
+	o.TotalMs = &v
+}
+
+func (o CdnPopScanReport) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.PopCode != nil {
+		toSerialize["popCode"] = o.PopCode
+	}
+	if o.ConnectMs != nil {
+		toSerialize["connectMs"] = o.ConnectMs
+	}
+	if o.DnsMs != nil {
+		toSerialize["dnsMs"] = o.DnsMs
+	}
+	if o.DownloadMs != nil {
+		toSerialize["downloadMs"] = o.DownloadMs
+	}
+	if o.FirstByteMs != nil {
+		toSerialize["firstByteMs"] = o.FirstByteMs
+	}
+	if o.SslMs != nil {
+		toSerialize["sslMs"] = o.SslMs
+	}
+	if o.TotalMs != nil {
+		toSerialize["totalMs"] = o.TotalMs
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnPopScanReport struct {
+	value *CdnPopScanReport
+	isSet bool
+}
+
+func (v NullableCdnPopScanReport) Get() *CdnPopScanReport {
+	return v.value
+}
+
+func (v *NullableCdnPopScanReport) Set(val *CdnPopScanReport) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnPopScanReport) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnPopScanReport) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnPopScanReport(val *CdnPopScanReport) *NullableCdnPopScanReport {
+	return &NullableCdnPopScanReport{value: val, isSet: true}
+}
+
+func (v NullableCdnPopScanReport) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnPopScanReport) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

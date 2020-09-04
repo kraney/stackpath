@@ -8,9 +8,177 @@
  */
 
 package monitoring
+
+import (
+	"encoding/json"
+)
+
 // StackpathRpcPreconditionFailureViolation struct for StackpathRpcPreconditionFailureViolation
 type StackpathRpcPreconditionFailureViolation struct {
-	Type string `json:"type,omitempty"`
-	Subject string `json:"subject,omitempty"`
-	Description string `json:"description,omitempty"`
+	Type *string `json:"type,omitempty"`
+	Subject *string `json:"subject,omitempty"`
+	Description *string `json:"description,omitempty"`
+}
+
+// NewStackpathRpcPreconditionFailureViolation instantiates a new StackpathRpcPreconditionFailureViolation object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewStackpathRpcPreconditionFailureViolation() *StackpathRpcPreconditionFailureViolation {
+	this := StackpathRpcPreconditionFailureViolation{}
+	return &this
+}
+
+// NewStackpathRpcPreconditionFailureViolationWithDefaults instantiates a new StackpathRpcPreconditionFailureViolation object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewStackpathRpcPreconditionFailureViolationWithDefaults() *StackpathRpcPreconditionFailureViolation {
+	this := StackpathRpcPreconditionFailureViolation{}
+	return &this
+}
+
+// GetType returns the Type field value if set, zero value otherwise.
+func (o *StackpathRpcPreconditionFailureViolation) GetType() string {
+	if o == nil || o.Type == nil {
+		var ret string
+		return ret
+	}
+	return *o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *StackpathRpcPreconditionFailureViolation) GetTypeOk() (*string, bool) {
+	if o == nil || o.Type == nil {
+		return nil, false
+	}
+	return o.Type, true
+}
+
+// HasType returns a boolean if a field has been set.
+func (o *StackpathRpcPreconditionFailureViolation) HasType() bool {
+	if o != nil && o.Type != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given string and assigns it to the Type field.
+func (o *StackpathRpcPreconditionFailureViolation) SetType(v string) {
+	o.Type = &v
+}
+
+// GetSubject returns the Subject field value if set, zero value otherwise.
+func (o *StackpathRpcPreconditionFailureViolation) GetSubject() string {
+	if o == nil || o.Subject == nil {
+		var ret string
+		return ret
+	}
+	return *o.Subject
+}
+
+// GetSubjectOk returns a tuple with the Subject field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *StackpathRpcPreconditionFailureViolation) GetSubjectOk() (*string, bool) {
+	if o == nil || o.Subject == nil {
+		return nil, false
+	}
+	return o.Subject, true
+}
+
+// HasSubject returns a boolean if a field has been set.
+func (o *StackpathRpcPreconditionFailureViolation) HasSubject() bool {
+	if o != nil && o.Subject != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSubject gets a reference to the given string and assigns it to the Subject field.
+func (o *StackpathRpcPreconditionFailureViolation) SetSubject(v string) {
+	o.Subject = &v
+}
+
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *StackpathRpcPreconditionFailureViolation) GetDescription() string {
+	if o == nil || o.Description == nil {
+		var ret string
+		return ret
+	}
+	return *o.Description
+}
+
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *StackpathRpcPreconditionFailureViolation) GetDescriptionOk() (*string, bool) {
+	if o == nil || o.Description == nil {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *StackpathRpcPreconditionFailureViolation) HasDescription() bool {
+	if o != nil && o.Description != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *StackpathRpcPreconditionFailureViolation) SetDescription(v string) {
+	o.Description = &v
+}
+
+func (o StackpathRpcPreconditionFailureViolation) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Type != nil {
+		toSerialize["type"] = o.Type
+	}
+	if o.Subject != nil {
+		toSerialize["subject"] = o.Subject
+	}
+	if o.Description != nil {
+		toSerialize["description"] = o.Description
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableStackpathRpcPreconditionFailureViolation struct {
+	value *StackpathRpcPreconditionFailureViolation
+	isSet bool
+}
+
+func (v NullableStackpathRpcPreconditionFailureViolation) Get() *StackpathRpcPreconditionFailureViolation {
+	return v.value
+}
+
+func (v *NullableStackpathRpcPreconditionFailureViolation) Set(val *StackpathRpcPreconditionFailureViolation) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableStackpathRpcPreconditionFailureViolation) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableStackpathRpcPreconditionFailureViolation) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableStackpathRpcPreconditionFailureViolation(val *StackpathRpcPreconditionFailureViolation) *NullableStackpathRpcPreconditionFailureViolation {
+	return &NullableStackpathRpcPreconditionFailureViolation{value: val, isSet: true}
+}
+
+func (v NullableStackpathRpcPreconditionFailureViolation) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableStackpathRpcPreconditionFailureViolation) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -15,7 +15,6 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,14 +25,38 @@ var (
 // NetworkPoliciesApiService NetworkPoliciesApi service
 type NetworkPoliciesApiService service
 
+type apiCreateNetworkPolicyRequest struct {
+	ctx _context.Context
+	apiService *NetworkPoliciesApiService
+	stackId string
+	v1CreateNetworkPolicyRequest *V1CreateNetworkPolicyRequest
+}
+
+
+func (r apiCreateNetworkPolicyRequest) V1CreateNetworkPolicyRequest(v1CreateNetworkPolicyRequest V1CreateNetworkPolicyRequest) apiCreateNetworkPolicyRequest {
+	r.v1CreateNetworkPolicyRequest = &v1CreateNetworkPolicyRequest
+	return r
+}
+
 /*
 CreateNetworkPolicy Create a policy
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
- * @param v1CreateNetworkPolicyRequest
-@return V1CreateNetworkPolicyResponse
+@return apiCreateNetworkPolicyRequest
 */
-func (a *NetworkPoliciesApiService) CreateNetworkPolicy(ctx _context.Context, stackId string, v1CreateNetworkPolicyRequest V1CreateNetworkPolicyRequest) (V1CreateNetworkPolicyResponse, *_nethttp.Response, error) {
+func (a *NetworkPoliciesApiService) CreateNetworkPolicy(ctx _context.Context, stackId string) apiCreateNetworkPolicyRequest {
+	return apiCreateNetworkPolicyRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+	}
+}
+
+/*
+Execute executes the request
+ @return V1CreateNetworkPolicyResponse
+*/
+func (r apiCreateNetworkPolicyRequest) Execute() (V1CreateNetworkPolicyResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -43,13 +66,22 @@ func (a *NetworkPoliciesApiService) CreateNetworkPolicy(ctx _context.Context, st
 		localVarReturnValue  V1CreateNetworkPolicyResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/ipam/v1/stacks/{stack_id}/network_policies"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "NetworkPoliciesApiService.CreateNetworkPolicy")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/ipam/v1/stacks/{stack_id}/network_policies"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	if r.v1CreateNetworkPolicyRequest == nil {
+		return localVarReturnValue, nil, reportError("v1CreateNetworkPolicyRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -69,13 +101,13 @@ func (a *NetworkPoliciesApiService) CreateNetworkPolicy(ctx _context.Context, st
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &v1CreateNetworkPolicyRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.v1CreateNetworkPolicyRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -93,7 +125,7 @@ func (a *NetworkPoliciesApiService) CreateNetworkPolicy(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -103,7 +135,7 @@ func (a *NetworkPoliciesApiService) CreateNetworkPolicy(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -112,7 +144,7 @@ func (a *NetworkPoliciesApiService) CreateNetworkPolicy(ctx _context.Context, st
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -121,7 +153,7 @@ func (a *NetworkPoliciesApiService) CreateNetworkPolicy(ctx _context.Context, st
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -132,31 +164,58 @@ func (a *NetworkPoliciesApiService) CreateNetworkPolicy(ctx _context.Context, st
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiDeleteNetworkPolicyRequest struct {
+	ctx _context.Context
+	apiService *NetworkPoliciesApiService
+	stackId string
+	networkPolicyId string
+}
+
 
 /*
 DeleteNetworkPolicy Delete a policy
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param networkPolicyId An EdgeCompute network policy ID
+@return apiDeleteNetworkPolicyRequest
 */
-func (a *NetworkPoliciesApiService) DeleteNetworkPolicy(ctx _context.Context, stackId string, networkPolicyId string) (*_nethttp.Response, error) {
+func (a *NetworkPoliciesApiService) DeleteNetworkPolicy(ctx _context.Context, stackId string, networkPolicyId string) apiDeleteNetworkPolicyRequest {
+	return apiDeleteNetworkPolicyRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		networkPolicyId: networkPolicyId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDeleteNetworkPolicyRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/ipam/v1/stacks/{stack_id}/network_policies/{network_policy_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "NetworkPoliciesApiService.DeleteNetworkPolicy")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"network_policy_id"+"}", _neturl.QueryEscape(parameterToString(networkPolicyId, "")) , -1)
+	localVarPath := localBasePath + "/ipam/v1/stacks/{stack_id}/network_policies/{network_policy_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"network_policy_id"+"}", _neturl.QueryEscape(parameterToString(r.networkPolicyId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -175,12 +234,12 @@ func (a *NetworkPoliciesApiService) DeleteNetworkPolicy(ctx _context.Context, st
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -198,7 +257,7 @@ func (a *NetworkPoliciesApiService) DeleteNetworkPolicy(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -208,7 +267,7 @@ func (a *NetworkPoliciesApiService) DeleteNetworkPolicy(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -217,7 +276,7 @@ func (a *NetworkPoliciesApiService) DeleteNetworkPolicy(ctx _context.Context, st
 			return localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -228,27 +287,56 @@ func (a *NetworkPoliciesApiService) DeleteNetworkPolicy(ctx _context.Context, st
 
 	return localVarHTTPResponse, nil
 }
+type apiGetNetworkPoliciesRequest struct {
+	ctx _context.Context
+	apiService *NetworkPoliciesApiService
+	stackId string
+	pageRequestFirst *string
+	pageRequestAfter *string
+	pageRequestFilter *string
+	pageRequestSortBy *string
+}
 
-// GetNetworkPoliciesOpts Optional parameters for the method 'GetNetworkPolicies'
-type GetNetworkPoliciesOpts struct {
-    PageRequestFirst optional.String
-    PageRequestAfter optional.String
-    PageRequestFilter optional.String
-    PageRequestSortBy optional.String
+
+func (r apiGetNetworkPoliciesRequest) PageRequestFirst(pageRequestFirst string) apiGetNetworkPoliciesRequest {
+	r.pageRequestFirst = &pageRequestFirst
+	return r
+}
+
+func (r apiGetNetworkPoliciesRequest) PageRequestAfter(pageRequestAfter string) apiGetNetworkPoliciesRequest {
+	r.pageRequestAfter = &pageRequestAfter
+	return r
+}
+
+func (r apiGetNetworkPoliciesRequest) PageRequestFilter(pageRequestFilter string) apiGetNetworkPoliciesRequest {
+	r.pageRequestFilter = &pageRequestFilter
+	return r
+}
+
+func (r apiGetNetworkPoliciesRequest) PageRequestSortBy(pageRequestSortBy string) apiGetNetworkPoliciesRequest {
+	r.pageRequestSortBy = &pageRequestSortBy
+	return r
 }
 
 /*
 GetNetworkPolicies Get all policies
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
- * @param optional nil or *GetNetworkPoliciesOpts - Optional Parameters:
- * @param "PageRequestFirst" (optional.String) -  The number of items desired.
- * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
- * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
- * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
-@return V1GetNetworkPoliciesResponse
+@return apiGetNetworkPoliciesRequest
 */
-func (a *NetworkPoliciesApiService) GetNetworkPolicies(ctx _context.Context, stackId string, localVarOptionals *GetNetworkPoliciesOpts) (V1GetNetworkPoliciesResponse, *_nethttp.Response, error) {
+func (a *NetworkPoliciesApiService) GetNetworkPolicies(ctx _context.Context, stackId string) apiGetNetworkPoliciesRequest {
+	return apiGetNetworkPoliciesRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+	}
+}
+
+/*
+Execute executes the request
+ @return V1GetNetworkPoliciesResponse
+*/
+func (r apiGetNetworkPoliciesRequest) Execute() (V1GetNetworkPoliciesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -258,25 +346,30 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicies(ctx _context.Context, sta
 		localVarReturnValue  V1GetNetworkPoliciesResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/ipam/v1/stacks/{stack_id}/network_policies"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "NetworkPoliciesApiService.GetNetworkPolicies")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/ipam/v1/stacks/{stack_id}/network_policies"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
-		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
+	
+				
+	if r.pageRequestFirst != nil {
+		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
-		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
+	if r.pageRequestAfter != nil {
+		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
-		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
+	if r.pageRequestFilter != nil {
+		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
+	if r.pageRequestSortBy != nil {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -295,12 +388,12 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicies(ctx _context.Context, sta
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -318,7 +411,7 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicies(ctx _context.Context, sta
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -328,7 +421,7 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicies(ctx _context.Context, sta
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -337,7 +430,7 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicies(ctx _context.Context, sta
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -346,7 +439,7 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicies(ctx _context.Context, sta
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -357,15 +450,35 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicies(ctx _context.Context, sta
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetNetworkPolicyRequest struct {
+	ctx _context.Context
+	apiService *NetworkPoliciesApiService
+	stackId string
+	networkPolicyId string
+}
+
 
 /*
 GetNetworkPolicy Get a policy
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param networkPolicyId An EdgeCompute network policy ID
-@return V1GetNetworkPolicyResponse
+@return apiGetNetworkPolicyRequest
 */
-func (a *NetworkPoliciesApiService) GetNetworkPolicy(ctx _context.Context, stackId string, networkPolicyId string) (V1GetNetworkPolicyResponse, *_nethttp.Response, error) {
+func (a *NetworkPoliciesApiService) GetNetworkPolicy(ctx _context.Context, stackId string, networkPolicyId string) apiGetNetworkPolicyRequest {
+	return apiGetNetworkPolicyRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		networkPolicyId: networkPolicyId,
+	}
+}
+
+/*
+Execute executes the request
+ @return V1GetNetworkPolicyResponse
+*/
+func (r apiGetNetworkPolicyRequest) Execute() (V1GetNetworkPolicyResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -375,15 +488,20 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicy(ctx _context.Context, stack
 		localVarReturnValue  V1GetNetworkPolicyResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/ipam/v1/stacks/{stack_id}/network_policies/{network_policy_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "NetworkPoliciesApiService.GetNetworkPolicy")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"network_policy_id"+"}", _neturl.QueryEscape(parameterToString(networkPolicyId, "")) , -1)
+	localVarPath := localBasePath + "/ipam/v1/stacks/{stack_id}/network_policies/{network_policy_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"network_policy_id"+"}", _neturl.QueryEscape(parameterToString(r.networkPolicyId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -402,12 +520,12 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicy(ctx _context.Context, stack
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -425,7 +543,7 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicy(ctx _context.Context, stack
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -435,7 +553,7 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicy(ctx _context.Context, stack
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -444,7 +562,7 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicy(ctx _context.Context, stack
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -453,7 +571,7 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicy(ctx _context.Context, stack
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -464,16 +582,41 @@ func (a *NetworkPoliciesApiService) GetNetworkPolicy(ctx _context.Context, stack
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiUpdateNetworkPolicyRequest struct {
+	ctx _context.Context
+	apiService *NetworkPoliciesApiService
+	stackId string
+	networkPolicyId string
+	v1UpdateNetworkPolicyRequest *V1UpdateNetworkPolicyRequest
+}
+
+
+func (r apiUpdateNetworkPolicyRequest) V1UpdateNetworkPolicyRequest(v1UpdateNetworkPolicyRequest V1UpdateNetworkPolicyRequest) apiUpdateNetworkPolicyRequest {
+	r.v1UpdateNetworkPolicyRequest = &v1UpdateNetworkPolicyRequest
+	return r
+}
 
 /*
 UpdateNetworkPolicy Update a policy
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param networkPolicyId An EdgeCompute network policy ID
- * @param v1UpdateNetworkPolicyRequest
-@return V1UpdateNetworkPolicyResponse
+@return apiUpdateNetworkPolicyRequest
 */
-func (a *NetworkPoliciesApiService) UpdateNetworkPolicy(ctx _context.Context, stackId string, networkPolicyId string, v1UpdateNetworkPolicyRequest V1UpdateNetworkPolicyRequest) (V1UpdateNetworkPolicyResponse, *_nethttp.Response, error) {
+func (a *NetworkPoliciesApiService) UpdateNetworkPolicy(ctx _context.Context, stackId string, networkPolicyId string) apiUpdateNetworkPolicyRequest {
+	return apiUpdateNetworkPolicyRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		networkPolicyId: networkPolicyId,
+	}
+}
+
+/*
+Execute executes the request
+ @return V1UpdateNetworkPolicyResponse
+*/
+func (r apiUpdateNetworkPolicyRequest) Execute() (V1UpdateNetworkPolicyResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -483,15 +626,24 @@ func (a *NetworkPoliciesApiService) UpdateNetworkPolicy(ctx _context.Context, st
 		localVarReturnValue  V1UpdateNetworkPolicyResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/ipam/v1/stacks/{stack_id}/network_policies/{network_policy_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "NetworkPoliciesApiService.UpdateNetworkPolicy")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"network_policy_id"+"}", _neturl.QueryEscape(parameterToString(networkPolicyId, "")) , -1)
+	localVarPath := localBasePath + "/ipam/v1/stacks/{stack_id}/network_policies/{network_policy_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"network_policy_id"+"}", _neturl.QueryEscape(parameterToString(r.networkPolicyId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	if r.v1UpdateNetworkPolicyRequest == nil {
+		return localVarReturnValue, nil, reportError("v1UpdateNetworkPolicyRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -511,13 +663,13 @@ func (a *NetworkPoliciesApiService) UpdateNetworkPolicy(ctx _context.Context, st
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &v1UpdateNetworkPolicyRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.v1UpdateNetworkPolicyRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -535,7 +687,7 @@ func (a *NetworkPoliciesApiService) UpdateNetworkPolicy(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -545,7 +697,7 @@ func (a *NetworkPoliciesApiService) UpdateNetworkPolicy(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -554,7 +706,7 @@ func (a *NetworkPoliciesApiService) UpdateNetworkPolicy(ctx _context.Context, st
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -563,7 +715,7 @@ func (a *NetworkPoliciesApiService) UpdateNetworkPolicy(ctx _context.Context, st
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

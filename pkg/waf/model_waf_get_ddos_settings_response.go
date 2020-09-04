@@ -8,7 +8,105 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafGetDdosSettingsResponse A response from a request to retrieve a WAF site's DDOS protection settings
 type WafGetDdosSettingsResponse struct {
-	DdosSettings WafDdosSettings `json:"ddosSettings,omitempty"`
+	DdosSettings *WafDdosSettings `json:"ddosSettings,omitempty"`
+}
+
+// NewWafGetDdosSettingsResponse instantiates a new WafGetDdosSettingsResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafGetDdosSettingsResponse() *WafGetDdosSettingsResponse {
+	this := WafGetDdosSettingsResponse{}
+	return &this
+}
+
+// NewWafGetDdosSettingsResponseWithDefaults instantiates a new WafGetDdosSettingsResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafGetDdosSettingsResponseWithDefaults() *WafGetDdosSettingsResponse {
+	this := WafGetDdosSettingsResponse{}
+	return &this
+}
+
+// GetDdosSettings returns the DdosSettings field value if set, zero value otherwise.
+func (o *WafGetDdosSettingsResponse) GetDdosSettings() WafDdosSettings {
+	if o == nil || o.DdosSettings == nil {
+		var ret WafDdosSettings
+		return ret
+	}
+	return *o.DdosSettings
+}
+
+// GetDdosSettingsOk returns a tuple with the DdosSettings field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafGetDdosSettingsResponse) GetDdosSettingsOk() (*WafDdosSettings, bool) {
+	if o == nil || o.DdosSettings == nil {
+		return nil, false
+	}
+	return o.DdosSettings, true
+}
+
+// HasDdosSettings returns a boolean if a field has been set.
+func (o *WafGetDdosSettingsResponse) HasDdosSettings() bool {
+	if o != nil && o.DdosSettings != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDdosSettings gets a reference to the given WafDdosSettings and assigns it to the DdosSettings field.
+func (o *WafGetDdosSettingsResponse) SetDdosSettings(v WafDdosSettings) {
+	o.DdosSettings = &v
+}
+
+func (o WafGetDdosSettingsResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.DdosSettings != nil {
+		toSerialize["ddosSettings"] = o.DdosSettings
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafGetDdosSettingsResponse struct {
+	value *WafGetDdosSettingsResponse
+	isSet bool
+}
+
+func (v NullableWafGetDdosSettingsResponse) Get() *WafGetDdosSettingsResponse {
+	return v.value
+}
+
+func (v *NullableWafGetDdosSettingsResponse) Set(val *WafGetDdosSettingsResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafGetDdosSettingsResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafGetDdosSettingsResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafGetDdosSettingsResponse(val *WafGetDdosSettingsResponse) *NullableWafGetDdosSettingsResponse {
+	return &NullableWafGetDdosSettingsResponse{value: val, isSet: true}
+}
+
+func (v NullableWafGetDdosSettingsResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafGetDdosSettingsResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

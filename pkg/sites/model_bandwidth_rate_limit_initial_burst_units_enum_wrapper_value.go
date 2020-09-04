@@ -8,6 +8,11 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // BandwidthRateLimitInitialBurstUnitsEnumWrapperValue the model 'BandwidthRateLimitInitialBurstUnitsEnumWrapperValue'
 type BandwidthRateLimitInitialBurstUnitsEnumWrapperValue string
 
@@ -17,3 +22,45 @@ const (
 	BANDWIDTHRATELIMITINITIALBURSTUNITSENUMWRAPPERVALUE_BYTE BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "byte"
 	BANDWIDTHRATELIMITINITIALBURSTUNITSENUMWRAPPERVALUE_KILOBYTE BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "kilobyte"
 )
+
+// Ptr returns reference to BandwidthRateLimitInitialBurstUnitsEnumWrapperValue value
+func (v BandwidthRateLimitInitialBurstUnitsEnumWrapperValue) Ptr() *BandwidthRateLimitInitialBurstUnitsEnumWrapperValue {
+	return &v
+}
+
+
+type NullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue struct {
+	value *BandwidthRateLimitInitialBurstUnitsEnumWrapperValue
+	isSet bool
+}
+
+func (v NullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue) Get() *BandwidthRateLimitInitialBurstUnitsEnumWrapperValue {
+	return v.value
+}
+
+func (v *NullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue) Set(val *BandwidthRateLimitInitialBurstUnitsEnumWrapperValue) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue(val *BandwidthRateLimitInitialBurstUnitsEnumWrapperValue) *NullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue {
+	return &NullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue{value: val, isSet: true}
+}
+
+func (v NullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableBandwidthRateLimitInitialBurstUnitsEnumWrapperValue) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

@@ -8,8 +8,106 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnHostname An individual hostname
 type CdnHostname struct {
 	// A host's domain name
-	Domain string `json:"domain,omitempty"`
+	Domain *string `json:"domain,omitempty"`
+}
+
+// NewCdnHostname instantiates a new CdnHostname object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnHostname() *CdnHostname {
+	this := CdnHostname{}
+	return &this
+}
+
+// NewCdnHostnameWithDefaults instantiates a new CdnHostname object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnHostnameWithDefaults() *CdnHostname {
+	this := CdnHostname{}
+	return &this
+}
+
+// GetDomain returns the Domain field value if set, zero value otherwise.
+func (o *CdnHostname) GetDomain() string {
+	if o == nil || o.Domain == nil {
+		var ret string
+		return ret
+	}
+	return *o.Domain
+}
+
+// GetDomainOk returns a tuple with the Domain field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnHostname) GetDomainOk() (*string, bool) {
+	if o == nil || o.Domain == nil {
+		return nil, false
+	}
+	return o.Domain, true
+}
+
+// HasDomain returns a boolean if a field has been set.
+func (o *CdnHostname) HasDomain() bool {
+	if o != nil && o.Domain != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDomain gets a reference to the given string and assigns it to the Domain field.
+func (o *CdnHostname) SetDomain(v string) {
+	o.Domain = &v
+}
+
+func (o CdnHostname) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Domain != nil {
+		toSerialize["domain"] = o.Domain
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnHostname struct {
+	value *CdnHostname
+	isSet bool
+}
+
+func (v NullableCdnHostname) Get() *CdnHostname {
+	return v.value
+}
+
+func (v *NullableCdnHostname) Set(val *CdnHostname) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnHostname) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnHostname) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnHostname(val *CdnHostname) *NullableCdnHostname {
+	return &NullableCdnHostname{value: val, isSet: true}
+}
+
+func (v NullableCdnHostname) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnHostname) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

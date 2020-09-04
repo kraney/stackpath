@@ -8,6 +8,11 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafSiteStatus A WAF site's available statuses  - ACTIVE: A WAF site is in active service  - INACTIVE: A WAF site has been disabled by the user  - SUSPENDED:  A WAF site has been disabled by StackPath for non-billing reasons (DMCA, abuse, etc)  - BILLING_SUSPENDED: A WAF site has been disabled by StackPath for billing reasons  - PROVISIONING: A WAF site is provisioning
 type WafSiteStatus string
 
@@ -19,3 +24,45 @@ const (
 	WAFSITESTATUS_BILLING_SUSPENDED WafSiteStatus = "BILLING_SUSPENDED"
 	WAFSITESTATUS_PROVISIONING WafSiteStatus = "PROVISIONING"
 )
+
+// Ptr returns reference to wafSiteStatus value
+func (v WafSiteStatus) Ptr() *WafSiteStatus {
+	return &v
+}
+
+
+type NullableWafSiteStatus struct {
+	value *WafSiteStatus
+	isSet bool
+}
+
+func (v NullableWafSiteStatus) Get() *WafSiteStatus {
+	return v.value
+}
+
+func (v *NullableWafSiteStatus) Set(val *WafSiteStatus) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafSiteStatus) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafSiteStatus) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafSiteStatus(val *WafSiteStatus) *NullableWafSiteStatus {
+	return &NullableWafSiteStatus{value: val, isSet: true}
+}
+
+func (v NullableWafSiteStatus) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafSiteStatus) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

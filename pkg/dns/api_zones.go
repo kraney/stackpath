@@ -15,7 +15,6 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,14 +25,38 @@ var (
 // ZonesApiService ZonesApi service
 type ZonesApiService service
 
+type apiCreateZoneRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	zoneCreateZoneMessage *ZoneCreateZoneMessage
+}
+
+
+func (r apiCreateZoneRequest) ZoneCreateZoneMessage(zoneCreateZoneMessage ZoneCreateZoneMessage) apiCreateZoneRequest {
+	r.zoneCreateZoneMessage = &zoneCreateZoneMessage
+	return r
+}
+
 /*
 CreateZone Create a zone
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
- * @param zoneCreateZoneMessage
-@return ZoneCreateZoneResponse
+@return apiCreateZoneRequest
 */
-func (a *ZonesApiService) CreateZone(ctx _context.Context, stackId string, zoneCreateZoneMessage ZoneCreateZoneMessage) (ZoneCreateZoneResponse, *_nethttp.Response, error) {
+func (a *ZonesApiService) CreateZone(ctx _context.Context, stackId string) apiCreateZoneRequest {
+	return apiCreateZoneRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+	}
+}
+
+/*
+Execute executes the request
+ @return ZoneCreateZoneResponse
+*/
+func (r apiCreateZoneRequest) Execute() (ZoneCreateZoneResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -43,13 +66,22 @@ func (a *ZonesApiService) CreateZone(ctx _context.Context, stackId string, zoneC
 		localVarReturnValue  ZoneCreateZoneResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.CreateZone")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	if r.zoneCreateZoneMessage == nil {
+		return localVarReturnValue, nil, reportError("zoneCreateZoneMessage is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -69,13 +101,13 @@ func (a *ZonesApiService) CreateZone(ctx _context.Context, stackId string, zoneC
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &zoneCreateZoneMessage
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.zoneCreateZoneMessage
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -93,7 +125,7 @@ func (a *ZonesApiService) CreateZone(ctx _context.Context, stackId string, zoneC
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -103,7 +135,7 @@ func (a *ZonesApiService) CreateZone(ctx _context.Context, stackId string, zoneC
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -112,7 +144,7 @@ func (a *ZonesApiService) CreateZone(ctx _context.Context, stackId string, zoneC
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -121,7 +153,7 @@ func (a *ZonesApiService) CreateZone(ctx _context.Context, stackId string, zoneC
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -132,31 +164,58 @@ func (a *ZonesApiService) CreateZone(ctx _context.Context, stackId string, zoneC
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiDeleteZoneRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	zoneId string
+}
+
 
 /*
 DeleteZone Delete a zone
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param zoneId A DNS zone ID
+@return apiDeleteZoneRequest
 */
-func (a *ZonesApiService) DeleteZone(ctx _context.Context, stackId string, zoneId string) (*_nethttp.Response, error) {
+func (a *ZonesApiService) DeleteZone(ctx _context.Context, stackId string, zoneId string) apiDeleteZoneRequest {
+	return apiDeleteZoneRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		zoneId: zoneId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDeleteZoneRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.DeleteZone")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(zoneId, "")) , -1)
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(r.zoneId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -175,12 +234,12 @@ func (a *ZonesApiService) DeleteZone(ctx _context.Context, stackId string, zoneI
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -198,7 +257,7 @@ func (a *ZonesApiService) DeleteZone(ctx _context.Context, stackId string, zoneI
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -208,7 +267,7 @@ func (a *ZonesApiService) DeleteZone(ctx _context.Context, stackId string, zoneI
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -217,7 +276,7 @@ func (a *ZonesApiService) DeleteZone(ctx _context.Context, stackId string, zoneI
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -228,31 +287,58 @@ func (a *ZonesApiService) DeleteZone(ctx _context.Context, stackId string, zoneI
 
 	return localVarHTTPResponse, nil
 }
+type apiDisableZoneRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	zoneId string
+}
+
 
 /*
 DisableZone Disable a zone
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param zoneId A DNS zone ID
+@return apiDisableZoneRequest
 */
-func (a *ZonesApiService) DisableZone(ctx _context.Context, stackId string, zoneId string) (*_nethttp.Response, error) {
+func (a *ZonesApiService) DisableZone(ctx _context.Context, stackId string, zoneId string) apiDisableZoneRequest {
+	return apiDisableZoneRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		zoneId: zoneId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDisableZoneRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/disable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.DisableZone")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(zoneId, "")) , -1)
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/disable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(r.zoneId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -271,12 +357,12 @@ func (a *ZonesApiService) DisableZone(ctx _context.Context, stackId string, zone
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -294,7 +380,7 @@ func (a *ZonesApiService) DisableZone(ctx _context.Context, stackId string, zone
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -304,7 +390,7 @@ func (a *ZonesApiService) DisableZone(ctx _context.Context, stackId string, zone
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -313,7 +399,7 @@ func (a *ZonesApiService) DisableZone(ctx _context.Context, stackId string, zone
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -324,31 +410,58 @@ func (a *ZonesApiService) DisableZone(ctx _context.Context, stackId string, zone
 
 	return localVarHTTPResponse, nil
 }
+type apiEnableZoneRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	zoneId string
+}
+
 
 /*
 EnableZone Enable a zone
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param zoneId A DNS zone ID
+@return apiEnableZoneRequest
 */
-func (a *ZonesApiService) EnableZone(ctx _context.Context, stackId string, zoneId string) (*_nethttp.Response, error) {
+func (a *ZonesApiService) EnableZone(ctx _context.Context, stackId string, zoneId string) apiEnableZoneRequest {
+	return apiEnableZoneRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		zoneId: zoneId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiEnableZoneRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/enable"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.EnableZone")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(zoneId, "")) , -1)
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/enable"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(r.zoneId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -367,12 +480,12 @@ func (a *ZonesApiService) EnableZone(ctx _context.Context, stackId string, zoneI
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -390,7 +503,7 @@ func (a *ZonesApiService) EnableZone(ctx _context.Context, stackId string, zoneI
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -400,7 +513,7 @@ func (a *ZonesApiService) EnableZone(ctx _context.Context, stackId string, zoneI
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -409,7 +522,7 @@ func (a *ZonesApiService) EnableZone(ctx _context.Context, stackId string, zoneI
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -420,15 +533,35 @@ func (a *ZonesApiService) EnableZone(ctx _context.Context, stackId string, zoneI
 
 	return localVarHTTPResponse, nil
 }
+type apiGetNameserversForZoneRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	zoneId string
+}
+
 
 /*
 GetNameserversForZone Get a zone's nameservers
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param zoneId A DNS zone ID
-@return ZoneGetNameserversForZoneResponse
+@return apiGetNameserversForZoneRequest
 */
-func (a *ZonesApiService) GetNameserversForZone(ctx _context.Context, stackId string, zoneId string) (ZoneGetNameserversForZoneResponse, *_nethttp.Response, error) {
+func (a *ZonesApiService) GetNameserversForZone(ctx _context.Context, stackId string, zoneId string) apiGetNameserversForZoneRequest {
+	return apiGetNameserversForZoneRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		zoneId: zoneId,
+	}
+}
+
+/*
+Execute executes the request
+ @return ZoneGetNameserversForZoneResponse
+*/
+func (r apiGetNameserversForZoneRequest) Execute() (ZoneGetNameserversForZoneResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -438,15 +571,20 @@ func (a *ZonesApiService) GetNameserversForZone(ctx _context.Context, stackId st
 		localVarReturnValue  ZoneGetNameserversForZoneResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/discover_nameservers"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.GetNameserversForZone")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(zoneId, "")) , -1)
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/discover_nameservers"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(r.zoneId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -465,12 +603,12 @@ func (a *ZonesApiService) GetNameserversForZone(ctx _context.Context, stackId st
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -488,7 +626,7 @@ func (a *ZonesApiService) GetNameserversForZone(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -498,7 +636,7 @@ func (a *ZonesApiService) GetNameserversForZone(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -507,7 +645,7 @@ func (a *ZonesApiService) GetNameserversForZone(ctx _context.Context, stackId st
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -516,7 +654,7 @@ func (a *ZonesApiService) GetNameserversForZone(ctx _context.Context, stackId st
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -527,15 +665,35 @@ func (a *ZonesApiService) GetNameserversForZone(ctx _context.Context, stackId st
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetZoneRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	zoneId string
+}
+
 
 /*
 GetZone Get a zone
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param zoneId A DNS zone ID
-@return ZoneGetZoneResponse
+@return apiGetZoneRequest
 */
-func (a *ZonesApiService) GetZone(ctx _context.Context, stackId string, zoneId string) (ZoneGetZoneResponse, *_nethttp.Response, error) {
+func (a *ZonesApiService) GetZone(ctx _context.Context, stackId string, zoneId string) apiGetZoneRequest {
+	return apiGetZoneRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		zoneId: zoneId,
+	}
+}
+
+/*
+Execute executes the request
+ @return ZoneGetZoneResponse
+*/
+func (r apiGetZoneRequest) Execute() (ZoneGetZoneResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -545,15 +703,20 @@ func (a *ZonesApiService) GetZone(ctx _context.Context, stackId string, zoneId s
 		localVarReturnValue  ZoneGetZoneResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.GetZone")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(zoneId, "")) , -1)
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(r.zoneId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -572,12 +735,12 @@ func (a *ZonesApiService) GetZone(ctx _context.Context, stackId string, zoneId s
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -595,7 +758,7 @@ func (a *ZonesApiService) GetZone(ctx _context.Context, stackId string, zoneId s
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -605,7 +768,7 @@ func (a *ZonesApiService) GetZone(ctx _context.Context, stackId string, zoneId s
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -614,7 +777,7 @@ func (a *ZonesApiService) GetZone(ctx _context.Context, stackId string, zoneId s
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -623,7 +786,7 @@ func (a *ZonesApiService) GetZone(ctx _context.Context, stackId string, zoneId s
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -634,27 +797,56 @@ func (a *ZonesApiService) GetZone(ctx _context.Context, stackId string, zoneId s
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetZonesRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	pageRequestFirst *string
+	pageRequestAfter *string
+	pageRequestFilter *string
+	pageRequestSortBy *string
+}
 
-// GetZonesOpts Optional parameters for the method 'GetZones'
-type GetZonesOpts struct {
-    PageRequestFirst optional.String
-    PageRequestAfter optional.String
-    PageRequestFilter optional.String
-    PageRequestSortBy optional.String
+
+func (r apiGetZonesRequest) PageRequestFirst(pageRequestFirst string) apiGetZonesRequest {
+	r.pageRequestFirst = &pageRequestFirst
+	return r
+}
+
+func (r apiGetZonesRequest) PageRequestAfter(pageRequestAfter string) apiGetZonesRequest {
+	r.pageRequestAfter = &pageRequestAfter
+	return r
+}
+
+func (r apiGetZonesRequest) PageRequestFilter(pageRequestFilter string) apiGetZonesRequest {
+	r.pageRequestFilter = &pageRequestFilter
+	return r
+}
+
+func (r apiGetZonesRequest) PageRequestSortBy(pageRequestSortBy string) apiGetZonesRequest {
+	r.pageRequestSortBy = &pageRequestSortBy
+	return r
 }
 
 /*
 GetZones Get all zones
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
- * @param optional nil or *GetZonesOpts - Optional Parameters:
- * @param "PageRequestFirst" (optional.String) -  The number of items desired.
- * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
- * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
- * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
-@return ZoneGetZonesResponse
+@return apiGetZonesRequest
 */
-func (a *ZonesApiService) GetZones(ctx _context.Context, stackId string, localVarOptionals *GetZonesOpts) (ZoneGetZonesResponse, *_nethttp.Response, error) {
+func (a *ZonesApiService) GetZones(ctx _context.Context, stackId string) apiGetZonesRequest {
+	return apiGetZonesRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+	}
+}
+
+/*
+Execute executes the request
+ @return ZoneGetZonesResponse
+*/
+func (r apiGetZonesRequest) Execute() (ZoneGetZonesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -664,25 +856,30 @@ func (a *ZonesApiService) GetZones(ctx _context.Context, stackId string, localVa
 		localVarReturnValue  ZoneGetZonesResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.GetZones")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
-		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
+	
+				
+	if r.pageRequestFirst != nil {
+		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
-		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
+	if r.pageRequestAfter != nil {
+		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
-		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
+	if r.pageRequestFilter != nil {
+		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
+	if r.pageRequestSortBy != nil {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -701,12 +898,12 @@ func (a *ZonesApiService) GetZones(ctx _context.Context, stackId string, localVa
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -724,7 +921,7 @@ func (a *ZonesApiService) GetZones(ctx _context.Context, stackId string, localVa
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -734,7 +931,7 @@ func (a *ZonesApiService) GetZones(ctx _context.Context, stackId string, localVa
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -743,7 +940,7 @@ func (a *ZonesApiService) GetZones(ctx _context.Context, stackId string, localVa
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -752,7 +949,7 @@ func (a *ZonesApiService) GetZones(ctx _context.Context, stackId string, localVa
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -763,6 +960,19 @@ func (a *ZonesApiService) GetZones(ctx _context.Context, stackId string, localVa
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiParseRecordsFromZoneFileRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	zoneId string
+	zoneParseRecordsFromZoneFileRequest *ZoneParseRecordsFromZoneFileRequest
+}
+
+
+func (r apiParseRecordsFromZoneFileRequest) ZoneParseRecordsFromZoneFileRequest(zoneParseRecordsFromZoneFileRequest ZoneParseRecordsFromZoneFileRequest) apiParseRecordsFromZoneFileRequest {
+	r.zoneParseRecordsFromZoneFileRequest = &zoneParseRecordsFromZoneFileRequest
+	return r
+}
 
 /*
 ParseRecordsFromZoneFile Parse a zone file
@@ -770,10 +980,22 @@ Parse a BIND zone file. SOA records are not imported. StackPath nameserver recor
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param zoneId A DNS zone ID
- * @param zoneParseRecordsFromZoneFileRequest
-@return ZoneParseRecordsFromZoneFileResponse
+@return apiParseRecordsFromZoneFileRequest
 */
-func (a *ZonesApiService) ParseRecordsFromZoneFile(ctx _context.Context, stackId string, zoneId string, zoneParseRecordsFromZoneFileRequest ZoneParseRecordsFromZoneFileRequest) (ZoneParseRecordsFromZoneFileResponse, *_nethttp.Response, error) {
+func (a *ZonesApiService) ParseRecordsFromZoneFile(ctx _context.Context, stackId string, zoneId string) apiParseRecordsFromZoneFileRequest {
+	return apiParseRecordsFromZoneFileRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		zoneId: zoneId,
+	}
+}
+
+/*
+Execute executes the request
+ @return ZoneParseRecordsFromZoneFileResponse
+*/
+func (r apiParseRecordsFromZoneFileRequest) Execute() (ZoneParseRecordsFromZoneFileResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -783,15 +1005,24 @@ func (a *ZonesApiService) ParseRecordsFromZoneFile(ctx _context.Context, stackId
 		localVarReturnValue  ZoneParseRecordsFromZoneFileResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/parse"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.ParseRecordsFromZoneFile")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(zoneId, "")) , -1)
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/parse"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(r.zoneId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	if r.zoneParseRecordsFromZoneFileRequest == nil {
+		return localVarReturnValue, nil, reportError("zoneParseRecordsFromZoneFileRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -811,13 +1042,13 @@ func (a *ZonesApiService) ParseRecordsFromZoneFile(ctx _context.Context, stackId
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &zoneParseRecordsFromZoneFileRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.zoneParseRecordsFromZoneFileRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -835,7 +1066,7 @@ func (a *ZonesApiService) ParseRecordsFromZoneFile(ctx _context.Context, stackId
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -845,7 +1076,7 @@ func (a *ZonesApiService) ParseRecordsFromZoneFile(ctx _context.Context, stackId
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -854,7 +1085,7 @@ func (a *ZonesApiService) ParseRecordsFromZoneFile(ctx _context.Context, stackId
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -863,7 +1094,7 @@ func (a *ZonesApiService) ParseRecordsFromZoneFile(ctx _context.Context, stackId
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -874,32 +1105,59 @@ func (a *ZonesApiService) ParseRecordsFromZoneFile(ctx _context.Context, stackId
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiPushFullZoneRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	zoneId string
+}
+
 
 /*
 PushFullZone Publish a zone
-Re-push a zone to StackPath&#39;s DNS infrastructure
+Re-push a zone to StackPath's DNS infrastructure
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param zoneId A DNS zone ID
+@return apiPushFullZoneRequest
 */
-func (a *ZonesApiService) PushFullZone(ctx _context.Context, stackId string, zoneId string) (*_nethttp.Response, error) {
+func (a *ZonesApiService) PushFullZone(ctx _context.Context, stackId string, zoneId string) apiPushFullZoneRequest {
+	return apiPushFullZoneRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		zoneId: zoneId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiPushFullZoneRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/repush"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.PushFullZone")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(zoneId, "")) , -1)
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}/repush"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(r.zoneId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -918,12 +1176,12 @@ func (a *ZonesApiService) PushFullZone(ctx _context.Context, stackId string, zon
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -941,7 +1199,7 @@ func (a *ZonesApiService) PushFullZone(ctx _context.Context, stackId string, zon
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -951,7 +1209,7 @@ func (a *ZonesApiService) PushFullZone(ctx _context.Context, stackId string, zon
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -960,7 +1218,7 @@ func (a *ZonesApiService) PushFullZone(ctx _context.Context, stackId string, zon
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -971,16 +1229,41 @@ func (a *ZonesApiService) PushFullZone(ctx _context.Context, stackId string, zon
 
 	return localVarHTTPResponse, nil
 }
+type apiUpdateZoneRequest struct {
+	ctx _context.Context
+	apiService *ZonesApiService
+	stackId string
+	zoneId string
+	zoneUpdateZoneMessage *ZoneUpdateZoneMessage
+}
+
+
+func (r apiUpdateZoneRequest) ZoneUpdateZoneMessage(zoneUpdateZoneMessage ZoneUpdateZoneMessage) apiUpdateZoneRequest {
+	r.zoneUpdateZoneMessage = &zoneUpdateZoneMessage
+	return r
+}
 
 /*
 UpdateZone Update a zone
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param zoneId A DNS zone ID
- * @param zoneUpdateZoneMessage
-@return ZoneUpdateZoneResponse
+@return apiUpdateZoneRequest
 */
-func (a *ZonesApiService) UpdateZone(ctx _context.Context, stackId string, zoneId string, zoneUpdateZoneMessage ZoneUpdateZoneMessage) (ZoneUpdateZoneResponse, *_nethttp.Response, error) {
+func (a *ZonesApiService) UpdateZone(ctx _context.Context, stackId string, zoneId string) apiUpdateZoneRequest {
+	return apiUpdateZoneRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		zoneId: zoneId,
+	}
+}
+
+/*
+Execute executes the request
+ @return ZoneUpdateZoneResponse
+*/
+func (r apiUpdateZoneRequest) Execute() (ZoneUpdateZoneResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPut
 		localVarPostBody     interface{}
@@ -990,15 +1273,24 @@ func (a *ZonesApiService) UpdateZone(ctx _context.Context, stackId string, zoneI
 		localVarReturnValue  ZoneUpdateZoneResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ZonesApiService.UpdateZone")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(zoneId, "")) , -1)
+	localVarPath := localBasePath + "/dns/v1/stacks/{stack_id}/zones/{zone_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"zone_id"+"}", _neturl.QueryEscape(parameterToString(r.zoneId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	if r.zoneUpdateZoneMessage == nil {
+		return localVarReturnValue, nil, reportError("zoneUpdateZoneMessage is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1018,13 +1310,13 @@ func (a *ZonesApiService) UpdateZone(ctx _context.Context, stackId string, zoneI
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &zoneUpdateZoneMessage
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.zoneUpdateZoneMessage
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1042,7 +1334,7 @@ func (a *ZonesApiService) UpdateZone(ctx _context.Context, stackId string, zoneI
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1052,7 +1344,7 @@ func (a *ZonesApiService) UpdateZone(ctx _context.Context, stackId string, zoneI
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1061,7 +1353,7 @@ func (a *ZonesApiService) UpdateZone(ctx _context.Context, stackId string, zoneI
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1070,7 +1362,7 @@ func (a *ZonesApiService) UpdateZone(ctx _context.Context, stackId string, zoneI
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

@@ -8,19 +8,405 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfBandwidthRateLimit struct for CustconfBandwidthRateLimit
 type CustconfBandwidthRateLimit struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
-	InitialBurstName string `json:"initialBurstName,omitempty"`
-	SustainedRateName string `json:"sustainedRateName,omitempty"`
-	InitialBurstUnits BandwidthRateLimitInitialBurstUnitsEnumWrapperValue `json:"initialBurstUnits,omitempty"`
-	SustainedRateUnits BandwidthRateLimitSustainedRateUnitsEnumWrapperValue `json:"sustainedRateUnits,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Id *string `json:"id,omitempty"`
+	InitialBurstName *string `json:"initialBurstName,omitempty"`
+	SustainedRateName *string `json:"sustainedRateName,omitempty"`
+	InitialBurstUnits *BandwidthRateLimitInitialBurstUnitsEnumWrapperValue `json:"initialBurstUnits,omitempty"`
+	SustainedRateUnits *BandwidthRateLimitSustainedRateUnitsEnumWrapperValue `json:"sustainedRateUnits,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// String of values delimited by a ',' character.
-	MethodFilter string `json:"methodFilter,omitempty"`
+	MethodFilter *string `json:"methodFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	PathFilter string `json:"pathFilter,omitempty"`
+	PathFilter *string `json:"pathFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	HeaderFilter string `json:"headerFilter,omitempty"`
+	HeaderFilter *string `json:"headerFilter,omitempty"`
+}
+
+// NewCustconfBandwidthRateLimit instantiates a new CustconfBandwidthRateLimit object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfBandwidthRateLimit() *CustconfBandwidthRateLimit {
+	this := CustconfBandwidthRateLimit{}
+	var initialBurstUnits BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "UNKNOWN"
+	this.InitialBurstUnits = &initialBurstUnits
+	var sustainedRateUnits BandwidthRateLimitSustainedRateUnitsEnumWrapperValue = "UNKNOWN"
+	this.SustainedRateUnits = &sustainedRateUnits
+	return &this
+}
+
+// NewCustconfBandwidthRateLimitWithDefaults instantiates a new CustconfBandwidthRateLimit object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfBandwidthRateLimitWithDefaults() *CustconfBandwidthRateLimit {
+	this := CustconfBandwidthRateLimit{}
+	var initialBurstUnits BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "UNKNOWN"
+	this.InitialBurstUnits = &initialBurstUnits
+	var sustainedRateUnits BandwidthRateLimitSustainedRateUnitsEnumWrapperValue = "UNKNOWN"
+	this.SustainedRateUnits = &sustainedRateUnits
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfBandwidthRateLimit) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandwidthRateLimit) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfBandwidthRateLimit) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfBandwidthRateLimit) SetId(v string) {
+	o.Id = &v
+}
+
+// GetInitialBurstName returns the InitialBurstName field value if set, zero value otherwise.
+func (o *CustconfBandwidthRateLimit) GetInitialBurstName() string {
+	if o == nil || o.InitialBurstName == nil {
+		var ret string
+		return ret
+	}
+	return *o.InitialBurstName
+}
+
+// GetInitialBurstNameOk returns a tuple with the InitialBurstName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandwidthRateLimit) GetInitialBurstNameOk() (*string, bool) {
+	if o == nil || o.InitialBurstName == nil {
+		return nil, false
+	}
+	return o.InitialBurstName, true
+}
+
+// HasInitialBurstName returns a boolean if a field has been set.
+func (o *CustconfBandwidthRateLimit) HasInitialBurstName() bool {
+	if o != nil && o.InitialBurstName != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetInitialBurstName gets a reference to the given string and assigns it to the InitialBurstName field.
+func (o *CustconfBandwidthRateLimit) SetInitialBurstName(v string) {
+	o.InitialBurstName = &v
+}
+
+// GetSustainedRateName returns the SustainedRateName field value if set, zero value otherwise.
+func (o *CustconfBandwidthRateLimit) GetSustainedRateName() string {
+	if o == nil || o.SustainedRateName == nil {
+		var ret string
+		return ret
+	}
+	return *o.SustainedRateName
+}
+
+// GetSustainedRateNameOk returns a tuple with the SustainedRateName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandwidthRateLimit) GetSustainedRateNameOk() (*string, bool) {
+	if o == nil || o.SustainedRateName == nil {
+		return nil, false
+	}
+	return o.SustainedRateName, true
+}
+
+// HasSustainedRateName returns a boolean if a field has been set.
+func (o *CustconfBandwidthRateLimit) HasSustainedRateName() bool {
+	if o != nil && o.SustainedRateName != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSustainedRateName gets a reference to the given string and assigns it to the SustainedRateName field.
+func (o *CustconfBandwidthRateLimit) SetSustainedRateName(v string) {
+	o.SustainedRateName = &v
+}
+
+// GetInitialBurstUnits returns the InitialBurstUnits field value if set, zero value otherwise.
+func (o *CustconfBandwidthRateLimit) GetInitialBurstUnits() BandwidthRateLimitInitialBurstUnitsEnumWrapperValue {
+	if o == nil || o.InitialBurstUnits == nil {
+		var ret BandwidthRateLimitInitialBurstUnitsEnumWrapperValue
+		return ret
+	}
+	return *o.InitialBurstUnits
+}
+
+// GetInitialBurstUnitsOk returns a tuple with the InitialBurstUnits field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandwidthRateLimit) GetInitialBurstUnitsOk() (*BandwidthRateLimitInitialBurstUnitsEnumWrapperValue, bool) {
+	if o == nil || o.InitialBurstUnits == nil {
+		return nil, false
+	}
+	return o.InitialBurstUnits, true
+}
+
+// HasInitialBurstUnits returns a boolean if a field has been set.
+func (o *CustconfBandwidthRateLimit) HasInitialBurstUnits() bool {
+	if o != nil && o.InitialBurstUnits != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetInitialBurstUnits gets a reference to the given BandwidthRateLimitInitialBurstUnitsEnumWrapperValue and assigns it to the InitialBurstUnits field.
+func (o *CustconfBandwidthRateLimit) SetInitialBurstUnits(v BandwidthRateLimitInitialBurstUnitsEnumWrapperValue) {
+	o.InitialBurstUnits = &v
+}
+
+// GetSustainedRateUnits returns the SustainedRateUnits field value if set, zero value otherwise.
+func (o *CustconfBandwidthRateLimit) GetSustainedRateUnits() BandwidthRateLimitSustainedRateUnitsEnumWrapperValue {
+	if o == nil || o.SustainedRateUnits == nil {
+		var ret BandwidthRateLimitSustainedRateUnitsEnumWrapperValue
+		return ret
+	}
+	return *o.SustainedRateUnits
+}
+
+// GetSustainedRateUnitsOk returns a tuple with the SustainedRateUnits field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandwidthRateLimit) GetSustainedRateUnitsOk() (*BandwidthRateLimitSustainedRateUnitsEnumWrapperValue, bool) {
+	if o == nil || o.SustainedRateUnits == nil {
+		return nil, false
+	}
+	return o.SustainedRateUnits, true
+}
+
+// HasSustainedRateUnits returns a boolean if a field has been set.
+func (o *CustconfBandwidthRateLimit) HasSustainedRateUnits() bool {
+	if o != nil && o.SustainedRateUnits != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSustainedRateUnits gets a reference to the given BandwidthRateLimitSustainedRateUnitsEnumWrapperValue and assigns it to the SustainedRateUnits field.
+func (o *CustconfBandwidthRateLimit) SetSustainedRateUnits(v BandwidthRateLimitSustainedRateUnitsEnumWrapperValue) {
+	o.SustainedRateUnits = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfBandwidthRateLimit) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandwidthRateLimit) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfBandwidthRateLimit) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfBandwidthRateLimit) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+// GetMethodFilter returns the MethodFilter field value if set, zero value otherwise.
+func (o *CustconfBandwidthRateLimit) GetMethodFilter() string {
+	if o == nil || o.MethodFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.MethodFilter
+}
+
+// GetMethodFilterOk returns a tuple with the MethodFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandwidthRateLimit) GetMethodFilterOk() (*string, bool) {
+	if o == nil || o.MethodFilter == nil {
+		return nil, false
+	}
+	return o.MethodFilter, true
+}
+
+// HasMethodFilter returns a boolean if a field has been set.
+func (o *CustconfBandwidthRateLimit) HasMethodFilter() bool {
+	if o != nil && o.MethodFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMethodFilter gets a reference to the given string and assigns it to the MethodFilter field.
+func (o *CustconfBandwidthRateLimit) SetMethodFilter(v string) {
+	o.MethodFilter = &v
+}
+
+// GetPathFilter returns the PathFilter field value if set, zero value otherwise.
+func (o *CustconfBandwidthRateLimit) GetPathFilter() string {
+	if o == nil || o.PathFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.PathFilter
+}
+
+// GetPathFilterOk returns a tuple with the PathFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandwidthRateLimit) GetPathFilterOk() (*string, bool) {
+	if o == nil || o.PathFilter == nil {
+		return nil, false
+	}
+	return o.PathFilter, true
+}
+
+// HasPathFilter returns a boolean if a field has been set.
+func (o *CustconfBandwidthRateLimit) HasPathFilter() bool {
+	if o != nil && o.PathFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPathFilter gets a reference to the given string and assigns it to the PathFilter field.
+func (o *CustconfBandwidthRateLimit) SetPathFilter(v string) {
+	o.PathFilter = &v
+}
+
+// GetHeaderFilter returns the HeaderFilter field value if set, zero value otherwise.
+func (o *CustconfBandwidthRateLimit) GetHeaderFilter() string {
+	if o == nil || o.HeaderFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.HeaderFilter
+}
+
+// GetHeaderFilterOk returns a tuple with the HeaderFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandwidthRateLimit) GetHeaderFilterOk() (*string, bool) {
+	if o == nil || o.HeaderFilter == nil {
+		return nil, false
+	}
+	return o.HeaderFilter, true
+}
+
+// HasHeaderFilter returns a boolean if a field has been set.
+func (o *CustconfBandwidthRateLimit) HasHeaderFilter() bool {
+	if o != nil && o.HeaderFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHeaderFilter gets a reference to the given string and assigns it to the HeaderFilter field.
+func (o *CustconfBandwidthRateLimit) SetHeaderFilter(v string) {
+	o.HeaderFilter = &v
+}
+
+func (o CustconfBandwidthRateLimit) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.InitialBurstName != nil {
+		toSerialize["initialBurstName"] = o.InitialBurstName
+	}
+	if o.SustainedRateName != nil {
+		toSerialize["sustainedRateName"] = o.SustainedRateName
+	}
+	if o.InitialBurstUnits != nil {
+		toSerialize["initialBurstUnits"] = o.InitialBurstUnits
+	}
+	if o.SustainedRateUnits != nil {
+		toSerialize["sustainedRateUnits"] = o.SustainedRateUnits
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	if o.MethodFilter != nil {
+		toSerialize["methodFilter"] = o.MethodFilter
+	}
+	if o.PathFilter != nil {
+		toSerialize["pathFilter"] = o.PathFilter
+	}
+	if o.HeaderFilter != nil {
+		toSerialize["headerFilter"] = o.HeaderFilter
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfBandwidthRateLimit struct {
+	value *CustconfBandwidthRateLimit
+	isSet bool
+}
+
+func (v NullableCustconfBandwidthRateLimit) Get() *CustconfBandwidthRateLimit {
+	return v.value
+}
+
+func (v *NullableCustconfBandwidthRateLimit) Set(val *CustconfBandwidthRateLimit) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfBandwidthRateLimit) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfBandwidthRateLimit) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfBandwidthRateLimit(val *CustconfBandwidthRateLimit) *NullableCustconfBandwidthRateLimit {
+	return &NullableCustconfBandwidthRateLimit{value: val, isSet: true}
+}
+
+func (v NullableCustconfBandwidthRateLimit) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfBandwidthRateLimit) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

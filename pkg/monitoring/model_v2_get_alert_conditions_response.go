@@ -8,9 +8,142 @@
  */
 
 package monitoring
+
+import (
+	"encoding/json"
+)
+
 // V2GetAlertConditionsResponse A response from a request to retrieve a monitor's alert conditions.
 type V2GetAlertConditionsResponse struct {
-	PageInfo PaginationPageInfo `json:"pageInfo,omitempty"`
+	PageInfo *PaginationPageInfo `json:"pageInfo,omitempty"`
 	// The requested alert conditions.
-	Results []V2AlertCondition `json:"results,omitempty"`
+	Results *[]V2AlertCondition `json:"results,omitempty"`
+}
+
+// NewV2GetAlertConditionsResponse instantiates a new V2GetAlertConditionsResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV2GetAlertConditionsResponse() *V2GetAlertConditionsResponse {
+	this := V2GetAlertConditionsResponse{}
+	return &this
+}
+
+// NewV2GetAlertConditionsResponseWithDefaults instantiates a new V2GetAlertConditionsResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV2GetAlertConditionsResponseWithDefaults() *V2GetAlertConditionsResponse {
+	this := V2GetAlertConditionsResponse{}
+	return &this
+}
+
+// GetPageInfo returns the PageInfo field value if set, zero value otherwise.
+func (o *V2GetAlertConditionsResponse) GetPageInfo() PaginationPageInfo {
+	if o == nil || o.PageInfo == nil {
+		var ret PaginationPageInfo
+		return ret
+	}
+	return *o.PageInfo
+}
+
+// GetPageInfoOk returns a tuple with the PageInfo field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V2GetAlertConditionsResponse) GetPageInfoOk() (*PaginationPageInfo, bool) {
+	if o == nil || o.PageInfo == nil {
+		return nil, false
+	}
+	return o.PageInfo, true
+}
+
+// HasPageInfo returns a boolean if a field has been set.
+func (o *V2GetAlertConditionsResponse) HasPageInfo() bool {
+	if o != nil && o.PageInfo != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPageInfo gets a reference to the given PaginationPageInfo and assigns it to the PageInfo field.
+func (o *V2GetAlertConditionsResponse) SetPageInfo(v PaginationPageInfo) {
+	o.PageInfo = &v
+}
+
+// GetResults returns the Results field value if set, zero value otherwise.
+func (o *V2GetAlertConditionsResponse) GetResults() []V2AlertCondition {
+	if o == nil || o.Results == nil {
+		var ret []V2AlertCondition
+		return ret
+	}
+	return *o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V2GetAlertConditionsResponse) GetResultsOk() (*[]V2AlertCondition, bool) {
+	if o == nil || o.Results == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// HasResults returns a boolean if a field has been set.
+func (o *V2GetAlertConditionsResponse) HasResults() bool {
+	if o != nil && o.Results != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetResults gets a reference to the given []V2AlertCondition and assigns it to the Results field.
+func (o *V2GetAlertConditionsResponse) SetResults(v []V2AlertCondition) {
+	o.Results = &v
+}
+
+func (o V2GetAlertConditionsResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.PageInfo != nil {
+		toSerialize["pageInfo"] = o.PageInfo
+	}
+	if o.Results != nil {
+		toSerialize["results"] = o.Results
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV2GetAlertConditionsResponse struct {
+	value *V2GetAlertConditionsResponse
+	isSet bool
+}
+
+func (v NullableV2GetAlertConditionsResponse) Get() *V2GetAlertConditionsResponse {
+	return v.value
+}
+
+func (v *NullableV2GetAlertConditionsResponse) Set(val *V2GetAlertConditionsResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV2GetAlertConditionsResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV2GetAlertConditionsResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV2GetAlertConditionsResponse(val *V2GetAlertConditionsResponse) *NullableV2GetAlertConditionsResponse {
+	return &NullableV2GetAlertConditionsResponse{value: val, isSet: true}
+}
+
+func (v NullableV2GetAlertConditionsResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV2GetAlertConditionsResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

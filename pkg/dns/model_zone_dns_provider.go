@@ -8,6 +8,11 @@
  */
 
 package dns
+
+import (
+	"encoding/json"
+)
+
 // ZoneDnsProvider The types of DNS providers that StackPath can detect  DNS provider types can trigger different logic when StackPath scans a domain
 type ZoneDnsProvider string
 
@@ -16,3 +21,45 @@ const (
 	ZONEDNSPROVIDER_GENERAL ZoneDnsProvider = "GENERAL"
 	ZONEDNSPROVIDER_CLOUDFLARE ZoneDnsProvider = "CLOUDFLARE"
 )
+
+// Ptr returns reference to zoneDnsProvider value
+func (v ZoneDnsProvider) Ptr() *ZoneDnsProvider {
+	return &v
+}
+
+
+type NullableZoneDnsProvider struct {
+	value *ZoneDnsProvider
+	isSet bool
+}
+
+func (v NullableZoneDnsProvider) Get() *ZoneDnsProvider {
+	return v.value
+}
+
+func (v *NullableZoneDnsProvider) Set(val *ZoneDnsProvider) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableZoneDnsProvider) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableZoneDnsProvider) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableZoneDnsProvider(val *ZoneDnsProvider) *NullableZoneDnsProvider {
+	return &NullableZoneDnsProvider{value: val, isSet: true}
+}
+
+func (v NullableZoneDnsProvider) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableZoneDnsProvider) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

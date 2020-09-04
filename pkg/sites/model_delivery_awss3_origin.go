@@ -8,11 +8,179 @@
  */
 
 package sites
-// DeliveryAwss3Origin An AWS S3 bucket origin
-type DeliveryAwss3Origin struct {
+
+import (
+	"encoding/json"
+)
+
+// DeliveryAWSS3Origin An AWS S3 bucket origin
+type DeliveryAWSS3Origin struct {
 	// The origin bucket's name
-	BucketName string `json:"bucketName,omitempty"`
+	BucketName *string `json:"bucketName,omitempty"`
 	// The origin bucket's region
-	BucketRegion string `json:"bucketRegion,omitempty"`
-	Authentication DeliveryOriginAuthentication `json:"authentication,omitempty"`
+	BucketRegion *string `json:"bucketRegion,omitempty"`
+	Authentication *DeliveryOriginAuthentication `json:"authentication,omitempty"`
+}
+
+// NewDeliveryAWSS3Origin instantiates a new DeliveryAWSS3Origin object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewDeliveryAWSS3Origin() *DeliveryAWSS3Origin {
+	this := DeliveryAWSS3Origin{}
+	return &this
+}
+
+// NewDeliveryAWSS3OriginWithDefaults instantiates a new DeliveryAWSS3Origin object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewDeliveryAWSS3OriginWithDefaults() *DeliveryAWSS3Origin {
+	this := DeliveryAWSS3Origin{}
+	return &this
+}
+
+// GetBucketName returns the BucketName field value if set, zero value otherwise.
+func (o *DeliveryAWSS3Origin) GetBucketName() string {
+	if o == nil || o.BucketName == nil {
+		var ret string
+		return ret
+	}
+	return *o.BucketName
+}
+
+// GetBucketNameOk returns a tuple with the BucketName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryAWSS3Origin) GetBucketNameOk() (*string, bool) {
+	if o == nil || o.BucketName == nil {
+		return nil, false
+	}
+	return o.BucketName, true
+}
+
+// HasBucketName returns a boolean if a field has been set.
+func (o *DeliveryAWSS3Origin) HasBucketName() bool {
+	if o != nil && o.BucketName != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBucketName gets a reference to the given string and assigns it to the BucketName field.
+func (o *DeliveryAWSS3Origin) SetBucketName(v string) {
+	o.BucketName = &v
+}
+
+// GetBucketRegion returns the BucketRegion field value if set, zero value otherwise.
+func (o *DeliveryAWSS3Origin) GetBucketRegion() string {
+	if o == nil || o.BucketRegion == nil {
+		var ret string
+		return ret
+	}
+	return *o.BucketRegion
+}
+
+// GetBucketRegionOk returns a tuple with the BucketRegion field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryAWSS3Origin) GetBucketRegionOk() (*string, bool) {
+	if o == nil || o.BucketRegion == nil {
+		return nil, false
+	}
+	return o.BucketRegion, true
+}
+
+// HasBucketRegion returns a boolean if a field has been set.
+func (o *DeliveryAWSS3Origin) HasBucketRegion() bool {
+	if o != nil && o.BucketRegion != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBucketRegion gets a reference to the given string and assigns it to the BucketRegion field.
+func (o *DeliveryAWSS3Origin) SetBucketRegion(v string) {
+	o.BucketRegion = &v
+}
+
+// GetAuthentication returns the Authentication field value if set, zero value otherwise.
+func (o *DeliveryAWSS3Origin) GetAuthentication() DeliveryOriginAuthentication {
+	if o == nil || o.Authentication == nil {
+		var ret DeliveryOriginAuthentication
+		return ret
+	}
+	return *o.Authentication
+}
+
+// GetAuthenticationOk returns a tuple with the Authentication field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryAWSS3Origin) GetAuthenticationOk() (*DeliveryOriginAuthentication, bool) {
+	if o == nil || o.Authentication == nil {
+		return nil, false
+	}
+	return o.Authentication, true
+}
+
+// HasAuthentication returns a boolean if a field has been set.
+func (o *DeliveryAWSS3Origin) HasAuthentication() bool {
+	if o != nil && o.Authentication != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAuthentication gets a reference to the given DeliveryOriginAuthentication and assigns it to the Authentication field.
+func (o *DeliveryAWSS3Origin) SetAuthentication(v DeliveryOriginAuthentication) {
+	o.Authentication = &v
+}
+
+func (o DeliveryAWSS3Origin) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.BucketName != nil {
+		toSerialize["bucketName"] = o.BucketName
+	}
+	if o.BucketRegion != nil {
+		toSerialize["bucketRegion"] = o.BucketRegion
+	}
+	if o.Authentication != nil {
+		toSerialize["authentication"] = o.Authentication
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableDeliveryAWSS3Origin struct {
+	value *DeliveryAWSS3Origin
+	isSet bool
+}
+
+func (v NullableDeliveryAWSS3Origin) Get() *DeliveryAWSS3Origin {
+	return v.value
+}
+
+func (v *NullableDeliveryAWSS3Origin) Set(val *DeliveryAWSS3Origin) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliveryAWSS3Origin) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliveryAWSS3Origin) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliveryAWSS3Origin(val *DeliveryAWSS3Origin) *NullableDeliveryAWSS3Origin {
+	return &NullableDeliveryAWSS3Origin{value: val, isSet: true}
+}
+
+func (v NullableDeliveryAWSS3Origin) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliveryAWSS3Origin) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

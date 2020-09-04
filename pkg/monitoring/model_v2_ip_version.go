@@ -8,6 +8,11 @@
  */
 
 package monitoring
+
+import (
+	"encoding/json"
+)
+
 // V2IpVersion The IP version of a monitor  The IP version defines which type of location a monitor can run from.  Not all locations support both IP versions.   - IPV4: An IPv4 monitor  - IPV6: An IPv6 monitor
 type V2IpVersion string
 
@@ -16,3 +21,45 @@ const (
 	V2IPVERSION_IPV4 V2IpVersion = "IPV4"
 	V2IPVERSION_IPV6 V2IpVersion = "IPV6"
 )
+
+// Ptr returns reference to v2IpVersion value
+func (v V2IpVersion) Ptr() *V2IpVersion {
+	return &v
+}
+
+
+type NullableV2IpVersion struct {
+	value *V2IpVersion
+	isSet bool
+}
+
+func (v NullableV2IpVersion) Get() *V2IpVersion {
+	return v.value
+}
+
+func (v *NullableV2IpVersion) Set(val *V2IpVersion) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV2IpVersion) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV2IpVersion) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV2IpVersion(val *V2IpVersion) *NullableV2IpVersion {
+	return &NullableV2IpVersion{value: val, isSet: true}
+}
+
+func (v NullableV2IpVersion) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV2IpVersion) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

@@ -8,11 +8,179 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnCreateScopeRuleRequest struct for CdnCreateScopeRuleRequest
 type CdnCreateScopeRuleRequest struct {
 	// The EdgeRule's name
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// A programmatic name for the EdgeRule
-	Slug string `json:"slug,omitempty"`
-	Configuration CustconfConfiguration `json:"configuration,omitempty"`
+	Slug *string `json:"slug,omitempty"`
+	Configuration *CustconfConfiguration `json:"configuration,omitempty"`
+}
+
+// NewCdnCreateScopeRuleRequest instantiates a new CdnCreateScopeRuleRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnCreateScopeRuleRequest() *CdnCreateScopeRuleRequest {
+	this := CdnCreateScopeRuleRequest{}
+	return &this
+}
+
+// NewCdnCreateScopeRuleRequestWithDefaults instantiates a new CdnCreateScopeRuleRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnCreateScopeRuleRequestWithDefaults() *CdnCreateScopeRuleRequest {
+	this := CdnCreateScopeRuleRequest{}
+	return &this
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *CdnCreateScopeRuleRequest) GetName() string {
+	if o == nil || o.Name == nil {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnCreateScopeRuleRequest) GetNameOk() (*string, bool) {
+	if o == nil || o.Name == nil {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *CdnCreateScopeRuleRequest) HasName() bool {
+	if o != nil && o.Name != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *CdnCreateScopeRuleRequest) SetName(v string) {
+	o.Name = &v
+}
+
+// GetSlug returns the Slug field value if set, zero value otherwise.
+func (o *CdnCreateScopeRuleRequest) GetSlug() string {
+	if o == nil || o.Slug == nil {
+		var ret string
+		return ret
+	}
+	return *o.Slug
+}
+
+// GetSlugOk returns a tuple with the Slug field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnCreateScopeRuleRequest) GetSlugOk() (*string, bool) {
+	if o == nil || o.Slug == nil {
+		return nil, false
+	}
+	return o.Slug, true
+}
+
+// HasSlug returns a boolean if a field has been set.
+func (o *CdnCreateScopeRuleRequest) HasSlug() bool {
+	if o != nil && o.Slug != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSlug gets a reference to the given string and assigns it to the Slug field.
+func (o *CdnCreateScopeRuleRequest) SetSlug(v string) {
+	o.Slug = &v
+}
+
+// GetConfiguration returns the Configuration field value if set, zero value otherwise.
+func (o *CdnCreateScopeRuleRequest) GetConfiguration() CustconfConfiguration {
+	if o == nil || o.Configuration == nil {
+		var ret CustconfConfiguration
+		return ret
+	}
+	return *o.Configuration
+}
+
+// GetConfigurationOk returns a tuple with the Configuration field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnCreateScopeRuleRequest) GetConfigurationOk() (*CustconfConfiguration, bool) {
+	if o == nil || o.Configuration == nil {
+		return nil, false
+	}
+	return o.Configuration, true
+}
+
+// HasConfiguration returns a boolean if a field has been set.
+func (o *CdnCreateScopeRuleRequest) HasConfiguration() bool {
+	if o != nil && o.Configuration != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetConfiguration gets a reference to the given CustconfConfiguration and assigns it to the Configuration field.
+func (o *CdnCreateScopeRuleRequest) SetConfiguration(v CustconfConfiguration) {
+	o.Configuration = &v
+}
+
+func (o CdnCreateScopeRuleRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Name != nil {
+		toSerialize["name"] = o.Name
+	}
+	if o.Slug != nil {
+		toSerialize["slug"] = o.Slug
+	}
+	if o.Configuration != nil {
+		toSerialize["configuration"] = o.Configuration
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnCreateScopeRuleRequest struct {
+	value *CdnCreateScopeRuleRequest
+	isSet bool
+}
+
+func (v NullableCdnCreateScopeRuleRequest) Get() *CdnCreateScopeRuleRequest {
+	return v.value
+}
+
+func (v *NullableCdnCreateScopeRuleRequest) Set(val *CdnCreateScopeRuleRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnCreateScopeRuleRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnCreateScopeRuleRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnCreateScopeRuleRequest(val *CdnCreateScopeRuleRequest) *NullableCdnCreateScopeRuleRequest {
+	return &NullableCdnCreateScopeRuleRequest{value: val, isSet: true}
+}
+
+func (v NullableCdnCreateScopeRuleRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnCreateScopeRuleRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

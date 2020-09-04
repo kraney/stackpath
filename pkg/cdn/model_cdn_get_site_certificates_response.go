@@ -8,9 +8,142 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnGetSiteCertificatesResponse The response from a request to retrieve a CDN site's SSL certificates
 type CdnGetSiteCertificatesResponse struct {
-	PageInfo PaginationPageInfo `json:"pageInfo,omitempty"`
+	PageInfo *PaginationPageInfo `json:"pageInfo,omitempty"`
 	// The requested SSL certificates
-	Results []CdnSiteCertificate `json:"results,omitempty"`
+	Results *[]CdnSiteCertificate `json:"results,omitempty"`
+}
+
+// NewCdnGetSiteCertificatesResponse instantiates a new CdnGetSiteCertificatesResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnGetSiteCertificatesResponse() *CdnGetSiteCertificatesResponse {
+	this := CdnGetSiteCertificatesResponse{}
+	return &this
+}
+
+// NewCdnGetSiteCertificatesResponseWithDefaults instantiates a new CdnGetSiteCertificatesResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnGetSiteCertificatesResponseWithDefaults() *CdnGetSiteCertificatesResponse {
+	this := CdnGetSiteCertificatesResponse{}
+	return &this
+}
+
+// GetPageInfo returns the PageInfo field value if set, zero value otherwise.
+func (o *CdnGetSiteCertificatesResponse) GetPageInfo() PaginationPageInfo {
+	if o == nil || o.PageInfo == nil {
+		var ret PaginationPageInfo
+		return ret
+	}
+	return *o.PageInfo
+}
+
+// GetPageInfoOk returns a tuple with the PageInfo field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnGetSiteCertificatesResponse) GetPageInfoOk() (*PaginationPageInfo, bool) {
+	if o == nil || o.PageInfo == nil {
+		return nil, false
+	}
+	return o.PageInfo, true
+}
+
+// HasPageInfo returns a boolean if a field has been set.
+func (o *CdnGetSiteCertificatesResponse) HasPageInfo() bool {
+	if o != nil && o.PageInfo != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPageInfo gets a reference to the given PaginationPageInfo and assigns it to the PageInfo field.
+func (o *CdnGetSiteCertificatesResponse) SetPageInfo(v PaginationPageInfo) {
+	o.PageInfo = &v
+}
+
+// GetResults returns the Results field value if set, zero value otherwise.
+func (o *CdnGetSiteCertificatesResponse) GetResults() []CdnSiteCertificate {
+	if o == nil || o.Results == nil {
+		var ret []CdnSiteCertificate
+		return ret
+	}
+	return *o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnGetSiteCertificatesResponse) GetResultsOk() (*[]CdnSiteCertificate, bool) {
+	if o == nil || o.Results == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// HasResults returns a boolean if a field has been set.
+func (o *CdnGetSiteCertificatesResponse) HasResults() bool {
+	if o != nil && o.Results != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetResults gets a reference to the given []CdnSiteCertificate and assigns it to the Results field.
+func (o *CdnGetSiteCertificatesResponse) SetResults(v []CdnSiteCertificate) {
+	o.Results = &v
+}
+
+func (o CdnGetSiteCertificatesResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.PageInfo != nil {
+		toSerialize["pageInfo"] = o.PageInfo
+	}
+	if o.Results != nil {
+		toSerialize["results"] = o.Results
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnGetSiteCertificatesResponse struct {
+	value *CdnGetSiteCertificatesResponse
+	isSet bool
+}
+
+func (v NullableCdnGetSiteCertificatesResponse) Get() *CdnGetSiteCertificatesResponse {
+	return v.value
+}
+
+func (v *NullableCdnGetSiteCertificatesResponse) Set(val *CdnGetSiteCertificatesResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnGetSiteCertificatesResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnGetSiteCertificatesResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnGetSiteCertificatesResponse(val *CdnGetSiteCertificatesResponse) *NullableCdnGetSiteCertificatesResponse {
+	return &NullableCdnGetSiteCertificatesResponse{value: val, isSet: true}
+}
+
+func (v NullableCdnGetSiteCertificatesResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnGetSiteCertificatesResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

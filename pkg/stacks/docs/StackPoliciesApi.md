@@ -13,17 +13,51 @@ Method | HTTP request | Description
 
 ## DeleteIAMPolicy
 
-> DeleteIAMPolicy(ctx, stackId)
+> DeleteIAMPolicy(ctx, stackId).Execute()
 
 Delete a stack's IAM policy
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.StackPoliciesApi.DeleteIAMPolicy(context.Background(), stackId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `StackPoliciesApi.DeleteIAMPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
+**stackId** | **string** | A stack ID or slug | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteIAMPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -45,21 +79,57 @@ Name | Type | Description  | Notes
 
 ## GetIAMPolicy
 
-> StackGetIamPolicyResponse GetIAMPolicy(ctx, stackId)
+> StackGetIAMPolicyResponse GetIAMPolicy(ctx, stackId).Execute()
 
 Get a stack's IAM policy
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.StackPoliciesApi.GetIAMPolicy(context.Background(), stackId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `StackPoliciesApi.GetIAMPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetIAMPolicy`: StackGetIAMPolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `StackPoliciesApi.GetIAMPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
+**stackId** | **string** | A stack ID or slug | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetIAMPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
-[**StackGetIamPolicyResponse**](stackGetIAMPolicyResponse.md)
+[**StackGetIAMPolicyResponse**](stackGetIAMPolicyResponse.md)
 
 ### Authorization
 
@@ -77,22 +147,59 @@ Name | Type | Description  | Notes
 
 ## SetIAMPolicy
 
-> StackSetIamPolicyResponse SetIAMPolicy(ctx, stackId, stackSetIamPolicyRequest)
+> StackSetIAMPolicyResponse SetIAMPolicy(ctx, stackId).StackSetIAMPolicyRequest(stackSetIAMPolicyRequest).Execute()
 
 Set a stack's IAM policy
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    stackSetIAMPolicyRequest := openapiclient.stackSetIAMPolicyRequest{Policy: openapiclient.iamPolicy{Bindings: []PolicyBinding{openapiclient.PolicyBinding{Role: "Role_example", Members: []string{"Members_example")}), Version: int64(123), CreatedAt: "TODO", UpdatedAt: "TODO"}} // StackSetIAMPolicyRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.StackPoliciesApi.SetIAMPolicy(context.Background(), stackId, stackSetIAMPolicyRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `StackPoliciesApi.SetIAMPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `SetIAMPolicy`: StackSetIAMPolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `StackPoliciesApi.SetIAMPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**stackSetIamPolicyRequest** | [**StackSetIamPolicyRequest**](StackSetIamPolicyRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSetIAMPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **stackSetIAMPolicyRequest** | [**StackSetIAMPolicyRequest**](StackSetIAMPolicyRequest.md) |  | 
 
 ### Return type
 
-[**StackSetIamPolicyResponse**](stackSetIAMPolicyResponse.md)
+[**StackSetIAMPolicyResponse**](stackSetIAMPolicyResponse.md)
 
 ### Authorization
 
@@ -110,22 +217,59 @@ Name | Type | Description  | Notes
 
 ## TestIAMPermissions
 
-> StackTestIamPermissionsResponse TestIAMPermissions(ctx, stackId, stackTestIamPermissionsRequest)
+> StackTestIAMPermissionsResponse TestIAMPermissions(ctx, stackId).StackTestIAMPermissionsRequest(stackTestIAMPermissionsRequest).Execute()
 
 Test stack policies
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    stackTestIAMPermissionsRequest := openapiclient.stackTestIAMPermissionsRequest{Permissions: []string{"Permissions_example")} // StackTestIAMPermissionsRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.StackPoliciesApi.TestIAMPermissions(context.Background(), stackId, stackTestIAMPermissionsRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `StackPoliciesApi.TestIAMPermissions``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `TestIAMPermissions`: StackTestIAMPermissionsResponse
+    fmt.Fprintf(os.Stdout, "Response from `StackPoliciesApi.TestIAMPermissions`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**stackTestIamPermissionsRequest** | [**StackTestIamPermissionsRequest**](StackTestIamPermissionsRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiTestIAMPermissionsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **stackTestIAMPermissionsRequest** | [**StackTestIAMPermissionsRequest**](StackTestIAMPermissionsRequest.md) |  | 
 
 ### Return type
 
-[**StackTestIamPermissionsResponse**](stackTestIAMPermissionsResponse.md)
+[**StackTestIAMPermissionsResponse**](stackTestIAMPermissionsResponse.md)
 
 ### Authorization
 

@@ -8,11 +8,183 @@
  */
 
 package dns
+
+import (
+	"encoding/json"
+)
+
 // ScanDomainForRecordsRequestProviderConfig Provider-specific configuration needed to scan a domain
 type ScanDomainForRecordsRequestProviderConfig struct {
-	DnsProvider ZoneDnsProvider `json:"dnsProvider,omitempty"`
+	DnsProvider *ZoneDnsProvider `json:"dnsProvider,omitempty"`
 	// The username required to authenticate with the DNS provider
-	AuthenticationUser string `json:"authenticationUser,omitempty"`
+	AuthenticationUser *string `json:"authenticationUser,omitempty"`
 	// The API key or password required to authenticate with the DNS provider
-	ApiKey string `json:"apiKey,omitempty"`
+	ApiKey *string `json:"apiKey,omitempty"`
+}
+
+// NewScanDomainForRecordsRequestProviderConfig instantiates a new ScanDomainForRecordsRequestProviderConfig object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewScanDomainForRecordsRequestProviderConfig() *ScanDomainForRecordsRequestProviderConfig {
+	this := ScanDomainForRecordsRequestProviderConfig{}
+	var dnsProvider ZoneDnsProvider = "GENERAL"
+	this.DnsProvider = &dnsProvider
+	return &this
+}
+
+// NewScanDomainForRecordsRequestProviderConfigWithDefaults instantiates a new ScanDomainForRecordsRequestProviderConfig object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewScanDomainForRecordsRequestProviderConfigWithDefaults() *ScanDomainForRecordsRequestProviderConfig {
+	this := ScanDomainForRecordsRequestProviderConfig{}
+	var dnsProvider ZoneDnsProvider = "GENERAL"
+	this.DnsProvider = &dnsProvider
+	return &this
+}
+
+// GetDnsProvider returns the DnsProvider field value if set, zero value otherwise.
+func (o *ScanDomainForRecordsRequestProviderConfig) GetDnsProvider() ZoneDnsProvider {
+	if o == nil || o.DnsProvider == nil {
+		var ret ZoneDnsProvider
+		return ret
+	}
+	return *o.DnsProvider
+}
+
+// GetDnsProviderOk returns a tuple with the DnsProvider field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ScanDomainForRecordsRequestProviderConfig) GetDnsProviderOk() (*ZoneDnsProvider, bool) {
+	if o == nil || o.DnsProvider == nil {
+		return nil, false
+	}
+	return o.DnsProvider, true
+}
+
+// HasDnsProvider returns a boolean if a field has been set.
+func (o *ScanDomainForRecordsRequestProviderConfig) HasDnsProvider() bool {
+	if o != nil && o.DnsProvider != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDnsProvider gets a reference to the given ZoneDnsProvider and assigns it to the DnsProvider field.
+func (o *ScanDomainForRecordsRequestProviderConfig) SetDnsProvider(v ZoneDnsProvider) {
+	o.DnsProvider = &v
+}
+
+// GetAuthenticationUser returns the AuthenticationUser field value if set, zero value otherwise.
+func (o *ScanDomainForRecordsRequestProviderConfig) GetAuthenticationUser() string {
+	if o == nil || o.AuthenticationUser == nil {
+		var ret string
+		return ret
+	}
+	return *o.AuthenticationUser
+}
+
+// GetAuthenticationUserOk returns a tuple with the AuthenticationUser field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ScanDomainForRecordsRequestProviderConfig) GetAuthenticationUserOk() (*string, bool) {
+	if o == nil || o.AuthenticationUser == nil {
+		return nil, false
+	}
+	return o.AuthenticationUser, true
+}
+
+// HasAuthenticationUser returns a boolean if a field has been set.
+func (o *ScanDomainForRecordsRequestProviderConfig) HasAuthenticationUser() bool {
+	if o != nil && o.AuthenticationUser != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAuthenticationUser gets a reference to the given string and assigns it to the AuthenticationUser field.
+func (o *ScanDomainForRecordsRequestProviderConfig) SetAuthenticationUser(v string) {
+	o.AuthenticationUser = &v
+}
+
+// GetApiKey returns the ApiKey field value if set, zero value otherwise.
+func (o *ScanDomainForRecordsRequestProviderConfig) GetApiKey() string {
+	if o == nil || o.ApiKey == nil {
+		var ret string
+		return ret
+	}
+	return *o.ApiKey
+}
+
+// GetApiKeyOk returns a tuple with the ApiKey field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ScanDomainForRecordsRequestProviderConfig) GetApiKeyOk() (*string, bool) {
+	if o == nil || o.ApiKey == nil {
+		return nil, false
+	}
+	return o.ApiKey, true
+}
+
+// HasApiKey returns a boolean if a field has been set.
+func (o *ScanDomainForRecordsRequestProviderConfig) HasApiKey() bool {
+	if o != nil && o.ApiKey != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetApiKey gets a reference to the given string and assigns it to the ApiKey field.
+func (o *ScanDomainForRecordsRequestProviderConfig) SetApiKey(v string) {
+	o.ApiKey = &v
+}
+
+func (o ScanDomainForRecordsRequestProviderConfig) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.DnsProvider != nil {
+		toSerialize["dnsProvider"] = o.DnsProvider
+	}
+	if o.AuthenticationUser != nil {
+		toSerialize["authenticationUser"] = o.AuthenticationUser
+	}
+	if o.ApiKey != nil {
+		toSerialize["apiKey"] = o.ApiKey
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableScanDomainForRecordsRequestProviderConfig struct {
+	value *ScanDomainForRecordsRequestProviderConfig
+	isSet bool
+}
+
+func (v NullableScanDomainForRecordsRequestProviderConfig) Get() *ScanDomainForRecordsRequestProviderConfig {
+	return v.value
+}
+
+func (v *NullableScanDomainForRecordsRequestProviderConfig) Set(val *ScanDomainForRecordsRequestProviderConfig) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableScanDomainForRecordsRequestProviderConfig) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableScanDomainForRecordsRequestProviderConfig) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableScanDomainForRecordsRequestProviderConfig(val *ScanDomainForRecordsRequestProviderConfig) *NullableScanDomainForRecordsRequestProviderConfig {
+	return &NullableScanDomainForRecordsRequestProviderConfig{value: val, isSet: true}
+}
+
+func (v NullableScanDomainForRecordsRequestProviderConfig) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableScanDomainForRecordsRequestProviderConfig) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

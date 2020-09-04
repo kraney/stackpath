@@ -8,9 +8,146 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafRequestCertificateRequest struct for WafRequestCertificateRequest
 type WafRequestCertificateRequest struct {
 	// An optional list of delivery domains that will be included as subject alternative names on the certificate  If no hosts are provided, all delivery domains on the site will be included with the first one in the list being used as the common name.  If hosts are provided the first entry will be used as the common name.  All entries in the list are validated against the existing delivery domains for the provided site.
-	Hosts []string `json:"hosts,omitempty"`
-	VerificationMethod WafCertificateVerificationMethod `json:"verificationMethod,omitempty"`
+	Hosts *[]string `json:"hosts,omitempty"`
+	VerificationMethod *WafCertificateVerificationMethod `json:"verificationMethod,omitempty"`
+}
+
+// NewWafRequestCertificateRequest instantiates a new WafRequestCertificateRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafRequestCertificateRequest() *WafRequestCertificateRequest {
+	this := WafRequestCertificateRequest{}
+	var verificationMethod WafCertificateVerificationMethod = "DNS"
+	this.VerificationMethod = &verificationMethod
+	return &this
+}
+
+// NewWafRequestCertificateRequestWithDefaults instantiates a new WafRequestCertificateRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafRequestCertificateRequestWithDefaults() *WafRequestCertificateRequest {
+	this := WafRequestCertificateRequest{}
+	var verificationMethod WafCertificateVerificationMethod = "DNS"
+	this.VerificationMethod = &verificationMethod
+	return &this
+}
+
+// GetHosts returns the Hosts field value if set, zero value otherwise.
+func (o *WafRequestCertificateRequest) GetHosts() []string {
+	if o == nil || o.Hosts == nil {
+		var ret []string
+		return ret
+	}
+	return *o.Hosts
+}
+
+// GetHostsOk returns a tuple with the Hosts field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestCertificateRequest) GetHostsOk() (*[]string, bool) {
+	if o == nil || o.Hosts == nil {
+		return nil, false
+	}
+	return o.Hosts, true
+}
+
+// HasHosts returns a boolean if a field has been set.
+func (o *WafRequestCertificateRequest) HasHosts() bool {
+	if o != nil && o.Hosts != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHosts gets a reference to the given []string and assigns it to the Hosts field.
+func (o *WafRequestCertificateRequest) SetHosts(v []string) {
+	o.Hosts = &v
+}
+
+// GetVerificationMethod returns the VerificationMethod field value if set, zero value otherwise.
+func (o *WafRequestCertificateRequest) GetVerificationMethod() WafCertificateVerificationMethod {
+	if o == nil || o.VerificationMethod == nil {
+		var ret WafCertificateVerificationMethod
+		return ret
+	}
+	return *o.VerificationMethod
+}
+
+// GetVerificationMethodOk returns a tuple with the VerificationMethod field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafRequestCertificateRequest) GetVerificationMethodOk() (*WafCertificateVerificationMethod, bool) {
+	if o == nil || o.VerificationMethod == nil {
+		return nil, false
+	}
+	return o.VerificationMethod, true
+}
+
+// HasVerificationMethod returns a boolean if a field has been set.
+func (o *WafRequestCertificateRequest) HasVerificationMethod() bool {
+	if o != nil && o.VerificationMethod != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetVerificationMethod gets a reference to the given WafCertificateVerificationMethod and assigns it to the VerificationMethod field.
+func (o *WafRequestCertificateRequest) SetVerificationMethod(v WafCertificateVerificationMethod) {
+	o.VerificationMethod = &v
+}
+
+func (o WafRequestCertificateRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Hosts != nil {
+		toSerialize["hosts"] = o.Hosts
+	}
+	if o.VerificationMethod != nil {
+		toSerialize["verificationMethod"] = o.VerificationMethod
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafRequestCertificateRequest struct {
+	value *WafRequestCertificateRequest
+	isSet bool
+}
+
+func (v NullableWafRequestCertificateRequest) Get() *WafRequestCertificateRequest {
+	return v.value
+}
+
+func (v *NullableWafRequestCertificateRequest) Set(val *WafRequestCertificateRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafRequestCertificateRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafRequestCertificateRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafRequestCertificateRequest(val *WafRequestCertificateRequest) *NullableWafRequestCertificateRequest {
+	return &NullableWafRequestCertificateRequest{value: val, isSet: true}
+}
+
+func (v NullableWafRequestCertificateRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafRequestCertificateRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,19 +8,434 @@
  */
 
 package ssl
+
 import (
+	"encoding/json"
 	"time"
 )
+
 // CertificateCertificate struct for CertificateCertificate
 type CertificateCertificate struct {
-	StackId string `json:"stackId,omitempty"`
-	Id string `json:"id,omitempty"`
-	Hosts []string `json:"hosts,omitempty"`
-	Issuer string `json:"issuer,omitempty"`
-	Certificate string `json:"certificate,omitempty"`
-	CaBundle string `json:"caBundle,omitempty"`
-	Status CertificateCertificateStatus `json:"status,omitempty"`
-	ExpiresAt time.Time `json:"expiresAt,omitempty"`
-	CreatedAt time.Time `json:"createdAt,omitempty"`
-	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+	StackId *string `json:"stackId,omitempty"`
+	Id *string `json:"id,omitempty"`
+	Hosts *[]string `json:"hosts,omitempty"`
+	Issuer *string `json:"issuer,omitempty"`
+	Certificate *string `json:"certificate,omitempty"`
+	CaBundle *string `json:"caBundle,omitempty"`
+	Status *CertificateCertificateStatus `json:"status,omitempty"`
+	ExpiresAt *time.Time `json:"expiresAt,omitempty"`
+	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+}
+
+// NewCertificateCertificate instantiates a new CertificateCertificate object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCertificateCertificate() *CertificateCertificate {
+	this := CertificateCertificate{}
+	var status CertificateCertificateStatus = "UNKNOWN"
+	this.Status = &status
+	return &this
+}
+
+// NewCertificateCertificateWithDefaults instantiates a new CertificateCertificate object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCertificateCertificateWithDefaults() *CertificateCertificate {
+	this := CertificateCertificate{}
+	var status CertificateCertificateStatus = "UNKNOWN"
+	this.Status = &status
+	return &this
+}
+
+// GetStackId returns the StackId field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetStackId() string {
+	if o == nil || o.StackId == nil {
+		var ret string
+		return ret
+	}
+	return *o.StackId
+}
+
+// GetStackIdOk returns a tuple with the StackId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetStackIdOk() (*string, bool) {
+	if o == nil || o.StackId == nil {
+		return nil, false
+	}
+	return o.StackId, true
+}
+
+// HasStackId returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasStackId() bool {
+	if o != nil && o.StackId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStackId gets a reference to the given string and assigns it to the StackId field.
+func (o *CertificateCertificate) SetStackId(v string) {
+	o.StackId = &v
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CertificateCertificate) SetId(v string) {
+	o.Id = &v
+}
+
+// GetHosts returns the Hosts field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetHosts() []string {
+	if o == nil || o.Hosts == nil {
+		var ret []string
+		return ret
+	}
+	return *o.Hosts
+}
+
+// GetHostsOk returns a tuple with the Hosts field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetHostsOk() (*[]string, bool) {
+	if o == nil || o.Hosts == nil {
+		return nil, false
+	}
+	return o.Hosts, true
+}
+
+// HasHosts returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasHosts() bool {
+	if o != nil && o.Hosts != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHosts gets a reference to the given []string and assigns it to the Hosts field.
+func (o *CertificateCertificate) SetHosts(v []string) {
+	o.Hosts = &v
+}
+
+// GetIssuer returns the Issuer field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetIssuer() string {
+	if o == nil || o.Issuer == nil {
+		var ret string
+		return ret
+	}
+	return *o.Issuer
+}
+
+// GetIssuerOk returns a tuple with the Issuer field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetIssuerOk() (*string, bool) {
+	if o == nil || o.Issuer == nil {
+		return nil, false
+	}
+	return o.Issuer, true
+}
+
+// HasIssuer returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasIssuer() bool {
+	if o != nil && o.Issuer != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetIssuer gets a reference to the given string and assigns it to the Issuer field.
+func (o *CertificateCertificate) SetIssuer(v string) {
+	o.Issuer = &v
+}
+
+// GetCertificate returns the Certificate field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetCertificate() string {
+	if o == nil || o.Certificate == nil {
+		var ret string
+		return ret
+	}
+	return *o.Certificate
+}
+
+// GetCertificateOk returns a tuple with the Certificate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetCertificateOk() (*string, bool) {
+	if o == nil || o.Certificate == nil {
+		return nil, false
+	}
+	return o.Certificate, true
+}
+
+// HasCertificate returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasCertificate() bool {
+	if o != nil && o.Certificate != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCertificate gets a reference to the given string and assigns it to the Certificate field.
+func (o *CertificateCertificate) SetCertificate(v string) {
+	o.Certificate = &v
+}
+
+// GetCaBundle returns the CaBundle field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetCaBundle() string {
+	if o == nil || o.CaBundle == nil {
+		var ret string
+		return ret
+	}
+	return *o.CaBundle
+}
+
+// GetCaBundleOk returns a tuple with the CaBundle field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetCaBundleOk() (*string, bool) {
+	if o == nil || o.CaBundle == nil {
+		return nil, false
+	}
+	return o.CaBundle, true
+}
+
+// HasCaBundle returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasCaBundle() bool {
+	if o != nil && o.CaBundle != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCaBundle gets a reference to the given string and assigns it to the CaBundle field.
+func (o *CertificateCertificate) SetCaBundle(v string) {
+	o.CaBundle = &v
+}
+
+// GetStatus returns the Status field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetStatus() CertificateCertificateStatus {
+	if o == nil || o.Status == nil {
+		var ret CertificateCertificateStatus
+		return ret
+	}
+	return *o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetStatusOk() (*CertificateCertificateStatus, bool) {
+	if o == nil || o.Status == nil {
+		return nil, false
+	}
+	return o.Status, true
+}
+
+// HasStatus returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasStatus() bool {
+	if o != nil && o.Status != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatus gets a reference to the given CertificateCertificateStatus and assigns it to the Status field.
+func (o *CertificateCertificate) SetStatus(v CertificateCertificateStatus) {
+	o.Status = &v
+}
+
+// GetExpiresAt returns the ExpiresAt field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetExpiresAt() time.Time {
+	if o == nil || o.ExpiresAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.ExpiresAt
+}
+
+// GetExpiresAtOk returns a tuple with the ExpiresAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetExpiresAtOk() (*time.Time, bool) {
+	if o == nil || o.ExpiresAt == nil {
+		return nil, false
+	}
+	return o.ExpiresAt, true
+}
+
+// HasExpiresAt returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasExpiresAt() bool {
+	if o != nil && o.ExpiresAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetExpiresAt gets a reference to the given time.Time and assigns it to the ExpiresAt field.
+func (o *CertificateCertificate) SetExpiresAt(v time.Time) {
+	o.ExpiresAt = &v
+}
+
+// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetCreatedAt() time.Time {
+	if o == nil || o.CreatedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.CreatedAt
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil || o.CreatedAt == nil {
+		return nil, false
+	}
+	return o.CreatedAt, true
+}
+
+// HasCreatedAt returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasCreatedAt() bool {
+	if o != nil && o.CreatedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCreatedAt gets a reference to the given time.Time and assigns it to the CreatedAt field.
+func (o *CertificateCertificate) SetCreatedAt(v time.Time) {
+	o.CreatedAt = &v
+}
+
+// GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
+func (o *CertificateCertificate) GetUpdatedAt() time.Time {
+	if o == nil || o.UpdatedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.UpdatedAt
+}
+
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CertificateCertificate) GetUpdatedAtOk() (*time.Time, bool) {
+	if o == nil || o.UpdatedAt == nil {
+		return nil, false
+	}
+	return o.UpdatedAt, true
+}
+
+// HasUpdatedAt returns a boolean if a field has been set.
+func (o *CertificateCertificate) HasUpdatedAt() bool {
+	if o != nil && o.UpdatedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUpdatedAt gets a reference to the given time.Time and assigns it to the UpdatedAt field.
+func (o *CertificateCertificate) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt = &v
+}
+
+func (o CertificateCertificate) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.StackId != nil {
+		toSerialize["stackId"] = o.StackId
+	}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Hosts != nil {
+		toSerialize["hosts"] = o.Hosts
+	}
+	if o.Issuer != nil {
+		toSerialize["issuer"] = o.Issuer
+	}
+	if o.Certificate != nil {
+		toSerialize["certificate"] = o.Certificate
+	}
+	if o.CaBundle != nil {
+		toSerialize["caBundle"] = o.CaBundle
+	}
+	if o.Status != nil {
+		toSerialize["status"] = o.Status
+	}
+	if o.ExpiresAt != nil {
+		toSerialize["expiresAt"] = o.ExpiresAt
+	}
+	if o.CreatedAt != nil {
+		toSerialize["createdAt"] = o.CreatedAt
+	}
+	if o.UpdatedAt != nil {
+		toSerialize["updatedAt"] = o.UpdatedAt
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCertificateCertificate struct {
+	value *CertificateCertificate
+	isSet bool
+}
+
+func (v NullableCertificateCertificate) Get() *CertificateCertificate {
+	return v.value
+}
+
+func (v *NullableCertificateCertificate) Set(val *CertificateCertificate) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCertificateCertificate) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCertificateCertificate) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCertificateCertificate(val *CertificateCertificate) *NullableCertificateCertificate {
+	return &NullableCertificateCertificate{value: val, isSet: true}
+}
+
+func (v NullableCertificateCertificate) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCertificateCertificate) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

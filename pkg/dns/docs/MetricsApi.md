@@ -10,34 +10,67 @@ Method | HTTP request | Description
 
 ## GetMetrics
 
-> PrometheusMetrics GetMetrics(ctx, stackId, optional)
+> PrometheusMetrics GetMetrics(ctx, stackId).ZoneId(zoneId).Pop(pop).StartDate(startDate).EndDate(endDate).Type_(type_).Granularity(granularity).Dimensions(dimensions).Execute()
 
 Get metrics
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    zoneId := "zoneId_example" // string | An optional zone ID to retrieve metrics for (optional)
+    pop := "pop_example" // string | An optional StackPath POP code to retrieve metrics from (optional)
+    startDate := Get-Date // time.Time | A lower bound date to search metrics for. (optional)
+    endDate := Get-Date // time.Time | An upper bound date to search metrics for. (optional)
+    type_ := "type__example" // string |  (optional) (default to "ZONE_QUERY_COUNT")
+    granularity := "granularity_example" // string |  (optional) (default to "DEFAULT")
+    dimensions := []string{"Dimensions_example"} // []string | The dimensions to aggregate metrics by. When empty or unset, defaults to all dimensions. If non-empty, this must always at least include the stack dimension. (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.MetricsApi.GetMetrics(context.Background(), stackId).ZoneId(zoneId).Pop(pop).StartDate(startDate).EndDate(endDate).Type_(type_).Granularity(granularity).Dimensions(dimensions).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `MetricsApi.GetMetrics``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetMetrics`: PrometheusMetrics
+    fmt.Fprintf(os.Stdout, "Response from `MetricsApi.GetMetrics`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
- **optional** | ***GetMetricsOpts** | optional parameters | nil if no parameters
+**stackId** | **string** | A stack ID or slug | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetMetricsOpts struct
+Other parameters are passed through a pointer to a apiGetMetricsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **zoneId** | **optional.String**| An optional zone ID to retrieve metrics for | 
- **pop** | **optional.String**| An optional StackPath POP code to retrieve metrics from | 
- **startDate** | **optional.Time**| A lower bound date to search metrics for. | 
- **endDate** | **optional.Time**| An upper bound date to search metrics for. | 
- **type_** | **optional.String**|  | [default to ZONE_QUERY_COUNT]
- **granularity** | **optional.String**|  | [default to DEFAULT]
- **dimensions** | [**optional.Interface of []string**](string.md)| The dimensions to aggregate metrics by. When empty or unset, defaults to all dimensions. If non-empty, this must always at least include the stack dimension. | 
+ **zoneId** | **string** | An optional zone ID to retrieve metrics for | 
+ **pop** | **string** | An optional StackPath POP code to retrieve metrics from | 
+ **startDate** | **time.Time** | A lower bound date to search metrics for. | 
+ **endDate** | **time.Time** | An upper bound date to search metrics for. | 
+ **type_** | **string** |  | [default to &quot;ZONE_QUERY_COUNT&quot;]
+ **granularity** | **string** |  | [default to &quot;DEFAULT&quot;]
+ **dimensions** | [**[]string**](string.md) | The dimensions to aggregate metrics by. When empty or unset, defaults to all dimensions. If non-empty, this must always at least include the stack dimension. | 
 
 ### Return type
 

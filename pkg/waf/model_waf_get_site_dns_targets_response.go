@@ -8,8 +8,106 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafGetSiteDnsTargetsResponse A response from a request to retrieve a WAF site's DNS CNAME targets
 type WafGetSiteDnsTargetsResponse struct {
 	// A list of DNS CNAME targets
-	Addresses []string `json:"addresses,omitempty"`
+	Addresses *[]string `json:"addresses,omitempty"`
+}
+
+// NewWafGetSiteDnsTargetsResponse instantiates a new WafGetSiteDnsTargetsResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafGetSiteDnsTargetsResponse() *WafGetSiteDnsTargetsResponse {
+	this := WafGetSiteDnsTargetsResponse{}
+	return &this
+}
+
+// NewWafGetSiteDnsTargetsResponseWithDefaults instantiates a new WafGetSiteDnsTargetsResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafGetSiteDnsTargetsResponseWithDefaults() *WafGetSiteDnsTargetsResponse {
+	this := WafGetSiteDnsTargetsResponse{}
+	return &this
+}
+
+// GetAddresses returns the Addresses field value if set, zero value otherwise.
+func (o *WafGetSiteDnsTargetsResponse) GetAddresses() []string {
+	if o == nil || o.Addresses == nil {
+		var ret []string
+		return ret
+	}
+	return *o.Addresses
+}
+
+// GetAddressesOk returns a tuple with the Addresses field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafGetSiteDnsTargetsResponse) GetAddressesOk() (*[]string, bool) {
+	if o == nil || o.Addresses == nil {
+		return nil, false
+	}
+	return o.Addresses, true
+}
+
+// HasAddresses returns a boolean if a field has been set.
+func (o *WafGetSiteDnsTargetsResponse) HasAddresses() bool {
+	if o != nil && o.Addresses != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAddresses gets a reference to the given []string and assigns it to the Addresses field.
+func (o *WafGetSiteDnsTargetsResponse) SetAddresses(v []string) {
+	o.Addresses = &v
+}
+
+func (o WafGetSiteDnsTargetsResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Addresses != nil {
+		toSerialize["addresses"] = o.Addresses
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafGetSiteDnsTargetsResponse struct {
+	value *WafGetSiteDnsTargetsResponse
+	isSet bool
+}
+
+func (v NullableWafGetSiteDnsTargetsResponse) Get() *WafGetSiteDnsTargetsResponse {
+	return v.value
+}
+
+func (v *NullableWafGetSiteDnsTargetsResponse) Set(val *WafGetSiteDnsTargetsResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafGetSiteDnsTargetsResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafGetSiteDnsTargetsResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafGetSiteDnsTargetsResponse(val *WafGetSiteDnsTargetsResponse) *NullableWafGetSiteDnsTargetsResponse {
+	return &NullableWafGetSiteDnsTargetsResponse{value: val, isSet: true}
+}
+
+func (v NullableWafGetSiteDnsTargetsResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafGetSiteDnsTargetsResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

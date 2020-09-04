@@ -8,11 +8,179 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CustconfOriginPullLogsConfig Origin Pull Log Settings
 type CustconfOriginPullLogsConfig struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// String of values delimited by a ',' character.
-	ExtraLogFields string `json:"extraLogFields,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	ExtraLogFields *string `json:"extraLogFields,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfOriginPullLogsConfig instantiates a new CustconfOriginPullLogsConfig object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfOriginPullLogsConfig() *CustconfOriginPullLogsConfig {
+	this := CustconfOriginPullLogsConfig{}
+	return &this
+}
+
+// NewCustconfOriginPullLogsConfigWithDefaults instantiates a new CustconfOriginPullLogsConfig object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfOriginPullLogsConfigWithDefaults() *CustconfOriginPullLogsConfig {
+	this := CustconfOriginPullLogsConfig{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfOriginPullLogsConfig) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullLogsConfig) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfOriginPullLogsConfig) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfOriginPullLogsConfig) SetId(v string) {
+	o.Id = &v
+}
+
+// GetExtraLogFields returns the ExtraLogFields field value if set, zero value otherwise.
+func (o *CustconfOriginPullLogsConfig) GetExtraLogFields() string {
+	if o == nil || o.ExtraLogFields == nil {
+		var ret string
+		return ret
+	}
+	return *o.ExtraLogFields
+}
+
+// GetExtraLogFieldsOk returns a tuple with the ExtraLogFields field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullLogsConfig) GetExtraLogFieldsOk() (*string, bool) {
+	if o == nil || o.ExtraLogFields == nil {
+		return nil, false
+	}
+	return o.ExtraLogFields, true
+}
+
+// HasExtraLogFields returns a boolean if a field has been set.
+func (o *CustconfOriginPullLogsConfig) HasExtraLogFields() bool {
+	if o != nil && o.ExtraLogFields != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetExtraLogFields gets a reference to the given string and assigns it to the ExtraLogFields field.
+func (o *CustconfOriginPullLogsConfig) SetExtraLogFields(v string) {
+	o.ExtraLogFields = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfOriginPullLogsConfig) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfOriginPullLogsConfig) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfOriginPullLogsConfig) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfOriginPullLogsConfig) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfOriginPullLogsConfig) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.ExtraLogFields != nil {
+		toSerialize["extraLogFields"] = o.ExtraLogFields
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfOriginPullLogsConfig struct {
+	value *CustconfOriginPullLogsConfig
+	isSet bool
+}
+
+func (v NullableCustconfOriginPullLogsConfig) Get() *CustconfOriginPullLogsConfig {
+	return v.value
+}
+
+func (v *NullableCustconfOriginPullLogsConfig) Set(val *CustconfOriginPullLogsConfig) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfOriginPullLogsConfig) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfOriginPullLogsConfig) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfOriginPullLogsConfig(val *CustconfOriginPullLogsConfig) *NullableCustconfOriginPullLogsConfig {
+	return &NullableCustconfOriginPullLogsConfig{value: val, isSet: true}
+}
+
+func (v NullableCustconfOriginPullLogsConfig) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfOriginPullLogsConfig) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

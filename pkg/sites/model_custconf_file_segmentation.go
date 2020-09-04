@@ -8,10 +8,143 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfFileSegmentation Policy for configuring the feature for downloading and storing files in segments rather than a whole entity.
 type CustconfFileSegmentation struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// Flag for enabling the File Segmentation Feature.
-	Enabled bool `json:"enabled,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfFileSegmentation instantiates a new CustconfFileSegmentation object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfFileSegmentation() *CustconfFileSegmentation {
+	this := CustconfFileSegmentation{}
+	return &this
+}
+
+// NewCustconfFileSegmentationWithDefaults instantiates a new CustconfFileSegmentation object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfFileSegmentationWithDefaults() *CustconfFileSegmentation {
+	this := CustconfFileSegmentation{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfFileSegmentation) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfFileSegmentation) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfFileSegmentation) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfFileSegmentation) SetId(v string) {
+	o.Id = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfFileSegmentation) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfFileSegmentation) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfFileSegmentation) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfFileSegmentation) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfFileSegmentation) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfFileSegmentation struct {
+	value *CustconfFileSegmentation
+	isSet bool
+}
+
+func (v NullableCustconfFileSegmentation) Get() *CustconfFileSegmentation {
+	return v.value
+}
+
+func (v *NullableCustconfFileSegmentation) Set(val *CustconfFileSegmentation) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfFileSegmentation) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfFileSegmentation) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfFileSegmentation(val *CustconfFileSegmentation) *NullableCustconfFileSegmentation {
+	return &NullableCustconfFileSegmentation{value: val, isSet: true}
+}
+
+func (v NullableCustconfFileSegmentation) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfFileSegmentation) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

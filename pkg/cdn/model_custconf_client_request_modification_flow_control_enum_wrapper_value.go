@@ -8,6 +8,11 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CustconfClientRequestModificationFlowControlEnumWrapperValue the model 'CustconfClientRequestModificationFlowControlEnumWrapperValue'
 type CustconfClientRequestModificationFlowControlEnumWrapperValue string
 
@@ -17,3 +22,45 @@ const (
 	CUSTCONFCLIENTREQUESTMODIFICATIONFLOWCONTROLENUMWRAPPERVALUE_NEXT CustconfClientRequestModificationFlowControlEnumWrapperValue = "next"
 	CUSTCONFCLIENTREQUESTMODIFICATIONFLOWCONTROLENUMWRAPPERVALUE_BREAK CustconfClientRequestModificationFlowControlEnumWrapperValue = "break"
 )
+
+// Ptr returns reference to custconfClientRequestModificationFlowControlEnumWrapperValue value
+func (v CustconfClientRequestModificationFlowControlEnumWrapperValue) Ptr() *CustconfClientRequestModificationFlowControlEnumWrapperValue {
+	return &v
+}
+
+
+type NullableCustconfClientRequestModificationFlowControlEnumWrapperValue struct {
+	value *CustconfClientRequestModificationFlowControlEnumWrapperValue
+	isSet bool
+}
+
+func (v NullableCustconfClientRequestModificationFlowControlEnumWrapperValue) Get() *CustconfClientRequestModificationFlowControlEnumWrapperValue {
+	return v.value
+}
+
+func (v *NullableCustconfClientRequestModificationFlowControlEnumWrapperValue) Set(val *CustconfClientRequestModificationFlowControlEnumWrapperValue) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfClientRequestModificationFlowControlEnumWrapperValue) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfClientRequestModificationFlowControlEnumWrapperValue) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfClientRequestModificationFlowControlEnumWrapperValue(val *CustconfClientRequestModificationFlowControlEnumWrapperValue) *NullableCustconfClientRequestModificationFlowControlEnumWrapperValue {
+	return &NullableCustconfClientRequestModificationFlowControlEnumWrapperValue{value: val, isSet: true}
+}
+
+func (v NullableCustconfClientRequestModificationFlowControlEnumWrapperValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfClientRequestModificationFlowControlEnumWrapperValue) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

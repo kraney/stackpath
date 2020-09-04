@@ -8,19 +8,331 @@
  */
 
 package accounts_and_users
+
+import (
+	"encoding/json"
+)
+
 // IdentityUser A user account  Users can interact with the StackPath customer portal and API.
 type IdentityUser struct {
 	// A user's unique identifier
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// A user's email address  Email addresses are used as login names to the StackPath customer portal
-	Email string `json:"email,omitempty"`
-	Status IdentityUserStatus `json:"status,omitempty"`
+	Email *string `json:"email,omitempty"`
+	Status *IdentityUserStatus `json:"status,omitempty"`
 	// A user's underlying authentication identities
-	Identities []IdentityUserIdentity `json:"identities,omitempty"`
+	Identities *[]IdentityUserIdentity `json:"identities,omitempty"`
 	// The accounts that a user belongs to
-	Accounts []IdentityAccount `json:"accounts,omitempty"`
+	Accounts *[]IdentityAccount `json:"accounts,omitempty"`
 	// A user's name
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// A user's phone number
-	PhoneNumber string `json:"phoneNumber,omitempty"`
+	PhoneNumber *string `json:"phoneNumber,omitempty"`
+}
+
+// NewIdentityUser instantiates a new IdentityUser object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewIdentityUser() *IdentityUser {
+	this := IdentityUser{}
+	var status IdentityUserStatus = "UNKNOWN"
+	this.Status = &status
+	return &this
+}
+
+// NewIdentityUserWithDefaults instantiates a new IdentityUser object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewIdentityUserWithDefaults() *IdentityUser {
+	this := IdentityUser{}
+	var status IdentityUserStatus = "UNKNOWN"
+	this.Status = &status
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *IdentityUser) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUser) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *IdentityUser) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *IdentityUser) SetId(v string) {
+	o.Id = &v
+}
+
+// GetEmail returns the Email field value if set, zero value otherwise.
+func (o *IdentityUser) GetEmail() string {
+	if o == nil || o.Email == nil {
+		var ret string
+		return ret
+	}
+	return *o.Email
+}
+
+// GetEmailOk returns a tuple with the Email field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUser) GetEmailOk() (*string, bool) {
+	if o == nil || o.Email == nil {
+		return nil, false
+	}
+	return o.Email, true
+}
+
+// HasEmail returns a boolean if a field has been set.
+func (o *IdentityUser) HasEmail() bool {
+	if o != nil && o.Email != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEmail gets a reference to the given string and assigns it to the Email field.
+func (o *IdentityUser) SetEmail(v string) {
+	o.Email = &v
+}
+
+// GetStatus returns the Status field value if set, zero value otherwise.
+func (o *IdentityUser) GetStatus() IdentityUserStatus {
+	if o == nil || o.Status == nil {
+		var ret IdentityUserStatus
+		return ret
+	}
+	return *o.Status
+}
+
+// GetStatusOk returns a tuple with the Status field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUser) GetStatusOk() (*IdentityUserStatus, bool) {
+	if o == nil || o.Status == nil {
+		return nil, false
+	}
+	return o.Status, true
+}
+
+// HasStatus returns a boolean if a field has been set.
+func (o *IdentityUser) HasStatus() bool {
+	if o != nil && o.Status != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatus gets a reference to the given IdentityUserStatus and assigns it to the Status field.
+func (o *IdentityUser) SetStatus(v IdentityUserStatus) {
+	o.Status = &v
+}
+
+// GetIdentities returns the Identities field value if set, zero value otherwise.
+func (o *IdentityUser) GetIdentities() []IdentityUserIdentity {
+	if o == nil || o.Identities == nil {
+		var ret []IdentityUserIdentity
+		return ret
+	}
+	return *o.Identities
+}
+
+// GetIdentitiesOk returns a tuple with the Identities field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUser) GetIdentitiesOk() (*[]IdentityUserIdentity, bool) {
+	if o == nil || o.Identities == nil {
+		return nil, false
+	}
+	return o.Identities, true
+}
+
+// HasIdentities returns a boolean if a field has been set.
+func (o *IdentityUser) HasIdentities() bool {
+	if o != nil && o.Identities != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetIdentities gets a reference to the given []IdentityUserIdentity and assigns it to the Identities field.
+func (o *IdentityUser) SetIdentities(v []IdentityUserIdentity) {
+	o.Identities = &v
+}
+
+// GetAccounts returns the Accounts field value if set, zero value otherwise.
+func (o *IdentityUser) GetAccounts() []IdentityAccount {
+	if o == nil || o.Accounts == nil {
+		var ret []IdentityAccount
+		return ret
+	}
+	return *o.Accounts
+}
+
+// GetAccountsOk returns a tuple with the Accounts field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUser) GetAccountsOk() (*[]IdentityAccount, bool) {
+	if o == nil || o.Accounts == nil {
+		return nil, false
+	}
+	return o.Accounts, true
+}
+
+// HasAccounts returns a boolean if a field has been set.
+func (o *IdentityUser) HasAccounts() bool {
+	if o != nil && o.Accounts != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAccounts gets a reference to the given []IdentityAccount and assigns it to the Accounts field.
+func (o *IdentityUser) SetAccounts(v []IdentityAccount) {
+	o.Accounts = &v
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *IdentityUser) GetName() string {
+	if o == nil || o.Name == nil {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUser) GetNameOk() (*string, bool) {
+	if o == nil || o.Name == nil {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *IdentityUser) HasName() bool {
+	if o != nil && o.Name != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *IdentityUser) SetName(v string) {
+	o.Name = &v
+}
+
+// GetPhoneNumber returns the PhoneNumber field value if set, zero value otherwise.
+func (o *IdentityUser) GetPhoneNumber() string {
+	if o == nil || o.PhoneNumber == nil {
+		var ret string
+		return ret
+	}
+	return *o.PhoneNumber
+}
+
+// GetPhoneNumberOk returns a tuple with the PhoneNumber field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityUser) GetPhoneNumberOk() (*string, bool) {
+	if o == nil || o.PhoneNumber == nil {
+		return nil, false
+	}
+	return o.PhoneNumber, true
+}
+
+// HasPhoneNumber returns a boolean if a field has been set.
+func (o *IdentityUser) HasPhoneNumber() bool {
+	if o != nil && o.PhoneNumber != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPhoneNumber gets a reference to the given string and assigns it to the PhoneNumber field.
+func (o *IdentityUser) SetPhoneNumber(v string) {
+	o.PhoneNumber = &v
+}
+
+func (o IdentityUser) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Email != nil {
+		toSerialize["email"] = o.Email
+	}
+	if o.Status != nil {
+		toSerialize["status"] = o.Status
+	}
+	if o.Identities != nil {
+		toSerialize["identities"] = o.Identities
+	}
+	if o.Accounts != nil {
+		toSerialize["accounts"] = o.Accounts
+	}
+	if o.Name != nil {
+		toSerialize["name"] = o.Name
+	}
+	if o.PhoneNumber != nil {
+		toSerialize["phoneNumber"] = o.PhoneNumber
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableIdentityUser struct {
+	value *IdentityUser
+	isSet bool
+}
+
+func (v NullableIdentityUser) Get() *IdentityUser {
+	return v.value
+}
+
+func (v *NullableIdentityUser) Set(val *IdentityUser) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableIdentityUser) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableIdentityUser) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableIdentityUser(val *IdentityUser) *NullableIdentityUser {
+	return &NullableIdentityUser{value: val, isSet: true}
+}
+
+func (v NullableIdentityUser) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableIdentityUser) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

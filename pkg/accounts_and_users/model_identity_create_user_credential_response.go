@@ -8,14 +8,217 @@
  */
 
 package accounts_and_users
+
+import (
+	"encoding/json"
+)
+
 // IdentityCreateUserCredentialResponse A response from a request to create new user API credentials
 type IdentityCreateUserCredentialResponse struct {
 	// The new API credential's unique identifier
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// The new API credential's name
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// The new API credential's OAuth2 client ID
-	ClientId string `json:"clientId,omitempty"`
+	ClientId *string `json:"clientId,omitempty"`
 	// The new API credential's OAuth2 client secret  The client secret is returned only once and is not stored by StackPath. Please take care to save this response.
-	ClientSecret string `json:"clientSecret,omitempty"`
+	ClientSecret *string `json:"clientSecret,omitempty"`
+}
+
+// NewIdentityCreateUserCredentialResponse instantiates a new IdentityCreateUserCredentialResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewIdentityCreateUserCredentialResponse() *IdentityCreateUserCredentialResponse {
+	this := IdentityCreateUserCredentialResponse{}
+	return &this
+}
+
+// NewIdentityCreateUserCredentialResponseWithDefaults instantiates a new IdentityCreateUserCredentialResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewIdentityCreateUserCredentialResponseWithDefaults() *IdentityCreateUserCredentialResponse {
+	this := IdentityCreateUserCredentialResponse{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *IdentityCreateUserCredentialResponse) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityCreateUserCredentialResponse) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *IdentityCreateUserCredentialResponse) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *IdentityCreateUserCredentialResponse) SetId(v string) {
+	o.Id = &v
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *IdentityCreateUserCredentialResponse) GetName() string {
+	if o == nil || o.Name == nil {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityCreateUserCredentialResponse) GetNameOk() (*string, bool) {
+	if o == nil || o.Name == nil {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *IdentityCreateUserCredentialResponse) HasName() bool {
+	if o != nil && o.Name != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *IdentityCreateUserCredentialResponse) SetName(v string) {
+	o.Name = &v
+}
+
+// GetClientId returns the ClientId field value if set, zero value otherwise.
+func (o *IdentityCreateUserCredentialResponse) GetClientId() string {
+	if o == nil || o.ClientId == nil {
+		var ret string
+		return ret
+	}
+	return *o.ClientId
+}
+
+// GetClientIdOk returns a tuple with the ClientId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityCreateUserCredentialResponse) GetClientIdOk() (*string, bool) {
+	if o == nil || o.ClientId == nil {
+		return nil, false
+	}
+	return o.ClientId, true
+}
+
+// HasClientId returns a boolean if a field has been set.
+func (o *IdentityCreateUserCredentialResponse) HasClientId() bool {
+	if o != nil && o.ClientId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetClientId gets a reference to the given string and assigns it to the ClientId field.
+func (o *IdentityCreateUserCredentialResponse) SetClientId(v string) {
+	o.ClientId = &v
+}
+
+// GetClientSecret returns the ClientSecret field value if set, zero value otherwise.
+func (o *IdentityCreateUserCredentialResponse) GetClientSecret() string {
+	if o == nil || o.ClientSecret == nil {
+		var ret string
+		return ret
+	}
+	return *o.ClientSecret
+}
+
+// GetClientSecretOk returns a tuple with the ClientSecret field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentityCreateUserCredentialResponse) GetClientSecretOk() (*string, bool) {
+	if o == nil || o.ClientSecret == nil {
+		return nil, false
+	}
+	return o.ClientSecret, true
+}
+
+// HasClientSecret returns a boolean if a field has been set.
+func (o *IdentityCreateUserCredentialResponse) HasClientSecret() bool {
+	if o != nil && o.ClientSecret != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetClientSecret gets a reference to the given string and assigns it to the ClientSecret field.
+func (o *IdentityCreateUserCredentialResponse) SetClientSecret(v string) {
+	o.ClientSecret = &v
+}
+
+func (o IdentityCreateUserCredentialResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Name != nil {
+		toSerialize["name"] = o.Name
+	}
+	if o.ClientId != nil {
+		toSerialize["clientId"] = o.ClientId
+	}
+	if o.ClientSecret != nil {
+		toSerialize["clientSecret"] = o.ClientSecret
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableIdentityCreateUserCredentialResponse struct {
+	value *IdentityCreateUserCredentialResponse
+	isSet bool
+}
+
+func (v NullableIdentityCreateUserCredentialResponse) Get() *IdentityCreateUserCredentialResponse {
+	return v.value
+}
+
+func (v *NullableIdentityCreateUserCredentialResponse) Set(val *IdentityCreateUserCredentialResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableIdentityCreateUserCredentialResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableIdentityCreateUserCredentialResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableIdentityCreateUserCredentialResponse(val *IdentityCreateUserCredentialResponse) *NullableIdentityCreateUserCredentialResponse {
+	return &NullableIdentityCreateUserCredentialResponse{value: val, isSet: true}
+}
+
+func (v NullableIdentityCreateUserCredentialResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableIdentityCreateUserCredentialResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

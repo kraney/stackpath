@@ -8,12 +8,180 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafUpdateDdosSettingsRequest struct for WafUpdateDdosSettingsRequest
 type WafUpdateDdosSettingsRequest struct {
 	// The number of requests per ten seconds that can trigger DDOS protection
-	GlobalThreshold string `json:"globalThreshold,omitempty"`
+	GlobalThreshold *string `json:"globalThreshold,omitempty"`
 	// The number of requests per two seconds that can trigger DDOS protection
-	BurstThreshold string `json:"burstThreshold,omitempty"`
+	BurstThreshold *string `json:"burstThreshold,omitempty"`
 	// The number of requests per 0.1 seconds that can trigger DDOS protection
-	SubSecondBurstThreshold string `json:"subSecondBurstThreshold,omitempty"`
+	SubSecondBurstThreshold *string `json:"subSecondBurstThreshold,omitempty"`
+}
+
+// NewWafUpdateDdosSettingsRequest instantiates a new WafUpdateDdosSettingsRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafUpdateDdosSettingsRequest() *WafUpdateDdosSettingsRequest {
+	this := WafUpdateDdosSettingsRequest{}
+	return &this
+}
+
+// NewWafUpdateDdosSettingsRequestWithDefaults instantiates a new WafUpdateDdosSettingsRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafUpdateDdosSettingsRequestWithDefaults() *WafUpdateDdosSettingsRequest {
+	this := WafUpdateDdosSettingsRequest{}
+	return &this
+}
+
+// GetGlobalThreshold returns the GlobalThreshold field value if set, zero value otherwise.
+func (o *WafUpdateDdosSettingsRequest) GetGlobalThreshold() string {
+	if o == nil || o.GlobalThreshold == nil {
+		var ret string
+		return ret
+	}
+	return *o.GlobalThreshold
+}
+
+// GetGlobalThresholdOk returns a tuple with the GlobalThreshold field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateDdosSettingsRequest) GetGlobalThresholdOk() (*string, bool) {
+	if o == nil || o.GlobalThreshold == nil {
+		return nil, false
+	}
+	return o.GlobalThreshold, true
+}
+
+// HasGlobalThreshold returns a boolean if a field has been set.
+func (o *WafUpdateDdosSettingsRequest) HasGlobalThreshold() bool {
+	if o != nil && o.GlobalThreshold != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetGlobalThreshold gets a reference to the given string and assigns it to the GlobalThreshold field.
+func (o *WafUpdateDdosSettingsRequest) SetGlobalThreshold(v string) {
+	o.GlobalThreshold = &v
+}
+
+// GetBurstThreshold returns the BurstThreshold field value if set, zero value otherwise.
+func (o *WafUpdateDdosSettingsRequest) GetBurstThreshold() string {
+	if o == nil || o.BurstThreshold == nil {
+		var ret string
+		return ret
+	}
+	return *o.BurstThreshold
+}
+
+// GetBurstThresholdOk returns a tuple with the BurstThreshold field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateDdosSettingsRequest) GetBurstThresholdOk() (*string, bool) {
+	if o == nil || o.BurstThreshold == nil {
+		return nil, false
+	}
+	return o.BurstThreshold, true
+}
+
+// HasBurstThreshold returns a boolean if a field has been set.
+func (o *WafUpdateDdosSettingsRequest) HasBurstThreshold() bool {
+	if o != nil && o.BurstThreshold != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBurstThreshold gets a reference to the given string and assigns it to the BurstThreshold field.
+func (o *WafUpdateDdosSettingsRequest) SetBurstThreshold(v string) {
+	o.BurstThreshold = &v
+}
+
+// GetSubSecondBurstThreshold returns the SubSecondBurstThreshold field value if set, zero value otherwise.
+func (o *WafUpdateDdosSettingsRequest) GetSubSecondBurstThreshold() string {
+	if o == nil || o.SubSecondBurstThreshold == nil {
+		var ret string
+		return ret
+	}
+	return *o.SubSecondBurstThreshold
+}
+
+// GetSubSecondBurstThresholdOk returns a tuple with the SubSecondBurstThreshold field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateDdosSettingsRequest) GetSubSecondBurstThresholdOk() (*string, bool) {
+	if o == nil || o.SubSecondBurstThreshold == nil {
+		return nil, false
+	}
+	return o.SubSecondBurstThreshold, true
+}
+
+// HasSubSecondBurstThreshold returns a boolean if a field has been set.
+func (o *WafUpdateDdosSettingsRequest) HasSubSecondBurstThreshold() bool {
+	if o != nil && o.SubSecondBurstThreshold != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSubSecondBurstThreshold gets a reference to the given string and assigns it to the SubSecondBurstThreshold field.
+func (o *WafUpdateDdosSettingsRequest) SetSubSecondBurstThreshold(v string) {
+	o.SubSecondBurstThreshold = &v
+}
+
+func (o WafUpdateDdosSettingsRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.GlobalThreshold != nil {
+		toSerialize["globalThreshold"] = o.GlobalThreshold
+	}
+	if o.BurstThreshold != nil {
+		toSerialize["burstThreshold"] = o.BurstThreshold
+	}
+	if o.SubSecondBurstThreshold != nil {
+		toSerialize["subSecondBurstThreshold"] = o.SubSecondBurstThreshold
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafUpdateDdosSettingsRequest struct {
+	value *WafUpdateDdosSettingsRequest
+	isSet bool
+}
+
+func (v NullableWafUpdateDdosSettingsRequest) Get() *WafUpdateDdosSettingsRequest {
+	return v.value
+}
+
+func (v *NullableWafUpdateDdosSettingsRequest) Set(val *WafUpdateDdosSettingsRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafUpdateDdosSettingsRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafUpdateDdosSettingsRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafUpdateDdosSettingsRequest(val *WafUpdateDdosSettingsRequest) *NullableWafUpdateDdosSettingsRequest {
+	return &NullableWafUpdateDdosSettingsRequest{value: val, isSet: true}
+}
+
+func (v NullableWafUpdateDdosSettingsRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafUpdateDdosSettingsRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

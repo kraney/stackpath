@@ -15,19 +15,58 @@ Method | HTTP request | Description
 
 ## CreateSiteScript
 
-> CdnCreateSiteScriptResponse CreateSiteScript(ctx, stackId, siteId, cdnCreateSiteScriptRequest)
+> CdnCreateSiteScriptResponse CreateSiteScript(ctx, stackId, siteId).CdnCreateSiteScriptRequest(cdnCreateSiteScriptRequest).Execute()
 
 Create a serverless script
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    cdnCreateSiteScriptRequest := openapiclient.cdnCreateSiteScriptRequest{Name: "Name_example", Code: 123, Paths: []string{"Paths_example")} // CdnCreateSiteScriptRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.ServerlessScriptingApi.CreateSiteScript(context.Background(), stackId, siteId, cdnCreateSiteScriptRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ServerlessScriptingApi.CreateSiteScript``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `CreateSiteScript`: CdnCreateSiteScriptResponse
+    fmt.Fprintf(os.Stdout, "Response from `ServerlessScriptingApi.CreateSiteScript`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**cdnCreateSiteScriptRequest** | [**CdnCreateSiteScriptRequest**](CdnCreateSiteScriptRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateSiteScriptRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **cdnCreateSiteScriptRequest** | [**CdnCreateSiteScriptRequest**](CdnCreateSiteScriptRequest.md) |  | 
 
 ### Return type
 
@@ -49,19 +88,57 @@ Name | Type | Description  | Notes
 
 ## DeleteSiteScript
 
-> DeleteSiteScript(ctx, stackId, siteId, scriptId)
+> DeleteSiteScript(ctx, stackId, siteId, scriptId).Execute()
 
 Delete a serverless script
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    scriptId := "scriptId_example" // string | A serverless script ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.ServerlessScriptingApi.DeleteSiteScript(context.Background(), stackId, siteId, scriptId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ServerlessScriptingApi.DeleteSiteScript``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**scriptId** | **string**| A serverless script ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**scriptId** | **string** | A serverless script ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteSiteScriptRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -83,24 +160,53 @@ Name | Type | Description  | Notes
 
 ## GetSiteScript
 
-> CdnGetSiteScriptResponse GetSiteScript(ctx, stackId, siteId, scriptId, optional)
+> CdnGetSiteScriptResponse GetSiteScript(ctx, stackId, siteId, scriptId).ScriptVersion(scriptVersion).Execute()
 
 Get a serverless script
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    scriptId := "scriptId_example" // string | A serverless script ID
+    scriptVersion := "scriptVersion_example" // string | The version of the serverless script to get (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.ServerlessScriptingApi.GetSiteScript(context.Background(), stackId, siteId, scriptId).ScriptVersion(scriptVersion).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ServerlessScriptingApi.GetSiteScript``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetSiteScript`: CdnGetSiteScriptResponse
+    fmt.Fprintf(os.Stdout, "Response from `ServerlessScriptingApi.GetSiteScript`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**scriptId** | **string**| A serverless script ID | 
- **optional** | ***GetSiteScriptOpts** | optional parameters | nil if no parameters
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**scriptId** | **string** | A serverless script ID | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetSiteScriptOpts struct
+Other parameters are passed through a pointer to a apiGetSiteScriptRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -108,7 +214,7 @@ Name | Type | Description  | Notes
 
 
 
- **scriptVersion** | **optional.String**| The version of the serverless script to get | 
+ **scriptVersion** | **string** | The version of the serverless script to get | 
 
 ### Return type
 
@@ -130,20 +236,62 @@ Name | Type | Description  | Notes
 
 ## GetSiteScript2
 
-> CdnGetSiteScriptResponse GetSiteScript2(ctx, stackId, siteId, scriptId, scriptVersion)
+> CdnGetSiteScriptResponse GetSiteScript2(ctx, stackId, siteId, scriptId, scriptVersion).Execute()
 
 Get a serverless script version
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    scriptId := "scriptId_example" // string | A serverless script ID
+    scriptVersion := "scriptVersion_example" // string | The version of the serverless script to get
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.ServerlessScriptingApi.GetSiteScript2(context.Background(), stackId, siteId, scriptId, scriptVersion).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ServerlessScriptingApi.GetSiteScript2``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetSiteScript2`: CdnGetSiteScriptResponse
+    fmt.Fprintf(os.Stdout, "Response from `ServerlessScriptingApi.GetSiteScript2`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**scriptId** | **string**| A serverless script ID | 
-**scriptVersion** | **string**| The version of the serverless script to get | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**scriptId** | **string** | A serverless script ID | 
+**scriptVersion** | **string** | The version of the serverless script to get | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetSiteScript2Request struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
 
 ### Return type
 
@@ -165,33 +313,64 @@ Name | Type | Description  | Notes
 
 ## GetSiteScripts
 
-> CdnGetSiteScriptsResponse GetSiteScripts(ctx, stackId, siteId, optional)
+> CdnGetSiteScriptsResponse GetSiteScripts(ctx, stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
 
 Get all serverless scripts
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
+    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
+    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
+    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.ServerlessScriptingApi.GetSiteScripts(context.Background(), stackId, siteId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ServerlessScriptingApi.GetSiteScripts``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetSiteScripts`: CdnGetSiteScriptsResponse
+    fmt.Fprintf(os.Stdout, "Response from `ServerlessScriptingApi.GetSiteScripts`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
- **optional** | ***GetSiteScriptsOpts** | optional parameters | nil if no parameters
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetSiteScriptsOpts struct
+Other parameters are passed through a pointer to a apiGetSiteScriptsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **pageRequestFirst** | **optional.String**| The number of items desired. | 
- **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
- **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
- **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
+ **pageRequestFirst** | **string** | The number of items desired. | 
+ **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **string** | SQL-style constraint filters. | 
+ **pageRequestSortBy** | **string** | Sort the response by the given field. | 
 
 ### Return type
 
@@ -213,20 +392,61 @@ Name | Type | Description  | Notes
 
 ## UpdateSiteScript
 
-> CdnUpdateSiteScriptResponse UpdateSiteScript(ctx, stackId, siteId, scriptId, cdnUpdateSiteScriptRequest)
+> CdnUpdateSiteScriptResponse UpdateSiteScript(ctx, stackId, siteId, scriptId).CdnUpdateSiteScriptRequest(cdnUpdateSiteScriptRequest).Execute()
 
 Update a serverless script
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    scriptId := "scriptId_example" // string | A serverless script ID
+    cdnUpdateSiteScriptRequest := openapiclient.cdnUpdateSiteScriptRequest{Code: 123, Paths: []string{"Paths_example")} // CdnUpdateSiteScriptRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.ServerlessScriptingApi.UpdateSiteScript(context.Background(), stackId, siteId, scriptId, cdnUpdateSiteScriptRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ServerlessScriptingApi.UpdateSiteScript``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `UpdateSiteScript`: CdnUpdateSiteScriptResponse
+    fmt.Fprintf(os.Stdout, "Response from `ServerlessScriptingApi.UpdateSiteScript`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**scriptId** | **string**| A serverless script ID | 
-**cdnUpdateSiteScriptRequest** | [**CdnUpdateSiteScriptRequest**](CdnUpdateSiteScriptRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**scriptId** | **string** | A serverless script ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateSiteScriptRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+ **cdnUpdateSiteScriptRequest** | [**CdnUpdateSiteScriptRequest**](CdnUpdateSiteScriptRequest.md) |  | 
 
 ### Return type
 

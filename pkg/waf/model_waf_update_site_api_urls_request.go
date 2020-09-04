@@ -8,8 +8,106 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafUpdateSiteApiUrlsRequest struct for WafUpdateSiteApiUrlsRequest
 type WafUpdateSiteApiUrlsRequest struct {
 	// A list of API URLs that will be processed differently by the WAF
-	ApiUrls []string `json:"apiUrls,omitempty"`
+	ApiUrls *[]string `json:"apiUrls,omitempty"`
+}
+
+// NewWafUpdateSiteApiUrlsRequest instantiates a new WafUpdateSiteApiUrlsRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafUpdateSiteApiUrlsRequest() *WafUpdateSiteApiUrlsRequest {
+	this := WafUpdateSiteApiUrlsRequest{}
+	return &this
+}
+
+// NewWafUpdateSiteApiUrlsRequestWithDefaults instantiates a new WafUpdateSiteApiUrlsRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafUpdateSiteApiUrlsRequestWithDefaults() *WafUpdateSiteApiUrlsRequest {
+	this := WafUpdateSiteApiUrlsRequest{}
+	return &this
+}
+
+// GetApiUrls returns the ApiUrls field value if set, zero value otherwise.
+func (o *WafUpdateSiteApiUrlsRequest) GetApiUrls() []string {
+	if o == nil || o.ApiUrls == nil {
+		var ret []string
+		return ret
+	}
+	return *o.ApiUrls
+}
+
+// GetApiUrlsOk returns a tuple with the ApiUrls field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateSiteApiUrlsRequest) GetApiUrlsOk() (*[]string, bool) {
+	if o == nil || o.ApiUrls == nil {
+		return nil, false
+	}
+	return o.ApiUrls, true
+}
+
+// HasApiUrls returns a boolean if a field has been set.
+func (o *WafUpdateSiteApiUrlsRequest) HasApiUrls() bool {
+	if o != nil && o.ApiUrls != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetApiUrls gets a reference to the given []string and assigns it to the ApiUrls field.
+func (o *WafUpdateSiteApiUrlsRequest) SetApiUrls(v []string) {
+	o.ApiUrls = &v
+}
+
+func (o WafUpdateSiteApiUrlsRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.ApiUrls != nil {
+		toSerialize["apiUrls"] = o.ApiUrls
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafUpdateSiteApiUrlsRequest struct {
+	value *WafUpdateSiteApiUrlsRequest
+	isSet bool
+}
+
+func (v NullableWafUpdateSiteApiUrlsRequest) Get() *WafUpdateSiteApiUrlsRequest {
+	return v.value
+}
+
+func (v *NullableWafUpdateSiteApiUrlsRequest) Set(val *WafUpdateSiteApiUrlsRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafUpdateSiteApiUrlsRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafUpdateSiteApiUrlsRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafUpdateSiteApiUrlsRequest(val *WafUpdateSiteApiUrlsRequest) *NullableWafUpdateSiteApiUrlsRequest {
+	return &NullableWafUpdateSiteApiUrlsRequest{value: val, isSet: true}
+}
+
+func (v NullableWafUpdateSiteApiUrlsRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafUpdateSiteApiUrlsRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,18 +8,334 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafUpdateRuleRequest struct for WafUpdateRuleRequest
 type WafUpdateRuleRequest struct {
 	// The WAF rule's name
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// A rule's description
-	Description string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 	// The conditions required for a WAF rule to trigger
-	Conditions []RuleCondition `json:"conditions,omitempty"`
-	ActionValue WafRuleAction `json:"actionValue,omitempty"`
+	Conditions *[]RuleCondition `json:"conditions,omitempty"`
+	ActionValue *WafRuleAction `json:"actionValue,omitempty"`
 	// Whether or not the rule should be enabled
-	Enabled bool `json:"enabled,omitempty"`
-	StatusCode RuleStatusCode `json:"statusCode,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	StatusCode *RuleStatusCode `json:"statusCode,omitempty"`
 	// How long a rule's block action will apply to subsequent requests  Durations only apply to rules with block actions.
-	ActionDuration string `json:"actionDuration,omitempty"`
+	ActionDuration *string `json:"actionDuration,omitempty"`
+}
+
+// NewWafUpdateRuleRequest instantiates a new WafUpdateRuleRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafUpdateRuleRequest() *WafUpdateRuleRequest {
+	this := WafUpdateRuleRequest{}
+	var actionValue WafRuleAction = "BLOCK"
+	this.ActionValue = &actionValue
+	var statusCode RuleStatusCode = "FORBIDDEN_403"
+	this.StatusCode = &statusCode
+	return &this
+}
+
+// NewWafUpdateRuleRequestWithDefaults instantiates a new WafUpdateRuleRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafUpdateRuleRequestWithDefaults() *WafUpdateRuleRequest {
+	this := WafUpdateRuleRequest{}
+	var actionValue WafRuleAction = "BLOCK"
+	this.ActionValue = &actionValue
+	var statusCode RuleStatusCode = "FORBIDDEN_403"
+	this.StatusCode = &statusCode
+	return &this
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *WafUpdateRuleRequest) GetName() string {
+	if o == nil || o.Name == nil {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateRuleRequest) GetNameOk() (*string, bool) {
+	if o == nil || o.Name == nil {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *WafUpdateRuleRequest) HasName() bool {
+	if o != nil && o.Name != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *WafUpdateRuleRequest) SetName(v string) {
+	o.Name = &v
+}
+
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *WafUpdateRuleRequest) GetDescription() string {
+	if o == nil || o.Description == nil {
+		var ret string
+		return ret
+	}
+	return *o.Description
+}
+
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateRuleRequest) GetDescriptionOk() (*string, bool) {
+	if o == nil || o.Description == nil {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *WafUpdateRuleRequest) HasDescription() bool {
+	if o != nil && o.Description != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *WafUpdateRuleRequest) SetDescription(v string) {
+	o.Description = &v
+}
+
+// GetConditions returns the Conditions field value if set, zero value otherwise.
+func (o *WafUpdateRuleRequest) GetConditions() []RuleCondition {
+	if o == nil || o.Conditions == nil {
+		var ret []RuleCondition
+		return ret
+	}
+	return *o.Conditions
+}
+
+// GetConditionsOk returns a tuple with the Conditions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateRuleRequest) GetConditionsOk() (*[]RuleCondition, bool) {
+	if o == nil || o.Conditions == nil {
+		return nil, false
+	}
+	return o.Conditions, true
+}
+
+// HasConditions returns a boolean if a field has been set.
+func (o *WafUpdateRuleRequest) HasConditions() bool {
+	if o != nil && o.Conditions != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetConditions gets a reference to the given []RuleCondition and assigns it to the Conditions field.
+func (o *WafUpdateRuleRequest) SetConditions(v []RuleCondition) {
+	o.Conditions = &v
+}
+
+// GetActionValue returns the ActionValue field value if set, zero value otherwise.
+func (o *WafUpdateRuleRequest) GetActionValue() WafRuleAction {
+	if o == nil || o.ActionValue == nil {
+		var ret WafRuleAction
+		return ret
+	}
+	return *o.ActionValue
+}
+
+// GetActionValueOk returns a tuple with the ActionValue field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateRuleRequest) GetActionValueOk() (*WafRuleAction, bool) {
+	if o == nil || o.ActionValue == nil {
+		return nil, false
+	}
+	return o.ActionValue, true
+}
+
+// HasActionValue returns a boolean if a field has been set.
+func (o *WafUpdateRuleRequest) HasActionValue() bool {
+	if o != nil && o.ActionValue != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetActionValue gets a reference to the given WafRuleAction and assigns it to the ActionValue field.
+func (o *WafUpdateRuleRequest) SetActionValue(v WafRuleAction) {
+	o.ActionValue = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *WafUpdateRuleRequest) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateRuleRequest) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *WafUpdateRuleRequest) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *WafUpdateRuleRequest) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+// GetStatusCode returns the StatusCode field value if set, zero value otherwise.
+func (o *WafUpdateRuleRequest) GetStatusCode() RuleStatusCode {
+	if o == nil || o.StatusCode == nil {
+		var ret RuleStatusCode
+		return ret
+	}
+	return *o.StatusCode
+}
+
+// GetStatusCodeOk returns a tuple with the StatusCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateRuleRequest) GetStatusCodeOk() (*RuleStatusCode, bool) {
+	if o == nil || o.StatusCode == nil {
+		return nil, false
+	}
+	return o.StatusCode, true
+}
+
+// HasStatusCode returns a boolean if a field has been set.
+func (o *WafUpdateRuleRequest) HasStatusCode() bool {
+	if o != nil && o.StatusCode != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatusCode gets a reference to the given RuleStatusCode and assigns it to the StatusCode field.
+func (o *WafUpdateRuleRequest) SetStatusCode(v RuleStatusCode) {
+	o.StatusCode = &v
+}
+
+// GetActionDuration returns the ActionDuration field value if set, zero value otherwise.
+func (o *WafUpdateRuleRequest) GetActionDuration() string {
+	if o == nil || o.ActionDuration == nil {
+		var ret string
+		return ret
+	}
+	return *o.ActionDuration
+}
+
+// GetActionDurationOk returns a tuple with the ActionDuration field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafUpdateRuleRequest) GetActionDurationOk() (*string, bool) {
+	if o == nil || o.ActionDuration == nil {
+		return nil, false
+	}
+	return o.ActionDuration, true
+}
+
+// HasActionDuration returns a boolean if a field has been set.
+func (o *WafUpdateRuleRequest) HasActionDuration() bool {
+	if o != nil && o.ActionDuration != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetActionDuration gets a reference to the given string and assigns it to the ActionDuration field.
+func (o *WafUpdateRuleRequest) SetActionDuration(v string) {
+	o.ActionDuration = &v
+}
+
+func (o WafUpdateRuleRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Name != nil {
+		toSerialize["name"] = o.Name
+	}
+	if o.Description != nil {
+		toSerialize["description"] = o.Description
+	}
+	if o.Conditions != nil {
+		toSerialize["conditions"] = o.Conditions
+	}
+	if o.ActionValue != nil {
+		toSerialize["actionValue"] = o.ActionValue
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	if o.StatusCode != nil {
+		toSerialize["statusCode"] = o.StatusCode
+	}
+	if o.ActionDuration != nil {
+		toSerialize["actionDuration"] = o.ActionDuration
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafUpdateRuleRequest struct {
+	value *WafUpdateRuleRequest
+	isSet bool
+}
+
+func (v NullableWafUpdateRuleRequest) Get() *WafUpdateRuleRequest {
+	return v.value
+}
+
+func (v *NullableWafUpdateRuleRequest) Set(val *WafUpdateRuleRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafUpdateRuleRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafUpdateRuleRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafUpdateRuleRequest(val *WafUpdateRuleRequest) *NullableWafUpdateRuleRequest {
+	return &NullableWafUpdateRuleRequest{value: val, isSet: true}
+}
+
+func (v NullableWafUpdateRuleRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafUpdateRuleRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

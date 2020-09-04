@@ -8,9 +8,142 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CustconfAccessLogs Enable/Disable access logs
 type CustconfAccessLogs struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Id *string `json:"id,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfAccessLogs instantiates a new CustconfAccessLogs object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfAccessLogs() *CustconfAccessLogs {
+	this := CustconfAccessLogs{}
+	return &this
+}
+
+// NewCustconfAccessLogsWithDefaults instantiates a new CustconfAccessLogs object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfAccessLogsWithDefaults() *CustconfAccessLogs {
+	this := CustconfAccessLogs{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfAccessLogs) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAccessLogs) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfAccessLogs) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfAccessLogs) SetId(v string) {
+	o.Id = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfAccessLogs) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAccessLogs) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfAccessLogs) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfAccessLogs) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfAccessLogs) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfAccessLogs struct {
+	value *CustconfAccessLogs
+	isSet bool
+}
+
+func (v NullableCustconfAccessLogs) Get() *CustconfAccessLogs {
+	return v.value
+}
+
+func (v *NullableCustconfAccessLogs) Set(val *CustconfAccessLogs) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfAccessLogs) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfAccessLogs) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfAccessLogs(val *CustconfAccessLogs) *NullableCustconfAccessLogs {
+	return &NullableCustconfAccessLogs{value: val, isSet: true}
+}
+
+func (v NullableCustconfAccessLogs) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfAccessLogs) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,14 +8,217 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // GetMetricsResponseMetricSeries A series of analytics data suitable for a graph
 type GetMetricsResponseMetricSeries struct {
 	// The type of data in the analytics set
-	Type string `json:"type,omitempty"`
+	Type *string `json:"type,omitempty"`
 	// A graphable key for the type of data in the analytics set
-	Key string `json:"key,omitempty"`
+	Key *string `json:"key,omitempty"`
 	// Descriptions of the CDN metrics' samples
-	Metrics []string `json:"metrics,omitempty"`
+	Metrics *[]string `json:"metrics,omitempty"`
 	// The CDN metrics' data points
-	Samples []GetMetricsResponseMetricSample `json:"samples,omitempty"`
+	Samples *[]GetMetricsResponseMetricSample `json:"samples,omitempty"`
+}
+
+// NewGetMetricsResponseMetricSeries instantiates a new GetMetricsResponseMetricSeries object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewGetMetricsResponseMetricSeries() *GetMetricsResponseMetricSeries {
+	this := GetMetricsResponseMetricSeries{}
+	return &this
+}
+
+// NewGetMetricsResponseMetricSeriesWithDefaults instantiates a new GetMetricsResponseMetricSeries object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewGetMetricsResponseMetricSeriesWithDefaults() *GetMetricsResponseMetricSeries {
+	this := GetMetricsResponseMetricSeries{}
+	return &this
+}
+
+// GetType returns the Type field value if set, zero value otherwise.
+func (o *GetMetricsResponseMetricSeries) GetType() string {
+	if o == nil || o.Type == nil {
+		var ret string
+		return ret
+	}
+	return *o.Type
+}
+
+// GetTypeOk returns a tuple with the Type field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetMetricsResponseMetricSeries) GetTypeOk() (*string, bool) {
+	if o == nil || o.Type == nil {
+		return nil, false
+	}
+	return o.Type, true
+}
+
+// HasType returns a boolean if a field has been set.
+func (o *GetMetricsResponseMetricSeries) HasType() bool {
+	if o != nil && o.Type != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetType gets a reference to the given string and assigns it to the Type field.
+func (o *GetMetricsResponseMetricSeries) SetType(v string) {
+	o.Type = &v
+}
+
+// GetKey returns the Key field value if set, zero value otherwise.
+func (o *GetMetricsResponseMetricSeries) GetKey() string {
+	if o == nil || o.Key == nil {
+		var ret string
+		return ret
+	}
+	return *o.Key
+}
+
+// GetKeyOk returns a tuple with the Key field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetMetricsResponseMetricSeries) GetKeyOk() (*string, bool) {
+	if o == nil || o.Key == nil {
+		return nil, false
+	}
+	return o.Key, true
+}
+
+// HasKey returns a boolean if a field has been set.
+func (o *GetMetricsResponseMetricSeries) HasKey() bool {
+	if o != nil && o.Key != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetKey gets a reference to the given string and assigns it to the Key field.
+func (o *GetMetricsResponseMetricSeries) SetKey(v string) {
+	o.Key = &v
+}
+
+// GetMetrics returns the Metrics field value if set, zero value otherwise.
+func (o *GetMetricsResponseMetricSeries) GetMetrics() []string {
+	if o == nil || o.Metrics == nil {
+		var ret []string
+		return ret
+	}
+	return *o.Metrics
+}
+
+// GetMetricsOk returns a tuple with the Metrics field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetMetricsResponseMetricSeries) GetMetricsOk() (*[]string, bool) {
+	if o == nil || o.Metrics == nil {
+		return nil, false
+	}
+	return o.Metrics, true
+}
+
+// HasMetrics returns a boolean if a field has been set.
+func (o *GetMetricsResponseMetricSeries) HasMetrics() bool {
+	if o != nil && o.Metrics != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMetrics gets a reference to the given []string and assigns it to the Metrics field.
+func (o *GetMetricsResponseMetricSeries) SetMetrics(v []string) {
+	o.Metrics = &v
+}
+
+// GetSamples returns the Samples field value if set, zero value otherwise.
+func (o *GetMetricsResponseMetricSeries) GetSamples() []GetMetricsResponseMetricSample {
+	if o == nil || o.Samples == nil {
+		var ret []GetMetricsResponseMetricSample
+		return ret
+	}
+	return *o.Samples
+}
+
+// GetSamplesOk returns a tuple with the Samples field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *GetMetricsResponseMetricSeries) GetSamplesOk() (*[]GetMetricsResponseMetricSample, bool) {
+	if o == nil || o.Samples == nil {
+		return nil, false
+	}
+	return o.Samples, true
+}
+
+// HasSamples returns a boolean if a field has been set.
+func (o *GetMetricsResponseMetricSeries) HasSamples() bool {
+	if o != nil && o.Samples != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSamples gets a reference to the given []GetMetricsResponseMetricSample and assigns it to the Samples field.
+func (o *GetMetricsResponseMetricSeries) SetSamples(v []GetMetricsResponseMetricSample) {
+	o.Samples = &v
+}
+
+func (o GetMetricsResponseMetricSeries) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Type != nil {
+		toSerialize["type"] = o.Type
+	}
+	if o.Key != nil {
+		toSerialize["key"] = o.Key
+	}
+	if o.Metrics != nil {
+		toSerialize["metrics"] = o.Metrics
+	}
+	if o.Samples != nil {
+		toSerialize["samples"] = o.Samples
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableGetMetricsResponseMetricSeries struct {
+	value *GetMetricsResponseMetricSeries
+	isSet bool
+}
+
+func (v NullableGetMetricsResponseMetricSeries) Get() *GetMetricsResponseMetricSeries {
+	return v.value
+}
+
+func (v *NullableGetMetricsResponseMetricSeries) Set(val *GetMetricsResponseMetricSeries) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableGetMetricsResponseMetricSeries) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableGetMetricsResponseMetricSeries) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableGetMetricsResponseMetricSeries(val *GetMetricsResponseMetricSeries) *NullableGetMetricsResponseMetricSeries {
+	return &NullableGetMetricsResponseMetricSeries{value: val, isSet: true}
+}
+
+func (v NullableGetMetricsResponseMetricSeries) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableGetMetricsResponseMetricSeries) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

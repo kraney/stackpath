@@ -8,11 +8,183 @@
  */
 
 package dns
+
+import (
+	"encoding/json"
+)
+
 // ZoneGetDiscoveryProviderDetailsResponse A response from a request to scan a domain name for information about its provider
 type ZoneGetDiscoveryProviderDetailsResponse struct {
-	DnsProvider ZoneDnsProvider `json:"dnsProvider,omitempty"`
+	DnsProvider *ZoneDnsProvider `json:"dnsProvider,omitempty"`
 	// Whether or not the provider requires authentication to scan or modify the domain
-	RequiresAuthentication bool `json:"requiresAuthentication,omitempty"`
+	RequiresAuthentication *bool `json:"requiresAuthentication,omitempty"`
 	// The domain's authoritative nameservers
-	Nameservers []string `json:"nameservers,omitempty"`
+	Nameservers *[]string `json:"nameservers,omitempty"`
+}
+
+// NewZoneGetDiscoveryProviderDetailsResponse instantiates a new ZoneGetDiscoveryProviderDetailsResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewZoneGetDiscoveryProviderDetailsResponse() *ZoneGetDiscoveryProviderDetailsResponse {
+	this := ZoneGetDiscoveryProviderDetailsResponse{}
+	var dnsProvider ZoneDnsProvider = "GENERAL"
+	this.DnsProvider = &dnsProvider
+	return &this
+}
+
+// NewZoneGetDiscoveryProviderDetailsResponseWithDefaults instantiates a new ZoneGetDiscoveryProviderDetailsResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewZoneGetDiscoveryProviderDetailsResponseWithDefaults() *ZoneGetDiscoveryProviderDetailsResponse {
+	this := ZoneGetDiscoveryProviderDetailsResponse{}
+	var dnsProvider ZoneDnsProvider = "GENERAL"
+	this.DnsProvider = &dnsProvider
+	return &this
+}
+
+// GetDnsProvider returns the DnsProvider field value if set, zero value otherwise.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) GetDnsProvider() ZoneDnsProvider {
+	if o == nil || o.DnsProvider == nil {
+		var ret ZoneDnsProvider
+		return ret
+	}
+	return *o.DnsProvider
+}
+
+// GetDnsProviderOk returns a tuple with the DnsProvider field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) GetDnsProviderOk() (*ZoneDnsProvider, bool) {
+	if o == nil || o.DnsProvider == nil {
+		return nil, false
+	}
+	return o.DnsProvider, true
+}
+
+// HasDnsProvider returns a boolean if a field has been set.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) HasDnsProvider() bool {
+	if o != nil && o.DnsProvider != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDnsProvider gets a reference to the given ZoneDnsProvider and assigns it to the DnsProvider field.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) SetDnsProvider(v ZoneDnsProvider) {
+	o.DnsProvider = &v
+}
+
+// GetRequiresAuthentication returns the RequiresAuthentication field value if set, zero value otherwise.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) GetRequiresAuthentication() bool {
+	if o == nil || o.RequiresAuthentication == nil {
+		var ret bool
+		return ret
+	}
+	return *o.RequiresAuthentication
+}
+
+// GetRequiresAuthenticationOk returns a tuple with the RequiresAuthentication field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) GetRequiresAuthenticationOk() (*bool, bool) {
+	if o == nil || o.RequiresAuthentication == nil {
+		return nil, false
+	}
+	return o.RequiresAuthentication, true
+}
+
+// HasRequiresAuthentication returns a boolean if a field has been set.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) HasRequiresAuthentication() bool {
+	if o != nil && o.RequiresAuthentication != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRequiresAuthentication gets a reference to the given bool and assigns it to the RequiresAuthentication field.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) SetRequiresAuthentication(v bool) {
+	o.RequiresAuthentication = &v
+}
+
+// GetNameservers returns the Nameservers field value if set, zero value otherwise.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) GetNameservers() []string {
+	if o == nil || o.Nameservers == nil {
+		var ret []string
+		return ret
+	}
+	return *o.Nameservers
+}
+
+// GetNameserversOk returns a tuple with the Nameservers field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) GetNameserversOk() (*[]string, bool) {
+	if o == nil || o.Nameservers == nil {
+		return nil, false
+	}
+	return o.Nameservers, true
+}
+
+// HasNameservers returns a boolean if a field has been set.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) HasNameservers() bool {
+	if o != nil && o.Nameservers != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetNameservers gets a reference to the given []string and assigns it to the Nameservers field.
+func (o *ZoneGetDiscoveryProviderDetailsResponse) SetNameservers(v []string) {
+	o.Nameservers = &v
+}
+
+func (o ZoneGetDiscoveryProviderDetailsResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.DnsProvider != nil {
+		toSerialize["dnsProvider"] = o.DnsProvider
+	}
+	if o.RequiresAuthentication != nil {
+		toSerialize["requiresAuthentication"] = o.RequiresAuthentication
+	}
+	if o.Nameservers != nil {
+		toSerialize["nameservers"] = o.Nameservers
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableZoneGetDiscoveryProviderDetailsResponse struct {
+	value *ZoneGetDiscoveryProviderDetailsResponse
+	isSet bool
+}
+
+func (v NullableZoneGetDiscoveryProviderDetailsResponse) Get() *ZoneGetDiscoveryProviderDetailsResponse {
+	return v.value
+}
+
+func (v *NullableZoneGetDiscoveryProviderDetailsResponse) Set(val *ZoneGetDiscoveryProviderDetailsResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableZoneGetDiscoveryProviderDetailsResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableZoneGetDiscoveryProviderDetailsResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableZoneGetDiscoveryProviderDetailsResponse(val *ZoneGetDiscoveryProviderDetailsResponse) *NullableZoneGetDiscoveryProviderDetailsResponse {
+	return &NullableZoneGetDiscoveryProviderDetailsResponse{value: val, isSet: true}
+}
+
+func (v NullableZoneGetDiscoveryProviderDetailsResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableZoneGetDiscoveryProviderDetailsResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

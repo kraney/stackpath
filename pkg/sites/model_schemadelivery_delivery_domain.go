@@ -8,13 +8,144 @@
  */
 
 package sites
+
 import (
+	"encoding/json"
 	"time"
 )
+
 // SchemadeliveryDeliveryDomain An individual delivery domain
 type SchemadeliveryDeliveryDomain struct {
 	// A site's domain name
-	Domain string `json:"domain,omitempty"`
+	Domain *string `json:"domain,omitempty"`
 	// The date the domain was validated to be pointing to us
-	ValidatedAt time.Time `json:"validatedAt,omitempty"`
+	ValidatedAt *time.Time `json:"validatedAt,omitempty"`
+}
+
+// NewSchemadeliveryDeliveryDomain instantiates a new SchemadeliveryDeliveryDomain object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewSchemadeliveryDeliveryDomain() *SchemadeliveryDeliveryDomain {
+	this := SchemadeliveryDeliveryDomain{}
+	return &this
+}
+
+// NewSchemadeliveryDeliveryDomainWithDefaults instantiates a new SchemadeliveryDeliveryDomain object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewSchemadeliveryDeliveryDomainWithDefaults() *SchemadeliveryDeliveryDomain {
+	this := SchemadeliveryDeliveryDomain{}
+	return &this
+}
+
+// GetDomain returns the Domain field value if set, zero value otherwise.
+func (o *SchemadeliveryDeliveryDomain) GetDomain() string {
+	if o == nil || o.Domain == nil {
+		var ret string
+		return ret
+	}
+	return *o.Domain
+}
+
+// GetDomainOk returns a tuple with the Domain field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemadeliveryDeliveryDomain) GetDomainOk() (*string, bool) {
+	if o == nil || o.Domain == nil {
+		return nil, false
+	}
+	return o.Domain, true
+}
+
+// HasDomain returns a boolean if a field has been set.
+func (o *SchemadeliveryDeliveryDomain) HasDomain() bool {
+	if o != nil && o.Domain != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDomain gets a reference to the given string and assigns it to the Domain field.
+func (o *SchemadeliveryDeliveryDomain) SetDomain(v string) {
+	o.Domain = &v
+}
+
+// GetValidatedAt returns the ValidatedAt field value if set, zero value otherwise.
+func (o *SchemadeliveryDeliveryDomain) GetValidatedAt() time.Time {
+	if o == nil || o.ValidatedAt == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.ValidatedAt
+}
+
+// GetValidatedAtOk returns a tuple with the ValidatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemadeliveryDeliveryDomain) GetValidatedAtOk() (*time.Time, bool) {
+	if o == nil || o.ValidatedAt == nil {
+		return nil, false
+	}
+	return o.ValidatedAt, true
+}
+
+// HasValidatedAt returns a boolean if a field has been set.
+func (o *SchemadeliveryDeliveryDomain) HasValidatedAt() bool {
+	if o != nil && o.ValidatedAt != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetValidatedAt gets a reference to the given time.Time and assigns it to the ValidatedAt field.
+func (o *SchemadeliveryDeliveryDomain) SetValidatedAt(v time.Time) {
+	o.ValidatedAt = &v
+}
+
+func (o SchemadeliveryDeliveryDomain) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Domain != nil {
+		toSerialize["domain"] = o.Domain
+	}
+	if o.ValidatedAt != nil {
+		toSerialize["validatedAt"] = o.ValidatedAt
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableSchemadeliveryDeliveryDomain struct {
+	value *SchemadeliveryDeliveryDomain
+	isSet bool
+}
+
+func (v NullableSchemadeliveryDeliveryDomain) Get() *SchemadeliveryDeliveryDomain {
+	return v.value
+}
+
+func (v *NullableSchemadeliveryDeliveryDomain) Set(val *SchemadeliveryDeliveryDomain) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableSchemadeliveryDeliveryDomain) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableSchemadeliveryDeliveryDomain) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableSchemadeliveryDeliveryDomain(val *SchemadeliveryDeliveryDomain) *NullableSchemadeliveryDeliveryDomain {
+	return &NullableSchemadeliveryDeliveryDomain{value: val, isSet: true}
+}
+
+func (v NullableSchemadeliveryDeliveryDomain) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableSchemadeliveryDeliveryDomain) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

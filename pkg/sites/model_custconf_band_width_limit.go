@@ -8,13 +8,216 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfBandWidthLimit The pattern based bandwidth throttling policy allows you to limit the transfer rate of assets to end users based on a set of rules matching the request's HTTP User-Agent and/or the path. Each rule must be expressed in the following format: <User-Agent Pattern>:<path pattern 1, path pattern 2>. For example, the pattern:  \"Mozilla*:*.mp3,*dir*.exe|*IE*:*.jpg,*.zip|*ios 6*:* \" will match all MP3 files and EXE files containing the substring \"dir\" that are requested by a User-Agent containing the substring \"Mozilla,\" all JPG and ZIP files requested by a User-Agent containing the substring \"IE,\" and all requests made by User-Agents containing the substring \"ios 6.\"
 type CustconfBandWidthLimit struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// String of values delimited by a '|' character. These are pattern match rules to use for applying rate limiting on requests.
-	Rule string `json:"rule,omitempty"`
+	Rule *string `json:"rule,omitempty"`
 	// These are the initial bytes (ri) and the sustained rate (rs) query string parameters to use for this rule. Example: ri=100,rs=1000
-	Values string `json:"values,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Values *string `json:"values,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfBandWidthLimit instantiates a new CustconfBandWidthLimit object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfBandWidthLimit() *CustconfBandWidthLimit {
+	this := CustconfBandWidthLimit{}
+	return &this
+}
+
+// NewCustconfBandWidthLimitWithDefaults instantiates a new CustconfBandWidthLimit object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfBandWidthLimitWithDefaults() *CustconfBandWidthLimit {
+	this := CustconfBandWidthLimit{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfBandWidthLimit) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandWidthLimit) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfBandWidthLimit) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfBandWidthLimit) SetId(v string) {
+	o.Id = &v
+}
+
+// GetRule returns the Rule field value if set, zero value otherwise.
+func (o *CustconfBandWidthLimit) GetRule() string {
+	if o == nil || o.Rule == nil {
+		var ret string
+		return ret
+	}
+	return *o.Rule
+}
+
+// GetRuleOk returns a tuple with the Rule field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandWidthLimit) GetRuleOk() (*string, bool) {
+	if o == nil || o.Rule == nil {
+		return nil, false
+	}
+	return o.Rule, true
+}
+
+// HasRule returns a boolean if a field has been set.
+func (o *CustconfBandWidthLimit) HasRule() bool {
+	if o != nil && o.Rule != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRule gets a reference to the given string and assigns it to the Rule field.
+func (o *CustconfBandWidthLimit) SetRule(v string) {
+	o.Rule = &v
+}
+
+// GetValues returns the Values field value if set, zero value otherwise.
+func (o *CustconfBandWidthLimit) GetValues() string {
+	if o == nil || o.Values == nil {
+		var ret string
+		return ret
+	}
+	return *o.Values
+}
+
+// GetValuesOk returns a tuple with the Values field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandWidthLimit) GetValuesOk() (*string, bool) {
+	if o == nil || o.Values == nil {
+		return nil, false
+	}
+	return o.Values, true
+}
+
+// HasValues returns a boolean if a field has been set.
+func (o *CustconfBandWidthLimit) HasValues() bool {
+	if o != nil && o.Values != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetValues gets a reference to the given string and assigns it to the Values field.
+func (o *CustconfBandWidthLimit) SetValues(v string) {
+	o.Values = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfBandWidthLimit) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfBandWidthLimit) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfBandWidthLimit) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfBandWidthLimit) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfBandWidthLimit) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Rule != nil {
+		toSerialize["rule"] = o.Rule
+	}
+	if o.Values != nil {
+		toSerialize["values"] = o.Values
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfBandWidthLimit struct {
+	value *CustconfBandWidthLimit
+	isSet bool
+}
+
+func (v NullableCustconfBandWidthLimit) Get() *CustconfBandWidthLimit {
+	return v.value
+}
+
+func (v *NullableCustconfBandWidthLimit) Set(val *CustconfBandWidthLimit) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfBandWidthLimit) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfBandWidthLimit) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfBandWidthLimit(val *CustconfBandWidthLimit) *NullableCustconfBandWidthLimit {
+	return &NullableCustconfBandWidthLimit{value: val, isSet: true}
+}
+
+func (v NullableCustconfBandWidthLimit) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfBandWidthLimit) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

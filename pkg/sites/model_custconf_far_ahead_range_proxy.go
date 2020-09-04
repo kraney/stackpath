@@ -8,10 +8,178 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfFarAheadRangeProxy struct for CustconfFarAheadRangeProxy
 type CustconfFarAheadRangeProxy struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
-	ThresholdBytes float32 `json:"thresholdBytes,omitempty"`
+	Id *string `json:"id,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+	ThresholdBytes *float32 `json:"thresholdBytes,omitempty"`
+}
+
+// NewCustconfFarAheadRangeProxy instantiates a new CustconfFarAheadRangeProxy object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfFarAheadRangeProxy() *CustconfFarAheadRangeProxy {
+	this := CustconfFarAheadRangeProxy{}
+	return &this
+}
+
+// NewCustconfFarAheadRangeProxyWithDefaults instantiates a new CustconfFarAheadRangeProxy object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfFarAheadRangeProxyWithDefaults() *CustconfFarAheadRangeProxy {
+	this := CustconfFarAheadRangeProxy{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfFarAheadRangeProxy) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfFarAheadRangeProxy) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfFarAheadRangeProxy) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfFarAheadRangeProxy) SetId(v string) {
+	o.Id = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfFarAheadRangeProxy) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfFarAheadRangeProxy) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfFarAheadRangeProxy) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfFarAheadRangeProxy) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+// GetThresholdBytes returns the ThresholdBytes field value if set, zero value otherwise.
+func (o *CustconfFarAheadRangeProxy) GetThresholdBytes() float32 {
+	if o == nil || o.ThresholdBytes == nil {
+		var ret float32
+		return ret
+	}
+	return *o.ThresholdBytes
+}
+
+// GetThresholdBytesOk returns a tuple with the ThresholdBytes field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfFarAheadRangeProxy) GetThresholdBytesOk() (*float32, bool) {
+	if o == nil || o.ThresholdBytes == nil {
+		return nil, false
+	}
+	return o.ThresholdBytes, true
+}
+
+// HasThresholdBytes returns a boolean if a field has been set.
+func (o *CustconfFarAheadRangeProxy) HasThresholdBytes() bool {
+	if o != nil && o.ThresholdBytes != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetThresholdBytes gets a reference to the given float32 and assigns it to the ThresholdBytes field.
+func (o *CustconfFarAheadRangeProxy) SetThresholdBytes(v float32) {
+	o.ThresholdBytes = &v
+}
+
+func (o CustconfFarAheadRangeProxy) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	if o.ThresholdBytes != nil {
+		toSerialize["thresholdBytes"] = o.ThresholdBytes
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfFarAheadRangeProxy struct {
+	value *CustconfFarAheadRangeProxy
+	isSet bool
+}
+
+func (v NullableCustconfFarAheadRangeProxy) Get() *CustconfFarAheadRangeProxy {
+	return v.value
+}
+
+func (v *NullableCustconfFarAheadRangeProxy) Set(val *CustconfFarAheadRangeProxy) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfFarAheadRangeProxy) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfFarAheadRangeProxy) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfFarAheadRangeProxy(val *CustconfFarAheadRangeProxy) *NullableCustconfFarAheadRangeProxy {
+	return &NullableCustconfFarAheadRangeProxy{value: val, isSet: true}
+}
+
+func (v NullableCustconfFarAheadRangeProxy) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfFarAheadRangeProxy) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

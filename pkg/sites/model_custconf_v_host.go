@@ -8,11 +8,179 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfVHost A hostname policy allows you to specify an alternate domain name that you want to use to access content from your CDN container.
 type CustconfVHost struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// This is the hostname you want to enable in this policy. Note: You must configure your container's CNAME record with your DNS provider to enable this hostname to deliver content.
-	Domain string `json:"domain,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Domain *string `json:"domain,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfVHost instantiates a new CustconfVHost object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfVHost() *CustconfVHost {
+	this := CustconfVHost{}
+	return &this
+}
+
+// NewCustconfVHostWithDefaults instantiates a new CustconfVHost object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfVHostWithDefaults() *CustconfVHost {
+	this := CustconfVHost{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfVHost) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfVHost) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfVHost) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfVHost) SetId(v string) {
+	o.Id = &v
+}
+
+// GetDomain returns the Domain field value if set, zero value otherwise.
+func (o *CustconfVHost) GetDomain() string {
+	if o == nil || o.Domain == nil {
+		var ret string
+		return ret
+	}
+	return *o.Domain
+}
+
+// GetDomainOk returns a tuple with the Domain field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfVHost) GetDomainOk() (*string, bool) {
+	if o == nil || o.Domain == nil {
+		return nil, false
+	}
+	return o.Domain, true
+}
+
+// HasDomain returns a boolean if a field has been set.
+func (o *CustconfVHost) HasDomain() bool {
+	if o != nil && o.Domain != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDomain gets a reference to the given string and assigns it to the Domain field.
+func (o *CustconfVHost) SetDomain(v string) {
+	o.Domain = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfVHost) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfVHost) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfVHost) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfVHost) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfVHost) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Domain != nil {
+		toSerialize["domain"] = o.Domain
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfVHost struct {
+	value *CustconfVHost
+	isSet bool
+}
+
+func (v NullableCustconfVHost) Get() *CustconfVHost {
+	return v.value
+}
+
+func (v *NullableCustconfVHost) Set(val *CustconfVHost) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfVHost) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfVHost) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfVHost(val *CustconfVHost) *NullableCustconfVHost {
+	return &NullableCustconfVHost{value: val, isSet: true}
+}
+
+func (v NullableCustconfVHost) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfVHost) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

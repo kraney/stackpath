@@ -8,19 +8,327 @@
  */
 
 package sites
-// DeliveryHttpOrigin An HTTP origin
-type DeliveryHttpOrigin struct {
+
+import (
+	"encoding/json"
+)
+
+// DeliveryHTTPOrigin An HTTP origin
+type DeliveryHTTPOrigin struct {
 	// The origin's HTTP request path
-	Path string `json:"path,omitempty"`
+	Path *string `json:"path,omitempty"`
 	// The origin's HTTP request hostname
-	Hostname string `json:"hostname,omitempty"`
+	Hostname *string `json:"hostname,omitempty"`
 	// The origin's HTTP request port  Set this to 0 to remove this value
-	Port int32 `json:"port,omitempty"`
+	Port *int32 `json:"port,omitempty"`
 	// The origin's HTTPS request port  Set this to 0 to remove this value
-	SecurePort int32 `json:"securePort,omitempty"`
-	Authentication DeliveryOriginAuthentication `json:"authentication,omitempty"`
+	SecurePort *int32 `json:"securePort,omitempty"`
+	Authentication *DeliveryOriginAuthentication `json:"authentication,omitempty"`
 	// Verify the origin's SSL certificate when requesting from the origin
-	VerifyCertificate bool `json:"verifyCertificate,omitempty"`
+	VerifyCertificate *bool `json:"verifyCertificate,omitempty"`
 	// The CommonName to validate SSL origin requests from. This value needs to be provided when enabling `verify_certificate`.
-	CertificateCommonName string `json:"certificateCommonName,omitempty"`
+	CertificateCommonName *string `json:"certificateCommonName,omitempty"`
+}
+
+// NewDeliveryHTTPOrigin instantiates a new DeliveryHTTPOrigin object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewDeliveryHTTPOrigin() *DeliveryHTTPOrigin {
+	this := DeliveryHTTPOrigin{}
+	return &this
+}
+
+// NewDeliveryHTTPOriginWithDefaults instantiates a new DeliveryHTTPOrigin object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewDeliveryHTTPOriginWithDefaults() *DeliveryHTTPOrigin {
+	this := DeliveryHTTPOrigin{}
+	return &this
+}
+
+// GetPath returns the Path field value if set, zero value otherwise.
+func (o *DeliveryHTTPOrigin) GetPath() string {
+	if o == nil || o.Path == nil {
+		var ret string
+		return ret
+	}
+	return *o.Path
+}
+
+// GetPathOk returns a tuple with the Path field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryHTTPOrigin) GetPathOk() (*string, bool) {
+	if o == nil || o.Path == nil {
+		return nil, false
+	}
+	return o.Path, true
+}
+
+// HasPath returns a boolean if a field has been set.
+func (o *DeliveryHTTPOrigin) HasPath() bool {
+	if o != nil && o.Path != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPath gets a reference to the given string and assigns it to the Path field.
+func (o *DeliveryHTTPOrigin) SetPath(v string) {
+	o.Path = &v
+}
+
+// GetHostname returns the Hostname field value if set, zero value otherwise.
+func (o *DeliveryHTTPOrigin) GetHostname() string {
+	if o == nil || o.Hostname == nil {
+		var ret string
+		return ret
+	}
+	return *o.Hostname
+}
+
+// GetHostnameOk returns a tuple with the Hostname field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryHTTPOrigin) GetHostnameOk() (*string, bool) {
+	if o == nil || o.Hostname == nil {
+		return nil, false
+	}
+	return o.Hostname, true
+}
+
+// HasHostname returns a boolean if a field has been set.
+func (o *DeliveryHTTPOrigin) HasHostname() bool {
+	if o != nil && o.Hostname != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHostname gets a reference to the given string and assigns it to the Hostname field.
+func (o *DeliveryHTTPOrigin) SetHostname(v string) {
+	o.Hostname = &v
+}
+
+// GetPort returns the Port field value if set, zero value otherwise.
+func (o *DeliveryHTTPOrigin) GetPort() int32 {
+	if o == nil || o.Port == nil {
+		var ret int32
+		return ret
+	}
+	return *o.Port
+}
+
+// GetPortOk returns a tuple with the Port field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryHTTPOrigin) GetPortOk() (*int32, bool) {
+	if o == nil || o.Port == nil {
+		return nil, false
+	}
+	return o.Port, true
+}
+
+// HasPort returns a boolean if a field has been set.
+func (o *DeliveryHTTPOrigin) HasPort() bool {
+	if o != nil && o.Port != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPort gets a reference to the given int32 and assigns it to the Port field.
+func (o *DeliveryHTTPOrigin) SetPort(v int32) {
+	o.Port = &v
+}
+
+// GetSecurePort returns the SecurePort field value if set, zero value otherwise.
+func (o *DeliveryHTTPOrigin) GetSecurePort() int32 {
+	if o == nil || o.SecurePort == nil {
+		var ret int32
+		return ret
+	}
+	return *o.SecurePort
+}
+
+// GetSecurePortOk returns a tuple with the SecurePort field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryHTTPOrigin) GetSecurePortOk() (*int32, bool) {
+	if o == nil || o.SecurePort == nil {
+		return nil, false
+	}
+	return o.SecurePort, true
+}
+
+// HasSecurePort returns a boolean if a field has been set.
+func (o *DeliveryHTTPOrigin) HasSecurePort() bool {
+	if o != nil && o.SecurePort != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSecurePort gets a reference to the given int32 and assigns it to the SecurePort field.
+func (o *DeliveryHTTPOrigin) SetSecurePort(v int32) {
+	o.SecurePort = &v
+}
+
+// GetAuthentication returns the Authentication field value if set, zero value otherwise.
+func (o *DeliveryHTTPOrigin) GetAuthentication() DeliveryOriginAuthentication {
+	if o == nil || o.Authentication == nil {
+		var ret DeliveryOriginAuthentication
+		return ret
+	}
+	return *o.Authentication
+}
+
+// GetAuthenticationOk returns a tuple with the Authentication field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryHTTPOrigin) GetAuthenticationOk() (*DeliveryOriginAuthentication, bool) {
+	if o == nil || o.Authentication == nil {
+		return nil, false
+	}
+	return o.Authentication, true
+}
+
+// HasAuthentication returns a boolean if a field has been set.
+func (o *DeliveryHTTPOrigin) HasAuthentication() bool {
+	if o != nil && o.Authentication != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAuthentication gets a reference to the given DeliveryOriginAuthentication and assigns it to the Authentication field.
+func (o *DeliveryHTTPOrigin) SetAuthentication(v DeliveryOriginAuthentication) {
+	o.Authentication = &v
+}
+
+// GetVerifyCertificate returns the VerifyCertificate field value if set, zero value otherwise.
+func (o *DeliveryHTTPOrigin) GetVerifyCertificate() bool {
+	if o == nil || o.VerifyCertificate == nil {
+		var ret bool
+		return ret
+	}
+	return *o.VerifyCertificate
+}
+
+// GetVerifyCertificateOk returns a tuple with the VerifyCertificate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryHTTPOrigin) GetVerifyCertificateOk() (*bool, bool) {
+	if o == nil || o.VerifyCertificate == nil {
+		return nil, false
+	}
+	return o.VerifyCertificate, true
+}
+
+// HasVerifyCertificate returns a boolean if a field has been set.
+func (o *DeliveryHTTPOrigin) HasVerifyCertificate() bool {
+	if o != nil && o.VerifyCertificate != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetVerifyCertificate gets a reference to the given bool and assigns it to the VerifyCertificate field.
+func (o *DeliveryHTTPOrigin) SetVerifyCertificate(v bool) {
+	o.VerifyCertificate = &v
+}
+
+// GetCertificateCommonName returns the CertificateCommonName field value if set, zero value otherwise.
+func (o *DeliveryHTTPOrigin) GetCertificateCommonName() string {
+	if o == nil || o.CertificateCommonName == nil {
+		var ret string
+		return ret
+	}
+	return *o.CertificateCommonName
+}
+
+// GetCertificateCommonNameOk returns a tuple with the CertificateCommonName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryHTTPOrigin) GetCertificateCommonNameOk() (*string, bool) {
+	if o == nil || o.CertificateCommonName == nil {
+		return nil, false
+	}
+	return o.CertificateCommonName, true
+}
+
+// HasCertificateCommonName returns a boolean if a field has been set.
+func (o *DeliveryHTTPOrigin) HasCertificateCommonName() bool {
+	if o != nil && o.CertificateCommonName != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCertificateCommonName gets a reference to the given string and assigns it to the CertificateCommonName field.
+func (o *DeliveryHTTPOrigin) SetCertificateCommonName(v string) {
+	o.CertificateCommonName = &v
+}
+
+func (o DeliveryHTTPOrigin) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Path != nil {
+		toSerialize["path"] = o.Path
+	}
+	if o.Hostname != nil {
+		toSerialize["hostname"] = o.Hostname
+	}
+	if o.Port != nil {
+		toSerialize["port"] = o.Port
+	}
+	if o.SecurePort != nil {
+		toSerialize["securePort"] = o.SecurePort
+	}
+	if o.Authentication != nil {
+		toSerialize["authentication"] = o.Authentication
+	}
+	if o.VerifyCertificate != nil {
+		toSerialize["verifyCertificate"] = o.VerifyCertificate
+	}
+	if o.CertificateCommonName != nil {
+		toSerialize["certificateCommonName"] = o.CertificateCommonName
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableDeliveryHTTPOrigin struct {
+	value *DeliveryHTTPOrigin
+	isSet bool
+}
+
+func (v NullableDeliveryHTTPOrigin) Get() *DeliveryHTTPOrigin {
+	return v.value
+}
+
+func (v *NullableDeliveryHTTPOrigin) Set(val *DeliveryHTTPOrigin) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliveryHTTPOrigin) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliveryHTTPOrigin) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliveryHTTPOrigin(val *DeliveryHTTPOrigin) *NullableDeliveryHTTPOrigin {
+	return &NullableDeliveryHTTPOrigin{value: val, isSet: true}
+}
+
+func (v NullableDeliveryHTTPOrigin) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliveryHTTPOrigin) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,17 +8,325 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfRobotsTxt struct for CustconfRobotsTxt
 type CustconfRobotsTxt struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
-	File string `json:"file,omitempty"`
-	CacheControlHeader string `json:"cacheControlHeader,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Id *string `json:"id,omitempty"`
+	File *string `json:"file,omitempty"`
+	CacheControlHeader *string `json:"cacheControlHeader,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// String of values delimited by a ',' character.
-	MethodFilter string `json:"methodFilter,omitempty"`
+	MethodFilter *string `json:"methodFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	PathFilter string `json:"pathFilter,omitempty"`
+	PathFilter *string `json:"pathFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	HeaderFilter string `json:"headerFilter,omitempty"`
+	HeaderFilter *string `json:"headerFilter,omitempty"`
+}
+
+// NewCustconfRobotsTxt instantiates a new CustconfRobotsTxt object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfRobotsTxt() *CustconfRobotsTxt {
+	this := CustconfRobotsTxt{}
+	return &this
+}
+
+// NewCustconfRobotsTxtWithDefaults instantiates a new CustconfRobotsTxt object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfRobotsTxtWithDefaults() *CustconfRobotsTxt {
+	this := CustconfRobotsTxt{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfRobotsTxt) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRobotsTxt) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfRobotsTxt) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfRobotsTxt) SetId(v string) {
+	o.Id = &v
+}
+
+// GetFile returns the File field value if set, zero value otherwise.
+func (o *CustconfRobotsTxt) GetFile() string {
+	if o == nil || o.File == nil {
+		var ret string
+		return ret
+	}
+	return *o.File
+}
+
+// GetFileOk returns a tuple with the File field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRobotsTxt) GetFileOk() (*string, bool) {
+	if o == nil || o.File == nil {
+		return nil, false
+	}
+	return o.File, true
+}
+
+// HasFile returns a boolean if a field has been set.
+func (o *CustconfRobotsTxt) HasFile() bool {
+	if o != nil && o.File != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetFile gets a reference to the given string and assigns it to the File field.
+func (o *CustconfRobotsTxt) SetFile(v string) {
+	o.File = &v
+}
+
+// GetCacheControlHeader returns the CacheControlHeader field value if set, zero value otherwise.
+func (o *CustconfRobotsTxt) GetCacheControlHeader() string {
+	if o == nil || o.CacheControlHeader == nil {
+		var ret string
+		return ret
+	}
+	return *o.CacheControlHeader
+}
+
+// GetCacheControlHeaderOk returns a tuple with the CacheControlHeader field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRobotsTxt) GetCacheControlHeaderOk() (*string, bool) {
+	if o == nil || o.CacheControlHeader == nil {
+		return nil, false
+	}
+	return o.CacheControlHeader, true
+}
+
+// HasCacheControlHeader returns a boolean if a field has been set.
+func (o *CustconfRobotsTxt) HasCacheControlHeader() bool {
+	if o != nil && o.CacheControlHeader != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCacheControlHeader gets a reference to the given string and assigns it to the CacheControlHeader field.
+func (o *CustconfRobotsTxt) SetCacheControlHeader(v string) {
+	o.CacheControlHeader = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfRobotsTxt) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRobotsTxt) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfRobotsTxt) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfRobotsTxt) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+// GetMethodFilter returns the MethodFilter field value if set, zero value otherwise.
+func (o *CustconfRobotsTxt) GetMethodFilter() string {
+	if o == nil || o.MethodFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.MethodFilter
+}
+
+// GetMethodFilterOk returns a tuple with the MethodFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRobotsTxt) GetMethodFilterOk() (*string, bool) {
+	if o == nil || o.MethodFilter == nil {
+		return nil, false
+	}
+	return o.MethodFilter, true
+}
+
+// HasMethodFilter returns a boolean if a field has been set.
+func (o *CustconfRobotsTxt) HasMethodFilter() bool {
+	if o != nil && o.MethodFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMethodFilter gets a reference to the given string and assigns it to the MethodFilter field.
+func (o *CustconfRobotsTxt) SetMethodFilter(v string) {
+	o.MethodFilter = &v
+}
+
+// GetPathFilter returns the PathFilter field value if set, zero value otherwise.
+func (o *CustconfRobotsTxt) GetPathFilter() string {
+	if o == nil || o.PathFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.PathFilter
+}
+
+// GetPathFilterOk returns a tuple with the PathFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRobotsTxt) GetPathFilterOk() (*string, bool) {
+	if o == nil || o.PathFilter == nil {
+		return nil, false
+	}
+	return o.PathFilter, true
+}
+
+// HasPathFilter returns a boolean if a field has been set.
+func (o *CustconfRobotsTxt) HasPathFilter() bool {
+	if o != nil && o.PathFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPathFilter gets a reference to the given string and assigns it to the PathFilter field.
+func (o *CustconfRobotsTxt) SetPathFilter(v string) {
+	o.PathFilter = &v
+}
+
+// GetHeaderFilter returns the HeaderFilter field value if set, zero value otherwise.
+func (o *CustconfRobotsTxt) GetHeaderFilter() string {
+	if o == nil || o.HeaderFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.HeaderFilter
+}
+
+// GetHeaderFilterOk returns a tuple with the HeaderFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRobotsTxt) GetHeaderFilterOk() (*string, bool) {
+	if o == nil || o.HeaderFilter == nil {
+		return nil, false
+	}
+	return o.HeaderFilter, true
+}
+
+// HasHeaderFilter returns a boolean if a field has been set.
+func (o *CustconfRobotsTxt) HasHeaderFilter() bool {
+	if o != nil && o.HeaderFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHeaderFilter gets a reference to the given string and assigns it to the HeaderFilter field.
+func (o *CustconfRobotsTxt) SetHeaderFilter(v string) {
+	o.HeaderFilter = &v
+}
+
+func (o CustconfRobotsTxt) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.File != nil {
+		toSerialize["file"] = o.File
+	}
+	if o.CacheControlHeader != nil {
+		toSerialize["cacheControlHeader"] = o.CacheControlHeader
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	if o.MethodFilter != nil {
+		toSerialize["methodFilter"] = o.MethodFilter
+	}
+	if o.PathFilter != nil {
+		toSerialize["pathFilter"] = o.PathFilter
+	}
+	if o.HeaderFilter != nil {
+		toSerialize["headerFilter"] = o.HeaderFilter
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfRobotsTxt struct {
+	value *CustconfRobotsTxt
+	isSet bool
+}
+
+func (v NullableCustconfRobotsTxt) Get() *CustconfRobotsTxt {
+	return v.value
+}
+
+func (v *NullableCustconfRobotsTxt) Set(val *CustconfRobotsTxt) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfRobotsTxt) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfRobotsTxt) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfRobotsTxt(val *CustconfRobotsTxt) *NullableCustconfRobotsTxt {
+	return &NullableCustconfRobotsTxt{value: val, isSet: true}
+}
+
+func (v NullableCustconfRobotsTxt) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfRobotsTxt) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

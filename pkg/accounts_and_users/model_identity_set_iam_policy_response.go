@@ -8,9 +8,142 @@
  */
 
 package accounts_and_users
-// IdentitySetIamPolicyResponse A response from a request to set a StackPath account's policy
-type IdentitySetIamPolicyResponse struct {
+
+import (
+	"encoding/json"
+)
+
+// IdentitySetIAMPolicyResponse A response from a request to set a StackPath account's policy
+type IdentitySetIAMPolicyResponse struct {
 	// The ID of the StackPath account the policy is on
-	AccountId string `json:"accountId,omitempty"`
-	Policy IamPolicy `json:"policy,omitempty"`
+	AccountId *string `json:"accountId,omitempty"`
+	Policy *IamPolicy `json:"policy,omitempty"`
+}
+
+// NewIdentitySetIAMPolicyResponse instantiates a new IdentitySetIAMPolicyResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewIdentitySetIAMPolicyResponse() *IdentitySetIAMPolicyResponse {
+	this := IdentitySetIAMPolicyResponse{}
+	return &this
+}
+
+// NewIdentitySetIAMPolicyResponseWithDefaults instantiates a new IdentitySetIAMPolicyResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewIdentitySetIAMPolicyResponseWithDefaults() *IdentitySetIAMPolicyResponse {
+	this := IdentitySetIAMPolicyResponse{}
+	return &this
+}
+
+// GetAccountId returns the AccountId field value if set, zero value otherwise.
+func (o *IdentitySetIAMPolicyResponse) GetAccountId() string {
+	if o == nil || o.AccountId == nil {
+		var ret string
+		return ret
+	}
+	return *o.AccountId
+}
+
+// GetAccountIdOk returns a tuple with the AccountId field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentitySetIAMPolicyResponse) GetAccountIdOk() (*string, bool) {
+	if o == nil || o.AccountId == nil {
+		return nil, false
+	}
+	return o.AccountId, true
+}
+
+// HasAccountId returns a boolean if a field has been set.
+func (o *IdentitySetIAMPolicyResponse) HasAccountId() bool {
+	if o != nil && o.AccountId != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAccountId gets a reference to the given string and assigns it to the AccountId field.
+func (o *IdentitySetIAMPolicyResponse) SetAccountId(v string) {
+	o.AccountId = &v
+}
+
+// GetPolicy returns the Policy field value if set, zero value otherwise.
+func (o *IdentitySetIAMPolicyResponse) GetPolicy() IamPolicy {
+	if o == nil || o.Policy == nil {
+		var ret IamPolicy
+		return ret
+	}
+	return *o.Policy
+}
+
+// GetPolicyOk returns a tuple with the Policy field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *IdentitySetIAMPolicyResponse) GetPolicyOk() (*IamPolicy, bool) {
+	if o == nil || o.Policy == nil {
+		return nil, false
+	}
+	return o.Policy, true
+}
+
+// HasPolicy returns a boolean if a field has been set.
+func (o *IdentitySetIAMPolicyResponse) HasPolicy() bool {
+	if o != nil && o.Policy != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPolicy gets a reference to the given IamPolicy and assigns it to the Policy field.
+func (o *IdentitySetIAMPolicyResponse) SetPolicy(v IamPolicy) {
+	o.Policy = &v
+}
+
+func (o IdentitySetIAMPolicyResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.AccountId != nil {
+		toSerialize["accountId"] = o.AccountId
+	}
+	if o.Policy != nil {
+		toSerialize["policy"] = o.Policy
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableIdentitySetIAMPolicyResponse struct {
+	value *IdentitySetIAMPolicyResponse
+	isSet bool
+}
+
+func (v NullableIdentitySetIAMPolicyResponse) Get() *IdentitySetIAMPolicyResponse {
+	return v.value
+}
+
+func (v *NullableIdentitySetIAMPolicyResponse) Set(val *IdentitySetIAMPolicyResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableIdentitySetIAMPolicyResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableIdentitySetIAMPolicyResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableIdentitySetIAMPolicyResponse(val *IdentitySetIAMPolicyResponse) *NullableIdentitySetIAMPolicyResponse {
+	return &NullableIdentitySetIAMPolicyResponse{value: val, isSet: true}
+}
+
+func (v NullableIdentitySetIAMPolicyResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableIdentitySetIAMPolicyResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

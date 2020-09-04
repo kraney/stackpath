@@ -8,9 +8,142 @@
  */
 
 package monitoring
+
+import (
+	"encoding/json"
+)
+
 // V2GetMonitorLocationsResponse A response from a request to retrieve a monitor's locations.
 type V2GetMonitorLocationsResponse struct {
-	Monitor V2Monitor `json:"monitor,omitempty"`
+	Monitor *V2Monitor `json:"monitor,omitempty"`
 	// The requested locations of the monitor.
-	Locations []V2LocationWithAnalytics `json:"locations,omitempty"`
+	Locations *[]V2LocationWithAnalytics `json:"locations,omitempty"`
+}
+
+// NewV2GetMonitorLocationsResponse instantiates a new V2GetMonitorLocationsResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV2GetMonitorLocationsResponse() *V2GetMonitorLocationsResponse {
+	this := V2GetMonitorLocationsResponse{}
+	return &this
+}
+
+// NewV2GetMonitorLocationsResponseWithDefaults instantiates a new V2GetMonitorLocationsResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV2GetMonitorLocationsResponseWithDefaults() *V2GetMonitorLocationsResponse {
+	this := V2GetMonitorLocationsResponse{}
+	return &this
+}
+
+// GetMonitor returns the Monitor field value if set, zero value otherwise.
+func (o *V2GetMonitorLocationsResponse) GetMonitor() V2Monitor {
+	if o == nil || o.Monitor == nil {
+		var ret V2Monitor
+		return ret
+	}
+	return *o.Monitor
+}
+
+// GetMonitorOk returns a tuple with the Monitor field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V2GetMonitorLocationsResponse) GetMonitorOk() (*V2Monitor, bool) {
+	if o == nil || o.Monitor == nil {
+		return nil, false
+	}
+	return o.Monitor, true
+}
+
+// HasMonitor returns a boolean if a field has been set.
+func (o *V2GetMonitorLocationsResponse) HasMonitor() bool {
+	if o != nil && o.Monitor != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMonitor gets a reference to the given V2Monitor and assigns it to the Monitor field.
+func (o *V2GetMonitorLocationsResponse) SetMonitor(v V2Monitor) {
+	o.Monitor = &v
+}
+
+// GetLocations returns the Locations field value if set, zero value otherwise.
+func (o *V2GetMonitorLocationsResponse) GetLocations() []V2LocationWithAnalytics {
+	if o == nil || o.Locations == nil {
+		var ret []V2LocationWithAnalytics
+		return ret
+	}
+	return *o.Locations
+}
+
+// GetLocationsOk returns a tuple with the Locations field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V2GetMonitorLocationsResponse) GetLocationsOk() (*[]V2LocationWithAnalytics, bool) {
+	if o == nil || o.Locations == nil {
+		return nil, false
+	}
+	return o.Locations, true
+}
+
+// HasLocations returns a boolean if a field has been set.
+func (o *V2GetMonitorLocationsResponse) HasLocations() bool {
+	if o != nil && o.Locations != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLocations gets a reference to the given []V2LocationWithAnalytics and assigns it to the Locations field.
+func (o *V2GetMonitorLocationsResponse) SetLocations(v []V2LocationWithAnalytics) {
+	o.Locations = &v
+}
+
+func (o V2GetMonitorLocationsResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Monitor != nil {
+		toSerialize["monitor"] = o.Monitor
+	}
+	if o.Locations != nil {
+		toSerialize["locations"] = o.Locations
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV2GetMonitorLocationsResponse struct {
+	value *V2GetMonitorLocationsResponse
+	isSet bool
+}
+
+func (v NullableV2GetMonitorLocationsResponse) Get() *V2GetMonitorLocationsResponse {
+	return v.value
+}
+
+func (v *NullableV2GetMonitorLocationsResponse) Set(val *V2GetMonitorLocationsResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV2GetMonitorLocationsResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV2GetMonitorLocationsResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV2GetMonitorLocationsResponse(val *V2GetMonitorLocationsResponse) *NullableV2GetMonitorLocationsResponse {
+	return &NullableV2GetMonitorLocationsResponse{value: val, isSet: true}
+}
+
+func (v NullableV2GetMonitorLocationsResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV2GetMonitorLocationsResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

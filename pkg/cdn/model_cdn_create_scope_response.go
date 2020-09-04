@@ -8,7 +8,105 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnCreateScopeResponse The response from a request to create a CDN site scope
 type CdnCreateScopeResponse struct {
-	Scope CdnScope `json:"scope,omitempty"`
+	Scope *CdnScope `json:"scope,omitempty"`
+}
+
+// NewCdnCreateScopeResponse instantiates a new CdnCreateScopeResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnCreateScopeResponse() *CdnCreateScopeResponse {
+	this := CdnCreateScopeResponse{}
+	return &this
+}
+
+// NewCdnCreateScopeResponseWithDefaults instantiates a new CdnCreateScopeResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnCreateScopeResponseWithDefaults() *CdnCreateScopeResponse {
+	this := CdnCreateScopeResponse{}
+	return &this
+}
+
+// GetScope returns the Scope field value if set, zero value otherwise.
+func (o *CdnCreateScopeResponse) GetScope() CdnScope {
+	if o == nil || o.Scope == nil {
+		var ret CdnScope
+		return ret
+	}
+	return *o.Scope
+}
+
+// GetScopeOk returns a tuple with the Scope field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnCreateScopeResponse) GetScopeOk() (*CdnScope, bool) {
+	if o == nil || o.Scope == nil {
+		return nil, false
+	}
+	return o.Scope, true
+}
+
+// HasScope returns a boolean if a field has been set.
+func (o *CdnCreateScopeResponse) HasScope() bool {
+	if o != nil && o.Scope != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetScope gets a reference to the given CdnScope and assigns it to the Scope field.
+func (o *CdnCreateScopeResponse) SetScope(v CdnScope) {
+	o.Scope = &v
+}
+
+func (o CdnCreateScopeResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Scope != nil {
+		toSerialize["scope"] = o.Scope
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnCreateScopeResponse struct {
+	value *CdnCreateScopeResponse
+	isSet bool
+}
+
+func (v NullableCdnCreateScopeResponse) Get() *CdnCreateScopeResponse {
+	return v.value
+}
+
+func (v *NullableCdnCreateScopeResponse) Set(val *CdnCreateScopeResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnCreateScopeResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnCreateScopeResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnCreateScopeResponse(val *CdnCreateScopeResponse) *NullableCdnCreateScopeResponse {
+	return &NullableCdnCreateScopeResponse{value: val, isSet: true}
+}
+
+func (v NullableCdnCreateScopeResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnCreateScopeResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -8,7 +8,105 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafGetCertificateResponse A response from a request to retrieve an individual SSL certificate on a stack
 type WafGetCertificateResponse struct {
-	Certificate WafCertificate `json:"certificate,omitempty"`
+	Certificate *WafCertificate `json:"certificate,omitempty"`
+}
+
+// NewWafGetCertificateResponse instantiates a new WafGetCertificateResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewWafGetCertificateResponse() *WafGetCertificateResponse {
+	this := WafGetCertificateResponse{}
+	return &this
+}
+
+// NewWafGetCertificateResponseWithDefaults instantiates a new WafGetCertificateResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewWafGetCertificateResponseWithDefaults() *WafGetCertificateResponse {
+	this := WafGetCertificateResponse{}
+	return &this
+}
+
+// GetCertificate returns the Certificate field value if set, zero value otherwise.
+func (o *WafGetCertificateResponse) GetCertificate() WafCertificate {
+	if o == nil || o.Certificate == nil {
+		var ret WafCertificate
+		return ret
+	}
+	return *o.Certificate
+}
+
+// GetCertificateOk returns a tuple with the Certificate field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *WafGetCertificateResponse) GetCertificateOk() (*WafCertificate, bool) {
+	if o == nil || o.Certificate == nil {
+		return nil, false
+	}
+	return o.Certificate, true
+}
+
+// HasCertificate returns a boolean if a field has been set.
+func (o *WafGetCertificateResponse) HasCertificate() bool {
+	if o != nil && o.Certificate != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCertificate gets a reference to the given WafCertificate and assigns it to the Certificate field.
+func (o *WafGetCertificateResponse) SetCertificate(v WafCertificate) {
+	o.Certificate = &v
+}
+
+func (o WafGetCertificateResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Certificate != nil {
+		toSerialize["certificate"] = o.Certificate
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableWafGetCertificateResponse struct {
+	value *WafGetCertificateResponse
+	isSet bool
+}
+
+func (v NullableWafGetCertificateResponse) Get() *WafGetCertificateResponse {
+	return v.value
+}
+
+func (v *NullableWafGetCertificateResponse) Set(val *WafGetCertificateResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafGetCertificateResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafGetCertificateResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafGetCertificateResponse(val *WafGetCertificateResponse) *NullableWafGetCertificateResponse {
+	return &NullableWafGetCertificateResponse{value: val, isSet: true}
+}
+
+func (v NullableWafGetCertificateResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafGetCertificateResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

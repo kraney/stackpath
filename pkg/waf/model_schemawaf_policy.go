@@ -8,15 +8,257 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // SchemawafPolicy An individually toggleable WAF policy  Policies are pre-defined WAF rules created by StackPath for common firewall functionality.
 type SchemawafPolicy struct {
 	// A WAF policy's unique identifier
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// A WAF policy's name
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 	// A WAF policy's description
-	Description string `json:"description,omitempty"`
-	Action WafPolicyAction `json:"action,omitempty"`
+	Description *string `json:"description,omitempty"`
+	Action *WafPolicyAction `json:"action,omitempty"`
 	// Whether or not a WAF policy is enabled
-	Enabled bool `json:"enabled,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewSchemawafPolicy instantiates a new SchemawafPolicy object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewSchemawafPolicy() *SchemawafPolicy {
+	this := SchemawafPolicy{}
+	var action WafPolicyAction = "BLOCK"
+	this.Action = &action
+	return &this
+}
+
+// NewSchemawafPolicyWithDefaults instantiates a new SchemawafPolicy object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewSchemawafPolicyWithDefaults() *SchemawafPolicy {
+	this := SchemawafPolicy{}
+	var action WafPolicyAction = "BLOCK"
+	this.Action = &action
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *SchemawafPolicy) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemawafPolicy) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *SchemawafPolicy) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *SchemawafPolicy) SetId(v string) {
+	o.Id = &v
+}
+
+// GetName returns the Name field value if set, zero value otherwise.
+func (o *SchemawafPolicy) GetName() string {
+	if o == nil || o.Name == nil {
+		var ret string
+		return ret
+	}
+	return *o.Name
+}
+
+// GetNameOk returns a tuple with the Name field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemawafPolicy) GetNameOk() (*string, bool) {
+	if o == nil || o.Name == nil {
+		return nil, false
+	}
+	return o.Name, true
+}
+
+// HasName returns a boolean if a field has been set.
+func (o *SchemawafPolicy) HasName() bool {
+	if o != nil && o.Name != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetName gets a reference to the given string and assigns it to the Name field.
+func (o *SchemawafPolicy) SetName(v string) {
+	o.Name = &v
+}
+
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *SchemawafPolicy) GetDescription() string {
+	if o == nil || o.Description == nil {
+		var ret string
+		return ret
+	}
+	return *o.Description
+}
+
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemawafPolicy) GetDescriptionOk() (*string, bool) {
+	if o == nil || o.Description == nil {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *SchemawafPolicy) HasDescription() bool {
+	if o != nil && o.Description != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *SchemawafPolicy) SetDescription(v string) {
+	o.Description = &v
+}
+
+// GetAction returns the Action field value if set, zero value otherwise.
+func (o *SchemawafPolicy) GetAction() WafPolicyAction {
+	if o == nil || o.Action == nil {
+		var ret WafPolicyAction
+		return ret
+	}
+	return *o.Action
+}
+
+// GetActionOk returns a tuple with the Action field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemawafPolicy) GetActionOk() (*WafPolicyAction, bool) {
+	if o == nil || o.Action == nil {
+		return nil, false
+	}
+	return o.Action, true
+}
+
+// HasAction returns a boolean if a field has been set.
+func (o *SchemawafPolicy) HasAction() bool {
+	if o != nil && o.Action != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAction gets a reference to the given WafPolicyAction and assigns it to the Action field.
+func (o *SchemawafPolicy) SetAction(v WafPolicyAction) {
+	o.Action = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *SchemawafPolicy) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *SchemawafPolicy) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *SchemawafPolicy) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *SchemawafPolicy) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o SchemawafPolicy) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Name != nil {
+		toSerialize["name"] = o.Name
+	}
+	if o.Description != nil {
+		toSerialize["description"] = o.Description
+	}
+	if o.Action != nil {
+		toSerialize["action"] = o.Action
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableSchemawafPolicy struct {
+	value *SchemawafPolicy
+	isSet bool
+}
+
+func (v NullableSchemawafPolicy) Get() *SchemawafPolicy {
+	return v.value
+}
+
+func (v *NullableSchemawafPolicy) Set(val *SchemawafPolicy) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableSchemawafPolicy) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableSchemawafPolicy) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableSchemawafPolicy(val *SchemawafPolicy) *NullableSchemawafPolicy {
+	return &NullableSchemawafPolicy{value: val, isSet: true}
+}
+
+func (v NullableSchemawafPolicy) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableSchemawafPolicy) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

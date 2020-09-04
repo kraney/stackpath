@@ -8,10 +8,143 @@
  */
 
 package object_storage
+
+import (
+	"encoding/json"
+)
+
 // StorageCreateBucketRequest struct for StorageCreateBucketRequest
 type StorageCreateBucketRequest struct {
 	// The name of the bucket to be created
-	Label string `json:"label,omitempty"`
+	Label *string `json:"label,omitempty"`
 	// The region where to create the bucket, defaults to us-east-1
-	Region string `json:"region,omitempty"`
+	Region *string `json:"region,omitempty"`
+}
+
+// NewStorageCreateBucketRequest instantiates a new StorageCreateBucketRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewStorageCreateBucketRequest() *StorageCreateBucketRequest {
+	this := StorageCreateBucketRequest{}
+	return &this
+}
+
+// NewStorageCreateBucketRequestWithDefaults instantiates a new StorageCreateBucketRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewStorageCreateBucketRequestWithDefaults() *StorageCreateBucketRequest {
+	this := StorageCreateBucketRequest{}
+	return &this
+}
+
+// GetLabel returns the Label field value if set, zero value otherwise.
+func (o *StorageCreateBucketRequest) GetLabel() string {
+	if o == nil || o.Label == nil {
+		var ret string
+		return ret
+	}
+	return *o.Label
+}
+
+// GetLabelOk returns a tuple with the Label field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *StorageCreateBucketRequest) GetLabelOk() (*string, bool) {
+	if o == nil || o.Label == nil {
+		return nil, false
+	}
+	return o.Label, true
+}
+
+// HasLabel returns a boolean if a field has been set.
+func (o *StorageCreateBucketRequest) HasLabel() bool {
+	if o != nil && o.Label != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLabel gets a reference to the given string and assigns it to the Label field.
+func (o *StorageCreateBucketRequest) SetLabel(v string) {
+	o.Label = &v
+}
+
+// GetRegion returns the Region field value if set, zero value otherwise.
+func (o *StorageCreateBucketRequest) GetRegion() string {
+	if o == nil || o.Region == nil {
+		var ret string
+		return ret
+	}
+	return *o.Region
+}
+
+// GetRegionOk returns a tuple with the Region field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *StorageCreateBucketRequest) GetRegionOk() (*string, bool) {
+	if o == nil || o.Region == nil {
+		return nil, false
+	}
+	return o.Region, true
+}
+
+// HasRegion returns a boolean if a field has been set.
+func (o *StorageCreateBucketRequest) HasRegion() bool {
+	if o != nil && o.Region != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRegion gets a reference to the given string and assigns it to the Region field.
+func (o *StorageCreateBucketRequest) SetRegion(v string) {
+	o.Region = &v
+}
+
+func (o StorageCreateBucketRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Label != nil {
+		toSerialize["label"] = o.Label
+	}
+	if o.Region != nil {
+		toSerialize["region"] = o.Region
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableStorageCreateBucketRequest struct {
+	value *StorageCreateBucketRequest
+	isSet bool
+}
+
+func (v NullableStorageCreateBucketRequest) Get() *StorageCreateBucketRequest {
+	return v.value
+}
+
+func (v *NullableStorageCreateBucketRequest) Set(val *StorageCreateBucketRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableStorageCreateBucketRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableStorageCreateBucketRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableStorageCreateBucketRequest(val *StorageCreateBucketRequest) *NullableStorageCreateBucketRequest {
+	return &NullableStorageCreateBucketRequest{value: val, isSet: true}
+}
+
+func (v NullableStorageCreateBucketRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableStorageCreateBucketRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

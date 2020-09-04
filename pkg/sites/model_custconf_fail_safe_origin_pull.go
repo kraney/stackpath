@@ -8,13 +8,216 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfFailSafeOriginPull struct for CustconfFailSafeOriginPull
 type CustconfFailSafeOriginPull struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Id *string `json:"id,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// String of values delimited by a ',' character.
-	StatusCodeMatch string `json:"statusCodeMatch,omitempty"`
+	StatusCodeMatch *string `json:"statusCodeMatch,omitempty"`
 	// String of values delimited by a ',' character.
-	PathFilter string `json:"pathFilter,omitempty"`
+	PathFilter *string `json:"pathFilter,omitempty"`
+}
+
+// NewCustconfFailSafeOriginPull instantiates a new CustconfFailSafeOriginPull object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfFailSafeOriginPull() *CustconfFailSafeOriginPull {
+	this := CustconfFailSafeOriginPull{}
+	return &this
+}
+
+// NewCustconfFailSafeOriginPullWithDefaults instantiates a new CustconfFailSafeOriginPull object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfFailSafeOriginPullWithDefaults() *CustconfFailSafeOriginPull {
+	this := CustconfFailSafeOriginPull{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfFailSafeOriginPull) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfFailSafeOriginPull) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfFailSafeOriginPull) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfFailSafeOriginPull) SetId(v string) {
+	o.Id = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfFailSafeOriginPull) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfFailSafeOriginPull) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfFailSafeOriginPull) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfFailSafeOriginPull) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+// GetStatusCodeMatch returns the StatusCodeMatch field value if set, zero value otherwise.
+func (o *CustconfFailSafeOriginPull) GetStatusCodeMatch() string {
+	if o == nil || o.StatusCodeMatch == nil {
+		var ret string
+		return ret
+	}
+	return *o.StatusCodeMatch
+}
+
+// GetStatusCodeMatchOk returns a tuple with the StatusCodeMatch field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfFailSafeOriginPull) GetStatusCodeMatchOk() (*string, bool) {
+	if o == nil || o.StatusCodeMatch == nil {
+		return nil, false
+	}
+	return o.StatusCodeMatch, true
+}
+
+// HasStatusCodeMatch returns a boolean if a field has been set.
+func (o *CustconfFailSafeOriginPull) HasStatusCodeMatch() bool {
+	if o != nil && o.StatusCodeMatch != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetStatusCodeMatch gets a reference to the given string and assigns it to the StatusCodeMatch field.
+func (o *CustconfFailSafeOriginPull) SetStatusCodeMatch(v string) {
+	o.StatusCodeMatch = &v
+}
+
+// GetPathFilter returns the PathFilter field value if set, zero value otherwise.
+func (o *CustconfFailSafeOriginPull) GetPathFilter() string {
+	if o == nil || o.PathFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.PathFilter
+}
+
+// GetPathFilterOk returns a tuple with the PathFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfFailSafeOriginPull) GetPathFilterOk() (*string, bool) {
+	if o == nil || o.PathFilter == nil {
+		return nil, false
+	}
+	return o.PathFilter, true
+}
+
+// HasPathFilter returns a boolean if a field has been set.
+func (o *CustconfFailSafeOriginPull) HasPathFilter() bool {
+	if o != nil && o.PathFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPathFilter gets a reference to the given string and assigns it to the PathFilter field.
+func (o *CustconfFailSafeOriginPull) SetPathFilter(v string) {
+	o.PathFilter = &v
+}
+
+func (o CustconfFailSafeOriginPull) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	if o.StatusCodeMatch != nil {
+		toSerialize["statusCodeMatch"] = o.StatusCodeMatch
+	}
+	if o.PathFilter != nil {
+		toSerialize["pathFilter"] = o.PathFilter
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfFailSafeOriginPull struct {
+	value *CustconfFailSafeOriginPull
+	isSet bool
+}
+
+func (v NullableCustconfFailSafeOriginPull) Get() *CustconfFailSafeOriginPull {
+	return v.value
+}
+
+func (v *NullableCustconfFailSafeOriginPull) Set(val *CustconfFailSafeOriginPull) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfFailSafeOriginPull) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfFailSafeOriginPull) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfFailSafeOriginPull(val *CustconfFailSafeOriginPull) *NullableCustconfFailSafeOriginPull {
+	return &NullableCustconfFailSafeOriginPull{value: val, isSet: true}
+}
+
+func (v NullableCustconfFailSafeOriginPull) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfFailSafeOriginPull) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

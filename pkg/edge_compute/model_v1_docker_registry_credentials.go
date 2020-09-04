@@ -8,14 +8,217 @@
  */
 
 package edge_compute
+
+import (
+	"encoding/json"
+)
+
 // V1DockerRegistryCredentials The authentication configuration that should be used to pull images from a docker registry
 type V1DockerRegistryCredentials struct {
 	// The server that the credentials should be used with  The server that the credentials should be used with. This value will default to the docker hub registry when not set.
-	Server string `json:"server,omitempty"`
+	Server *string `json:"server,omitempty"`
 	// The username that should be used for authenticate the image pull
-	Username string `json:"username,omitempty"`
+	Username *string `json:"username,omitempty"`
 	// The password that should be used to authenticate the image pull
-	Password string `json:"password,omitempty"`
+	Password *string `json:"password,omitempty"`
 	// The email address to use for the docker registry account
-	Email string `json:"email,omitempty"`
+	Email *string `json:"email,omitempty"`
+}
+
+// NewV1DockerRegistryCredentials instantiates a new V1DockerRegistryCredentials object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV1DockerRegistryCredentials() *V1DockerRegistryCredentials {
+	this := V1DockerRegistryCredentials{}
+	return &this
+}
+
+// NewV1DockerRegistryCredentialsWithDefaults instantiates a new V1DockerRegistryCredentials object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV1DockerRegistryCredentialsWithDefaults() *V1DockerRegistryCredentials {
+	this := V1DockerRegistryCredentials{}
+	return &this
+}
+
+// GetServer returns the Server field value if set, zero value otherwise.
+func (o *V1DockerRegistryCredentials) GetServer() string {
+	if o == nil || o.Server == nil {
+		var ret string
+		return ret
+	}
+	return *o.Server
+}
+
+// GetServerOk returns a tuple with the Server field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1DockerRegistryCredentials) GetServerOk() (*string, bool) {
+	if o == nil || o.Server == nil {
+		return nil, false
+	}
+	return o.Server, true
+}
+
+// HasServer returns a boolean if a field has been set.
+func (o *V1DockerRegistryCredentials) HasServer() bool {
+	if o != nil && o.Server != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetServer gets a reference to the given string and assigns it to the Server field.
+func (o *V1DockerRegistryCredentials) SetServer(v string) {
+	o.Server = &v
+}
+
+// GetUsername returns the Username field value if set, zero value otherwise.
+func (o *V1DockerRegistryCredentials) GetUsername() string {
+	if o == nil || o.Username == nil {
+		var ret string
+		return ret
+	}
+	return *o.Username
+}
+
+// GetUsernameOk returns a tuple with the Username field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1DockerRegistryCredentials) GetUsernameOk() (*string, bool) {
+	if o == nil || o.Username == nil {
+		return nil, false
+	}
+	return o.Username, true
+}
+
+// HasUsername returns a boolean if a field has been set.
+func (o *V1DockerRegistryCredentials) HasUsername() bool {
+	if o != nil && o.Username != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUsername gets a reference to the given string and assigns it to the Username field.
+func (o *V1DockerRegistryCredentials) SetUsername(v string) {
+	o.Username = &v
+}
+
+// GetPassword returns the Password field value if set, zero value otherwise.
+func (o *V1DockerRegistryCredentials) GetPassword() string {
+	if o == nil || o.Password == nil {
+		var ret string
+		return ret
+	}
+	return *o.Password
+}
+
+// GetPasswordOk returns a tuple with the Password field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1DockerRegistryCredentials) GetPasswordOk() (*string, bool) {
+	if o == nil || o.Password == nil {
+		return nil, false
+	}
+	return o.Password, true
+}
+
+// HasPassword returns a boolean if a field has been set.
+func (o *V1DockerRegistryCredentials) HasPassword() bool {
+	if o != nil && o.Password != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPassword gets a reference to the given string and assigns it to the Password field.
+func (o *V1DockerRegistryCredentials) SetPassword(v string) {
+	o.Password = &v
+}
+
+// GetEmail returns the Email field value if set, zero value otherwise.
+func (o *V1DockerRegistryCredentials) GetEmail() string {
+	if o == nil || o.Email == nil {
+		var ret string
+		return ret
+	}
+	return *o.Email
+}
+
+// GetEmailOk returns a tuple with the Email field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1DockerRegistryCredentials) GetEmailOk() (*string, bool) {
+	if o == nil || o.Email == nil {
+		return nil, false
+	}
+	return o.Email, true
+}
+
+// HasEmail returns a boolean if a field has been set.
+func (o *V1DockerRegistryCredentials) HasEmail() bool {
+	if o != nil && o.Email != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEmail gets a reference to the given string and assigns it to the Email field.
+func (o *V1DockerRegistryCredentials) SetEmail(v string) {
+	o.Email = &v
+}
+
+func (o V1DockerRegistryCredentials) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Server != nil {
+		toSerialize["server"] = o.Server
+	}
+	if o.Username != nil {
+		toSerialize["username"] = o.Username
+	}
+	if o.Password != nil {
+		toSerialize["password"] = o.Password
+	}
+	if o.Email != nil {
+		toSerialize["email"] = o.Email
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV1DockerRegistryCredentials struct {
+	value *V1DockerRegistryCredentials
+	isSet bool
+}
+
+func (v NullableV1DockerRegistryCredentials) Get() *V1DockerRegistryCredentials {
+	return v.value
+}
+
+func (v *NullableV1DockerRegistryCredentials) Set(val *V1DockerRegistryCredentials) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV1DockerRegistryCredentials) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV1DockerRegistryCredentials) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV1DockerRegistryCredentials(val *V1DockerRegistryCredentials) *NullableV1DockerRegistryCredentials {
+	return &NullableV1DockerRegistryCredentials{value: val, isSet: true}
+}
+
+func (v NullableV1DockerRegistryCredentials) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV1DockerRegistryCredentials) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

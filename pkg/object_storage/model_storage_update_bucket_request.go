@@ -8,7 +8,109 @@
  */
 
 package object_storage
+
+import (
+	"encoding/json"
+)
+
 // StorageUpdateBucketRequest struct for StorageUpdateBucketRequest
 type StorageUpdateBucketRequest struct {
-	Visibility StorageBucketVisibility `json:"visibility,omitempty"`
+	Visibility *StorageBucketVisibility `json:"visibility,omitempty"`
+}
+
+// NewStorageUpdateBucketRequest instantiates a new StorageUpdateBucketRequest object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewStorageUpdateBucketRequest() *StorageUpdateBucketRequest {
+	this := StorageUpdateBucketRequest{}
+	var visibility StorageBucketVisibility = "PRIVATE"
+	this.Visibility = &visibility
+	return &this
+}
+
+// NewStorageUpdateBucketRequestWithDefaults instantiates a new StorageUpdateBucketRequest object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewStorageUpdateBucketRequestWithDefaults() *StorageUpdateBucketRequest {
+	this := StorageUpdateBucketRequest{}
+	var visibility StorageBucketVisibility = "PRIVATE"
+	this.Visibility = &visibility
+	return &this
+}
+
+// GetVisibility returns the Visibility field value if set, zero value otherwise.
+func (o *StorageUpdateBucketRequest) GetVisibility() StorageBucketVisibility {
+	if o == nil || o.Visibility == nil {
+		var ret StorageBucketVisibility
+		return ret
+	}
+	return *o.Visibility
+}
+
+// GetVisibilityOk returns a tuple with the Visibility field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *StorageUpdateBucketRequest) GetVisibilityOk() (*StorageBucketVisibility, bool) {
+	if o == nil || o.Visibility == nil {
+		return nil, false
+	}
+	return o.Visibility, true
+}
+
+// HasVisibility returns a boolean if a field has been set.
+func (o *StorageUpdateBucketRequest) HasVisibility() bool {
+	if o != nil && o.Visibility != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetVisibility gets a reference to the given StorageBucketVisibility and assigns it to the Visibility field.
+func (o *StorageUpdateBucketRequest) SetVisibility(v StorageBucketVisibility) {
+	o.Visibility = &v
+}
+
+func (o StorageUpdateBucketRequest) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Visibility != nil {
+		toSerialize["visibility"] = o.Visibility
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableStorageUpdateBucketRequest struct {
+	value *StorageUpdateBucketRequest
+	isSet bool
+}
+
+func (v NullableStorageUpdateBucketRequest) Get() *StorageUpdateBucketRequest {
+	return v.value
+}
+
+func (v *NullableStorageUpdateBucketRequest) Set(val *StorageUpdateBucketRequest) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableStorageUpdateBucketRequest) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableStorageUpdateBucketRequest) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableStorageUpdateBucketRequest(val *StorageUpdateBucketRequest) *NullableStorageUpdateBucketRequest {
+	return &NullableStorageUpdateBucketRequest{value: val, isSet: true}
+}
+
+func (v NullableStorageUpdateBucketRequest) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableStorageUpdateBucketRequest) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

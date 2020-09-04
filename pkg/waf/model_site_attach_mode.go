@@ -8,6 +8,11 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // SiteAttachMode How a WAF site relates to other StackPath site features  - STANDALONE: This WAF site does not have a corresponding caching CDN site  - ATTACHED: This WAF site represents the protection capabilities of a CDN site
 type SiteAttachMode string
 
@@ -16,3 +21,45 @@ const (
 	SITEATTACHMODE_STANDALONE SiteAttachMode = "STANDALONE"
 	SITEATTACHMODE_ATTACHED SiteAttachMode = "ATTACHED"
 )
+
+// Ptr returns reference to SiteAttachMode value
+func (v SiteAttachMode) Ptr() *SiteAttachMode {
+	return &v
+}
+
+
+type NullableSiteAttachMode struct {
+	value *SiteAttachMode
+	isSet bool
+}
+
+func (v NullableSiteAttachMode) Get() *SiteAttachMode {
+	return v.value
+}
+
+func (v *NullableSiteAttachMode) Set(val *SiteAttachMode) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableSiteAttachMode) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableSiteAttachMode) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableSiteAttachMode(val *SiteAttachMode) *NullableSiteAttachMode {
+	return &NullableSiteAttachMode{value: val, isSet: true}
+}
+
+func (v NullableSiteAttachMode) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableSiteAttachMode) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

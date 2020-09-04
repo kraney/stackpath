@@ -8,6 +8,11 @@
  */
 
 package ssl
+
+import (
+	"encoding/json"
+)
+
 // CertificateCertificateVerificationMethod the model 'CertificateCertificateVerificationMethod'
 type CertificateCertificateVerificationMethod string
 
@@ -16,3 +21,45 @@ const (
 	CERTIFICATECERTIFICATEVERIFICATIONMETHOD_DNS CertificateCertificateVerificationMethod = "DNS"
 	CERTIFICATECERTIFICATEVERIFICATIONMETHOD_HTTP CertificateCertificateVerificationMethod = "HTTP"
 )
+
+// Ptr returns reference to certificateCertificateVerificationMethod value
+func (v CertificateCertificateVerificationMethod) Ptr() *CertificateCertificateVerificationMethod {
+	return &v
+}
+
+
+type NullableCertificateCertificateVerificationMethod struct {
+	value *CertificateCertificateVerificationMethod
+	isSet bool
+}
+
+func (v NullableCertificateCertificateVerificationMethod) Get() *CertificateCertificateVerificationMethod {
+	return v.value
+}
+
+func (v *NullableCertificateCertificateVerificationMethod) Set(val *CertificateCertificateVerificationMethod) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCertificateCertificateVerificationMethod) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCertificateCertificateVerificationMethod) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCertificateCertificateVerificationMethod(val *CertificateCertificateVerificationMethod) *NullableCertificateCertificateVerificationMethod {
+	return &NullableCertificateCertificateVerificationMethod{value: val, isSet: true}
+}
+
+func (v NullableCertificateCertificateVerificationMethod) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCertificateCertificateVerificationMethod) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

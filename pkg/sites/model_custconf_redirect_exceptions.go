@@ -8,11 +8,179 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfRedirectExceptions The redirect response codes policy allows you to specify the HTTP redirect status code the CDN caching server should use when the CDN issues a redirect. Using this policy, you can assign different redirect codes to user agents requesting content.
 type CustconfRedirectExceptions struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
+	Id *string `json:"id,omitempty"`
 	// String of values delimited by a ',' character. This is a comma separated list of user agents and redirect code pairs. The user agent and redirect code values are separated by a colon (:), and you may use wildcards in the user agent field. For example, to map assign a 307 status code to all Chrome browsers, you would specify: *chrome*:307.
-	RedirectAgentCode string `json:"redirectAgentCode,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	RedirectAgentCode *string `json:"redirectAgentCode,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// NewCustconfRedirectExceptions instantiates a new CustconfRedirectExceptions object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfRedirectExceptions() *CustconfRedirectExceptions {
+	this := CustconfRedirectExceptions{}
+	return &this
+}
+
+// NewCustconfRedirectExceptionsWithDefaults instantiates a new CustconfRedirectExceptions object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfRedirectExceptionsWithDefaults() *CustconfRedirectExceptions {
+	this := CustconfRedirectExceptions{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfRedirectExceptions) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRedirectExceptions) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfRedirectExceptions) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfRedirectExceptions) SetId(v string) {
+	o.Id = &v
+}
+
+// GetRedirectAgentCode returns the RedirectAgentCode field value if set, zero value otherwise.
+func (o *CustconfRedirectExceptions) GetRedirectAgentCode() string {
+	if o == nil || o.RedirectAgentCode == nil {
+		var ret string
+		return ret
+	}
+	return *o.RedirectAgentCode
+}
+
+// GetRedirectAgentCodeOk returns a tuple with the RedirectAgentCode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRedirectExceptions) GetRedirectAgentCodeOk() (*string, bool) {
+	if o == nil || o.RedirectAgentCode == nil {
+		return nil, false
+	}
+	return o.RedirectAgentCode, true
+}
+
+// HasRedirectAgentCode returns a boolean if a field has been set.
+func (o *CustconfRedirectExceptions) HasRedirectAgentCode() bool {
+	if o != nil && o.RedirectAgentCode != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRedirectAgentCode gets a reference to the given string and assigns it to the RedirectAgentCode field.
+func (o *CustconfRedirectExceptions) SetRedirectAgentCode(v string) {
+	o.RedirectAgentCode = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfRedirectExceptions) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfRedirectExceptions) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfRedirectExceptions) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfRedirectExceptions) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+func (o CustconfRedirectExceptions) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.RedirectAgentCode != nil {
+		toSerialize["redirectAgentCode"] = o.RedirectAgentCode
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfRedirectExceptions struct {
+	value *CustconfRedirectExceptions
+	isSet bool
+}
+
+func (v NullableCustconfRedirectExceptions) Get() *CustconfRedirectExceptions {
+	return v.value
+}
+
+func (v *NullableCustconfRedirectExceptions) Set(val *CustconfRedirectExceptions) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfRedirectExceptions) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfRedirectExceptions) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfRedirectExceptions(val *CustconfRedirectExceptions) *NullableCustconfRedirectExceptions {
+	return &NullableCustconfRedirectExceptions{value: val, isSet: true}
+}
+
+func (v NullableCustconfRedirectExceptions) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfRedirectExceptions) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

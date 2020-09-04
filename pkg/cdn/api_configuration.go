@@ -15,7 +15,6 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,6 +25,21 @@ var (
 // ConfigurationApiService ConfigurationApi service
 type ConfigurationApiService service
 
+type apiConnectScopeToOriginRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	scopeId string
+	cdnConnectScopeToOriginRequest *CdnConnectScopeToOriginRequest
+}
+
+
+func (r apiConnectScopeToOriginRequest) CdnConnectScopeToOriginRequest(cdnConnectScopeToOriginRequest CdnConnectScopeToOriginRequest) apiConnectScopeToOriginRequest {
+	r.cdnConnectScopeToOriginRequest = &cdnConnectScopeToOriginRequest
+	return r
+}
+
 /*
 ConnectScopeToOrigin Connect an origin to a scope
 The origin is automatically created if necessary. When the request contains a priority which an origin already associated with the scope has set, the existing origin is disconnected. The priority of an origin already associated with a scope can be modified via this endpoint.
@@ -33,10 +47,23 @@ The origin is automatically created if necessary. When the request contains a pr
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
- * @param cdnConnectScopeToOriginRequest
-@return CdnConnectScopeToOriginResponse
+@return apiConnectScopeToOriginRequest
 */
-func (a *ConfigurationApiService) ConnectScopeToOrigin(ctx _context.Context, stackId string, siteId string, scopeId string, cdnConnectScopeToOriginRequest CdnConnectScopeToOriginRequest) (CdnConnectScopeToOriginResponse, *_nethttp.Response, error) {
+func (a *ConfigurationApiService) ConnectScopeToOrigin(ctx _context.Context, stackId string, siteId string, scopeId string) apiConnectScopeToOriginRequest {
+	return apiConnectScopeToOriginRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		scopeId: scopeId,
+	}
+}
+
+/*
+Execute executes the request
+ @return CdnConnectScopeToOriginResponse
+*/
+func (r apiConnectScopeToOriginRequest) Execute() (CdnConnectScopeToOriginResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -46,17 +73,26 @@ func (a *ConfigurationApiService) ConnectScopeToOrigin(ctx _context.Context, sta
 		localVarReturnValue  CdnConnectScopeToOriginResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.ConnectScopeToOrigin")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	
+	if r.cdnConnectScopeToOriginRequest == nil {
+		return localVarReturnValue, nil, reportError("cdnConnectScopeToOriginRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -76,13 +112,13 @@ func (a *ConfigurationApiService) ConnectScopeToOrigin(ctx _context.Context, sta
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &cdnConnectScopeToOriginRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.cdnConnectScopeToOriginRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -100,7 +136,7 @@ func (a *ConfigurationApiService) ConnectScopeToOrigin(ctx _context.Context, sta
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -110,7 +146,7 @@ func (a *ConfigurationApiService) ConnectScopeToOrigin(ctx _context.Context, sta
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -119,7 +155,7 @@ func (a *ConfigurationApiService) ConnectScopeToOrigin(ctx _context.Context, sta
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -128,7 +164,7 @@ func (a *ConfigurationApiService) ConnectScopeToOrigin(ctx _context.Context, sta
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -139,16 +175,41 @@ func (a *ConfigurationApiService) ConnectScopeToOrigin(ctx _context.Context, sta
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiCreateScopeRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	cdnCreateScopeRequest *CdnCreateScopeRequest
+}
+
+
+func (r apiCreateScopeRequest) CdnCreateScopeRequest(cdnCreateScopeRequest CdnCreateScopeRequest) apiCreateScopeRequest {
+	r.cdnCreateScopeRequest = &cdnCreateScopeRequest
+	return r
+}
 
 /*
 CreateScope Create a scope
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
- * @param cdnCreateScopeRequest
-@return CdnCreateScopeResponse
+@return apiCreateScopeRequest
 */
-func (a *ConfigurationApiService) CreateScope(ctx _context.Context, stackId string, siteId string, cdnCreateScopeRequest CdnCreateScopeRequest) (CdnCreateScopeResponse, *_nethttp.Response, error) {
+func (a *ConfigurationApiService) CreateScope(ctx _context.Context, stackId string, siteId string) apiCreateScopeRequest {
+	return apiCreateScopeRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+ @return CdnCreateScopeResponse
+*/
+func (r apiCreateScopeRequest) Execute() (CdnCreateScopeResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -158,15 +219,24 @@ func (a *ConfigurationApiService) CreateScope(ctx _context.Context, stackId stri
 		localVarReturnValue  CdnCreateScopeResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.CreateScope")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	if r.cdnCreateScopeRequest == nil {
+		return localVarReturnValue, nil, reportError("cdnCreateScopeRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -186,13 +256,13 @@ func (a *ConfigurationApiService) CreateScope(ctx _context.Context, stackId stri
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &cdnCreateScopeRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.cdnCreateScopeRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -210,7 +280,7 @@ func (a *ConfigurationApiService) CreateScope(ctx _context.Context, stackId stri
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -220,7 +290,7 @@ func (a *ConfigurationApiService) CreateScope(ctx _context.Context, stackId stri
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -229,7 +299,7 @@ func (a *ConfigurationApiService) CreateScope(ctx _context.Context, stackId stri
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -238,7 +308,7 @@ func (a *ConfigurationApiService) CreateScope(ctx _context.Context, stackId stri
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -249,6 +319,20 @@ func (a *ConfigurationApiService) CreateScope(ctx _context.Context, stackId stri
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiCreateScopeHostnameRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	scopeId string
+	cdnCreateScopeHostnameRequest *CdnCreateScopeHostnameRequest
+}
+
+
+func (r apiCreateScopeHostnameRequest) CdnCreateScopeHostnameRequest(cdnCreateScopeHostnameRequest CdnCreateScopeHostnameRequest) apiCreateScopeHostnameRequest {
+	r.cdnCreateScopeHostnameRequest = &cdnCreateScopeHostnameRequest
+	return r
+}
 
 /*
 CreateScopeHostname Add a scope hostname
@@ -256,10 +340,23 @@ CreateScopeHostname Add a scope hostname
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
- * @param cdnCreateScopeHostnameRequest
-@return CdnCreateScopeHostnameResponse
+@return apiCreateScopeHostnameRequest
 */
-func (a *ConfigurationApiService) CreateScopeHostname(ctx _context.Context, stackId string, siteId string, scopeId string, cdnCreateScopeHostnameRequest CdnCreateScopeHostnameRequest) (CdnCreateScopeHostnameResponse, *_nethttp.Response, error) {
+func (a *ConfigurationApiService) CreateScopeHostname(ctx _context.Context, stackId string, siteId string, scopeId string) apiCreateScopeHostnameRequest {
+	return apiCreateScopeHostnameRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		scopeId: scopeId,
+	}
+}
+
+/*
+Execute executes the request
+ @return CdnCreateScopeHostnameResponse
+*/
+func (r apiCreateScopeHostnameRequest) Execute() (CdnCreateScopeHostnameResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -269,17 +366,26 @@ func (a *ConfigurationApiService) CreateScopeHostname(ctx _context.Context, stac
 		localVarReturnValue  CdnCreateScopeHostnameResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/hostnames"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.CreateScopeHostname")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/hostnames"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	
+	if r.cdnCreateScopeHostnameRequest == nil {
+		return localVarReturnValue, nil, reportError("cdnCreateScopeHostnameRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -299,13 +405,13 @@ func (a *ConfigurationApiService) CreateScopeHostname(ctx _context.Context, stac
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &cdnCreateScopeHostnameRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.cdnCreateScopeHostnameRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -323,7 +429,7 @@ func (a *ConfigurationApiService) CreateScopeHostname(ctx _context.Context, stac
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -333,7 +439,7 @@ func (a *ConfigurationApiService) CreateScopeHostname(ctx _context.Context, stac
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -342,7 +448,7 @@ func (a *ConfigurationApiService) CreateScopeHostname(ctx _context.Context, stac
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -351,7 +457,7 @@ func (a *ConfigurationApiService) CreateScopeHostname(ctx _context.Context, stac
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -362,6 +468,14 @@ func (a *ConfigurationApiService) CreateScopeHostname(ctx _context.Context, stac
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiDeleteScopeRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	scopeId string
+}
+
 
 /*
 DeleteScope Delete a scope
@@ -369,27 +483,48 @@ DeleteScope Delete a scope
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
+@return apiDeleteScopeRequest
 */
-func (a *ConfigurationApiService) DeleteScope(ctx _context.Context, stackId string, siteId string, scopeId string) (*_nethttp.Response, error) {
+func (a *ConfigurationApiService) DeleteScope(ctx _context.Context, stackId string, siteId string, scopeId string) apiDeleteScopeRequest {
+	return apiDeleteScopeRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		scopeId: scopeId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDeleteScopeRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.DeleteScope")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -408,12 +543,12 @@ func (a *ConfigurationApiService) DeleteScope(ctx _context.Context, stackId stri
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -431,7 +566,7 @@ func (a *ConfigurationApiService) DeleteScope(ctx _context.Context, stackId stri
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -441,7 +576,7 @@ func (a *ConfigurationApiService) DeleteScope(ctx _context.Context, stackId stri
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -450,7 +585,7 @@ func (a *ConfigurationApiService) DeleteScope(ctx _context.Context, stackId stri
 			return localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -461,10 +596,20 @@ func (a *ConfigurationApiService) DeleteScope(ctx _context.Context, stackId stri
 
 	return localVarHTTPResponse, nil
 }
+type apiDeleteScopeHostnameRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	scopeId string
+	domain string
+	disableTransparentMode *bool
+}
 
-// DeleteScopeHostnameOpts Optional parameters for the method 'DeleteScopeHostname'
-type DeleteScopeHostnameOpts struct {
-    DisableTransparentMode optional.Bool
+
+func (r apiDeleteScopeHostnameRequest) DisableTransparentMode(disableTransparentMode bool) apiDeleteScopeHostnameRequest {
+	r.disableTransparentMode = &disableTransparentMode
+	return r
 }
 
 /*
@@ -474,34 +619,54 @@ DeleteScopeHostname Delete a scope hostname
  * @param siteId A site ID
  * @param scopeId A scope ID
  * @param domain The hostname to remove from a scope
- * @param optional nil or *DeleteScopeHostnameOpts - Optional Parameters:
- * @param "DisableTransparentMode" (optional.Bool) -  Whether or not to remove the hostname from a CDN site's CDN scope or its WAF scope. When true, this call removes the hostname from a CDN site's scope instead of loading from a CDN site's WAF scope, if the site has WAF service.
+@return apiDeleteScopeHostnameRequest
 */
-func (a *ConfigurationApiService) DeleteScopeHostname(ctx _context.Context, stackId string, siteId string, scopeId string, domain string, localVarOptionals *DeleteScopeHostnameOpts) (*_nethttp.Response, error) {
+func (a *ConfigurationApiService) DeleteScopeHostname(ctx _context.Context, stackId string, siteId string, scopeId string, domain string) apiDeleteScopeHostnameRequest {
+	return apiDeleteScopeHostnameRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		scopeId: scopeId,
+		domain: domain,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDeleteScopeHostnameRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/hostnames/{domain}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.DeleteScopeHostname")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"domain"+"}", _neturl.QueryEscape(parameterToString(domain, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/hostnames/{domain}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"domain"+"}", _neturl.QueryEscape(parameterToString(r.domain, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.DisableTransparentMode.IsSet() {
-		localVarQueryParams.Add("disable_transparent_mode", parameterToString(localVarOptionals.DisableTransparentMode.Value(), ""))
+	
+	
+	
+	
+	
+	if r.disableTransparentMode != nil {
+		localVarQueryParams.Add("disable_transparent_mode", parameterToString(*r.disableTransparentMode, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -520,12 +685,12 @@ func (a *ConfigurationApiService) DeleteScopeHostname(ctx _context.Context, stac
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -543,7 +708,7 @@ func (a *ConfigurationApiService) DeleteScopeHostname(ctx _context.Context, stac
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -553,7 +718,7 @@ func (a *ConfigurationApiService) DeleteScopeHostname(ctx _context.Context, stac
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -562,7 +727,7 @@ func (a *ConfigurationApiService) DeleteScopeHostname(ctx _context.Context, stac
 			return localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -573,6 +738,15 @@ func (a *ConfigurationApiService) DeleteScopeHostname(ctx _context.Context, stac
 
 	return localVarHTTPResponse, nil
 }
+type apiDisconnectScopeFromOriginRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	scopeId string
+	originId string
+}
+
 
 /*
 DisconnectScopeFromOrigin Delete a scope origin
@@ -581,29 +755,51 @@ DisconnectScopeFromOrigin Delete a scope origin
  * @param siteId A site ID
  * @param scopeId A scope ID
  * @param originId An origin ID
+@return apiDisconnectScopeFromOriginRequest
 */
-func (a *ConfigurationApiService) DisconnectScopeFromOrigin(ctx _context.Context, stackId string, siteId string, scopeId string, originId string) (*_nethttp.Response, error) {
+func (a *ConfigurationApiService) DisconnectScopeFromOrigin(ctx _context.Context, stackId string, siteId string, scopeId string, originId string) apiDisconnectScopeFromOriginRequest {
+	return apiDisconnectScopeFromOriginRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		scopeId: scopeId,
+		originId: originId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDisconnectScopeFromOriginRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins/{origin_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.DisconnectScopeFromOrigin")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"origin_id"+"}", _neturl.QueryEscape(parameterToString(originId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins/{origin_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"origin_id"+"}", _neturl.QueryEscape(parameterToString(r.originId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -622,12 +818,12 @@ func (a *ConfigurationApiService) DisconnectScopeFromOrigin(ctx _context.Context
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -645,7 +841,7 @@ func (a *ConfigurationApiService) DisconnectScopeFromOrigin(ctx _context.Context
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -655,7 +851,7 @@ func (a *ConfigurationApiService) DisconnectScopeFromOrigin(ctx _context.Context
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -664,7 +860,7 @@ func (a *ConfigurationApiService) DisconnectScopeFromOrigin(ctx _context.Context
 			return localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -675,6 +871,14 @@ func (a *ConfigurationApiService) DisconnectScopeFromOrigin(ctx _context.Context
 
 	return localVarHTTPResponse, nil
 }
+type apiGetScopeConfigurationRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	scopeId string
+}
+
 
 /*
 GetScopeConfiguration Get a scope's configuraiton
@@ -682,9 +886,23 @@ GetScopeConfiguration Get a scope's configuraiton
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
-@return CdnGetScopeConfigurationResponse
+@return apiGetScopeConfigurationRequest
 */
-func (a *ConfigurationApiService) GetScopeConfiguration(ctx _context.Context, stackId string, siteId string, scopeId string) (CdnGetScopeConfigurationResponse, *_nethttp.Response, error) {
+func (a *ConfigurationApiService) GetScopeConfiguration(ctx _context.Context, stackId string, siteId string, scopeId string) apiGetScopeConfigurationRequest {
+	return apiGetScopeConfigurationRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		scopeId: scopeId,
+	}
+}
+
+/*
+Execute executes the request
+ @return CdnGetScopeConfigurationResponse
+*/
+func (r apiGetScopeConfigurationRequest) Execute() (CdnGetScopeConfigurationResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -694,17 +912,22 @@ func (a *ConfigurationApiService) GetScopeConfiguration(ctx _context.Context, st
 		localVarReturnValue  CdnGetScopeConfigurationResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/configuration"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.GetScopeConfiguration")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/configuration"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -723,12 +946,12 @@ func (a *ConfigurationApiService) GetScopeConfiguration(ctx _context.Context, st
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -746,7 +969,7 @@ func (a *ConfigurationApiService) GetScopeConfiguration(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -756,7 +979,7 @@ func (a *ConfigurationApiService) GetScopeConfiguration(ctx _context.Context, st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -765,7 +988,7 @@ func (a *ConfigurationApiService) GetScopeConfiguration(ctx _context.Context, st
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -774,7 +997,7 @@ func (a *ConfigurationApiService) GetScopeConfiguration(ctx _context.Context, st
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -785,14 +1008,43 @@ func (a *ConfigurationApiService) GetScopeConfiguration(ctx _context.Context, st
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetScopeHostnamesRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	scopeId string
+	pageRequestFirst *string
+	pageRequestAfter *string
+	pageRequestFilter *string
+	pageRequestSortBy *string
+	disableTransparentMode *bool
+}
 
-// GetScopeHostnamesOpts Optional parameters for the method 'GetScopeHostnames'
-type GetScopeHostnamesOpts struct {
-    PageRequestFirst optional.String
-    PageRequestAfter optional.String
-    PageRequestFilter optional.String
-    PageRequestSortBy optional.String
-    DisableTransparentMode optional.Bool
+
+func (r apiGetScopeHostnamesRequest) PageRequestFirst(pageRequestFirst string) apiGetScopeHostnamesRequest {
+	r.pageRequestFirst = &pageRequestFirst
+	return r
+}
+
+func (r apiGetScopeHostnamesRequest) PageRequestAfter(pageRequestAfter string) apiGetScopeHostnamesRequest {
+	r.pageRequestAfter = &pageRequestAfter
+	return r
+}
+
+func (r apiGetScopeHostnamesRequest) PageRequestFilter(pageRequestFilter string) apiGetScopeHostnamesRequest {
+	r.pageRequestFilter = &pageRequestFilter
+	return r
+}
+
+func (r apiGetScopeHostnamesRequest) PageRequestSortBy(pageRequestSortBy string) apiGetScopeHostnamesRequest {
+	r.pageRequestSortBy = &pageRequestSortBy
+	return r
+}
+
+func (r apiGetScopeHostnamesRequest) DisableTransparentMode(disableTransparentMode bool) apiGetScopeHostnamesRequest {
+	r.disableTransparentMode = &disableTransparentMode
+	return r
 }
 
 /*
@@ -802,15 +1054,23 @@ Hostnames allow the CDN to recognize an HTTP request and associate it with a CDN
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
- * @param optional nil or *GetScopeHostnamesOpts - Optional Parameters:
- * @param "PageRequestFirst" (optional.String) -  The number of items desired.
- * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
- * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
- * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
- * @param "DisableTransparentMode" (optional.Bool) -  Whether or not to load hostnames from a CDN site's CDN scope or its WAF scope. When true, this call loads scope hostnames from a CDN site's scope instead of loading from a CDN site's WAF scope, if the site has WAF service.
-@return CdnGetScopeHostnamesResponse
+@return apiGetScopeHostnamesRequest
 */
-func (a *ConfigurationApiService) GetScopeHostnames(ctx _context.Context, stackId string, siteId string, scopeId string, localVarOptionals *GetScopeHostnamesOpts) (CdnGetScopeHostnamesResponse, *_nethttp.Response, error) {
+func (a *ConfigurationApiService) GetScopeHostnames(ctx _context.Context, stackId string, siteId string, scopeId string) apiGetScopeHostnamesRequest {
+	return apiGetScopeHostnamesRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		scopeId: scopeId,
+	}
+}
+
+/*
+Execute executes the request
+ @return CdnGetScopeHostnamesResponse
+*/
+func (r apiGetScopeHostnamesRequest) Execute() (CdnGetScopeHostnamesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -820,32 +1080,37 @@ func (a *ConfigurationApiService) GetScopeHostnames(ctx _context.Context, stackI
 		localVarReturnValue  CdnGetScopeHostnamesResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/hostnames"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.GetScopeHostnames")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/hostnames"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
-		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
+	
+	
+	
+					
+	if r.pageRequestFirst != nil {
+		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
-		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
+	if r.pageRequestAfter != nil {
+		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
-		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
+	if r.pageRequestFilter != nil {
+		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
+	if r.pageRequestSortBy != nil {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.DisableTransparentMode.IsSet() {
-		localVarQueryParams.Add("disable_transparent_mode", parameterToString(localVarOptionals.DisableTransparentMode.Value(), ""))
+	if r.disableTransparentMode != nil {
+		localVarQueryParams.Add("disable_transparent_mode", parameterToString(*r.disableTransparentMode, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -864,12 +1129,12 @@ func (a *ConfigurationApiService) GetScopeHostnames(ctx _context.Context, stackI
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -887,7 +1152,7 @@ func (a *ConfigurationApiService) GetScopeHostnames(ctx _context.Context, stackI
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -897,7 +1162,7 @@ func (a *ConfigurationApiService) GetScopeHostnames(ctx _context.Context, stackI
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -906,7 +1171,7 @@ func (a *ConfigurationApiService) GetScopeHostnames(ctx _context.Context, stackI
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -915,7 +1180,7 @@ func (a *ConfigurationApiService) GetScopeHostnames(ctx _context.Context, stackI
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -926,13 +1191,37 @@ func (a *ConfigurationApiService) GetScopeHostnames(ctx _context.Context, stackI
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetScopeOriginsRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	scopeId string
+	pageRequestFirst *string
+	pageRequestAfter *string
+	pageRequestFilter *string
+	pageRequestSortBy *string
+}
 
-// GetScopeOriginsOpts Optional parameters for the method 'GetScopeOrigins'
-type GetScopeOriginsOpts struct {
-    PageRequestFirst optional.String
-    PageRequestAfter optional.String
-    PageRequestFilter optional.String
-    PageRequestSortBy optional.String
+
+func (r apiGetScopeOriginsRequest) PageRequestFirst(pageRequestFirst string) apiGetScopeOriginsRequest {
+	r.pageRequestFirst = &pageRequestFirst
+	return r
+}
+
+func (r apiGetScopeOriginsRequest) PageRequestAfter(pageRequestAfter string) apiGetScopeOriginsRequest {
+	r.pageRequestAfter = &pageRequestAfter
+	return r
+}
+
+func (r apiGetScopeOriginsRequest) PageRequestFilter(pageRequestFilter string) apiGetScopeOriginsRequest {
+	r.pageRequestFilter = &pageRequestFilter
+	return r
+}
+
+func (r apiGetScopeOriginsRequest) PageRequestSortBy(pageRequestSortBy string) apiGetScopeOriginsRequest {
+	r.pageRequestSortBy = &pageRequestSortBy
+	return r
 }
 
 /*
@@ -941,14 +1230,23 @@ GetScopeOrigins Get all scope origins
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
- * @param optional nil or *GetScopeOriginsOpts - Optional Parameters:
- * @param "PageRequestFirst" (optional.String) -  The number of items desired.
- * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
- * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
- * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
-@return CdnGetScopeOriginsResponse
+@return apiGetScopeOriginsRequest
 */
-func (a *ConfigurationApiService) GetScopeOrigins(ctx _context.Context, stackId string, siteId string, scopeId string, localVarOptionals *GetScopeOriginsOpts) (CdnGetScopeOriginsResponse, *_nethttp.Response, error) {
+func (a *ConfigurationApiService) GetScopeOrigins(ctx _context.Context, stackId string, siteId string, scopeId string) apiGetScopeOriginsRequest {
+	return apiGetScopeOriginsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		scopeId: scopeId,
+	}
+}
+
+/*
+Execute executes the request
+ @return CdnGetScopeOriginsResponse
+*/
+func (r apiGetScopeOriginsRequest) Execute() (CdnGetScopeOriginsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -958,29 +1256,34 @@ func (a *ConfigurationApiService) GetScopeOrigins(ctx _context.Context, stackId 
 		localVarReturnValue  CdnGetScopeOriginsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.GetScopeOrigins")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/origins"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
-		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
+	
+	
+	
+				
+	if r.pageRequestFirst != nil {
+		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
-		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
+	if r.pageRequestAfter != nil {
+		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
-		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
+	if r.pageRequestFilter != nil {
+		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
+	if r.pageRequestSortBy != nil {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -999,12 +1302,12 @@ func (a *ConfigurationApiService) GetScopeOrigins(ctx _context.Context, stackId 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1022,7 +1325,7 @@ func (a *ConfigurationApiService) GetScopeOrigins(ctx _context.Context, stackId 
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1032,7 +1335,7 @@ func (a *ConfigurationApiService) GetScopeOrigins(ctx _context.Context, stackId 
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1041,7 +1344,7 @@ func (a *ConfigurationApiService) GetScopeOrigins(ctx _context.Context, stackId 
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1050,7 +1353,7 @@ func (a *ConfigurationApiService) GetScopeOrigins(ctx _context.Context, stackId 
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1061,16 +1364,36 @@ func (a *ConfigurationApiService) GetScopeOrigins(ctx _context.Context, stackId 
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetSiteDnsTargetsRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+}
+
 
 /*
 GetSiteDnsTargets Get CNAME targets
-A site&#39;s hostname should point to these CNAME targets in order for traffic to be sent through StackPath&#39;s edge nodes.
+A site's hostname should point to these CNAME targets in order for traffic to be sent through StackPath's edge nodes.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
-@return CdnGetSiteDnsTargetsResponse
+@return apiGetSiteDnsTargetsRequest
 */
-func (a *ConfigurationApiService) GetSiteDnsTargets(ctx _context.Context, stackId string, siteId string) (CdnGetSiteDnsTargetsResponse, *_nethttp.Response, error) {
+func (a *ConfigurationApiService) GetSiteDnsTargets(ctx _context.Context, stackId string, siteId string) apiGetSiteDnsTargetsRequest {
+	return apiGetSiteDnsTargetsRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+ @return CdnGetSiteDnsTargetsResponse
+*/
+func (r apiGetSiteDnsTargetsRequest) Execute() (CdnGetSiteDnsTargetsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -1080,15 +1403,20 @@ func (a *ConfigurationApiService) GetSiteDnsTargets(ctx _context.Context, stackI
 		localVarReturnValue  CdnGetSiteDnsTargetsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/dns/targets"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.GetSiteDnsTargets")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/dns/targets"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1107,12 +1435,12 @@ func (a *ConfigurationApiService) GetSiteDnsTargets(ctx _context.Context, stackI
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1130,7 +1458,7 @@ func (a *ConfigurationApiService) GetSiteDnsTargets(ctx _context.Context, stackI
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1140,7 +1468,7 @@ func (a *ConfigurationApiService) GetSiteDnsTargets(ctx _context.Context, stackI
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1149,7 +1477,7 @@ func (a *ConfigurationApiService) GetSiteDnsTargets(ctx _context.Context, stackI
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1158,7 +1486,7 @@ func (a *ConfigurationApiService) GetSiteDnsTargets(ctx _context.Context, stackI
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1169,14 +1497,42 @@ func (a *ConfigurationApiService) GetSiteDnsTargets(ctx _context.Context, stackI
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetSiteScopesRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	pageRequestFirst *string
+	pageRequestAfter *string
+	pageRequestFilter *string
+	pageRequestSortBy *string
+	disableTransparentMode *bool
+}
 
-// GetSiteScopesOpts Optional parameters for the method 'GetSiteScopes'
-type GetSiteScopesOpts struct {
-    PageRequestFirst optional.String
-    PageRequestAfter optional.String
-    PageRequestFilter optional.String
-    PageRequestSortBy optional.String
-    DisableTransparentMode optional.Bool
+
+func (r apiGetSiteScopesRequest) PageRequestFirst(pageRequestFirst string) apiGetSiteScopesRequest {
+	r.pageRequestFirst = &pageRequestFirst
+	return r
+}
+
+func (r apiGetSiteScopesRequest) PageRequestAfter(pageRequestAfter string) apiGetSiteScopesRequest {
+	r.pageRequestAfter = &pageRequestAfter
+	return r
+}
+
+func (r apiGetSiteScopesRequest) PageRequestFilter(pageRequestFilter string) apiGetSiteScopesRequest {
+	r.pageRequestFilter = &pageRequestFilter
+	return r
+}
+
+func (r apiGetSiteScopesRequest) PageRequestSortBy(pageRequestSortBy string) apiGetSiteScopesRequest {
+	r.pageRequestSortBy = &pageRequestSortBy
+	return r
+}
+
+func (r apiGetSiteScopesRequest) DisableTransparentMode(disableTransparentMode bool) apiGetSiteScopesRequest {
+	r.disableTransparentMode = &disableTransparentMode
+	return r
 }
 
 /*
@@ -1184,15 +1540,22 @@ GetSiteScopes Get all scopes
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param stackId A stack ID or slug
  * @param siteId A site ID
- * @param optional nil or *GetSiteScopesOpts - Optional Parameters:
- * @param "PageRequestFirst" (optional.String) -  The number of items desired.
- * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
- * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
- * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
- * @param "DisableTransparentMode" (optional.Bool) -  Whether or not to retrieve the site's CDN scope or its WAF scope. When true, this call removes the hostname from a CDN site's scope instead of loading from a CDN site's WAF scope, if the site has WAF service.
-@return CdnGetSiteScopesResponse
+@return apiGetSiteScopesRequest
 */
-func (a *ConfigurationApiService) GetSiteScopes(ctx _context.Context, stackId string, siteId string, localVarOptionals *GetSiteScopesOpts) (CdnGetSiteScopesResponse, *_nethttp.Response, error) {
+func (a *ConfigurationApiService) GetSiteScopes(ctx _context.Context, stackId string, siteId string) apiGetSiteScopesRequest {
+	return apiGetSiteScopesRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+	}
+}
+
+/*
+Execute executes the request
+ @return CdnGetSiteScopesResponse
+*/
+func (r apiGetSiteScopesRequest) Execute() (CdnGetSiteScopesResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -1202,30 +1565,35 @@ func (a *ConfigurationApiService) GetSiteScopes(ctx _context.Context, stackId st
 		localVarReturnValue  CdnGetSiteScopesResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.GetSiteScopes")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
-		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
+	
+	
+					
+	if r.pageRequestFirst != nil {
+		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
-		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
+	if r.pageRequestAfter != nil {
+		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
-		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
+	if r.pageRequestFilter != nil {
+		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
+	if r.pageRequestSortBy != nil {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.DisableTransparentMode.IsSet() {
-		localVarQueryParams.Add("disable_transparent_mode", parameterToString(localVarOptionals.DisableTransparentMode.Value(), ""))
+	if r.disableTransparentMode != nil {
+		localVarQueryParams.Add("disable_transparent_mode", parameterToString(*r.disableTransparentMode, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1244,12 +1612,12 @@ func (a *ConfigurationApiService) GetSiteScopes(ctx _context.Context, stackId st
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1267,7 +1635,7 @@ func (a *ConfigurationApiService) GetSiteScopes(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1277,7 +1645,7 @@ func (a *ConfigurationApiService) GetSiteScopes(ctx _context.Context, stackId st
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1286,7 +1654,7 @@ func (a *ConfigurationApiService) GetSiteScopes(ctx _context.Context, stackId st
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1295,7 +1663,7 @@ func (a *ConfigurationApiService) GetSiteScopes(ctx _context.Context, stackId st
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -1306,6 +1674,20 @@ func (a *ConfigurationApiService) GetSiteScopes(ctx _context.Context, stackId st
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiUpdateScopeConfigurationRequest struct {
+	ctx _context.Context
+	apiService *ConfigurationApiService
+	stackId string
+	siteId string
+	scopeId string
+	cdnUpdateScopeConfigurationRequest *CdnUpdateScopeConfigurationRequest
+}
+
+
+func (r apiUpdateScopeConfigurationRequest) CdnUpdateScopeConfigurationRequest(cdnUpdateScopeConfigurationRequest CdnUpdateScopeConfigurationRequest) apiUpdateScopeConfigurationRequest {
+	r.cdnUpdateScopeConfigurationRequest = &cdnUpdateScopeConfigurationRequest
+	return r
+}
 
 /*
 UpdateScopeConfiguration Update a scope's configuration
@@ -1313,10 +1695,23 @@ UpdateScopeConfiguration Update a scope's configuration
  * @param stackId A stack ID or slug
  * @param siteId A site ID
  * @param scopeId A scope ID
- * @param cdnUpdateScopeConfigurationRequest
-@return CdnUpdateScopeConfigurationResponse
+@return apiUpdateScopeConfigurationRequest
 */
-func (a *ConfigurationApiService) UpdateScopeConfiguration(ctx _context.Context, stackId string, siteId string, scopeId string, cdnUpdateScopeConfigurationRequest CdnUpdateScopeConfigurationRequest) (CdnUpdateScopeConfigurationResponse, *_nethttp.Response, error) {
+func (a *ConfigurationApiService) UpdateScopeConfiguration(ctx _context.Context, stackId string, siteId string, scopeId string) apiUpdateScopeConfigurationRequest {
+	return apiUpdateScopeConfigurationRequest{
+		apiService: a,
+		ctx: ctx,
+		stackId: stackId,
+		siteId: siteId,
+		scopeId: scopeId,
+	}
+}
+
+/*
+Execute executes the request
+ @return CdnUpdateScopeConfigurationResponse
+*/
+func (r apiUpdateScopeConfigurationRequest) Execute() (CdnUpdateScopeConfigurationResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPatch
 		localVarPostBody     interface{}
@@ -1326,17 +1721,26 @@ func (a *ConfigurationApiService) UpdateScopeConfiguration(ctx _context.Context,
 		localVarReturnValue  CdnUpdateScopeConfigurationResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/configuration"
-	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(stackId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "ConfigurationApiService.UpdateScopeConfiguration")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(siteId, "")) , -1)
-
-	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(scopeId, "")) , -1)
+	localVarPath := localBasePath + "/cdn/v1/stacks/{stack_id}/sites/{site_id}/scopes/{scope_id}/configuration"
+	localVarPath = strings.Replace(localVarPath, "{"+"stack_id"+"}", _neturl.QueryEscape(parameterToString(r.stackId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"site_id"+"}", _neturl.QueryEscape(parameterToString(r.siteId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scope_id"+"}", _neturl.QueryEscape(parameterToString(r.scopeId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	
+	
+	if r.cdnUpdateScopeConfigurationRequest == nil {
+		return localVarReturnValue, nil, reportError("cdnUpdateScopeConfigurationRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -1356,13 +1760,13 @@ func (a *ConfigurationApiService) UpdateScopeConfiguration(ctx _context.Context,
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &cdnUpdateScopeConfigurationRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.cdnUpdateScopeConfigurationRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -1380,7 +1784,7 @@ func (a *ConfigurationApiService) UpdateScopeConfiguration(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1390,7 +1794,7 @@ func (a *ConfigurationApiService) UpdateScopeConfiguration(ctx _context.Context,
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1399,7 +1803,7 @@ func (a *ConfigurationApiService) UpdateScopeConfiguration(ctx _context.Context,
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v ApiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -1408,7 +1812,7 @@ func (a *ConfigurationApiService) UpdateScopeConfiguration(ctx _context.Context,
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,

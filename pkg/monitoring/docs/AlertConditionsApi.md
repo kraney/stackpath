@@ -17,19 +17,56 @@ Method | HTTP request | Description
 
 ## BatchDeleteAlertConditions
 
-> BatchDeleteAlertConditions(ctx, stackId, monitorId, v2BatchDeleteAlertConditionsRequest)
+> BatchDeleteAlertConditions(ctx, stackId, monitorId).V2BatchDeleteAlertConditionsRequest(v2BatchDeleteAlertConditionsRequest).Execute()
 
 Delete multiple alert conditions
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    monitorId := "monitorId_example" // string | A monitor ID
+    v2BatchDeleteAlertConditionsRequest := openapiclient.v2BatchDeleteAlertConditionsRequest{ConditionIds: []string{"ConditionIds_example")} // V2BatchDeleteAlertConditionsRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.AlertConditionsApi.BatchDeleteAlertConditions(context.Background(), stackId, monitorId, v2BatchDeleteAlertConditionsRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AlertConditionsApi.BatchDeleteAlertConditions``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**monitorId** | **string**| A monitor ID | 
-**v2BatchDeleteAlertConditionsRequest** | [**V2BatchDeleteAlertConditionsRequest**](V2BatchDeleteAlertConditionsRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+**monitorId** | **string** | A monitor ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiBatchDeleteAlertConditionsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **v2BatchDeleteAlertConditionsRequest** | [**V2BatchDeleteAlertConditionsRequest**](V2BatchDeleteAlertConditionsRequest.md) |  | 
 
 ### Return type
 
@@ -51,21 +88,60 @@ Name | Type | Description  | Notes
 
 ## CreateAlertCondition
 
-> V2CreateAlertConditionResponse CreateAlertCondition(ctx, stackId, monitorId, v2CreateAlertConditionRequest)
+> V2CreateAlertConditionResponse CreateAlertCondition(ctx, stackId, monitorId).V2CreateAlertConditionRequest(v2CreateAlertConditionRequest).Execute()
 
 Create an alert condition
 
-An alert condition defines when to be alerted by a change in the monitored service.
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    monitorId := "monitorId_example" // string | A monitor ID
+    v2CreateAlertConditionRequest := openapiclient.v2CreateAlertConditionRequest{Metric: openapiclient.v2AlertConditionMetric{}, Comparator: openapiclient.AlertConditionComparator{}, Value: "Value_example", AlarmDelay: 123, AlarmEvery: 123, AlarmUntilSilenced: false, Enabled: false, MinimumLocations: 123} // V2CreateAlertConditionRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.AlertConditionsApi.CreateAlertCondition(context.Background(), stackId, monitorId, v2CreateAlertConditionRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AlertConditionsApi.CreateAlertCondition``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `CreateAlertCondition`: V2CreateAlertConditionResponse
+    fmt.Fprintf(os.Stdout, "Response from `AlertConditionsApi.CreateAlertCondition`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**monitorId** | **string**| A monitor ID | 
-**v2CreateAlertConditionRequest** | [**V2CreateAlertConditionRequest**](V2CreateAlertConditionRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+**monitorId** | **string** | A monitor ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateAlertConditionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **v2CreateAlertConditionRequest** | [**V2CreateAlertConditionRequest**](V2CreateAlertConditionRequest.md) |  | 
 
 ### Return type
 
@@ -87,19 +163,57 @@ Name | Type | Description  | Notes
 
 ## DeleteAlertCondition
 
-> DeleteAlertCondition(ctx, stackId, monitorId, conditionId)
+> DeleteAlertCondition(ctx, stackId, monitorId, conditionId).Execute()
 
 Delete an alert condition
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    monitorId := "monitorId_example" // string | A monitor ID
+    conditionId := "conditionId_example" // string | A monitoring alert condition ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.AlertConditionsApi.DeleteAlertCondition(context.Background(), stackId, monitorId, conditionId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AlertConditionsApi.DeleteAlertCondition``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**monitorId** | **string**| A monitor ID | 
-**conditionId** | **string**| A monitoring alert condition ID | 
+**stackId** | **string** | A stack ID or slug | 
+**monitorId** | **string** | A monitor ID | 
+**conditionId** | **string** | A monitoring alert condition ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteAlertConditionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -121,19 +235,57 @@ Name | Type | Description  | Notes
 
 ## DisableAlertCondition
 
-> DisableAlertCondition(ctx, stackId, monitorId, conditionId)
+> DisableAlertCondition(ctx, stackId, monitorId, conditionId).Execute()
 
 Disable an alert condition
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    monitorId := "monitorId_example" // string | A monitor ID
+    conditionId := "conditionId_example" // string | A monitoring alert condition ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.AlertConditionsApi.DisableAlertCondition(context.Background(), stackId, monitorId, conditionId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AlertConditionsApi.DisableAlertCondition``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**monitorId** | **string**| A monitor ID | 
-**conditionId** | **string**| A monitoring alert condition ID | 
+**stackId** | **string** | A stack ID or slug | 
+**monitorId** | **string** | A monitor ID | 
+**conditionId** | **string** | A monitoring alert condition ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDisableAlertConditionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -155,19 +307,57 @@ Name | Type | Description  | Notes
 
 ## EnableAlertCondition
 
-> EnableAlertCondition(ctx, stackId, monitorId, conditionId)
+> EnableAlertCondition(ctx, stackId, monitorId, conditionId).Execute()
 
 Enable an alert condition
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    monitorId := "monitorId_example" // string | A monitor ID
+    conditionId := "conditionId_example" // string | A monitoring alert condition ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.AlertConditionsApi.EnableAlertCondition(context.Background(), stackId, monitorId, conditionId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AlertConditionsApi.EnableAlertCondition``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**monitorId** | **string**| A monitor ID | 
-**conditionId** | **string**| A monitoring alert condition ID | 
+**stackId** | **string** | A stack ID or slug | 
+**monitorId** | **string** | A monitor ID | 
+**conditionId** | **string** | A monitoring alert condition ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiEnableAlertConditionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -189,19 +379,59 @@ Name | Type | Description  | Notes
 
 ## GetAlertCondition
 
-> V2GetAlertConditionResponse GetAlertCondition(ctx, stackId, monitorId, conditionId)
+> V2GetAlertConditionResponse GetAlertCondition(ctx, stackId, monitorId, conditionId).Execute()
 
 Get an alert condition
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    monitorId := "monitorId_example" // string | A monitor ID
+    conditionId := "conditionId_example" // string | A monitoring alert condition ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.AlertConditionsApi.GetAlertCondition(context.Background(), stackId, monitorId, conditionId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AlertConditionsApi.GetAlertCondition``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetAlertCondition`: V2GetAlertConditionResponse
+    fmt.Fprintf(os.Stdout, "Response from `AlertConditionsApi.GetAlertCondition`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**monitorId** | **string**| A monitor ID | 
-**conditionId** | **string**| A monitoring alert condition ID | 
+**stackId** | **string** | A stack ID or slug | 
+**monitorId** | **string** | A monitor ID | 
+**conditionId** | **string** | A monitoring alert condition ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetAlertConditionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -223,33 +453,64 @@ Name | Type | Description  | Notes
 
 ## GetAlertConditions
 
-> V2GetAlertConditionsResponse GetAlertConditions(ctx, stackId, monitorId, optional)
+> V2GetAlertConditionsResponse GetAlertConditions(ctx, stackId, monitorId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
 
 Get all alert conditions
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    monitorId := "monitorId_example" // string | A monitor ID
+    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
+    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
+    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
+    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.AlertConditionsApi.GetAlertConditions(context.Background(), stackId, monitorId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AlertConditionsApi.GetAlertConditions``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetAlertConditions`: V2GetAlertConditionsResponse
+    fmt.Fprintf(os.Stdout, "Response from `AlertConditionsApi.GetAlertConditions`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**monitorId** | **string**| A monitor ID | 
- **optional** | ***GetAlertConditionsOpts** | optional parameters | nil if no parameters
+**stackId** | **string** | A stack ID or slug | 
+**monitorId** | **string** | A monitor ID | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetAlertConditionsOpts struct
+Other parameters are passed through a pointer to a apiGetAlertConditionsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **pageRequestFirst** | **optional.String**| The number of items desired. | 
- **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
- **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
- **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
+ **pageRequestFirst** | **string** | The number of items desired. | 
+ **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **string** | SQL-style constraint filters. | 
+ **pageRequestSortBy** | **string** | Sort the response by the given field. | 
 
 ### Return type
 
@@ -271,20 +532,61 @@ Name | Type | Description  | Notes
 
 ## UpdateAlertCondition
 
-> V2UpdateAlertConditionResponse UpdateAlertCondition(ctx, stackId, monitorId, conditionId, v2UpdateAlertConditionRequest)
+> V2UpdateAlertConditionResponse UpdateAlertCondition(ctx, stackId, monitorId, conditionId).V2UpdateAlertConditionRequest(v2UpdateAlertConditionRequest).Execute()
 
 Update an alert condition
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    monitorId := "monitorId_example" // string | A monitor ID
+    conditionId := "conditionId_example" // string | A monitoring alert condition ID
+    v2UpdateAlertConditionRequest := openapiclient.v2UpdateAlertConditionRequest{Metric: openapiclient.v2AlertConditionMetric{}, Comparator: openapiclient.AlertConditionComparator{}, Value: "Value_example", AlarmDelay: 123, AlarmEvery: 123, AlarmUntilSilenced: false, Enabled: false, MinimumLocations: 123} // V2UpdateAlertConditionRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.AlertConditionsApi.UpdateAlertCondition(context.Background(), stackId, monitorId, conditionId, v2UpdateAlertConditionRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AlertConditionsApi.UpdateAlertCondition``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `UpdateAlertCondition`: V2UpdateAlertConditionResponse
+    fmt.Fprintf(os.Stdout, "Response from `AlertConditionsApi.UpdateAlertCondition`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**monitorId** | **string**| A monitor ID | 
-**conditionId** | **string**| A monitoring alert condition ID | 
-**v2UpdateAlertConditionRequest** | [**V2UpdateAlertConditionRequest**](V2UpdateAlertConditionRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+**monitorId** | **string** | A monitor ID | 
+**conditionId** | **string** | A monitoring alert condition ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateAlertConditionRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+ **v2UpdateAlertConditionRequest** | [**V2UpdateAlertConditionRequest**](V2UpdateAlertConditionRequest.md) |  | 
 
 ### Return type
 

@@ -10,17 +10,53 @@ Method | HTTP request | Description
 
 ## GetAccount
 
-> IdentityGetAccountResponse GetAccount(ctx, accountId)
+> IdentityGetAccountResponse GetAccount(ctx, accountId).Execute()
 
 Get an account
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    accountId := "accountId_example" // string | An account ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.AccountsApi.GetAccount(context.Background(), accountId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `AccountsApi.GetAccount``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetAccount`: IdentityGetAccountResponse
+    fmt.Fprintf(os.Stdout, "Response from `AccountsApi.GetAccount`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**accountId** | **string**| An account ID | 
+**accountId** | **string** | An account ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetAccountRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 

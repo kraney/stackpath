@@ -8,6 +8,11 @@
  */
 
 package edge_compute_networking
+
+import (
+	"encoding/json"
+)
+
 // NetworkPolicySpecPolicyType the model 'NetworkPolicySpecPolicyType'
 type NetworkPolicySpecPolicyType string
 
@@ -17,3 +22,45 @@ const (
 	NETWORKPOLICYSPECPOLICYTYPE_INGRESS NetworkPolicySpecPolicyType = "INGRESS"
 	NETWORKPOLICYSPECPOLICYTYPE_EGRESS NetworkPolicySpecPolicyType = "EGRESS"
 )
+
+// Ptr returns reference to NetworkPolicySpecPolicyType value
+func (v NetworkPolicySpecPolicyType) Ptr() *NetworkPolicySpecPolicyType {
+	return &v
+}
+
+
+type NullableNetworkPolicySpecPolicyType struct {
+	value *NetworkPolicySpecPolicyType
+	isSet bool
+}
+
+func (v NullableNetworkPolicySpecPolicyType) Get() *NetworkPolicySpecPolicyType {
+	return v.value
+}
+
+func (v *NullableNetworkPolicySpecPolicyType) Set(val *NetworkPolicySpecPolicyType) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableNetworkPolicySpecPolicyType) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableNetworkPolicySpecPolicyType) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableNetworkPolicySpecPolicyType(val *NetworkPolicySpecPolicyType) *NullableNetworkPolicySpecPolicyType {
+	return &NullableNetworkPolicySpecPolicyType{value: val, isSet: true}
+}
+
+func (v NullableNetworkPolicySpecPolicyType) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableNetworkPolicySpecPolicyType) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

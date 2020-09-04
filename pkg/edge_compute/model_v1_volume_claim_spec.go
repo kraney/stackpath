@@ -8,7 +8,105 @@
  */
 
 package edge_compute
+
+import (
+	"encoding/json"
+)
+
 // V1VolumeClaimSpec The specification for a volume claim
 type V1VolumeClaimSpec struct {
-	Resources V1ResourceRequirements `json:"resources,omitempty"`
+	Resources *V1ResourceRequirements `json:"resources,omitempty"`
+}
+
+// NewV1VolumeClaimSpec instantiates a new V1VolumeClaimSpec object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV1VolumeClaimSpec() *V1VolumeClaimSpec {
+	this := V1VolumeClaimSpec{}
+	return &this
+}
+
+// NewV1VolumeClaimSpecWithDefaults instantiates a new V1VolumeClaimSpec object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV1VolumeClaimSpecWithDefaults() *V1VolumeClaimSpec {
+	this := V1VolumeClaimSpec{}
+	return &this
+}
+
+// GetResources returns the Resources field value if set, zero value otherwise.
+func (o *V1VolumeClaimSpec) GetResources() V1ResourceRequirements {
+	if o == nil || o.Resources == nil {
+		var ret V1ResourceRequirements
+		return ret
+	}
+	return *o.Resources
+}
+
+// GetResourcesOk returns a tuple with the Resources field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1VolumeClaimSpec) GetResourcesOk() (*V1ResourceRequirements, bool) {
+	if o == nil || o.Resources == nil {
+		return nil, false
+	}
+	return o.Resources, true
+}
+
+// HasResources returns a boolean if a field has been set.
+func (o *V1VolumeClaimSpec) HasResources() bool {
+	if o != nil && o.Resources != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetResources gets a reference to the given V1ResourceRequirements and assigns it to the Resources field.
+func (o *V1VolumeClaimSpec) SetResources(v V1ResourceRequirements) {
+	o.Resources = &v
+}
+
+func (o V1VolumeClaimSpec) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Resources != nil {
+		toSerialize["resources"] = o.Resources
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV1VolumeClaimSpec struct {
+	value *V1VolumeClaimSpec
+	isSet bool
+}
+
+func (v NullableV1VolumeClaimSpec) Get() *V1VolumeClaimSpec {
+	return v.value
+}
+
+func (v *NullableV1VolumeClaimSpec) Set(val *V1VolumeClaimSpec) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV1VolumeClaimSpec) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV1VolumeClaimSpec) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV1VolumeClaimSpec(val *V1VolumeClaimSpec) *NullableV1VolumeClaimSpec {
+	return &NullableV1VolumeClaimSpec{value: val, isSet: true}
+}
+
+func (v NullableV1VolumeClaimSpec) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV1VolumeClaimSpec) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

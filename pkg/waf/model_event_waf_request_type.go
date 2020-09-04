@@ -8,6 +8,11 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // EventWafRequestType the model 'EventWafRequestType'
 type EventWafRequestType string
 
@@ -16,3 +21,45 @@ const (
 	EVENTWAFREQUESTTYPE_CHALLENGE EventWafRequestType = "CHALLENGE"
 	EVENTWAFREQUESTTYPE_BLOCK EventWafRequestType = "BLOCK"
 )
+
+// Ptr returns reference to EventWafRequestType value
+func (v EventWafRequestType) Ptr() *EventWafRequestType {
+	return &v
+}
+
+
+type NullableEventWafRequestType struct {
+	value *EventWafRequestType
+	isSet bool
+}
+
+func (v NullableEventWafRequestType) Get() *EventWafRequestType {
+	return v.value
+}
+
+func (v *NullableEventWafRequestType) Set(val *EventWafRequestType) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableEventWafRequestType) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableEventWafRequestType) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableEventWafRequestType(val *EventWafRequestType) *NullableEventWafRequestType {
+	return &NullableEventWafRequestType{value: val, isSet: true}
+}
+
+func (v NullableEventWafRequestType) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableEventWafRequestType) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

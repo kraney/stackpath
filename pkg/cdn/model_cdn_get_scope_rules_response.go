@@ -8,9 +8,142 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnGetScopeRulesResponse The response from request to retrieve the EdgeRules on a CDN site's scope
 type CdnGetScopeRulesResponse struct {
-	PageInfo PaginationPageInfo `json:"pageInfo,omitempty"`
+	PageInfo *PaginationPageInfo `json:"pageInfo,omitempty"`
 	// The requested EdgeRules
-	Results []CdnScopeRule `json:"results,omitempty"`
+	Results *[]CdnScopeRule `json:"results,omitempty"`
+}
+
+// NewCdnGetScopeRulesResponse instantiates a new CdnGetScopeRulesResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCdnGetScopeRulesResponse() *CdnGetScopeRulesResponse {
+	this := CdnGetScopeRulesResponse{}
+	return &this
+}
+
+// NewCdnGetScopeRulesResponseWithDefaults instantiates a new CdnGetScopeRulesResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCdnGetScopeRulesResponseWithDefaults() *CdnGetScopeRulesResponse {
+	this := CdnGetScopeRulesResponse{}
+	return &this
+}
+
+// GetPageInfo returns the PageInfo field value if set, zero value otherwise.
+func (o *CdnGetScopeRulesResponse) GetPageInfo() PaginationPageInfo {
+	if o == nil || o.PageInfo == nil {
+		var ret PaginationPageInfo
+		return ret
+	}
+	return *o.PageInfo
+}
+
+// GetPageInfoOk returns a tuple with the PageInfo field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnGetScopeRulesResponse) GetPageInfoOk() (*PaginationPageInfo, bool) {
+	if o == nil || o.PageInfo == nil {
+		return nil, false
+	}
+	return o.PageInfo, true
+}
+
+// HasPageInfo returns a boolean if a field has been set.
+func (o *CdnGetScopeRulesResponse) HasPageInfo() bool {
+	if o != nil && o.PageInfo != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPageInfo gets a reference to the given PaginationPageInfo and assigns it to the PageInfo field.
+func (o *CdnGetScopeRulesResponse) SetPageInfo(v PaginationPageInfo) {
+	o.PageInfo = &v
+}
+
+// GetResults returns the Results field value if set, zero value otherwise.
+func (o *CdnGetScopeRulesResponse) GetResults() []CdnScopeRule {
+	if o == nil || o.Results == nil {
+		var ret []CdnScopeRule
+		return ret
+	}
+	return *o.Results
+}
+
+// GetResultsOk returns a tuple with the Results field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CdnGetScopeRulesResponse) GetResultsOk() (*[]CdnScopeRule, bool) {
+	if o == nil || o.Results == nil {
+		return nil, false
+	}
+	return o.Results, true
+}
+
+// HasResults returns a boolean if a field has been set.
+func (o *CdnGetScopeRulesResponse) HasResults() bool {
+	if o != nil && o.Results != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetResults gets a reference to the given []CdnScopeRule and assigns it to the Results field.
+func (o *CdnGetScopeRulesResponse) SetResults(v []CdnScopeRule) {
+	o.Results = &v
+}
+
+func (o CdnGetScopeRulesResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.PageInfo != nil {
+		toSerialize["pageInfo"] = o.PageInfo
+	}
+	if o.Results != nil {
+		toSerialize["results"] = o.Results
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCdnGetScopeRulesResponse struct {
+	value *CdnGetScopeRulesResponse
+	isSet bool
+}
+
+func (v NullableCdnGetScopeRulesResponse) Get() *CdnGetScopeRulesResponse {
+	return v.value
+}
+
+func (v *NullableCdnGetScopeRulesResponse) Set(val *CdnGetScopeRulesResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnGetScopeRulesResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnGetScopeRulesResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnGetScopeRulesResponse(val *CdnGetScopeRulesResponse) *NullableCdnGetScopeRulesResponse {
+	return &NullableCdnGetScopeRulesResponse{value: val, isSet: true}
+}
+
+func (v NullableCdnGetScopeRulesResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnGetScopeRulesResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

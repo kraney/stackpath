@@ -8,6 +8,11 @@
  */
 
 package cdn
+
+import (
+	"encoding/json"
+)
+
 // CdnCertificateStatus A StackPath-provided certificate's status  - UNKNOWN: StackPath is unable to determine the certificate's status. This is the default status for end-user provided certificates.  - PENDING: The certificate is provisioning  - EXPIRED: The certificate has expired  - FAILED: The certificate failed to provision  - PENDING_VERIFICATION: The certificate is pending domain verification by the end user  - ACTIVE: The certificate is valid and is in use by one or more hosts  - INACTIVE: The certificate is valid but is not in use by any hosts
 type CdnCertificateStatus string
 
@@ -21,3 +26,45 @@ const (
 	CDNCERTIFICATESTATUS_ACTIVE CdnCertificateStatus = "ACTIVE"
 	CDNCERTIFICATESTATUS_INACTIVE CdnCertificateStatus = "INACTIVE"
 )
+
+// Ptr returns reference to cdnCertificateStatus value
+func (v CdnCertificateStatus) Ptr() *CdnCertificateStatus {
+	return &v
+}
+
+
+type NullableCdnCertificateStatus struct {
+	value *CdnCertificateStatus
+	isSet bool
+}
+
+func (v NullableCdnCertificateStatus) Get() *CdnCertificateStatus {
+	return v.value
+}
+
+func (v *NullableCdnCertificateStatus) Set(val *CdnCertificateStatus) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCdnCertificateStatus) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCdnCertificateStatus) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCdnCertificateStatus(val *CdnCertificateStatus) *NullableCdnCertificateStatus {
+	return &NullableCdnCertificateStatus{value: val, isSet: true}
+}
+
+func (v NullableCdnCertificateStatus) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCdnCertificateStatus) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

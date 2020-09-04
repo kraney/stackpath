@@ -8,12 +8,59 @@
  */
 
 package sites
-// AuthAclClientIpSrcEnumWrapperValue the model 'AuthAclClientIpSrcEnumWrapperValue'
-type AuthAclClientIpSrcEnumWrapperValue string
+
+import (
+	"encoding/json"
+)
+
+// AuthACLClientIPSrcEnumWrapperValue the model 'AuthACLClientIPSrcEnumWrapperValue'
+type AuthACLClientIPSrcEnumWrapperValue string
 
 // List of AuthACLClientIPSrcEnumWrapperValue
 const (
-	AUTHACLCLIENTIPSRCENUMWRAPPERVALUE_UNKNOWN AuthAclClientIpSrcEnumWrapperValue = "UNKNOWN"
-	AUTHACLCLIENTIPSRCENUMWRAPPERVALUE_SOCKET AuthAclClientIpSrcEnumWrapperValue = "socket"
-	AUTHACLCLIENTIPSRCENUMWRAPPERVALUE_HEADER AuthAclClientIpSrcEnumWrapperValue = "header"
+	AUTHACLCLIENTIPSRCENUMWRAPPERVALUE_UNKNOWN AuthACLClientIPSrcEnumWrapperValue = "UNKNOWN"
+	AUTHACLCLIENTIPSRCENUMWRAPPERVALUE_SOCKET AuthACLClientIPSrcEnumWrapperValue = "socket"
+	AUTHACLCLIENTIPSRCENUMWRAPPERVALUE_HEADER AuthACLClientIPSrcEnumWrapperValue = "header"
 )
+
+// Ptr returns reference to AuthACLClientIPSrcEnumWrapperValue value
+func (v AuthACLClientIPSrcEnumWrapperValue) Ptr() *AuthACLClientIPSrcEnumWrapperValue {
+	return &v
+}
+
+
+type NullableAuthACLClientIPSrcEnumWrapperValue struct {
+	value *AuthACLClientIPSrcEnumWrapperValue
+	isSet bool
+}
+
+func (v NullableAuthACLClientIPSrcEnumWrapperValue) Get() *AuthACLClientIPSrcEnumWrapperValue {
+	return v.value
+}
+
+func (v *NullableAuthACLClientIPSrcEnumWrapperValue) Set(val *AuthACLClientIPSrcEnumWrapperValue) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableAuthACLClientIPSrcEnumWrapperValue) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableAuthACLClientIPSrcEnumWrapperValue) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableAuthACLClientIPSrcEnumWrapperValue(val *AuthACLClientIPSrcEnumWrapperValue) *NullableAuthACLClientIPSrcEnumWrapperValue {
+	return &NullableAuthACLClientIPSrcEnumWrapperValue{value: val, isSet: true}
+}
+
+func (v NullableAuthACLClientIPSrcEnumWrapperValue) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableAuthACLClientIPSrcEnumWrapperValue) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

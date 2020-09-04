@@ -8,6 +8,11 @@
  */
 
 package waf
+
+import (
+	"encoding/json"
+)
+
 // WafSiteType A WAF site's type  A site's type determines how StackPath delivers content to incoming HTTP(S) requests.   - UNKNOWN_TYPE: StackPath is unable to determine a site's type  - WAF: A site is either a standalone WAF site or a WAF site with attached CDN service  - API: A site is an API delivery site. API delivery sites are powered by both the WAF and CDN and have custom rulesets for each.
 type WafSiteType string
 
@@ -17,3 +22,45 @@ const (
 	WAFSITETYPE_WAF WafSiteType = "WAF"
 	WAFSITETYPE_API WafSiteType = "API"
 )
+
+// Ptr returns reference to wafSiteType value
+func (v WafSiteType) Ptr() *WafSiteType {
+	return &v
+}
+
+
+type NullableWafSiteType struct {
+	value *WafSiteType
+	isSet bool
+}
+
+func (v NullableWafSiteType) Get() *WafSiteType {
+	return v.value
+}
+
+func (v *NullableWafSiteType) Set(val *WafSiteType) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableWafSiteType) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableWafSiteType) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableWafSiteType(val *WafSiteType) *NullableWafSiteType {
+	return &NullableWafSiteType{value: val, isSet: true}
+}
+
+func (v NullableWafSiteType) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableWafSiteType) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

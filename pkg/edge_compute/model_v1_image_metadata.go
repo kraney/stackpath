@@ -8,17 +8,238 @@
  */
 
 package edge_compute
+
 import (
+	"encoding/json"
 	"time"
 )
+
 // V1ImageMetadata An image's metadata
 type V1ImageMetadata struct {
 	// A string to string key/value pair
-	Annotations map[string]string `json:"annotations,omitempty"`
+	Annotations *map[string]string `json:"annotations,omitempty"`
 	// A string to string key/value pair
-	Labels map[string]string `json:"labels,omitempty"`
+	Labels *map[string]string `json:"labels,omitempty"`
 	// The date that a workload image was created  The date an image was created
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt NullableTime `json:"createdAt,omitempty"`
 	// The date that a workload image was last updated  The date an image was last updated
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt NullableTime `json:"updatedAt,omitempty"`
+}
+
+// NewV1ImageMetadata instantiates a new V1ImageMetadata object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewV1ImageMetadata() *V1ImageMetadata {
+	this := V1ImageMetadata{}
+	return &this
+}
+
+// NewV1ImageMetadataWithDefaults instantiates a new V1ImageMetadata object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewV1ImageMetadataWithDefaults() *V1ImageMetadata {
+	this := V1ImageMetadata{}
+	return &this
+}
+
+// GetAnnotations returns the Annotations field value if set, zero value otherwise.
+func (o *V1ImageMetadata) GetAnnotations() map[string]string {
+	if o == nil || o.Annotations == nil {
+		var ret map[string]string
+		return ret
+	}
+	return *o.Annotations
+}
+
+// GetAnnotationsOk returns a tuple with the Annotations field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ImageMetadata) GetAnnotationsOk() (*map[string]string, bool) {
+	if o == nil || o.Annotations == nil {
+		return nil, false
+	}
+	return o.Annotations, true
+}
+
+// HasAnnotations returns a boolean if a field has been set.
+func (o *V1ImageMetadata) HasAnnotations() bool {
+	if o != nil && o.Annotations != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAnnotations gets a reference to the given map[string]string and assigns it to the Annotations field.
+func (o *V1ImageMetadata) SetAnnotations(v map[string]string) {
+	o.Annotations = &v
+}
+
+// GetLabels returns the Labels field value if set, zero value otherwise.
+func (o *V1ImageMetadata) GetLabels() map[string]string {
+	if o == nil || o.Labels == nil {
+		var ret map[string]string
+		return ret
+	}
+	return *o.Labels
+}
+
+// GetLabelsOk returns a tuple with the Labels field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *V1ImageMetadata) GetLabelsOk() (*map[string]string, bool) {
+	if o == nil || o.Labels == nil {
+		return nil, false
+	}
+	return o.Labels, true
+}
+
+// HasLabels returns a boolean if a field has been set.
+func (o *V1ImageMetadata) HasLabels() bool {
+	if o != nil && o.Labels != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLabels gets a reference to the given map[string]string and assigns it to the Labels field.
+func (o *V1ImageMetadata) SetLabels(v map[string]string) {
+	o.Labels = &v
+}
+
+// GetCreatedAt returns the CreatedAt field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *V1ImageMetadata) GetCreatedAt() time.Time {
+	if o == nil || o.CreatedAt.Get() == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.CreatedAt.Get()
+}
+
+// GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *V1ImageMetadata) GetCreatedAtOk() (*time.Time, bool) {
+	if o == nil  {
+		return nil, false
+	}
+	return o.CreatedAt.Get(), o.CreatedAt.IsSet()
+}
+
+// HasCreatedAt returns a boolean if a field has been set.
+func (o *V1ImageMetadata) HasCreatedAt() bool {
+	if o != nil && o.CreatedAt.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetCreatedAt gets a reference to the given NullableTime and assigns it to the CreatedAt field.
+func (o *V1ImageMetadata) SetCreatedAt(v time.Time) {
+	o.CreatedAt.Set(&v)
+}
+// SetCreatedAtNil sets the value for CreatedAt to be an explicit nil
+func (o *V1ImageMetadata) SetCreatedAtNil() {
+	o.CreatedAt.Set(nil)
+}
+
+// UnsetCreatedAt ensures that no value is present for CreatedAt, not even an explicit nil
+func (o *V1ImageMetadata) UnsetCreatedAt() {
+	o.CreatedAt.Unset()
+}
+
+// GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise (both if not set or set to explicit null).
+func (o *V1ImageMetadata) GetUpdatedAt() time.Time {
+	if o == nil || o.UpdatedAt.Get() == nil {
+		var ret time.Time
+		return ret
+	}
+	return *o.UpdatedAt.Get()
+}
+
+// GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+// NOTE: If the value is an explicit nil, `nil, true` will be returned
+func (o *V1ImageMetadata) GetUpdatedAtOk() (*time.Time, bool) {
+	if o == nil  {
+		return nil, false
+	}
+	return o.UpdatedAt.Get(), o.UpdatedAt.IsSet()
+}
+
+// HasUpdatedAt returns a boolean if a field has been set.
+func (o *V1ImageMetadata) HasUpdatedAt() bool {
+	if o != nil && o.UpdatedAt.IsSet() {
+		return true
+	}
+
+	return false
+}
+
+// SetUpdatedAt gets a reference to the given NullableTime and assigns it to the UpdatedAt field.
+func (o *V1ImageMetadata) SetUpdatedAt(v time.Time) {
+	o.UpdatedAt.Set(&v)
+}
+// SetUpdatedAtNil sets the value for UpdatedAt to be an explicit nil
+func (o *V1ImageMetadata) SetUpdatedAtNil() {
+	o.UpdatedAt.Set(nil)
+}
+
+// UnsetUpdatedAt ensures that no value is present for UpdatedAt, not even an explicit nil
+func (o *V1ImageMetadata) UnsetUpdatedAt() {
+	o.UpdatedAt.Unset()
+}
+
+func (o V1ImageMetadata) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Annotations != nil {
+		toSerialize["annotations"] = o.Annotations
+	}
+	if o.Labels != nil {
+		toSerialize["labels"] = o.Labels
+	}
+	if o.CreatedAt.IsSet() {
+		toSerialize["createdAt"] = o.CreatedAt.Get()
+	}
+	if o.UpdatedAt.IsSet() {
+		toSerialize["updatedAt"] = o.UpdatedAt.Get()
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableV1ImageMetadata struct {
+	value *V1ImageMetadata
+	isSet bool
+}
+
+func (v NullableV1ImageMetadata) Get() *V1ImageMetadata {
+	return v.value
+}
+
+func (v *NullableV1ImageMetadata) Set(val *V1ImageMetadata) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV1ImageMetadata) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV1ImageMetadata) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV1ImageMetadata(val *V1ImageMetadata) *NullableV1ImageMetadata {
+	return &NullableV1ImageMetadata{value: val, isSet: true}
+}
+
+func (v NullableV1ImageMetadata) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV1ImageMetadata) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

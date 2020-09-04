@@ -8,17 +8,325 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // CustconfAuthUrlSignAliCloudB struct for CustconfAuthUrlSignAliCloudB
 type CustconfAuthUrlSignAliCloudB struct {
 	// This is used by the API to perform conflict checking
-	Id string `json:"id,omitempty"`
-	PassPhrase string `json:"passPhrase,omitempty"`
-	ExpirationExtension float32 `json:"expirationExtension,omitempty"`
-	Enabled bool `json:"enabled,omitempty"`
+	Id *string `json:"id,omitempty"`
+	PassPhrase *string `json:"passPhrase,omitempty"`
+	ExpirationExtension *float32 `json:"expirationExtension,omitempty"`
+	Enabled *bool `json:"enabled,omitempty"`
 	// String of values delimited by a ',' character.
-	MethodFilter string `json:"methodFilter,omitempty"`
+	MethodFilter *string `json:"methodFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	PathFilter string `json:"pathFilter,omitempty"`
+	PathFilter *string `json:"pathFilter,omitempty"`
 	// String of values delimited by a ',' character.
-	HeaderFilter string `json:"headerFilter,omitempty"`
+	HeaderFilter *string `json:"headerFilter,omitempty"`
+}
+
+// NewCustconfAuthUrlSignAliCloudB instantiates a new CustconfAuthUrlSignAliCloudB object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewCustconfAuthUrlSignAliCloudB() *CustconfAuthUrlSignAliCloudB {
+	this := CustconfAuthUrlSignAliCloudB{}
+	return &this
+}
+
+// NewCustconfAuthUrlSignAliCloudBWithDefaults instantiates a new CustconfAuthUrlSignAliCloudB object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewCustconfAuthUrlSignAliCloudBWithDefaults() *CustconfAuthUrlSignAliCloudB {
+	this := CustconfAuthUrlSignAliCloudB{}
+	return &this
+}
+
+// GetId returns the Id field value if set, zero value otherwise.
+func (o *CustconfAuthUrlSignAliCloudB) GetId() string {
+	if o == nil || o.Id == nil {
+		var ret string
+		return ret
+	}
+	return *o.Id
+}
+
+// GetIdOk returns a tuple with the Id field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthUrlSignAliCloudB) GetIdOk() (*string, bool) {
+	if o == nil || o.Id == nil {
+		return nil, false
+	}
+	return o.Id, true
+}
+
+// HasId returns a boolean if a field has been set.
+func (o *CustconfAuthUrlSignAliCloudB) HasId() bool {
+	if o != nil && o.Id != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetId gets a reference to the given string and assigns it to the Id field.
+func (o *CustconfAuthUrlSignAliCloudB) SetId(v string) {
+	o.Id = &v
+}
+
+// GetPassPhrase returns the PassPhrase field value if set, zero value otherwise.
+func (o *CustconfAuthUrlSignAliCloudB) GetPassPhrase() string {
+	if o == nil || o.PassPhrase == nil {
+		var ret string
+		return ret
+	}
+	return *o.PassPhrase
+}
+
+// GetPassPhraseOk returns a tuple with the PassPhrase field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthUrlSignAliCloudB) GetPassPhraseOk() (*string, bool) {
+	if o == nil || o.PassPhrase == nil {
+		return nil, false
+	}
+	return o.PassPhrase, true
+}
+
+// HasPassPhrase returns a boolean if a field has been set.
+func (o *CustconfAuthUrlSignAliCloudB) HasPassPhrase() bool {
+	if o != nil && o.PassPhrase != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPassPhrase gets a reference to the given string and assigns it to the PassPhrase field.
+func (o *CustconfAuthUrlSignAliCloudB) SetPassPhrase(v string) {
+	o.PassPhrase = &v
+}
+
+// GetExpirationExtension returns the ExpirationExtension field value if set, zero value otherwise.
+func (o *CustconfAuthUrlSignAliCloudB) GetExpirationExtension() float32 {
+	if o == nil || o.ExpirationExtension == nil {
+		var ret float32
+		return ret
+	}
+	return *o.ExpirationExtension
+}
+
+// GetExpirationExtensionOk returns a tuple with the ExpirationExtension field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthUrlSignAliCloudB) GetExpirationExtensionOk() (*float32, bool) {
+	if o == nil || o.ExpirationExtension == nil {
+		return nil, false
+	}
+	return o.ExpirationExtension, true
+}
+
+// HasExpirationExtension returns a boolean if a field has been set.
+func (o *CustconfAuthUrlSignAliCloudB) HasExpirationExtension() bool {
+	if o != nil && o.ExpirationExtension != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetExpirationExtension gets a reference to the given float32 and assigns it to the ExpirationExtension field.
+func (o *CustconfAuthUrlSignAliCloudB) SetExpirationExtension(v float32) {
+	o.ExpirationExtension = &v
+}
+
+// GetEnabled returns the Enabled field value if set, zero value otherwise.
+func (o *CustconfAuthUrlSignAliCloudB) GetEnabled() bool {
+	if o == nil || o.Enabled == nil {
+		var ret bool
+		return ret
+	}
+	return *o.Enabled
+}
+
+// GetEnabledOk returns a tuple with the Enabled field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthUrlSignAliCloudB) GetEnabledOk() (*bool, bool) {
+	if o == nil || o.Enabled == nil {
+		return nil, false
+	}
+	return o.Enabled, true
+}
+
+// HasEnabled returns a boolean if a field has been set.
+func (o *CustconfAuthUrlSignAliCloudB) HasEnabled() bool {
+	if o != nil && o.Enabled != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetEnabled gets a reference to the given bool and assigns it to the Enabled field.
+func (o *CustconfAuthUrlSignAliCloudB) SetEnabled(v bool) {
+	o.Enabled = &v
+}
+
+// GetMethodFilter returns the MethodFilter field value if set, zero value otherwise.
+func (o *CustconfAuthUrlSignAliCloudB) GetMethodFilter() string {
+	if o == nil || o.MethodFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.MethodFilter
+}
+
+// GetMethodFilterOk returns a tuple with the MethodFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthUrlSignAliCloudB) GetMethodFilterOk() (*string, bool) {
+	if o == nil || o.MethodFilter == nil {
+		return nil, false
+	}
+	return o.MethodFilter, true
+}
+
+// HasMethodFilter returns a boolean if a field has been set.
+func (o *CustconfAuthUrlSignAliCloudB) HasMethodFilter() bool {
+	if o != nil && o.MethodFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMethodFilter gets a reference to the given string and assigns it to the MethodFilter field.
+func (o *CustconfAuthUrlSignAliCloudB) SetMethodFilter(v string) {
+	o.MethodFilter = &v
+}
+
+// GetPathFilter returns the PathFilter field value if set, zero value otherwise.
+func (o *CustconfAuthUrlSignAliCloudB) GetPathFilter() string {
+	if o == nil || o.PathFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.PathFilter
+}
+
+// GetPathFilterOk returns a tuple with the PathFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthUrlSignAliCloudB) GetPathFilterOk() (*string, bool) {
+	if o == nil || o.PathFilter == nil {
+		return nil, false
+	}
+	return o.PathFilter, true
+}
+
+// HasPathFilter returns a boolean if a field has been set.
+func (o *CustconfAuthUrlSignAliCloudB) HasPathFilter() bool {
+	if o != nil && o.PathFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetPathFilter gets a reference to the given string and assigns it to the PathFilter field.
+func (o *CustconfAuthUrlSignAliCloudB) SetPathFilter(v string) {
+	o.PathFilter = &v
+}
+
+// GetHeaderFilter returns the HeaderFilter field value if set, zero value otherwise.
+func (o *CustconfAuthUrlSignAliCloudB) GetHeaderFilter() string {
+	if o == nil || o.HeaderFilter == nil {
+		var ret string
+		return ret
+	}
+	return *o.HeaderFilter
+}
+
+// GetHeaderFilterOk returns a tuple with the HeaderFilter field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustconfAuthUrlSignAliCloudB) GetHeaderFilterOk() (*string, bool) {
+	if o == nil || o.HeaderFilter == nil {
+		return nil, false
+	}
+	return o.HeaderFilter, true
+}
+
+// HasHeaderFilter returns a boolean if a field has been set.
+func (o *CustconfAuthUrlSignAliCloudB) HasHeaderFilter() bool {
+	if o != nil && o.HeaderFilter != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetHeaderFilter gets a reference to the given string and assigns it to the HeaderFilter field.
+func (o *CustconfAuthUrlSignAliCloudB) SetHeaderFilter(v string) {
+	o.HeaderFilter = &v
+}
+
+func (o CustconfAuthUrlSignAliCloudB) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Id != nil {
+		toSerialize["id"] = o.Id
+	}
+	if o.PassPhrase != nil {
+		toSerialize["passPhrase"] = o.PassPhrase
+	}
+	if o.ExpirationExtension != nil {
+		toSerialize["expirationExtension"] = o.ExpirationExtension
+	}
+	if o.Enabled != nil {
+		toSerialize["enabled"] = o.Enabled
+	}
+	if o.MethodFilter != nil {
+		toSerialize["methodFilter"] = o.MethodFilter
+	}
+	if o.PathFilter != nil {
+		toSerialize["pathFilter"] = o.PathFilter
+	}
+	if o.HeaderFilter != nil {
+		toSerialize["headerFilter"] = o.HeaderFilter
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableCustconfAuthUrlSignAliCloudB struct {
+	value *CustconfAuthUrlSignAliCloudB
+	isSet bool
+}
+
+func (v NullableCustconfAuthUrlSignAliCloudB) Get() *CustconfAuthUrlSignAliCloudB {
+	return v.value
+}
+
+func (v *NullableCustconfAuthUrlSignAliCloudB) Set(val *CustconfAuthUrlSignAliCloudB) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableCustconfAuthUrlSignAliCloudB) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableCustconfAuthUrlSignAliCloudB) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableCustconfAuthUrlSignAliCloudB(val *CustconfAuthUrlSignAliCloudB) *NullableCustconfAuthUrlSignAliCloudB {
+	return &NullableCustconfAuthUrlSignAliCloudB{value: val, isSet: true}
+}
+
+func (v NullableCustconfAuthUrlSignAliCloudB) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableCustconfAuthUrlSignAliCloudB) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

@@ -15,20 +15,55 @@ Method | HTTP request | Description
 
 ## ChangeUserEmail
 
-> ChangeUserEmail(ctx, userId, identityChangeUserEmailRequest)
+> ChangeUserEmail(ctx, userId).IdentityChangeUserEmailRequest(identityChangeUserEmailRequest).Execute()
 
 Update a user's email address
 
-This immediately invalidates the user's StackPath customer portal logins and API tokens.
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    userId := "userId_example" // string | A user ID
+    identityChangeUserEmailRequest := openapiclient.identityChangeUserEmailRequest{Email: "Email_example", Password: "Password_example"} // IdentityChangeUserEmailRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.UsersApi.ChangeUserEmail(context.Background(), userId, identityChangeUserEmailRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `UsersApi.ChangeUserEmail``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**userId** | **string**| A user ID | 
-**identityChangeUserEmailRequest** | [**IdentityChangeUserEmailRequest**](IdentityChangeUserEmailRequest.md)|  | 
+**userId** | **string** | A user ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiChangeUserEmailRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **identityChangeUserEmailRequest** | [**IdentityChangeUserEmailRequest**](IdentityChangeUserEmailRequest.md) |  | 
 
 ### Return type
 
@@ -50,20 +85,57 @@ Name | Type | Description  | Notes
 
 ## CreateUser
 
-> IdentityCreateUserResponse CreateUser(ctx, accountId, identityCreateUserRequest)
+> IdentityCreateUserResponse CreateUser(ctx, accountId).IdentityCreateUserRequest(identityCreateUserRequest).Execute()
 
 Create a user
 
-The new user will receive an email to set their password.
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    accountId := "accountId_example" // string | An account ID
+    identityCreateUserRequest := openapiclient.identityCreateUserRequest{Email: "Email_example", Name: "Name_example", PhoneNumber: "PhoneNumber_example", AuthorizedApplications: []string{"AuthorizedApplications_example")} // IdentityCreateUserRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.UsersApi.CreateUser(context.Background(), accountId, identityCreateUserRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `UsersApi.CreateUser``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `CreateUser`: IdentityCreateUserResponse
+    fmt.Fprintf(os.Stdout, "Response from `UsersApi.CreateUser`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**accountId** | **string**| An account ID | 
-**identityCreateUserRequest** | [**IdentityCreateUserRequest**](IdentityCreateUserRequest.md)|  | 
+**accountId** | **string** | An account ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateUserRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **identityCreateUserRequest** | [**IdentityCreateUserRequest**](IdentityCreateUserRequest.md) |  | 
 
 ### Return type
 
@@ -85,17 +157,51 @@ Name | Type | Description  | Notes
 
 ## DeleteUser
 
-> DeleteUser(ctx, userId)
+> DeleteUser(ctx, userId).Execute()
 
 Delete a user
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    userId := "userId_example" // string | A user ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.UsersApi.DeleteUser(context.Background(), userId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `UsersApi.DeleteUser``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**userId** | **string**| A user ID | 
+**userId** | **string** | A user ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteUserRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -117,31 +223,61 @@ Name | Type | Description  | Notes
 
 ## GetAccountUsers
 
-> IdentityGetAccountUsersResponse GetAccountUsers(ctx, accountId, optional)
+> IdentityGetAccountUsersResponse GetAccountUsers(ctx, accountId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
 
 Get all users
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    accountId := "accountId_example" // string | An account ID
+    pageRequestFirst := "pageRequestFirst_example" // string | The number of items desired. (optional)
+    pageRequestAfter := "pageRequestAfter_example" // string | The cursor value after which data will be returned. (optional)
+    pageRequestFilter := "pageRequestFilter_example" // string | SQL-style constraint filters. (optional)
+    pageRequestSortBy := "pageRequestSortBy_example" // string | Sort the response by the given field. (optional)
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.UsersApi.GetAccountUsers(context.Background(), accountId).PageRequestFirst(pageRequestFirst).PageRequestAfter(pageRequestAfter).PageRequestFilter(pageRequestFilter).PageRequestSortBy(pageRequestSortBy).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `UsersApi.GetAccountUsers``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetAccountUsers`: IdentityGetAccountUsersResponse
+    fmt.Fprintf(os.Stdout, "Response from `UsersApi.GetAccountUsers`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**accountId** | **string**| An account ID | 
- **optional** | ***GetAccountUsersOpts** | optional parameters | nil if no parameters
+**accountId** | **string** | An account ID | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetAccountUsersOpts struct
+Other parameters are passed through a pointer to a apiGetAccountUsersRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **pageRequestFirst** | **optional.String**| The number of items desired. | 
- **pageRequestAfter** | **optional.String**| The cursor value after which data will be returned. | 
- **pageRequestFilter** | **optional.String**| SQL-style constraint filters. | 
- **pageRequestSortBy** | **optional.String**| Sort the response by the given field. | 
+ **pageRequestFirst** | **string** | The number of items desired. | 
+ **pageRequestAfter** | **string** | The cursor value after which data will be returned. | 
+ **pageRequestFilter** | **string** | SQL-style constraint filters. | 
+ **pageRequestSortBy** | **string** | Sort the response by the given field. | 
 
 ### Return type
 
@@ -163,17 +299,53 @@ Name | Type | Description  | Notes
 
 ## GetUser
 
-> IdentityGetUserResponse GetUser(ctx, userId)
+> IdentityGetUserResponse GetUser(ctx, userId).Execute()
 
 Get a user
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    userId := "userId_example" // string | A user ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.UsersApi.GetUser(context.Background(), userId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `UsersApi.GetUser``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetUser`: IdentityGetUserResponse
+    fmt.Fprintf(os.Stdout, "Response from `UsersApi.GetUser`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**userId** | **string**| A user ID | 
+**userId** | **string** | A user ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetUserRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -195,20 +367,57 @@ Name | Type | Description  | Notes
 
 ## UpdateUser
 
-> IdentityUpdateUserResponse UpdateUser(ctx, userId, identityUpdateUserRequest)
+> IdentityUpdateUserResponse UpdateUser(ctx, userId).IdentityUpdateUserRequest(identityUpdateUserRequest).Execute()
 
 Update a user
 
-Update a user's non-essential properties, such as their phone number.
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    userId := "userId_example" // string | A user ID
+    identityUpdateUserRequest := openapiclient.identityUpdateUserRequest{Name: "Name_example", PhoneNumber: "PhoneNumber_example"} // IdentityUpdateUserRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.UsersApi.UpdateUser(context.Background(), userId, identityUpdateUserRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `UsersApi.UpdateUser``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `UpdateUser`: IdentityUpdateUserResponse
+    fmt.Fprintf(os.Stdout, "Response from `UsersApi.UpdateUser`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**userId** | **string**| A user ID | 
-**identityUpdateUserRequest** | [**IdentityUpdateUserRequest**](IdentityUpdateUserRequest.md)|  | 
+**userId** | **string** | A user ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateUserRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **identityUpdateUserRequest** | [**IdentityUpdateUserRequest**](IdentityUpdateUserRequest.md) |  | 
 
 ### Return type
 

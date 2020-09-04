@@ -8,6 +8,11 @@
  */
 
 package edge_compute
+
+import (
+	"encoding/json"
+)
+
 // V1WorkloadStatus Which status a workload is currently in  - ACTIVE: The workload is active  - SUSPENDED: The workload is suspended  - BILLING_SUSPENDED: The workload is suspended due to non-payment  - INACTIVE: The workload is inactive or has been deleted
 type V1WorkloadStatus string
 
@@ -18,3 +23,45 @@ const (
 	V1WORKLOADSTATUS_BILLING_SUSPENDED V1WorkloadStatus = "BILLING_SUSPENDED"
 	V1WORKLOADSTATUS_INACTIVE V1WorkloadStatus = "INACTIVE"
 )
+
+// Ptr returns reference to v1WorkloadStatus value
+func (v V1WorkloadStatus) Ptr() *V1WorkloadStatus {
+	return &v
+}
+
+
+type NullableV1WorkloadStatus struct {
+	value *V1WorkloadStatus
+	isSet bool
+}
+
+func (v NullableV1WorkloadStatus) Get() *V1WorkloadStatus {
+	return v.value
+}
+
+func (v *NullableV1WorkloadStatus) Set(val *V1WorkloadStatus) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableV1WorkloadStatus) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableV1WorkloadStatus) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableV1WorkloadStatus(val *V1WorkloadStatus) *NullableV1WorkloadStatus {
+	return &NullableV1WorkloadStatus{value: val, isSet: true}
+}
+
+func (v NullableV1WorkloadStatus) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableV1WorkloadStatus) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
+}

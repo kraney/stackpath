@@ -8,7 +8,105 @@
  */
 
 package sites
+
+import (
+	"encoding/json"
+)
+
 // DeliveryGetOriginResponse The response with the requested origin
 type DeliveryGetOriginResponse struct {
-	Origin SchemadeliveryOrigin `json:"origin,omitempty"`
+	Origin *SchemadeliveryOrigin `json:"origin,omitempty"`
+}
+
+// NewDeliveryGetOriginResponse instantiates a new DeliveryGetOriginResponse object
+// This constructor will assign default values to properties that have it defined,
+// and makes sure properties required by API are set, but the set of arguments
+// will change when the set of required properties is changed
+func NewDeliveryGetOriginResponse() *DeliveryGetOriginResponse {
+	this := DeliveryGetOriginResponse{}
+	return &this
+}
+
+// NewDeliveryGetOriginResponseWithDefaults instantiates a new DeliveryGetOriginResponse object
+// This constructor will only assign default values to properties that have it defined,
+// but it doesn't guarantee that properties required by API are set
+func NewDeliveryGetOriginResponseWithDefaults() *DeliveryGetOriginResponse {
+	this := DeliveryGetOriginResponse{}
+	return &this
+}
+
+// GetOrigin returns the Origin field value if set, zero value otherwise.
+func (o *DeliveryGetOriginResponse) GetOrigin() SchemadeliveryOrigin {
+	if o == nil || o.Origin == nil {
+		var ret SchemadeliveryOrigin
+		return ret
+	}
+	return *o.Origin
+}
+
+// GetOriginOk returns a tuple with the Origin field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *DeliveryGetOriginResponse) GetOriginOk() (*SchemadeliveryOrigin, bool) {
+	if o == nil || o.Origin == nil {
+		return nil, false
+	}
+	return o.Origin, true
+}
+
+// HasOrigin returns a boolean if a field has been set.
+func (o *DeliveryGetOriginResponse) HasOrigin() bool {
+	if o != nil && o.Origin != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetOrigin gets a reference to the given SchemadeliveryOrigin and assigns it to the Origin field.
+func (o *DeliveryGetOriginResponse) SetOrigin(v SchemadeliveryOrigin) {
+	o.Origin = &v
+}
+
+func (o DeliveryGetOriginResponse) MarshalJSON() ([]byte, error) {
+	toSerialize := map[string]interface{}{}
+	if o.Origin != nil {
+		toSerialize["origin"] = o.Origin
+	}
+	return json.Marshal(toSerialize)
+}
+
+type NullableDeliveryGetOriginResponse struct {
+	value *DeliveryGetOriginResponse
+	isSet bool
+}
+
+func (v NullableDeliveryGetOriginResponse) Get() *DeliveryGetOriginResponse {
+	return v.value
+}
+
+func (v *NullableDeliveryGetOriginResponse) Set(val *DeliveryGetOriginResponse) {
+	v.value = val
+	v.isSet = true
+}
+
+func (v NullableDeliveryGetOriginResponse) IsSet() bool {
+	return v.isSet
+}
+
+func (v *NullableDeliveryGetOriginResponse) Unset() {
+	v.value = nil
+	v.isSet = false
+}
+
+func NewNullableDeliveryGetOriginResponse(val *DeliveryGetOriginResponse) *NullableDeliveryGetOriginResponse {
+	return &NullableDeliveryGetOriginResponse{value: val, isSet: true}
+}
+
+func (v NullableDeliveryGetOriginResponse) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.value)
+}
+
+func (v *NullableDeliveryGetOriginResponse) UnmarshalJSON(src []byte) error {
+	v.isSet = true
+	return json.Unmarshal(src, &v.value)
 }

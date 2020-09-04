@@ -18,20 +18,60 @@ Method | HTTP request | Description
 
 ## DisablePolicy
 
-> DisablePolicy(ctx, stackId, siteId, policyGroupId, policyId)
+> DisablePolicy(ctx, stackId, siteId, policyGroupId, policyId).Execute()
 
 Disable a policy
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    policyGroupId := "policyGroupId_example" // string | A WAF policy group ID
+    policyId := "policyId_example" // string | A WAF policy ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.PoliciesApi.DisablePolicy(context.Background(), stackId, siteId, policyGroupId, policyId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `PoliciesApi.DisablePolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**policyGroupId** | **string**| A WAF policy group ID | 
-**policyId** | **string**| A WAF policy ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**policyGroupId** | **string** | A WAF policy group ID | 
+**policyId** | **string** | A WAF policy ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDisablePolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
 
 ### Return type
 
@@ -53,19 +93,57 @@ Name | Type | Description  | Notes
 
 ## DisablePolicyGroup
 
-> DisablePolicyGroup(ctx, stackId, siteId, policyGroupId)
+> DisablePolicyGroup(ctx, stackId, siteId, policyGroupId).Execute()
 
 Disable all policies in a group
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    policyGroupId := "policyGroupId_example" // string | A WAF policy group ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.PoliciesApi.DisablePolicyGroup(context.Background(), stackId, siteId, policyGroupId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `PoliciesApi.DisablePolicyGroup``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**policyGroupId** | **string**| A WAF policy group ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**policyGroupId** | **string** | A WAF policy group ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDisablePolicyGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -87,20 +165,60 @@ Name | Type | Description  | Notes
 
 ## EnablePolicy
 
-> EnablePolicy(ctx, stackId, siteId, policyGroupId, policyId)
+> EnablePolicy(ctx, stackId, siteId, policyGroupId, policyId).Execute()
 
 Enable a policy
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    policyGroupId := "policyGroupId_example" // string | A WAF policy group ID
+    policyId := "policyId_example" // string | A WAF policy ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.PoliciesApi.EnablePolicy(context.Background(), stackId, siteId, policyGroupId, policyId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `PoliciesApi.EnablePolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**policyGroupId** | **string**| A WAF policy group ID | 
-**policyId** | **string**| A WAF policy ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**policyGroupId** | **string** | A WAF policy group ID | 
+**policyId** | **string** | A WAF policy ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiEnablePolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
 
 ### Return type
 
@@ -122,19 +240,57 @@ Name | Type | Description  | Notes
 
 ## EnablePolicyGroup
 
-> EnablePolicyGroup(ctx, stackId, siteId, policyGroupId)
+> EnablePolicyGroup(ctx, stackId, siteId, policyGroupId).Execute()
 
 Enable all policies in a group
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    policyGroupId := "policyGroupId_example" // string | A WAF policy group ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.PoliciesApi.EnablePolicyGroup(context.Background(), stackId, siteId, policyGroupId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `PoliciesApi.EnablePolicyGroup``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**policyGroupId** | **string**| A WAF policy group ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**policyGroupId** | **string** | A WAF policy group ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiEnablePolicyGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -156,19 +312,59 @@ Name | Type | Description  | Notes
 
 ## GetPolicies
 
-> WafGetPoliciesResponse GetPolicies(ctx, stackId, siteId, policyGroupId)
+> WafGetPoliciesResponse GetPolicies(ctx, stackId, siteId, policyGroupId).Execute()
 
 Get all policies in a group
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    policyGroupId := "policyGroupId_example" // string | A WAF policy group ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.PoliciesApi.GetPolicies(context.Background(), stackId, siteId, policyGroupId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `PoliciesApi.GetPolicies``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetPolicies`: WafGetPoliciesResponse
+    fmt.Fprintf(os.Stdout, "Response from `PoliciesApi.GetPolicies`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**policyGroupId** | **string**| A WAF policy group ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**policyGroupId** | **string** | A WAF policy group ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetPoliciesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -190,20 +386,62 @@ Name | Type | Description  | Notes
 
 ## GetPolicy
 
-> WafGetPolicyResponse GetPolicy(ctx, stackId, siteId, policyGroupId, policyId)
+> WafGetPolicyResponse GetPolicy(ctx, stackId, siteId, policyGroupId, policyId).Execute()
 
 Get a policy
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    policyGroupId := "policyGroupId_example" // string | A WAF policy group ID
+    policyId := "policyId_example" // string | A WAF policy ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.PoliciesApi.GetPolicy(context.Background(), stackId, siteId, policyGroupId, policyId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `PoliciesApi.GetPolicy``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetPolicy`: WafGetPolicyResponse
+    fmt.Fprintf(os.Stdout, "Response from `PoliciesApi.GetPolicy`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**policyGroupId** | **string**| A WAF policy group ID | 
-**policyId** | **string**| A WAF policy ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**policyGroupId** | **string** | A WAF policy group ID | 
+**policyId** | **string** | A WAF policy ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetPolicyRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+
 
 ### Return type
 
@@ -225,19 +463,59 @@ Name | Type | Description  | Notes
 
 ## GetPolicyGroup
 
-> WafGetPolicyGroupResponse GetPolicyGroup(ctx, stackId, siteId, policyGroupId)
+> WafGetPolicyGroupResponse GetPolicyGroup(ctx, stackId, siteId, policyGroupId).Execute()
 
 Get a policy group
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    policyGroupId := "policyGroupId_example" // string | A WAF policy group ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.PoliciesApi.GetPolicyGroup(context.Background(), stackId, siteId, policyGroupId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `PoliciesApi.GetPolicyGroup``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetPolicyGroup`: WafGetPolicyGroupResponse
+    fmt.Fprintf(os.Stdout, "Response from `PoliciesApi.GetPolicyGroup`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**policyGroupId** | **string**| A WAF policy group ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+**policyGroupId** | **string** | A WAF policy group ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetPolicyGroupRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
 
 ### Return type
 
@@ -259,18 +537,56 @@ Name | Type | Description  | Notes
 
 ## GetPolicyGroups
 
-> WafGetPolicyGroupsResponse GetPolicyGroups(ctx, stackId, siteId)
+> WafGetPolicyGroupsResponse GetPolicyGroups(ctx, stackId, siteId).Execute()
 
 Get all policy groups
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.PoliciesApi.GetPolicyGroups(context.Background(), stackId, siteId).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `PoliciesApi.GetPolicyGroups``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetPolicyGroups`: WafGetPolicyGroupsResponse
+    fmt.Fprintf(os.Stdout, "Response from `PoliciesApi.GetPolicyGroups`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetPolicyGroupsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -292,21 +608,60 @@ Name | Type | Description  | Notes
 
 ## UpdatePolicyGroups
 
-> WafGetPolicyGroupsResponse UpdatePolicyGroups(ctx, stackId, siteId, wafUpdatePolicyGroupsRequest)
+> WafGetPolicyGroupsResponse UpdatePolicyGroups(ctx, stackId, siteId).WafUpdatePolicyGroupsRequest(wafUpdatePolicyGroupsRequest).Execute()
 
 Update policy groups
 
-Provide the IDs and enabled states of the policies in their policy groups that should change
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    stackId := "stackId_example" // string | A stack ID or slug
+    siteId := "siteId_example" // string | A site ID
+    wafUpdatePolicyGroupsRequest := openapiclient.wafUpdatePolicyGroupsRequest{PolicyGroups: []WafPolicyGroup{openapiclient.wafPolicyGroup{Id: "Id_example", Name: "Name_example", Policies: []SchemawafPolicy{openapiclient.schemawafPolicy{Id: "Id_example", Name: "Name_example", Description: "Description_example", Action: openapiclient.wafPolicyAction{}, Enabled: false})})} // WafUpdatePolicyGroupsRequest | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.PoliciesApi.UpdatePolicyGroups(context.Background(), stackId, siteId, wafUpdatePolicyGroupsRequest).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `PoliciesApi.UpdatePolicyGroups``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `UpdatePolicyGroups`: WafGetPolicyGroupsResponse
+    fmt.Fprintf(os.Stdout, "Response from `PoliciesApi.UpdatePolicyGroups`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**stackId** | **string**| A stack ID or slug | 
-**siteId** | **string**| A site ID | 
-**wafUpdatePolicyGroupsRequest** | [**WafUpdatePolicyGroupsRequest**](WafUpdatePolicyGroupsRequest.md)|  | 
+**stackId** | **string** | A stack ID or slug | 
+**siteId** | **string** | A site ID | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdatePolicyGroupsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **wafUpdatePolicyGroupsRequest** | [**WafUpdatePolicyGroupsRequest**](WafUpdatePolicyGroupsRequest.md) |  | 
 
 ### Return type
 

@@ -11,19 +11,55 @@ Method | HTTP request | Description
 
 ## GetDiscoveryProviderDetails
 
-> ZoneGetDiscoveryProviderDetailsResponse GetDiscoveryProviderDetails(ctx, domain)
+> ZoneGetDiscoveryProviderDetailsResponse GetDiscoveryProviderDetails(ctx, domain).Execute()
 
 Get provider details
 
-Scan a domain for DNS provider information
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    domain := "domain_example" // string | A hostname to scan for provider information
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.ScanningApi.GetDiscoveryProviderDetails(context.Background(), domain).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ScanningApi.GetDiscoveryProviderDetails``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `GetDiscoveryProviderDetails`: ZoneGetDiscoveryProviderDetailsResponse
+    fmt.Fprintf(os.Stdout, "Response from `ScanningApi.GetDiscoveryProviderDetails`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**domain** | **string**| A hostname to scan for provider information | 
+**domain** | **string** | A hostname to scan for provider information | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetDiscoveryProviderDetailsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -45,20 +81,57 @@ Name | Type | Description  | Notes
 
 ## ScanDomainForRecords
 
-> ZoneScanDomainForRecordsResponse ScanDomainForRecords(ctx, domain, scanDomainForRecordsRequestProviderConfig)
+> ZoneScanDomainForRecordsResponse ScanDomainForRecords(ctx, domain).ScanDomainForRecordsRequestProviderConfig(scanDomainForRecordsRequestProviderConfig).Execute()
 
 Get resource records
 
-Scan a domain for resource records. This call returns the records that StackPath is able to scan at the time of execution. It performs a best effort, but cannot guarantee all resource records were found.
 
-### Required Parameters
+
+### Example
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "os"
+    openapiclient "./openapi"
+)
+
+func main() {
+    domain := "domain_example" // string | A hostname to scan for resource records
+    scanDomainForRecordsRequestProviderConfig := openapiclient.ScanDomainForRecordsRequestProviderConfig{DnsProvider: openapiclient.zoneDnsProvider{}, AuthenticationUser: "AuthenticationUser_example", ApiKey: "ApiKey_example"} // ScanDomainForRecordsRequestProviderConfig | 
+
+    configuration := openapiclient.NewConfiguration()
+    api_client := openapiclient.NewAPIClient(configuration)
+    resp, r, err := api_client.ScanningApi.ScanDomainForRecords(context.Background(), domain, scanDomainForRecordsRequestProviderConfig).Execute()
+    if err != nil {
+        fmt.Fprintf(os.Stderr, "Error when calling `ScanningApi.ScanDomainForRecords``: %v\n", err)
+        fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+    }
+    // response from `ScanDomainForRecords`: ZoneScanDomainForRecordsResponse
+    fmt.Fprintf(os.Stdout, "Response from `ScanningApi.ScanDomainForRecords`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**domain** | **string**| A hostname to scan for resource records | 
-**scanDomainForRecordsRequestProviderConfig** | [**ScanDomainForRecordsRequestProviderConfig**](ScanDomainForRecordsRequestProviderConfig.md)|  | 
+**domain** | **string** | A hostname to scan for resource records | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiScanDomainForRecordsRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **scanDomainForRecordsRequestProviderConfig** | [**ScanDomainForRecordsRequestProviderConfig**](ScanDomainForRecordsRequestProviderConfig.md) |  | 
 
 ### Return type
 

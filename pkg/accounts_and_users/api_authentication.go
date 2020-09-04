@@ -15,7 +15,6 @@ import (
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -26,15 +25,39 @@ var (
 // AuthenticationApiService AuthenticationApi service
 type AuthenticationApiService service
 
+type apiCreateUserCredentialRequest struct {
+	ctx _context.Context
+	apiService *AuthenticationApiService
+	userId string
+	identityCreateUserCredentialRequest *IdentityCreateUserCredentialRequest
+}
+
+
+func (r apiCreateUserCredentialRequest) IdentityCreateUserCredentialRequest(identityCreateUserCredentialRequest IdentityCreateUserCredentialRequest) apiCreateUserCredentialRequest {
+	r.identityCreateUserCredentialRequest = &identityCreateUserCredentialRequest
+	return r
+}
+
 /*
 CreateUserCredential Create API credentials
 The client secret is returned only once and is not stored by StackPath. Please take care to save this response.
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param userId A user ID
- * @param identityCreateUserCredentialRequest
-@return IdentityCreateUserCredentialResponse
+@return apiCreateUserCredentialRequest
 */
-func (a *AuthenticationApiService) CreateUserCredential(ctx _context.Context, userId string, identityCreateUserCredentialRequest IdentityCreateUserCredentialRequest) (IdentityCreateUserCredentialResponse, *_nethttp.Response, error) {
+func (a *AuthenticationApiService) CreateUserCredential(ctx _context.Context, userId string) apiCreateUserCredentialRequest {
+	return apiCreateUserCredentialRequest{
+		apiService: a,
+		ctx: ctx,
+		userId: userId,
+	}
+}
+
+/*
+Execute executes the request
+ @return IdentityCreateUserCredentialResponse
+*/
+func (r apiCreateUserCredentialRequest) Execute() (IdentityCreateUserCredentialResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -44,13 +67,22 @@ func (a *AuthenticationApiService) CreateUserCredential(ctx _context.Context, us
 		localVarReturnValue  IdentityCreateUserCredentialResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/identity/v1/users/{user_id}/credentials"
-	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(userId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationApiService.CreateUserCredential")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/identity/v1/users/{user_id}/credentials"
+	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(r.userId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
+	if r.identityCreateUserCredentialRequest == nil {
+		return localVarReturnValue, nil, reportError("identityCreateUserCredentialRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -70,13 +102,13 @@ func (a *AuthenticationApiService) CreateUserCredential(ctx _context.Context, us
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &identityCreateUserCredentialRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.identityCreateUserCredentialRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -94,7 +126,7 @@ func (a *AuthenticationApiService) CreateUserCredential(ctx _context.Context, us
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -104,7 +136,7 @@ func (a *AuthenticationApiService) CreateUserCredential(ctx _context.Context, us
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -113,7 +145,7 @@ func (a *AuthenticationApiService) CreateUserCredential(ctx _context.Context, us
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -122,7 +154,7 @@ func (a *AuthenticationApiService) CreateUserCredential(ctx _context.Context, us
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -133,31 +165,58 @@ func (a *AuthenticationApiService) CreateUserCredential(ctx _context.Context, us
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiDeleteUserCredentialRequest struct {
+	ctx _context.Context
+	apiService *AuthenticationApiService
+	userId string
+	credentialId string
+}
+
 
 /*
 DeleteUserCredential Delete API credentials
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param userId A user ID
  * @param credentialId The ID of the API credentials to remove
+@return apiDeleteUserCredentialRequest
 */
-func (a *AuthenticationApiService) DeleteUserCredential(ctx _context.Context, userId string, credentialId string) (*_nethttp.Response, error) {
+func (a *AuthenticationApiService) DeleteUserCredential(ctx _context.Context, userId string, credentialId string) apiDeleteUserCredentialRequest {
+	return apiDeleteUserCredentialRequest{
+		apiService: a,
+		ctx: ctx,
+		userId: userId,
+		credentialId: credentialId,
+	}
+}
+
+/*
+Execute executes the request
+
+*/
+func (r apiDeleteUserCredentialRequest) Execute() (*_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodDelete
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
+		
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/identity/v1/users/{user_id}/credentials/{credential_id}"
-	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(userId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationApiService.DeleteUserCredential")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"credential_id"+"}", _neturl.QueryEscape(parameterToString(credentialId, "")) , -1)
+	localVarPath := localBasePath + "/identity/v1/users/{user_id}/credentials/{credential_id}"
+	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(r.userId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"credential_id"+"}", _neturl.QueryEscape(parameterToString(r.credentialId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -176,12 +235,12 @@ func (a *AuthenticationApiService) DeleteUserCredential(ctx _context.Context, us
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarHTTPResponse, err
 	}
@@ -199,7 +258,7 @@ func (a *AuthenticationApiService) DeleteUserCredential(ctx _context.Context, us
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -209,7 +268,7 @@ func (a *AuthenticationApiService) DeleteUserCredential(ctx _context.Context, us
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -218,7 +277,7 @@ func (a *AuthenticationApiService) DeleteUserCredential(ctx _context.Context, us
 			return localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
@@ -229,15 +288,36 @@ func (a *AuthenticationApiService) DeleteUserCredential(ctx _context.Context, us
 
 	return localVarHTTPResponse, nil
 }
+type apiGetAccessTokenRequest struct {
+	ctx _context.Context
+	apiService *AuthenticationApiService
+	identityGetAccessTokenRequest *IdentityGetAccessTokenRequest
+}
+
+
+func (r apiGetAccessTokenRequest) IdentityGetAccessTokenRequest(identityGetAccessTokenRequest IdentityGetAccessTokenRequest) apiGetAccessTokenRequest {
+	r.identityGetAccessTokenRequest = &identityGetAccessTokenRequest
+	return r
+}
 
 /*
 GetAccessToken Generate a bearer token
 Authenticate to the StackPath API. Use the resulting bearer token to authorize other StackPath API calls. API credentials can be generated in the [StackPath customer portal](https://control.stackpath.com/).
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param identityGetAccessTokenRequest
-@return IdentityGetAccessTokenResponse
+@return apiGetAccessTokenRequest
 */
-func (a *AuthenticationApiService) GetAccessToken(ctx _context.Context, identityGetAccessTokenRequest IdentityGetAccessTokenRequest) (IdentityGetAccessTokenResponse, *_nethttp.Response, error) {
+func (a *AuthenticationApiService) GetAccessToken(ctx _context.Context) apiGetAccessTokenRequest {
+	return apiGetAccessTokenRequest{
+		apiService: a,
+		ctx: ctx,
+	}
+}
+
+/*
+Execute executes the request
+ @return IdentityGetAccessTokenResponse
+*/
+func (r apiGetAccessTokenRequest) Execute() (IdentityGetAccessTokenResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -247,11 +327,20 @@ func (a *AuthenticationApiService) GetAccessToken(ctx _context.Context, identity
 		localVarReturnValue  IdentityGetAccessTokenResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/identity/v1/oauth2/token"
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationApiService.GetAccessToken")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/identity/v1/oauth2/token"
+
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	if r.identityGetAccessTokenRequest == nil {
+		return localVarReturnValue, nil, reportError("identityGetAccessTokenRequest is required and must be specified")
+	}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json"}
@@ -271,13 +360,13 @@ func (a *AuthenticationApiService) GetAccessToken(ctx _context.Context, identity
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = &identityGetAccessTokenRequest
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.identityGetAccessTokenRequest
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -295,7 +384,7 @@ func (a *AuthenticationApiService) GetAccessToken(ctx _context.Context, identity
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -305,7 +394,7 @@ func (a *AuthenticationApiService) GetAccessToken(ctx _context.Context, identity
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -314,7 +403,7 @@ func (a *AuthenticationApiService) GetAccessToken(ctx _context.Context, identity
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -323,7 +412,7 @@ func (a *AuthenticationApiService) GetAccessToken(ctx _context.Context, identity
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -334,27 +423,56 @@ func (a *AuthenticationApiService) GetAccessToken(ctx _context.Context, identity
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiGetUserCredentialsRequest struct {
+	ctx _context.Context
+	apiService *AuthenticationApiService
+	userId string
+	pageRequestFirst *string
+	pageRequestAfter *string
+	pageRequestFilter *string
+	pageRequestSortBy *string
+}
 
-// GetUserCredentialsOpts Optional parameters for the method 'GetUserCredentials'
-type GetUserCredentialsOpts struct {
-    PageRequestFirst optional.String
-    PageRequestAfter optional.String
-    PageRequestFilter optional.String
-    PageRequestSortBy optional.String
+
+func (r apiGetUserCredentialsRequest) PageRequestFirst(pageRequestFirst string) apiGetUserCredentialsRequest {
+	r.pageRequestFirst = &pageRequestFirst
+	return r
+}
+
+func (r apiGetUserCredentialsRequest) PageRequestAfter(pageRequestAfter string) apiGetUserCredentialsRequest {
+	r.pageRequestAfter = &pageRequestAfter
+	return r
+}
+
+func (r apiGetUserCredentialsRequest) PageRequestFilter(pageRequestFilter string) apiGetUserCredentialsRequest {
+	r.pageRequestFilter = &pageRequestFilter
+	return r
+}
+
+func (r apiGetUserCredentialsRequest) PageRequestSortBy(pageRequestSortBy string) apiGetUserCredentialsRequest {
+	r.pageRequestSortBy = &pageRequestSortBy
+	return r
 }
 
 /*
 GetUserCredentials Get all API credentials
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param userId A user ID
- * @param optional nil or *GetUserCredentialsOpts - Optional Parameters:
- * @param "PageRequestFirst" (optional.String) -  The number of items desired.
- * @param "PageRequestAfter" (optional.String) -  The cursor value after which data will be returned.
- * @param "PageRequestFilter" (optional.String) -  SQL-style constraint filters.
- * @param "PageRequestSortBy" (optional.String) -  Sort the response by the given field.
-@return IdentityGetUserCredentialsResponse
+@return apiGetUserCredentialsRequest
 */
-func (a *AuthenticationApiService) GetUserCredentials(ctx _context.Context, userId string, localVarOptionals *GetUserCredentialsOpts) (IdentityGetUserCredentialsResponse, *_nethttp.Response, error) {
+func (a *AuthenticationApiService) GetUserCredentials(ctx _context.Context, userId string) apiGetUserCredentialsRequest {
+	return apiGetUserCredentialsRequest{
+		apiService: a,
+		ctx: ctx,
+		userId: userId,
+	}
+}
+
+/*
+Execute executes the request
+ @return IdentityGetUserCredentialsResponse
+*/
+func (r apiGetUserCredentialsRequest) Execute() (IdentityGetUserCredentialsResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -364,25 +482,30 @@ func (a *AuthenticationApiService) GetUserCredentials(ctx _context.Context, user
 		localVarReturnValue  IdentityGetUserCredentialsResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/identity/v1/users/{user_id}/credentials"
-	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(userId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationApiService.GetUserCredentials")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/identity/v1/users/{user_id}/credentials"
+	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(r.userId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
-
-	if localVarOptionals != nil && localVarOptionals.PageRequestFirst.IsSet() {
-		localVarQueryParams.Add("page_request.first", parameterToString(localVarOptionals.PageRequestFirst.Value(), ""))
+	
+				
+	if r.pageRequestFirst != nil {
+		localVarQueryParams.Add("page_request.first", parameterToString(*r.pageRequestFirst, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestAfter.IsSet() {
-		localVarQueryParams.Add("page_request.after", parameterToString(localVarOptionals.PageRequestAfter.Value(), ""))
+	if r.pageRequestAfter != nil {
+		localVarQueryParams.Add("page_request.after", parameterToString(*r.pageRequestAfter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestFilter.IsSet() {
-		localVarQueryParams.Add("page_request.filter", parameterToString(localVarOptionals.PageRequestFilter.Value(), ""))
+	if r.pageRequestFilter != nil {
+		localVarQueryParams.Add("page_request.filter", parameterToString(*r.pageRequestFilter, ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageRequestSortBy.IsSet() {
-		localVarQueryParams.Add("page_request.sort_by", parameterToString(localVarOptionals.PageRequestSortBy.Value(), ""))
+	if r.pageRequestSortBy != nil {
+		localVarQueryParams.Add("page_request.sort_by", parameterToString(*r.pageRequestSortBy, ""))
 	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -401,12 +524,12 @@ func (a *AuthenticationApiService) GetUserCredentials(ctx _context.Context, user
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -424,7 +547,7 @@ func (a *AuthenticationApiService) GetUserCredentials(ctx _context.Context, user
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -434,7 +557,7 @@ func (a *AuthenticationApiService) GetUserCredentials(ctx _context.Context, user
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -443,7 +566,7 @@ func (a *AuthenticationApiService) GetUserCredentials(ctx _context.Context, user
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -452,7 +575,7 @@ func (a *AuthenticationApiService) GetUserCredentials(ctx _context.Context, user
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
@@ -463,6 +586,13 @@ func (a *AuthenticationApiService) GetUserCredentials(ctx _context.Context, user
 
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
+type apiRotateUserCredentialSecretRequest struct {
+	ctx _context.Context
+	apiService *AuthenticationApiService
+	userId string
+	credentialId string
+}
+
 
 /*
 RotateUserCredentialSecret Create a new API secret
@@ -470,9 +600,22 @@ The client secret is returned only once and is not stored by StackPath. Please t
  * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  * @param userId A user ID
  * @param credentialId The ID of the API client credential to rotate secrets for
-@return IdentityRotateUserCredentialSecretResponse
+@return apiRotateUserCredentialSecretRequest
 */
-func (a *AuthenticationApiService) RotateUserCredentialSecret(ctx _context.Context, userId string, credentialId string) (IdentityRotateUserCredentialSecretResponse, *_nethttp.Response, error) {
+func (a *AuthenticationApiService) RotateUserCredentialSecret(ctx _context.Context, userId string, credentialId string) apiRotateUserCredentialSecretRequest {
+	return apiRotateUserCredentialSecretRequest{
+		apiService: a,
+		ctx: ctx,
+		userId: userId,
+		credentialId: credentialId,
+	}
+}
+
+/*
+Execute executes the request
+ @return IdentityRotateUserCredentialSecretResponse
+*/
+func (r apiRotateUserCredentialSecretRequest) Execute() (IdentityRotateUserCredentialSecretResponse, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodPost
 		localVarPostBody     interface{}
@@ -482,15 +625,20 @@ func (a *AuthenticationApiService) RotateUserCredentialSecret(ctx _context.Conte
 		localVarReturnValue  IdentityRotateUserCredentialSecretResponse
 	)
 
-	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/identity/v1/users/{user_id}/credentials/{credential_id}/rotate"
-	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(userId, "")) , -1)
+	localBasePath, err := r.apiService.client.cfg.ServerURLWithContext(r.ctx, "AuthenticationApiService.RotateUserCredentialSecret")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
 
-	localVarPath = strings.Replace(localVarPath, "{"+"credential_id"+"}", _neturl.QueryEscape(parameterToString(credentialId, "")) , -1)
+	localVarPath := localBasePath + "/identity/v1/users/{user_id}/credentials/{credential_id}/rotate"
+	localVarPath = strings.Replace(localVarPath, "{"+"user_id"+"}", _neturl.QueryEscape(parameterToString(r.userId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"credential_id"+"}", _neturl.QueryEscape(parameterToString(r.credentialId, "")) , -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
+	
+	
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -509,12 +657,12 @@ func (a *AuthenticationApiService) RotateUserCredentialSecret(ctx _context.Conte
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := r.apiService.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
 
-	localVarHTTPResponse, err := a.client.callAPI(r)
+	localVarHTTPResponse, err := r.apiService.client.callAPI(req)
 	if err != nil || localVarHTTPResponse == nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -532,7 +680,7 @@ func (a *AuthenticationApiService) RotateUserCredentialSecret(ctx _context.Conte
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -542,7 +690,7 @@ func (a *AuthenticationApiService) RotateUserCredentialSecret(ctx _context.Conte
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -551,7 +699,7 @@ func (a *AuthenticationApiService) RotateUserCredentialSecret(ctx _context.Conte
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 			var v StackpathapiStatus
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			err = r.apiService.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
@@ -560,7 +708,7 @@ func (a *AuthenticationApiService) RotateUserCredentialSecret(ctx _context.Conte
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	err = r.apiService.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
 		newErr := GenericOpenAPIError{
 			body:  localVarBody,
