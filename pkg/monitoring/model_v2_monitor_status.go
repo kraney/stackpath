@@ -13,8 +13,8 @@ type V2MonitorStatus string
 
 // List of v2MonitorStatus
 const (
-	UNKNOWN V2MonitorStatus = "UNKNOWN"
-	UP V2MonitorStatus = "UP"
-	DOWN V2MonitorStatus = "DOWN"
-	SLOW V2MonitorStatus = "SLOW"
+	V2MONITORSTATUS_UNKNOWN V2MonitorStatus = "UNKNOWN"
+	V2MONITORSTATUS_UP V2MonitorStatus = "UP"
+	V2MONITORSTATUS_DOWN V2MonitorStatus = "DOWN"
+	V2MONITORSTATUS_SLOW V2MonitorStatus = "SLOW"
 )

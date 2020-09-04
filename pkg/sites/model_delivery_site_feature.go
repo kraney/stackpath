@@ -13,8 +13,8 @@ type DeliverySiteFeature string
 
 // List of deliverySiteFeature
 const (
-	UNKNOWN DeliverySiteFeature = "UNKNOWN"
-	CDN DeliverySiteFeature = "CDN"
-	WAF DeliverySiteFeature = "WAF"
-	SERVERLESS_EDGE_ENGINE DeliverySiteFeature = "SERVERLESS_EDGE_ENGINE"
+	DELIVERYSITEFEATURE_UNKNOWN DeliverySiteFeature = "UNKNOWN"
+	DELIVERYSITEFEATURE_CDN DeliverySiteFeature = "CDN"
+	DELIVERYSITEFEATURE_WAF DeliverySiteFeature = "WAF"
+	DELIVERYSITEFEATURE_SERVERLESS_EDGE_ENGINE DeliverySiteFeature = "SERVERLESS_EDGE_ENGINE"
 )

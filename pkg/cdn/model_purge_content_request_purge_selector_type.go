@@ -13,6 +13,6 @@ type PurgeContentRequestPurgeSelectorType string
 
 // List of PurgeContentRequestPurgeSelectorType
 const (
-	HEADER PurgeContentRequestPurgeSelectorType = "HEADER"
-	TAG PurgeContentRequestPurgeSelectorType = "TAG"
+	PURGECONTENTREQUESTPURGESELECTORTYPE_HEADER PurgeContentRequestPurgeSelectorType = "HEADER"
+	PURGECONTENTREQUESTPURGESELECTORTYPE_TAG PurgeContentRequestPurgeSelectorType = "TAG"
 )

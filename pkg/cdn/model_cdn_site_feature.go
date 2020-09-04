@@ -13,7 +13,7 @@ type CdnSiteFeature string
 
 // List of cdnSiteFeature
 const (
-	UNKNOWN CdnSiteFeature = "UNKNOWN"
-	CDN CdnSiteFeature = "CDN"
-	WAF CdnSiteFeature = "WAF"
+	CDNSITEFEATURE_UNKNOWN CdnSiteFeature = "UNKNOWN"
+	CDNSITEFEATURE_CDN CdnSiteFeature = "CDN"
+	CDNSITEFEATURE_WAF CdnSiteFeature = "WAF"
 )

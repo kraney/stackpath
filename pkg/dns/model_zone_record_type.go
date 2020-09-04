@@ -13,12 +13,12 @@ type ZoneRecordType string
 
 // List of zoneRecordType
 const (
-	EMPTY ZoneRecordType = "EMPTY"
-	A ZoneRecordType = "A"
-	AAAA ZoneRecordType = "AAAA"
-	CNAME ZoneRecordType = "CNAME"
-	TXT ZoneRecordType = "TXT"
-	MX ZoneRecordType = "MX"
-	SRV ZoneRecordType = "SRV"
-	NS ZoneRecordType = "NS"
+	ZONERECORDTYPE_EMPTY ZoneRecordType = "EMPTY"
+	ZONERECORDTYPE_A ZoneRecordType = "A"
+	ZONERECORDTYPE_AAAA ZoneRecordType = "AAAA"
+	ZONERECORDTYPE_CNAME ZoneRecordType = "CNAME"
+	ZONERECORDTYPE_TXT ZoneRecordType = "TXT"
+	ZONERECORDTYPE_MX ZoneRecordType = "MX"
+	ZONERECORDTYPE_SRV ZoneRecordType = "SRV"
+	ZONERECORDTYPE_NS ZoneRecordType = "NS"
 )

@@ -13,7 +13,7 @@ type OriginPullPolicyDefaultCacheBehaviorEnumWrapperValue string
 
 // List of OriginPullPolicyDefaultCacheBehaviorEnumWrapperValue
 const (
-	UNKNOWN OriginPullPolicyDefaultCacheBehaviorEnumWrapperValue = "UNKNOWN"
-	BYPASS OriginPullPolicyDefaultCacheBehaviorEnumWrapperValue = "bypass"
-	TTL OriginPullPolicyDefaultCacheBehaviorEnumWrapperValue = "ttl"
+	ORIGINPULLPOLICYDEFAULTCACHEBEHAVIORENUMWRAPPERVALUE_UNKNOWN OriginPullPolicyDefaultCacheBehaviorEnumWrapperValue = "UNKNOWN"
+	ORIGINPULLPOLICYDEFAULTCACHEBEHAVIORENUMWRAPPERVALUE_BYPASS OriginPullPolicyDefaultCacheBehaviorEnumWrapperValue = "bypass"
+	ORIGINPULLPOLICYDEFAULTCACHEBEHAVIORENUMWRAPPERVALUE_TTL OriginPullPolicyDefaultCacheBehaviorEnumWrapperValue = "ttl"
 )

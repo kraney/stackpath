@@ -13,7 +13,7 @@ type CustconfClientRequestModificationFlowControlEnumWrapperValue string
 
 // List of custconfClientRequestModificationFlowControlEnumWrapperValue
 const (
-	UNKNOWN CustconfClientRequestModificationFlowControlEnumWrapperValue = "UNKNOWN"
-	NEXT CustconfClientRequestModificationFlowControlEnumWrapperValue = "next"
-	BREAK CustconfClientRequestModificationFlowControlEnumWrapperValue = "break"
+	CUSTCONFCLIENTREQUESTMODIFICATIONFLOWCONTROLENUMWRAPPERVALUE_UNKNOWN CustconfClientRequestModificationFlowControlEnumWrapperValue = "UNKNOWN"
+	CUSTCONFCLIENTREQUESTMODIFICATIONFLOWCONTROLENUMWRAPPERVALUE_NEXT CustconfClientRequestModificationFlowControlEnumWrapperValue = "next"
+	CUSTCONFCLIENTREQUESTMODIFICATIONFLOWCONTROLENUMWRAPPERVALUE_BREAK CustconfClientRequestModificationFlowControlEnumWrapperValue = "break"
 )

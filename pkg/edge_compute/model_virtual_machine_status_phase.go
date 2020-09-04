@@ -13,11 +13,11 @@ type VirtualMachineStatusPhase string
 
 // List of VirtualMachineStatusPhase
 const (
-	UNKNOWN VirtualMachineStatusPhase = "UNKNOWN"
-	PENDING VirtualMachineStatusPhase = "PENDING"
-	SCHEDULING VirtualMachineStatusPhase = "SCHEDULING"
-	STARTING VirtualMachineStatusPhase = "STARTING"
-	RUNNING VirtualMachineStatusPhase = "RUNNING"
-	STOPPED VirtualMachineStatusPhase = "STOPPED"
-	FAILED VirtualMachineStatusPhase = "FAILED"
+	VIRTUALMACHINESTATUSPHASE_UNKNOWN VirtualMachineStatusPhase = "UNKNOWN"
+	VIRTUALMACHINESTATUSPHASE_PENDING VirtualMachineStatusPhase = "PENDING"
+	VIRTUALMACHINESTATUSPHASE_SCHEDULING VirtualMachineStatusPhase = "SCHEDULING"
+	VIRTUALMACHINESTATUSPHASE_STARTING VirtualMachineStatusPhase = "STARTING"
+	VIRTUALMACHINESTATUSPHASE_RUNNING VirtualMachineStatusPhase = "RUNNING"
+	VIRTUALMACHINESTATUSPHASE_STOPPED VirtualMachineStatusPhase = "STOPPED"
+	VIRTUALMACHINESTATUSPHASE_FAILED VirtualMachineStatusPhase = "FAILED"
 )

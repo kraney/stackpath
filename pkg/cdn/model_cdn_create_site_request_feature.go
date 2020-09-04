@@ -13,6 +13,6 @@ type CdnCreateSiteRequestFeature string
 
 // List of cdnCreateSiteRequestFeature
 const (
-	CDN CdnCreateSiteRequestFeature = "CDN"
-	WAF CdnCreateSiteRequestFeature = "WAF"
+	CDNCREATESITEREQUESTFEATURE_CDN CdnCreateSiteRequestFeature = "CDN"
+	CDNCREATESITEREQUESTFEATURE_WAF CdnCreateSiteRequestFeature = "WAF"
 )

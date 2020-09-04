@@ -13,6 +13,6 @@ type StorageBucketVisibility string
 
 // List of storageBucketVisibility
 const (
-	PRIVATE StorageBucketVisibility = "PRIVATE"
-	PUBLIC StorageBucketVisibility = "PUBLIC"
+	STORAGEBUCKETVISIBILITY_PRIVATE StorageBucketVisibility = "PRIVATE"
+	STORAGEBUCKETVISIBILITY_PUBLIC StorageBucketVisibility = "PUBLIC"
 )

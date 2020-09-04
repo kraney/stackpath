@@ -13,7 +13,7 @@ type NetworkPolicySpecPolicyType string
 
 // List of NetworkPolicySpecPolicyType
 const (
-	POLICY_TYPE_NOT_SPECIFIED NetworkPolicySpecPolicyType = "POLICY_TYPE_NOT_SPECIFIED"
-	INGRESS NetworkPolicySpecPolicyType = "INGRESS"
-	EGRESS NetworkPolicySpecPolicyType = "EGRESS"
+	NETWORKPOLICYSPECPOLICYTYPE_POLICY_TYPE_NOT_SPECIFIED NetworkPolicySpecPolicyType = "POLICY_TYPE_NOT_SPECIFIED"
+	NETWORKPOLICYSPECPOLICYTYPE_INGRESS NetworkPolicySpecPolicyType = "INGRESS"
+	NETWORKPOLICYSPECPOLICYTYPE_EGRESS NetworkPolicySpecPolicyType = "EGRESS"
 )

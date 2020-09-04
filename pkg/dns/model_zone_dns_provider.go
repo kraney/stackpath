@@ -13,6 +13,6 @@ type ZoneDnsProvider string
 
 // List of zoneDnsProvider
 const (
-	GENERAL ZoneDnsProvider = "GENERAL"
-	CLOUDFLARE ZoneDnsProvider = "CLOUDFLARE"
+	ZONEDNSPROVIDER_GENERAL ZoneDnsProvider = "GENERAL"
+	ZONEDNSPROVIDER_CLOUDFLARE ZoneDnsProvider = "CLOUDFLARE"
 )

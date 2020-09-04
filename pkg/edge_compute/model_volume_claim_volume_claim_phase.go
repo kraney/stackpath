@@ -13,8 +13,8 @@ type VolumeClaimVolumeClaimPhase string
 
 // List of VolumeClaimVolumeClaimPhase
 const (
-	VOLUME_CLAIM_PHASE_UNSPECIFIED VolumeClaimVolumeClaimPhase = "VOLUME_CLAIM_PHASE_UNSPECIFIED"
-	PENDING VolumeClaimVolumeClaimPhase = "PENDING"
-	UNBOUND VolumeClaimVolumeClaimPhase = "UNBOUND"
-	BOUND VolumeClaimVolumeClaimPhase = "BOUND"
+	VOLUMECLAIMVOLUMECLAIMPHASE_VOLUME_CLAIM_PHASE_UNSPECIFIED VolumeClaimVolumeClaimPhase = "VOLUME_CLAIM_PHASE_UNSPECIFIED"
+	VOLUMECLAIMVOLUMECLAIMPHASE_PENDING VolumeClaimVolumeClaimPhase = "PENDING"
+	VOLUMECLAIMVOLUMECLAIMPHASE_UNBOUND VolumeClaimVolumeClaimPhase = "UNBOUND"
+	VOLUMECLAIMVOLUMECLAIMPHASE_BOUND VolumeClaimVolumeClaimPhase = "BOUND"
 )

@@ -13,14 +13,14 @@ type WafHttpMethod string
 
 // List of wafHttpMethod
 const (
-	METHOD_UNSPECIFIED WafHttpMethod = "METHOD_UNSPECIFIED"
-	GET WafHttpMethod = "GET"
-	POST WafHttpMethod = "POST"
-	PUT WafHttpMethod = "PUT"
-	DELETE WafHttpMethod = "DELETE"
-	HEAD WafHttpMethod = "HEAD"
-	PATCH WafHttpMethod = "PATCH"
-	OPTIONS WafHttpMethod = "OPTIONS"
-	CONNECT WafHttpMethod = "CONNECT"
-	TRACE WafHttpMethod = "TRACE"
+	WAFHTTPMETHOD_METHOD_UNSPECIFIED WafHttpMethod = "METHOD_UNSPECIFIED"
+	WAFHTTPMETHOD_GET WafHttpMethod = "GET"
+	WAFHTTPMETHOD_POST WafHttpMethod = "POST"
+	WAFHTTPMETHOD_PUT WafHttpMethod = "PUT"
+	WAFHTTPMETHOD_DELETE WafHttpMethod = "DELETE"
+	WAFHTTPMETHOD_HEAD WafHttpMethod = "HEAD"
+	WAFHTTPMETHOD_PATCH WafHttpMethod = "PATCH"
+	WAFHTTPMETHOD_OPTIONS WafHttpMethod = "OPTIONS"
+	WAFHTTPMETHOD_CONNECT WafHttpMethod = "CONNECT"
+	WAFHTTPMETHOD_TRACE WafHttpMethod = "TRACE"
 )

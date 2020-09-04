@@ -13,6 +13,6 @@ type V2AlertConditionMetric string
 
 // List of v2AlertConditionMetric
 const (
-	STATUS V2AlertConditionMetric = "STATUS"
-	CODE V2AlertConditionMetric = "CODE"
+	V2ALERTCONDITIONMETRIC_STATUS V2AlertConditionMetric = "STATUS"
+	V2ALERTCONDITIONMETRIC_CODE V2AlertConditionMetric = "CODE"
 )

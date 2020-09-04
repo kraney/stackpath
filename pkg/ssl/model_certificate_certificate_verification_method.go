@@ -13,6 +13,6 @@ type CertificateCertificateVerificationMethod string
 
 // List of certificateCertificateVerificationMethod
 const (
-	DNS CertificateCertificateVerificationMethod = "DNS"
-	HTTP CertificateCertificateVerificationMethod = "HTTP"
+	CERTIFICATECERTIFICATEVERIFICATIONMETHOD_DNS CertificateCertificateVerificationMethod = "DNS"
+	CERTIFICATECERTIFICATEVERIFICATIONMETHOD_HTTP CertificateCertificateVerificationMethod = "HTTP"
 )

@@ -13,7 +13,7 @@ type CustconfAwsSignedS3PostV4AuthenticationTypeEnumWrapperValue string
 
 // List of custconfAwsSignedS3PostV4AuthenticationTypeEnumWrapperValue
 const (
-	UNKNOWN CustconfAwsSignedS3PostV4AuthenticationTypeEnumWrapperValue = "UNKNOWN"
-	QUERY CustconfAwsSignedS3PostV4AuthenticationTypeEnumWrapperValue = "query"
-	HEADER CustconfAwsSignedS3PostV4AuthenticationTypeEnumWrapperValue = "header"
+	CUSTCONFAWSSIGNEDS3POSTV4AUTHENTICATIONTYPEENUMWRAPPERVALUE_UNKNOWN CustconfAwsSignedS3PostV4AuthenticationTypeEnumWrapperValue = "UNKNOWN"
+	CUSTCONFAWSSIGNEDS3POSTV4AUTHENTICATIONTYPEENUMWRAPPERVALUE_QUERY CustconfAwsSignedS3PostV4AuthenticationTypeEnumWrapperValue = "query"
+	CUSTCONFAWSSIGNEDS3POSTV4AUTHENTICATIONTYPEENUMWRAPPERVALUE_HEADER CustconfAwsSignedS3PostV4AuthenticationTypeEnumWrapperValue = "header"
 )

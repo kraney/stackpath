@@ -13,7 +13,7 @@ type AuthAclAccessCodeEnumWrapperValue string
 
 // List of AuthACLAccessCodeEnumWrapperValue
 const (
-	UNKNOWN AuthAclAccessCodeEnumWrapperValue = "UNKNOWN"
-	ALLOW AuthAclAccessCodeEnumWrapperValue = "allow"
-	DENY AuthAclAccessCodeEnumWrapperValue = "deny"
+	AUTHACLACCESSCODEENUMWRAPPERVALUE_UNKNOWN AuthAclAccessCodeEnumWrapperValue = "UNKNOWN"
+	AUTHACLACCESSCODEENUMWRAPPERVALUE_ALLOW AuthAclAccessCodeEnumWrapperValue = "allow"
+	AUTHACLACCESSCODEENUMWRAPPERVALUE_DENY AuthAclAccessCodeEnumWrapperValue = "deny"
 )

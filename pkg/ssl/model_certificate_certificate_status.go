@@ -13,11 +13,11 @@ type CertificateCertificateStatus string
 
 // List of certificateCertificateStatus
 const (
-	UNKNOWN CertificateCertificateStatus = "UNKNOWN"
-	PENDING CertificateCertificateStatus = "PENDING"
-	COMPLETE CertificateCertificateStatus = "COMPLETE"
-	EXPIRED CertificateCertificateStatus = "EXPIRED"
-	FAILED CertificateCertificateStatus = "FAILED"
-	PENDING_VERIFICATION CertificateCertificateStatus = "PENDING_VERIFICATION"
-	REVOKED CertificateCertificateStatus = "REVOKED"
+	CERTIFICATECERTIFICATESTATUS_UNKNOWN CertificateCertificateStatus = "UNKNOWN"
+	CERTIFICATECERTIFICATESTATUS_PENDING CertificateCertificateStatus = "PENDING"
+	CERTIFICATECERTIFICATESTATUS_COMPLETE CertificateCertificateStatus = "COMPLETE"
+	CERTIFICATECERTIFICATESTATUS_EXPIRED CertificateCertificateStatus = "EXPIRED"
+	CERTIFICATECERTIFICATESTATUS_FAILED CertificateCertificateStatus = "FAILED"
+	CERTIFICATECERTIFICATESTATUS_PENDING_VERIFICATION CertificateCertificateStatus = "PENDING_VERIFICATION"
+	CERTIFICATECERTIFICATESTATUS_REVOKED CertificateCertificateStatus = "REVOKED"
 )

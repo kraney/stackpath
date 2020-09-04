@@ -13,6 +13,6 @@ type EventWafRequestType string
 
 // List of EventWafRequestType
 const (
-	CHALLENGE EventWafRequestType = "CHALLENGE"
-	BLOCK EventWafRequestType = "BLOCK"
+	EVENTWAFREQUESTTYPE_CHALLENGE EventWafRequestType = "CHALLENGE"
+	EVENTWAFREQUESTTYPE_BLOCK EventWafRequestType = "BLOCK"
 )

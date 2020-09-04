@@ -13,10 +13,10 @@ type WafRuleAction string
 
 // List of wafRuleAction
 const (
-	BLOCK WafRuleAction = "BLOCK"
-	ALLOW WafRuleAction = "ALLOW"
-	CAPTCHA WafRuleAction = "CAPTCHA"
-	HANDSHAKE WafRuleAction = "HANDSHAKE"
-	MONITOR WafRuleAction = "MONITOR"
-	GATEWAY WafRuleAction = "GATEWAY"
+	WAFRULEACTION_BLOCK WafRuleAction = "BLOCK"
+	WAFRULEACTION_ALLOW WafRuleAction = "ALLOW"
+	WAFRULEACTION_CAPTCHA WafRuleAction = "CAPTCHA"
+	WAFRULEACTION_HANDSHAKE WafRuleAction = "HANDSHAKE"
+	WAFRULEACTION_MONITOR WafRuleAction = "MONITOR"
+	WAFRULEACTION_GATEWAY WafRuleAction = "GATEWAY"
 )

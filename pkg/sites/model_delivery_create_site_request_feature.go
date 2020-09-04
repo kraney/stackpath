@@ -13,7 +13,7 @@ type DeliveryCreateSiteRequestFeature string
 
 // List of deliveryCreateSiteRequestFeature
 const (
-	CDN DeliveryCreateSiteRequestFeature = "CDN"
-	WAF DeliveryCreateSiteRequestFeature = "WAF"
-	SERVERLESS_EDGE_ENGINE DeliveryCreateSiteRequestFeature = "SERVERLESS_EDGE_ENGINE"
+	DELIVERYCREATESITEREQUESTFEATURE_CDN DeliveryCreateSiteRequestFeature = "CDN"
+	DELIVERYCREATESITEREQUESTFEATURE_WAF DeliveryCreateSiteRequestFeature = "WAF"
+	DELIVERYCREATESITEREQUESTFEATURE_SERVERLESS_EDGE_ENGINE DeliveryCreateSiteRequestFeature = "SERVERLESS_EDGE_ENGINE"
 )

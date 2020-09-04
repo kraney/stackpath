@@ -13,14 +13,14 @@ type AuthGeoCodeEnumWrapperValue string
 
 // List of AuthGeoCodeEnumWrapperValue
 const (
-	UNKNOWN AuthGeoCodeEnumWrapperValue = "UNKNOWN"
-	COUNTRY_CODE AuthGeoCodeEnumWrapperValue = "countryCode"
-	REGION AuthGeoCodeEnumWrapperValue = "region"
-	SUBDIVISION_CODES AuthGeoCodeEnumWrapperValue = "subdivisionCodes"
-	CITY AuthGeoCodeEnumWrapperValue = "city"
-	POSTAL_CODE AuthGeoCodeEnumWrapperValue = "postalCode"
-	CONTINENT_CODE AuthGeoCodeEnumWrapperValue = "continentCode"
-	TIME_ZONE AuthGeoCodeEnumWrapperValue = "timeZone"
-	DMA_CODE AuthGeoCodeEnumWrapperValue = "dmaCode"
-	AREA_CODE AuthGeoCodeEnumWrapperValue = "areaCode"
+	AUTHGEOCODEENUMWRAPPERVALUE_UNKNOWN AuthGeoCodeEnumWrapperValue = "UNKNOWN"
+	AUTHGEOCODEENUMWRAPPERVALUE_COUNTRY_CODE AuthGeoCodeEnumWrapperValue = "countryCode"
+	AUTHGEOCODEENUMWRAPPERVALUE_REGION AuthGeoCodeEnumWrapperValue = "region"
+	AUTHGEOCODEENUMWRAPPERVALUE_SUBDIVISION_CODES AuthGeoCodeEnumWrapperValue = "subdivisionCodes"
+	AUTHGEOCODEENUMWRAPPERVALUE_CITY AuthGeoCodeEnumWrapperValue = "city"
+	AUTHGEOCODEENUMWRAPPERVALUE_POSTAL_CODE AuthGeoCodeEnumWrapperValue = "postalCode"
+	AUTHGEOCODEENUMWRAPPERVALUE_CONTINENT_CODE AuthGeoCodeEnumWrapperValue = "continentCode"
+	AUTHGEOCODEENUMWRAPPERVALUE_TIME_ZONE AuthGeoCodeEnumWrapperValue = "timeZone"
+	AUTHGEOCODEENUMWRAPPERVALUE_DMA_CODE AuthGeoCodeEnumWrapperValue = "dmaCode"
+	AUTHGEOCODEENUMWRAPPERVALUE_AREA_CODE AuthGeoCodeEnumWrapperValue = "areaCode"
 )

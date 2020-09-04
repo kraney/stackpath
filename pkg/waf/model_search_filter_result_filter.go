@@ -13,8 +13,8 @@ type SearchFilterResultFilter string
 
 // List of SearchFilterResultFilter
 const (
-	ANY_RESULT SearchFilterResultFilter = "ANY_RESULT"
-	BLOCKED_RESULT SearchFilterResultFilter = "BLOCKED_RESULT"
-	ALLOWED_RESULT SearchFilterResultFilter = "ALLOWED_RESULT"
-	MONITORED_RESULT SearchFilterResultFilter = "MONITORED_RESULT"
+	SEARCHFILTERRESULTFILTER_ANY_RESULT SearchFilterResultFilter = "ANY_RESULT"
+	SEARCHFILTERRESULTFILTER_BLOCKED_RESULT SearchFilterResultFilter = "BLOCKED_RESULT"
+	SEARCHFILTERRESULTFILTER_ALLOWED_RESULT SearchFilterResultFilter = "ALLOWED_RESULT"
+	SEARCHFILTERRESULTFILTER_MONITORED_RESULT SearchFilterResultFilter = "MONITORED_RESULT"
 )

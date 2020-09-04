@@ -13,7 +13,7 @@ type V1Action string
 
 // List of v1Action
 const (
-	UNDEFINED V1Action = "UNDEFINED"
-	BLOCK V1Action = "BLOCK"
-	ALLOW V1Action = "ALLOW"
+	V1ACTION_UNDEFINED V1Action = "UNDEFINED"
+	V1ACTION_BLOCK V1Action = "BLOCK"
+	V1ACTION_ALLOW V1Action = "ALLOW"
 )

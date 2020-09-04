@@ -13,6 +13,6 @@ type WafCertificateVerificationMethod string
 
 // List of wafCertificateVerificationMethod
 const (
-	DNS WafCertificateVerificationMethod = "DNS"
-	HTTP WafCertificateVerificationMethod = "HTTP"
+	WAFCERTIFICATEVERIFICATIONMETHOD_DNS WafCertificateVerificationMethod = "DNS"
+	WAFCERTIFICATEVERIFICATIONMETHOD_HTTP WafCertificateVerificationMethod = "HTTP"
 )

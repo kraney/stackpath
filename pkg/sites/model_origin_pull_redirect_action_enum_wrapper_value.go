@@ -13,7 +13,7 @@ type OriginPullRedirectActionEnumWrapperValue string
 
 // List of OriginPullRedirectActionEnumWrapperValue
 const (
-	UNKNOWN OriginPullRedirectActionEnumWrapperValue = "UNKNOWN"
-	FOLLOW OriginPullRedirectActionEnumWrapperValue = "follow"
-	PROXY OriginPullRedirectActionEnumWrapperValue = "proxy"
+	ORIGINPULLREDIRECTACTIONENUMWRAPPERVALUE_UNKNOWN OriginPullRedirectActionEnumWrapperValue = "UNKNOWN"
+	ORIGINPULLREDIRECTACTIONENUMWRAPPERVALUE_FOLLOW OriginPullRedirectActionEnumWrapperValue = "follow"
+	ORIGINPULLREDIRECTACTIONENUMWRAPPERVALUE_PROXY OriginPullRedirectActionEnumWrapperValue = "proxy"
 )

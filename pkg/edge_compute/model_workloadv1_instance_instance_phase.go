@@ -13,11 +13,11 @@ type Workloadv1InstanceInstancePhase string
 
 // List of workloadv1InstanceInstancePhase
 const (
-	INSTANCE_PHASE_UNSPECIFIED Workloadv1InstanceInstancePhase = "INSTANCE_PHASE_UNSPECIFIED"
-	STARTING Workloadv1InstanceInstancePhase = "STARTING"
-	RUNNING Workloadv1InstanceInstancePhase = "RUNNING"
-	FAILED Workloadv1InstanceInstancePhase = "FAILED"
-	COMPLETED Workloadv1InstanceInstancePhase = "COMPLETED"
-	SCHEDULING Workloadv1InstanceInstancePhase = "SCHEDULING"
-	STOPPED Workloadv1InstanceInstancePhase = "STOPPED"
+	WORKLOADV1INSTANCEINSTANCEPHASE_INSTANCE_PHASE_UNSPECIFIED Workloadv1InstanceInstancePhase = "INSTANCE_PHASE_UNSPECIFIED"
+	WORKLOADV1INSTANCEINSTANCEPHASE_STARTING Workloadv1InstanceInstancePhase = "STARTING"
+	WORKLOADV1INSTANCEINSTANCEPHASE_RUNNING Workloadv1InstanceInstancePhase = "RUNNING"
+	WORKLOADV1INSTANCEINSTANCEPHASE_FAILED Workloadv1InstanceInstancePhase = "FAILED"
+	WORKLOADV1INSTANCEINSTANCEPHASE_COMPLETED Workloadv1InstanceInstancePhase = "COMPLETED"
+	WORKLOADV1INSTANCEINSTANCEPHASE_SCHEDULING Workloadv1InstanceInstancePhase = "SCHEDULING"
+	WORKLOADV1INSTANCEINSTANCEPHASE_STOPPED Workloadv1InstanceInstancePhase = "STOPPED"
 )

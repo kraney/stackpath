@@ -13,6 +13,6 @@ type PrometheusMetricsStatus string
 
 // List of prometheusMetricsStatus
 const (
-	SUCCESS PrometheusMetricsStatus = "SUCCESS"
-	ERROR PrometheusMetricsStatus = "ERROR"
+	PROMETHEUSMETRICSSTATUS_SUCCESS PrometheusMetricsStatus = "SUCCESS"
+	PROMETHEUSMETRICSSTATUS_ERROR PrometheusMetricsStatus = "ERROR"
 )

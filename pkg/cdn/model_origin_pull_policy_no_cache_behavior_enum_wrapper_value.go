@@ -13,7 +13,7 @@ type OriginPullPolicyNoCacheBehaviorEnumWrapperValue string
 
 // List of OriginPullPolicyNoCacheBehaviorEnumWrapperValue
 const (
-	UNKNOWN OriginPullPolicyNoCacheBehaviorEnumWrapperValue = "UNKNOWN"
-	LEGACY OriginPullPolicyNoCacheBehaviorEnumWrapperValue = "legacy"
-	SPEC OriginPullPolicyNoCacheBehaviorEnumWrapperValue = "spec"
+	ORIGINPULLPOLICYNOCACHEBEHAVIORENUMWRAPPERVALUE_UNKNOWN OriginPullPolicyNoCacheBehaviorEnumWrapperValue = "UNKNOWN"
+	ORIGINPULLPOLICYNOCACHEBEHAVIORENUMWRAPPERVALUE_LEGACY OriginPullPolicyNoCacheBehaviorEnumWrapperValue = "legacy"
+	ORIGINPULLPOLICYNOCACHEBEHAVIORENUMWRAPPERVALUE_SPEC OriginPullPolicyNoCacheBehaviorEnumWrapperValue = "spec"
 )

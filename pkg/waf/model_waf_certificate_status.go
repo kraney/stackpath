@@ -13,11 +13,11 @@ type WafCertificateStatus string
 
 // List of wafCertificateStatus
 const (
-	UNKNOWN WafCertificateStatus = "UNKNOWN"
-	PENDING WafCertificateStatus = "PENDING"
-	EXPIRED WafCertificateStatus = "EXPIRED"
-	FAILED WafCertificateStatus = "FAILED"
-	PENDING_VERIFICATION WafCertificateStatus = "PENDING_VERIFICATION"
-	ACTIVE WafCertificateStatus = "ACTIVE"
-	INACTIVE WafCertificateStatus = "INACTIVE"
+	WAFCERTIFICATESTATUS_UNKNOWN WafCertificateStatus = "UNKNOWN"
+	WAFCERTIFICATESTATUS_PENDING WafCertificateStatus = "PENDING"
+	WAFCERTIFICATESTATUS_EXPIRED WafCertificateStatus = "EXPIRED"
+	WAFCERTIFICATESTATUS_FAILED WafCertificateStatus = "FAILED"
+	WAFCERTIFICATESTATUS_PENDING_VERIFICATION WafCertificateStatus = "PENDING_VERIFICATION"
+	WAFCERTIFICATESTATUS_ACTIVE WafCertificateStatus = "ACTIVE"
+	WAFCERTIFICATESTATUS_INACTIVE WafCertificateStatus = "INACTIVE"
 )

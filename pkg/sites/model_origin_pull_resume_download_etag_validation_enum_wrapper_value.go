@@ -13,8 +13,8 @@ type OriginPullResumeDownloadEtagValidationEnumWrapperValue string
 
 // List of OriginPullResumeDownloadEtagValidationEnumWrapperValue
 const (
-	UNKNOWN OriginPullResumeDownloadEtagValidationEnumWrapperValue = "UNKNOWN"
-	DO_NOT_USE OriginPullResumeDownloadEtagValidationEnumWrapperValue = "DO_NOT_USE"
-	OPTIONAL OriginPullResumeDownloadEtagValidationEnumWrapperValue = "OPTIONAL"
-	REQUIRED OriginPullResumeDownloadEtagValidationEnumWrapperValue = "REQUIRED"
+	ORIGINPULLRESUMEDOWNLOADETAGVALIDATIONENUMWRAPPERVALUE_UNKNOWN OriginPullResumeDownloadEtagValidationEnumWrapperValue = "UNKNOWN"
+	ORIGINPULLRESUMEDOWNLOADETAGVALIDATIONENUMWRAPPERVALUE_DO_NOT_USE OriginPullResumeDownloadEtagValidationEnumWrapperValue = "DO_NOT_USE"
+	ORIGINPULLRESUMEDOWNLOADETAGVALIDATIONENUMWRAPPERVALUE_OPTIONAL OriginPullResumeDownloadEtagValidationEnumWrapperValue = "OPTIONAL"
+	ORIGINPULLRESUMEDOWNLOADETAGVALIDATIONENUMWRAPPERVALUE_REQUIRED OriginPullResumeDownloadEtagValidationEnumWrapperValue = "REQUIRED"
 )

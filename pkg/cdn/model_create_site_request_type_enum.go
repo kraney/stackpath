@@ -13,7 +13,7 @@ type CreateSiteRequestTypeEnum string
 
 // List of CreateSiteRequestTypeEnum
 const (
-	CDN CreateSiteRequestTypeEnum = "CDN"
-	WAF CreateSiteRequestTypeEnum = "WAF"
-	API CreateSiteRequestTypeEnum = "API"
+	CREATESITEREQUESTTYPEENUM_CDN CreateSiteRequestTypeEnum = "CDN"
+	CREATESITEREQUESTTYPEENUM_WAF CreateSiteRequestTypeEnum = "WAF"
+	CREATESITEREQUESTTYPEENUM_API CreateSiteRequestTypeEnum = "API"
 )

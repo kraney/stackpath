@@ -13,9 +13,9 @@ type WafPolicyAction string
 
 // List of wafPolicyAction
 const (
-	BLOCK WafPolicyAction = "BLOCK"
-	ALLOW WafPolicyAction = "ALLOW"
-	CAPTCHA WafPolicyAction = "CAPTCHA"
-	HANDSHAKE WafPolicyAction = "HANDSHAKE"
-	MONITOR WafPolicyAction = "MONITOR"
+	WAFPOLICYACTION_BLOCK WafPolicyAction = "BLOCK"
+	WAFPOLICYACTION_ALLOW WafPolicyAction = "ALLOW"
+	WAFPOLICYACTION_CAPTCHA WafPolicyAction = "CAPTCHA"
+	WAFPOLICYACTION_HANDSHAKE WafPolicyAction = "HANDSHAKE"
+	WAFPOLICYACTION_MONITOR WafPolicyAction = "MONITOR"
 )

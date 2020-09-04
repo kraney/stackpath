@@ -13,6 +13,6 @@ type WafCreateSiteRequestType string
 
 // List of wafCreateSiteRequestType
 const (
-	WAF WafCreateSiteRequestType = "WAF"
-	API WafCreateSiteRequestType = "API"
+	WAFCREATESITEREQUESTTYPE_WAF WafCreateSiteRequestType = "WAF"
+	WAFCREATESITEREQUESTTYPE_API WafCreateSiteRequestType = "API"
 )

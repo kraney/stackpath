@@ -13,16 +13,16 @@ type AlertConditionComparator string
 
 // List of AlertConditionComparator
 const (
-	EQUAL AlertConditionComparator = "EQUAL"
-	NOT_EQUAL AlertConditionComparator = "NOT_EQUAL"
-	GREATER_THAN AlertConditionComparator = "GREATER_THAN"
-	GREATER_THAN_EQUAL_TO AlertConditionComparator = "GREATER_THAN_EQUAL_TO"
-	LESS_THAN AlertConditionComparator = "LESS_THAN"
-	LESS_THAN_EQUAL_TO AlertConditionComparator = "LESS_THAN_EQUAL_TO"
-	DOES_EXIST AlertConditionComparator = "DOES_EXIST"
-	DOES_NOT_EXIST AlertConditionComparator = "DOES_NOT_EXIST"
-	REGEX AlertConditionComparator = "REGEX"
-	DOES_NOT_REGEX AlertConditionComparator = "DOES_NOT_REGEX"
-	CONTAINS AlertConditionComparator = "CONTAINS"
-	DOES_NOT_CONTAIN AlertConditionComparator = "DOES_NOT_CONTAIN"
+	ALERTCONDITIONCOMPARATOR_EQUAL AlertConditionComparator = "EQUAL"
+	ALERTCONDITIONCOMPARATOR_NOT_EQUAL AlertConditionComparator = "NOT_EQUAL"
+	ALERTCONDITIONCOMPARATOR_GREATER_THAN AlertConditionComparator = "GREATER_THAN"
+	ALERTCONDITIONCOMPARATOR_GREATER_THAN_EQUAL_TO AlertConditionComparator = "GREATER_THAN_EQUAL_TO"
+	ALERTCONDITIONCOMPARATOR_LESS_THAN AlertConditionComparator = "LESS_THAN"
+	ALERTCONDITIONCOMPARATOR_LESS_THAN_EQUAL_TO AlertConditionComparator = "LESS_THAN_EQUAL_TO"
+	ALERTCONDITIONCOMPARATOR_DOES_EXIST AlertConditionComparator = "DOES_EXIST"
+	ALERTCONDITIONCOMPARATOR_DOES_NOT_EXIST AlertConditionComparator = "DOES_NOT_EXIST"
+	ALERTCONDITIONCOMPARATOR_REGEX AlertConditionComparator = "REGEX"
+	ALERTCONDITIONCOMPARATOR_DOES_NOT_REGEX AlertConditionComparator = "DOES_NOT_REGEX"
+	ALERTCONDITIONCOMPARATOR_CONTAINS AlertConditionComparator = "CONTAINS"
+	ALERTCONDITIONCOMPARATOR_DOES_NOT_CONTAIN AlertConditionComparator = "DOES_NOT_CONTAIN"
 )

@@ -13,7 +13,7 @@ type ContentDispositionByHeaderDefaultTypeEnumWrapperValue string
 
 // List of ContentDispositionByHeaderDefaultTypeEnumWrapperValue
 const (
-	UNKNOWN ContentDispositionByHeaderDefaultTypeEnumWrapperValue = "UNKNOWN"
-	ATTACHMENT ContentDispositionByHeaderDefaultTypeEnumWrapperValue = "attachment"
-	INLINE ContentDispositionByHeaderDefaultTypeEnumWrapperValue = "inline"
+	CONTENTDISPOSITIONBYHEADERDEFAULTTYPEENUMWRAPPERVALUE_UNKNOWN ContentDispositionByHeaderDefaultTypeEnumWrapperValue = "UNKNOWN"
+	CONTENTDISPOSITIONBYHEADERDEFAULTTYPEENUMWRAPPERVALUE_ATTACHMENT ContentDispositionByHeaderDefaultTypeEnumWrapperValue = "attachment"
+	CONTENTDISPOSITIONBYHEADERDEFAULTTYPEENUMWRAPPERVALUE_INLINE ContentDispositionByHeaderDefaultTypeEnumWrapperValue = "inline"
 )

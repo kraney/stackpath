@@ -13,8 +13,8 @@ type CustconfOriginPullProtocolProtocolEnumWrapperValue string
 
 // List of custconfOriginPullProtocolProtocolEnumWrapperValue
 const (
-	UNKNOWN CustconfOriginPullProtocolProtocolEnumWrapperValue = "UNKNOWN"
-	HTTP CustconfOriginPullProtocolProtocolEnumWrapperValue = "http"
-	HTTPS CustconfOriginPullProtocolProtocolEnumWrapperValue = "https"
-	MATCH CustconfOriginPullProtocolProtocolEnumWrapperValue = "match"
+	CUSTCONFORIGINPULLPROTOCOLPROTOCOLENUMWRAPPERVALUE_UNKNOWN CustconfOriginPullProtocolProtocolEnumWrapperValue = "UNKNOWN"
+	CUSTCONFORIGINPULLPROTOCOLPROTOCOLENUMWRAPPERVALUE_HTTP CustconfOriginPullProtocolProtocolEnumWrapperValue = "http"
+	CUSTCONFORIGINPULLPROTOCOLPROTOCOLENUMWRAPPERVALUE_HTTPS CustconfOriginPullProtocolProtocolEnumWrapperValue = "https"
+	CUSTCONFORIGINPULLPROTOCOLPROTOCOLENUMWRAPPERVALUE_MATCH CustconfOriginPullProtocolProtocolEnumWrapperValue = "match"
 )

@@ -13,7 +13,7 @@ type RequestDetailsRequestType string
 
 // List of RequestDetailsRequestType
 const (
-	API RequestDetailsRequestType = "API"
-	AJAX RequestDetailsRequestType = "AJAX"
-	STATIC RequestDetailsRequestType = "STATIC"
+	REQUESTDETAILSREQUESTTYPE_API RequestDetailsRequestType = "API"
+	REQUESTDETAILSREQUESTTYPE_AJAX RequestDetailsRequestType = "AJAX"
+	REQUESTDETAILSREQUESTTYPE_STATIC RequestDetailsRequestType = "STATIC"
 )

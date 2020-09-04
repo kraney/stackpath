@@ -13,6 +13,6 @@ type V2IpVersion string
 
 // List of v2IpVersion
 const (
-	IPV4 V2IpVersion = "IPV4"
-	IPV6 V2IpVersion = "IPV6"
+	V2IPVERSION_IPV4 V2IpVersion = "IPV4"
+	V2IPVERSION_IPV6 V2IpVersion = "IPV6"
 )

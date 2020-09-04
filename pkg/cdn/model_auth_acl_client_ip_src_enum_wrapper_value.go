@@ -13,7 +13,7 @@ type AuthAclClientIpSrcEnumWrapperValue string
 
 // List of AuthACLClientIPSrcEnumWrapperValue
 const (
-	UNKNOWN AuthAclClientIpSrcEnumWrapperValue = "UNKNOWN"
-	SOCKET AuthAclClientIpSrcEnumWrapperValue = "socket"
-	HEADER AuthAclClientIpSrcEnumWrapperValue = "header"
+	AUTHACLCLIENTIPSRCENUMWRAPPERVALUE_UNKNOWN AuthAclClientIpSrcEnumWrapperValue = "UNKNOWN"
+	AUTHACLCLIENTIPSRCENUMWRAPPERVALUE_SOCKET AuthAclClientIpSrcEnumWrapperValue = "socket"
+	AUTHACLCLIENTIPSRCENUMWRAPPERVALUE_HEADER AuthAclClientIpSrcEnumWrapperValue = "header"
 )

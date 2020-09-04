@@ -13,10 +13,10 @@ type WafRequestAction string
 
 // List of wafRequestAction
 const (
-	ACTION_UNSPECIFIED WafRequestAction = "ACTION_UNSPECIFIED"
-	BLOCK WafRequestAction = "BLOCK"
-	ALLOW WafRequestAction = "ALLOW"
-	CAPTCHA WafRequestAction = "CAPTCHA"
-	HANDSHAKE WafRequestAction = "HANDSHAKE"
-	MONITOR WafRequestAction = "MONITOR"
+	WAFREQUESTACTION_ACTION_UNSPECIFIED WafRequestAction = "ACTION_UNSPECIFIED"
+	WAFREQUESTACTION_BLOCK WafRequestAction = "BLOCK"
+	WAFREQUESTACTION_ALLOW WafRequestAction = "ALLOW"
+	WAFREQUESTACTION_CAPTCHA WafRequestAction = "CAPTCHA"
+	WAFREQUESTACTION_HANDSHAKE WafRequestAction = "HANDSHAKE"
+	WAFREQUESTACTION_MONITOR WafRequestAction = "MONITOR"
 )

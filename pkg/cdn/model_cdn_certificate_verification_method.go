@@ -13,6 +13,6 @@ type CdnCertificateVerificationMethod string
 
 // List of cdnCertificateVerificationMethod
 const (
-	DNS CdnCertificateVerificationMethod = "DNS"
-	HTTP CdnCertificateVerificationMethod = "HTTP"
+	CDNCERTIFICATEVERIFICATIONMETHOD_DNS CdnCertificateVerificationMethod = "DNS"
+	CDNCERTIFICATEVERIFICATIONMETHOD_HTTP CdnCertificateVerificationMethod = "HTTP"
 )

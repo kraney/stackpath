@@ -13,10 +13,10 @@ type OriginPullPolicyExpirePolicyEnumWrapperValue string
 
 // List of OriginPullPolicyExpirePolicyEnumWrapperValue
 const (
-	UNKNOWN OriginPullPolicyExpirePolicyEnumWrapperValue = "UNKNOWN"
-	CACHE_CONTROL OriginPullPolicyExpirePolicyEnumWrapperValue = "CACHE_CONTROL"
-	INGEST OriginPullPolicyExpirePolicyEnumWrapperValue = "INGEST"
-	LAST_MODIFY OriginPullPolicyExpirePolicyEnumWrapperValue = "LAST_MODIFY"
-	NEVER_EXPIRE OriginPullPolicyExpirePolicyEnumWrapperValue = "NEVER_EXPIRE"
-	DO_NOT_CACHE OriginPullPolicyExpirePolicyEnumWrapperValue = "DO_NOT_CACHE"
+	ORIGINPULLPOLICYEXPIREPOLICYENUMWRAPPERVALUE_UNKNOWN OriginPullPolicyExpirePolicyEnumWrapperValue = "UNKNOWN"
+	ORIGINPULLPOLICYEXPIREPOLICYENUMWRAPPERVALUE_CACHE_CONTROL OriginPullPolicyExpirePolicyEnumWrapperValue = "CACHE_CONTROL"
+	ORIGINPULLPOLICYEXPIREPOLICYENUMWRAPPERVALUE_INGEST OriginPullPolicyExpirePolicyEnumWrapperValue = "INGEST"
+	ORIGINPULLPOLICYEXPIREPOLICYENUMWRAPPERVALUE_LAST_MODIFY OriginPullPolicyExpirePolicyEnumWrapperValue = "LAST_MODIFY"
+	ORIGINPULLPOLICYEXPIREPOLICYENUMWRAPPERVALUE_NEVER_EXPIRE OriginPullPolicyExpirePolicyEnumWrapperValue = "NEVER_EXPIRE"
+	ORIGINPULLPOLICYEXPIREPOLICYENUMWRAPPERVALUE_DO_NOT_CACHE OriginPullPolicyExpirePolicyEnumWrapperValue = "DO_NOT_CACHE"
 )

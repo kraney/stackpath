@@ -13,7 +13,7 @@ type BandwidthRateLimitInitialBurstUnitsEnumWrapperValue string
 
 // List of BandwidthRateLimitInitialBurstUnitsEnumWrapperValue
 const (
-	UNKNOWN BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "UNKNOWN"
-	BYTE BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "byte"
-	KILOBYTE BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "kilobyte"
+	BANDWIDTHRATELIMITINITIALBURSTUNITSENUMWRAPPERVALUE_UNKNOWN BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "UNKNOWN"
+	BANDWIDTHRATELIMITINITIALBURSTUNITSENUMWRAPPERVALUE_BYTE BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "byte"
+	BANDWIDTHRATELIMITINITIALBURSTUNITSENUMWRAPPERVALUE_KILOBYTE BandwidthRateLimitInitialBurstUnitsEnumWrapperValue = "kilobyte"
 )

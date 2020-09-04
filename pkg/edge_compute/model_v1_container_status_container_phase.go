@@ -13,9 +13,9 @@ type V1ContainerStatusContainerPhase string
 
 // List of v1ContainerStatusContainerPhase
 const (
-	CONTAINER_PHASE_UNSPECIFIED V1ContainerStatusContainerPhase = "CONTAINER_PHASE_UNSPECIFIED"
-	STARTING V1ContainerStatusContainerPhase = "STARTING"
-	RUNNING V1ContainerStatusContainerPhase = "RUNNING"
-	FAILED V1ContainerStatusContainerPhase = "FAILED"
-	STOPPED V1ContainerStatusContainerPhase = "STOPPED"
+	V1CONTAINERSTATUSCONTAINERPHASE_CONTAINER_PHASE_UNSPECIFIED V1ContainerStatusContainerPhase = "CONTAINER_PHASE_UNSPECIFIED"
+	V1CONTAINERSTATUSCONTAINERPHASE_STARTING V1ContainerStatusContainerPhase = "STARTING"
+	V1CONTAINERSTATUSCONTAINERPHASE_RUNNING V1ContainerStatusContainerPhase = "RUNNING"
+	V1CONTAINERSTATUSCONTAINERPHASE_FAILED V1ContainerStatusContainerPhase = "FAILED"
+	V1CONTAINERSTATUSCONTAINERPHASE_STOPPED V1ContainerStatusContainerPhase = "STOPPED"
 )

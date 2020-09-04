@@ -13,7 +13,7 @@ type CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue string
 
 // List of custconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue
 const (
-	UNKNOWN CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue = "UNKNOWN"
-	HMACSHA1 CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue = "hmacsha1"
-	HMACSHA256 CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue = "hmacsha256"
+	CUSTCONFAUTHURLSIGNHMACTLUALGORITHMIDMAPENUMWRAPPERVALUE_UNKNOWN CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue = "UNKNOWN"
+	CUSTCONFAUTHURLSIGNHMACTLUALGORITHMIDMAPENUMWRAPPERVALUE_HMACSHA1 CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue = "hmacsha1"
+	CUSTCONFAUTHURLSIGNHMACTLUALGORITHMIDMAPENUMWRAPPERVALUE_HMACSHA256 CustconfAuthUrlSignHmacTluAlgorithmIdMapEnumWrapperValue = "hmacsha256"
 )

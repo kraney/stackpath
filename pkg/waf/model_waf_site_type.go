@@ -13,7 +13,7 @@ type WafSiteType string
 
 // List of wafSiteType
 const (
-	UNKNOWN_TYPE WafSiteType = "UNKNOWN_TYPE"
-	WAF WafSiteType = "WAF"
-	API WafSiteType = "API"
+	WAFSITETYPE_UNKNOWN_TYPE WafSiteType = "UNKNOWN_TYPE"
+	WAFSITETYPE_WAF WafSiteType = "WAF"
+	WAFSITETYPE_API WafSiteType = "API"
 )

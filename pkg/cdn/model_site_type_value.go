@@ -13,8 +13,8 @@ type SiteTypeValue string
 
 // List of SiteTypeValue
 const (
-	UNKNOWN SiteTypeValue = "UNKNOWN"
-	CDN SiteTypeValue = "CDN"
-	WAF SiteTypeValue = "WAF"
-	API SiteTypeValue = "API"
+	SITETYPEVALUE_UNKNOWN SiteTypeValue = "UNKNOWN"
+	SITETYPEVALUE_CDN SiteTypeValue = "CDN"
+	SITETYPEVALUE_WAF SiteTypeValue = "WAF"
+	SITETYPEVALUE_API SiteTypeValue = "API"
 )

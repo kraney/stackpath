@@ -13,7 +13,7 @@ type IdentityUserStatus string
 
 // List of identityUserStatus
 const (
-	UNKNOWN IdentityUserStatus = "UNKNOWN"
-	ENABLED IdentityUserStatus = "ENABLED"
-	DISABLED IdentityUserStatus = "DISABLED"
+	IDENTITYUSERSTATUS_UNKNOWN IdentityUserStatus = "UNKNOWN"
+	IDENTITYUSERSTATUS_ENABLED IdentityUserStatus = "ENABLED"
+	IDENTITYUSERSTATUS_DISABLED IdentityUserStatus = "DISABLED"
 )

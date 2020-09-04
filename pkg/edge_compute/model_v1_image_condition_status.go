@@ -13,7 +13,7 @@ type V1ImageConditionStatus string
 
 // List of v1ImageConditionStatus
 const (
-	IMAGE_CONDITION_STATUS_UNKNOWN V1ImageConditionStatus = "IMAGE_CONDITION_STATUS_UNKNOWN"
-	TRUE V1ImageConditionStatus = "TRUE"
-	FALSE V1ImageConditionStatus = "FALSE"
+	V1IMAGECONDITIONSTATUS_IMAGE_CONDITION_STATUS_UNKNOWN V1ImageConditionStatus = "IMAGE_CONDITION_STATUS_UNKNOWN"
+	V1IMAGECONDITIONSTATUS_TRUE V1ImageConditionStatus = "TRUE"
+	V1IMAGECONDITIONSTATUS_FALSE V1ImageConditionStatus = "FALSE"
 )

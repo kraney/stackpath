@@ -13,8 +13,8 @@ type CustconfAuthAclProtocolEnumWrapperValue string
 
 // List of custconfAuthACLProtocolEnumWrapperValue
 const (
-	UNKNOWN CustconfAuthAclProtocolEnumWrapperValue = "UNKNOWN"
-	HTTP CustconfAuthAclProtocolEnumWrapperValue = "http"
-	HTTPS CustconfAuthAclProtocolEnumWrapperValue = "https"
-	BOTH CustconfAuthAclProtocolEnumWrapperValue = "both"
+	CUSTCONFAUTHACLPROTOCOLENUMWRAPPERVALUE_UNKNOWN CustconfAuthAclProtocolEnumWrapperValue = "UNKNOWN"
+	CUSTCONFAUTHACLPROTOCOLENUMWRAPPERVALUE_HTTP CustconfAuthAclProtocolEnumWrapperValue = "http"
+	CUSTCONFAUTHACLPROTOCOLENUMWRAPPERVALUE_HTTPS CustconfAuthAclProtocolEnumWrapperValue = "https"
+	CUSTCONFAUTHACLPROTOCOLENUMWRAPPERVALUE_BOTH CustconfAuthAclProtocolEnumWrapperValue = "both"
 )

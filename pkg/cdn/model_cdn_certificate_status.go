@@ -13,11 +13,11 @@ type CdnCertificateStatus string
 
 // List of cdnCertificateStatus
 const (
-	UNKNOWN CdnCertificateStatus = "UNKNOWN"
-	PENDING CdnCertificateStatus = "PENDING"
-	EXPIRED CdnCertificateStatus = "EXPIRED"
-	FAILED CdnCertificateStatus = "FAILED"
-	PENDING_VERIFICATION CdnCertificateStatus = "PENDING_VERIFICATION"
-	ACTIVE CdnCertificateStatus = "ACTIVE"
-	INACTIVE CdnCertificateStatus = "INACTIVE"
+	CDNCERTIFICATESTATUS_UNKNOWN CdnCertificateStatus = "UNKNOWN"
+	CDNCERTIFICATESTATUS_PENDING CdnCertificateStatus = "PENDING"
+	CDNCERTIFICATESTATUS_EXPIRED CdnCertificateStatus = "EXPIRED"
+	CDNCERTIFICATESTATUS_FAILED CdnCertificateStatus = "FAILED"
+	CDNCERTIFICATESTATUS_PENDING_VERIFICATION CdnCertificateStatus = "PENDING_VERIFICATION"
+	CDNCERTIFICATESTATUS_ACTIVE CdnCertificateStatus = "ACTIVE"
+	CDNCERTIFICATESTATUS_INACTIVE CdnCertificateStatus = "INACTIVE"
 )

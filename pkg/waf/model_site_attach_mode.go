@@ -13,6 +13,6 @@ type SiteAttachMode string
 
 // List of SiteAttachMode
 const (
-	STANDALONE SiteAttachMode = "STANDALONE"
-	ATTACHED SiteAttachMode = "ATTACHED"
+	SITEATTACHMODE_STANDALONE SiteAttachMode = "STANDALONE"
+	SITEATTACHMODE_ATTACHED SiteAttachMode = "ATTACHED"
 )

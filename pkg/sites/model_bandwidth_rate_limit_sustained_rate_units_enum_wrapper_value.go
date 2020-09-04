@@ -13,7 +13,7 @@ type BandwidthRateLimitSustainedRateUnitsEnumWrapperValue string
 
 // List of BandwidthRateLimitSustainedRateUnitsEnumWrapperValue
 const (
-	UNKNOWN BandwidthRateLimitSustainedRateUnitsEnumWrapperValue = "UNKNOWN"
-	KILOBIT BandwidthRateLimitSustainedRateUnitsEnumWrapperValue = "kilobit"
-	KILOBYTE BandwidthRateLimitSustainedRateUnitsEnumWrapperValue = "kilobyte"
+	BANDWIDTHRATELIMITSUSTAINEDRATEUNITSENUMWRAPPERVALUE_UNKNOWN BandwidthRateLimitSustainedRateUnitsEnumWrapperValue = "UNKNOWN"
+	BANDWIDTHRATELIMITSUSTAINEDRATEUNITSENUMWRAPPERVALUE_KILOBIT BandwidthRateLimitSustainedRateUnitsEnumWrapperValue = "kilobit"
+	BANDWIDTHRATELIMITSUSTAINEDRATEUNITSENUMWRAPPERVALUE_KILOBYTE BandwidthRateLimitSustainedRateUnitsEnumWrapperValue = "kilobyte"
 )
