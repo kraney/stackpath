@@ -3,6 +3,7 @@ package oauth2
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"time"
 
 	user "github.com/kraney/stackpath/pkg/accounts_and_users"
@@ -11,7 +12,8 @@ import (
 
 // TokenSource is an oauth2 token source for stackpath
 type TokenSource struct {
-	req user.IdentityGetAccessTokenRequest
+	req    user.IdentityGetAccessTokenRequest
+	Client *http.Client
 }
 
 // NewTokenSource returns a new token source for stackpath
@@ -29,6 +31,7 @@ func NewTokenSource(clientid string, clientsecret string) *TokenSource {
 // Token returns a token
 func (sps *TokenSource) Token() (*oauth2.Token, error) {
 	usercfg := user.NewConfiguration()
+	usercfg.HTTPClient = sps.Client
 	userclient := user.NewAPIClient(usercfg)
 	idresp, _, err := userclient.AuthenticationApi.GetAccessToken(context.Background()).IdentityGetAccessTokenRequest(sps.req).Execute()
 	if err != nil {
