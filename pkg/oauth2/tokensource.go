@@ -13,25 +13,39 @@ import (
 // TokenSource is an oauth2 token source for stackpath
 type TokenSource struct {
 	req    user.IdentityGetAccessTokenRequest
-	Client *http.Client
+	client *http.Client
+}
+
+// Option is used to pass options to the client during creation
+type Option func(*TokenSource)
+
+// HTTPClientOption returns an option telling the Client to use the given http.Client
+func HTTPClientOption(client *http.Client) Option {
+	return func(sps *TokenSource) {
+		sps.client = client
+	}
 }
 
 // NewTokenSource returns a new token source for stackpath
-func NewTokenSource(clientid string, clientsecret string) *TokenSource {
+func NewTokenSource(clientid string, clientsecret string, options ...Option) oauth2.TokenSource {
 	creds := "client_credentials"
-	return &TokenSource{
+	src := &TokenSource{
 		req: user.IdentityGetAccessTokenRequest{
 			ClientId:     &clientid,
 			ClientSecret: &clientsecret,
 			GrantType:    &creds,
 		},
 	}
+	for _, opt := range options {
+		opt(src)
+	}
+	return oauth2.ReuseTokenSource(nil, src)
 }
 
 // Token returns a token
 func (sps *TokenSource) Token() (*oauth2.Token, error) {
 	usercfg := user.NewConfiguration()
-	usercfg.HTTPClient = sps.Client
+	usercfg.HTTPClient = sps.client
 	userclient := user.NewAPIClient(usercfg)
 	idresp, _, err := userclient.AuthenticationApi.GetAccessToken(context.Background()).IdentityGetAccessTokenRequest(sps.req).Execute()
 	if err != nil {

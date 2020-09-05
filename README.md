@@ -80,9 +80,9 @@ func main() {
 This TokenSource is also designed to facilitate use of [GoVCR](https://github.com/seborama/govcr) for testing.
 
 ```golang
-	var ts *spauth.TokenSource = spauth.NewTokenSource(*clientid, *clientsecret)
-	ts.Client = govcr.NewVCR(testname, &govcr.VCRConfig{
+    httpclient := govcr.NewVCR(testname, &govcr.VCRConfig{
 		CassettePath:     "./testdata/recordings",
 	}).Client
+	var ts *spauth.TokenSource = spauth.NewTokenSource(*clientid, *clientsecret, spauth.HTTPClientOption(httpclient))
 	auth := context.WithValue(context.Background(), stacks.ContextOAuth2, ts)
 ```
