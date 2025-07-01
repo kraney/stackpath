@@ -1,4 +1,14 @@
-# Go Client APIs for StackPath
+# StackPath Go SDK
+## Go Client APIs for StackPath
+## Authored by Kris Raney
+
+This repo provides Go client libraries for StackPath’s CDN and Edge Compute APIs. It was created to facilitate the development of ultra-low-latency audio collaboration software during the COVID era, requiring tight control over container orchestration and geographically aware routing. This in turn was intended to support student music ensemble practice during at-home schooling.
+
+This project showcases:
+* Real-world use of OpenAPI codegen and multi-package Go SDKs
+* Platform-level integration with CDN, DNS, SSL, WAF, Edge Compute, and Object Storage
+* A reusable OAuth2 token source for developer convenience and testing (GoVCR-ready)
+* The repo demonstrates fluency in cloud-native API integration, platform SDK design, and pragmatic tooling for external infrastructure control.
 
 These APIs are generated automatically from StackPath's OpenAPI specs for their
 APIs. (The one exception is their Monitoring (Legacy) API, which I skipped. I
